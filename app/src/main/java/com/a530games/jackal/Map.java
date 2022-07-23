@@ -6,6 +6,9 @@ import com.a530games.framework.helpers.FloatRect;
 
 public class Map
 {
+    public static final int SPRITE_HEIGHT = 871;
+    public static final int SPRITE_WIDTH = 871;
+
     // положение карты
     public int x = 0;
     public int y = 0;
@@ -30,5 +33,13 @@ public class Map
         c.isRock = true;
 
         this.testRect = new FloatRect(400, 400, 500, 500);
+    }
+
+    public int getRowByTop(float top) {
+        return (int) Math.ceil(top / Map.SPRITE_HEIGHT);
+    }
+
+    public int getColByLeft(float left) {
+        return (int) Math.ceil(left / Map.SPRITE_WIDTH);
     }
 }

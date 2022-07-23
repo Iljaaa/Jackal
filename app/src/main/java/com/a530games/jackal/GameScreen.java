@@ -423,15 +423,10 @@ public class GameScreen extends Screen
     protected void  drawMap()
     {
         Graphics g = this.game.getGraphics();
-        g.drawLine(640, 0, 640, 640, Color.WHITE);
 
-        for (int i = 1; i <= 9; i++) {
-            g.drawLine(i * 64, 0, i * 64, 640, Color.GRAY);
-        }
+        this.drawMapNet(g);
 
-        for (int i = 1; i <= 9; i++) {
-            g.drawLine(0, i * 64, 640, i * 64, Color.GRAY);
-        }
+        this.drawActiveCell();
 
         for (int row = 0; row < this.world.map.MapRows; row++) {
             for (int col = 0; col < this.world.map.MapCols; col++) {
@@ -442,6 +437,25 @@ public class GameScreen extends Screen
                 }
             }
         }
+    }
+
+    private void drawMapNet (Graphics g)
+    {
+        g.drawLine(640, 0, 640, 640, Color.WHITE);
+
+        for (int i = 1; i <= 9; i++) {
+            g.drawLine(i * 64, 0, i * 64, 640, Color.GRAY);
+        }
+
+        for (int i = 1; i <= 9; i++) {
+            g.drawLine(0, i * 64, 640, i * 64, Color.GRAY);
+        }
+    }
+
+    private void drawActiveCell () {
+        int row = this.world.map.getRowByTop(this.world.player.getTop());
+        int col = this.world.map.getRowByTop(this.world.player.getTop());
+        this.game.getGraphics().drawRect(0, row * Map.SPRITE_HEIGHT, 640, (row * Map.SPRITE_HEIGHT) + Map.SPRITE_HEIGHT, Color.WHITE);
     }
 
     /**
