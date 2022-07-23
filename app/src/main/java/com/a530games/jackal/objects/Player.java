@@ -40,19 +40,17 @@ public class Player extends Vehicle
     }
 
     /**
-     * todo: рефакторить с геттера на публичнуу переменну.
      * @return
      */
     public float getX() {
-        return this.x;
+        return this.hitBox.left;
     }
 
     /**
-     * todo: рефакторить с геттера на публичнуу переменну.
      * @return
      */
     public float getY() {
-        return this.y;
+        return this.hitBox.top;
     }
 
     public double getAngle() {
@@ -146,17 +144,13 @@ public class Player extends Vehicle
         // this._newPos = this.y + (deltaTime * this.speed);
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x, this.y + (deltaTime * this.speed));
+        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
+            // this.hitBox.top = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.y = this.hitBox.top;
-
 
         // target 0
 
@@ -176,28 +170,21 @@ public class Player extends Vehicle
     public void moveDownRight(Map map, float deltaTime)
     {
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x, this.y + (deltaTime * this.speed));
+        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
             // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.y = this.hitBox.top;
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x + (deltaTime * this.speed), this.y);
+        this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.x = this.hitBox.left;
 
         // this.x += (deltaTime * this.speed);
         // this.y += (deltaTime * this.speed);
@@ -227,17 +214,12 @@ public class Player extends Vehicle
         // this.x += (deltaTime * this.speed);
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x + (deltaTime * this.speed), this.y);
+        this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.x = this.hitBox.left;
-
 
         // target 0.5
 
@@ -263,28 +245,20 @@ public class Player extends Vehicle
     public void moveTopRight(Map map, float deltaTime)
     {
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x, this.y - (deltaTime * this.speed));
+        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.y = this.hitBox.top;
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x + (deltaTime * this.speed), this.y);
+        this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.x = this.hitBox.left;
 
         // this.x += (deltaTime * this.speed);
         // this.y -= (deltaTime * this.speed);
@@ -311,16 +285,12 @@ public class Player extends Vehicle
         // this.y -= (deltaTime * this.speed);
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x, this.y - (deltaTime * this.speed));
+        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.y = this.hitBox.top;
 
         // traget 1
 
@@ -344,28 +314,20 @@ public class Player extends Vehicle
         // this.y -= (deltaTime * this.speed);
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x, this.y - (deltaTime * this.speed));
+        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.y = this.hitBox.top;
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x - (deltaTime * this.speed), this.y);
+        this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.x = this.hitBox.left;
 
         // target 1.25
 
@@ -390,16 +352,12 @@ public class Player extends Vehicle
         // this.x -= (deltaTime * this.speed);
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x - (deltaTime * this.speed), this.y);
+        this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.x = this.hitBox.left;
 
         // target 1,5
 
@@ -427,28 +385,20 @@ public class Player extends Vehicle
         // this.y += (deltaTime * this.speed);
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x, this.y + (deltaTime * this.speed));
+        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.y = this.hitBox.top;
 
         // двигаем хитбокс
-        this.hitBox.moveTo(this.x - (deltaTime * this.speed), this.y);
+        this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
         if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
             this.hitBox.rollback();
         }
-
-        //fixme:  temp update
-        this.x = this.hitBox.left;
 
         // target 1.75
 
@@ -478,6 +428,6 @@ public class Player extends Vehicle
         if (this.fireDelay > 0) return null;
 
         this.fireDelay = 0.55f;
-        return new Bullet(this.x, this.y);
+        return new Bullet(this.hitBox.left, this.hitBox.top);
     }
 }

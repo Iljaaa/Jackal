@@ -8,18 +8,11 @@ import com.a530games.framework.helpers.RollbackFloatRect;
  */
 public abstract class Vehicle
 {
-    // пожение на экране
-    public float x;
-    public float y;
-
     public RollbackFloatRect hitBox;
 
     public Vehicle(float startX, float startY)
     {
-        this.x = startX;
-        this.y = startY;
-
-        this.hitBox = new RollbackFloatRect(this.x, this.y, this.x + 20, this.y + 20);
+        this.hitBox = new RollbackFloatRect(startX, startY, startX + 20, startY + 20);
     }
 
     public abstract void update(float deltaTime);
