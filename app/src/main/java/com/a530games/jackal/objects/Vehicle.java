@@ -21,6 +21,32 @@ public abstract class Vehicle
 
     public abstract void update(float deltaTime);
 
+    public float getX() {
+        return this.hitBox.left;
+    }
+
+    public float getY() {
+        return this.hitBox.top;
+    }
+
+    /**
+     *
+     */
+    public void move(int direction, Map map, float deltaTime)
+    {
+        switch (direction) {
+            case Player.MOVE_DOWN: this.moveDown(map, deltaTime); break;
+            case Player.MOVE_DOWN_RIGHT: this.moveDownRight(map, deltaTime); break;
+            case Player.MOVE_RIGHT: this.moveRight(map, deltaTime); break;
+            case Player.MOVE_TOP_RIGHT: this.moveTopRight(map, deltaTime); break;
+            case Player.MOVE_TOP: this.moveTop(map, deltaTime); break;
+            case Player.MOVE_TOP_LEFT: this.moveTopLeft(map, deltaTime); break;
+            case Player.MOVE_LEFT: this.moveLeft(map, deltaTime); break;
+            case Player.MOVE_DOWN_LEFT:  this.moveDownLeft(map, deltaTime); break;
+        }
+    }
+
+
     public void moveDown(Map map, float deltaTime)
     {
         // move don
