@@ -16,16 +16,16 @@ public abstract class Vehicle
 
     public Vehicle(float startX, float startY)
     {
-        this.hitBox = new RollbackFloatRect(startX, startY, startX + 20, startY + 20);
+        this.hitBox = new RollbackFloatRect(startX, startY, startX + 40, startY + 40);
     }
 
     public abstract void update(float deltaTime);
 
-    public float getX() {
+    public float getLeft() {
         return this.hitBox.left;
     }
 
-    public float getY() {
+    public float getTop() {
         return this.hitBox.top;
     }
 

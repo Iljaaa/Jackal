@@ -1,22 +1,23 @@
 package com.a530games.jackal;
 
-public class Sprite {
-    public int col = 0;
-    public int row = 0;
+public class Sprite
+{
+    public int col;
+    public int row;
 
-    public int spriteWidth = 64;
-    public int spriteHeight = 64;
+    public final int spriteWidth = 64;
+    public final int spriteHeight = 64;
 
     public Sprite(int row, int col) {
         this.col = col;
         this.row = row;
     }
 
-    public int getX() {
+    public int getLeft () {
         return this.col * this.spriteWidth;
     }
 
-    public int getY() {
+    public int getTop() {
         return this.row * this.spriteHeight;
     }
 }

@@ -1,10 +1,11 @@
 package com.a530games.framework;
 
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 public interface Graphics {
 
-    static enum PixmapFormat {
+    enum PixmapFormat {
         ARGB8888, ARGB4444, RGB565
     }
 
@@ -14,6 +15,7 @@ public interface Graphics {
     void drawLine(int x, int y, int x2, int y2, int color);
     void drawRect(int x, int y, int width, int height, int color);
     void drawRect(Rect r, int color);
+    void drawRect(Rect r, Paint paint);
     void drawCircle(int x, int y, int radius, int color);
     void drawPixmap(Pixmap pixmap, int x, int y, int srcX, int srcY,
                            int srcWidth, int srcHeight);

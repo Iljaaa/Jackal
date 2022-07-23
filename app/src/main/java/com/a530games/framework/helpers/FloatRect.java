@@ -48,8 +48,16 @@ public class FloatRect
         return (this.bottom - this.top);
     }
 
+    public float getCenterLeft (){
+        return this.left + (this.getWidth() / 2);
+    }
+
+    public float getCenterTop () {
+        return this.top + (this.getHeight() / 2);
+    }
+
     /**
-     * @return
+     * @return bool
      */
     public boolean isIntersect(FloatRect rect)
     {
@@ -72,7 +80,6 @@ public class FloatRect
         if (rect.left > this.right) {
             return false;
         }
-
 
         return true;
     }

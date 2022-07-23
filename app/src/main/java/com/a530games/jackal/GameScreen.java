@@ -2,7 +2,6 @@ package com.a530games.jackal;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.Log;
 
 import com.a530games.framework.Controller;
@@ -35,6 +34,9 @@ public class GameScreen extends Screen
     // проверочная рамка для проверки столкновения
     Paint paint;
 
+    // paint for the hit box
+    Paint hitBoxPaint;
+
     public GameScreen(Game game) {
         super(game);
         this.world = new World();
@@ -42,6 +44,11 @@ public class GameScreen extends Screen
 
         this.paint = new Paint();
         this.paint.setColor(Color.GRAY);
+
+        this.hitBoxPaint = new Paint();
+        this.hitBoxPaint.setStyle(Paint.Style.STROKE);
+        this.hitBoxPaint.setStrokeWidth(2);
+        this.hitBoxPaint.setColor(Color.YELLOW);
     }
 
     @Override
@@ -214,7 +221,7 @@ public class GameScreen extends Screen
 
         // сначала мы проверяем глобальный подзод
         // надо вычислить строку на которой находится машинка и проверить три
-        if (this.world.player.hitBox.bottom > this.world.map.testRect.top)
+        if (this.world.player.hitBox.bottom > this.world.map.testRect.top && (this.world.player.hitBox.top < this.world.map.testRect.bottom))
         {
             this.paint.setColor(Color.RED);
         }
@@ -405,8 +412,8 @@ public class GameScreen extends Screen
                         Assets.tank,
                         Math.round(b.hitBox.left),
                         Math.round(b.hitBox.top),
-                        this.world.player.sprite.getX(),
-                        this.world.player.sprite.getY(),
+                        this.world.player.sprite.getLeft(),
+                        this.world.player.sprite.getTop(),
                         64,
                         64);
             }
@@ -442,34 +449,46 @@ public class GameScreen extends Screen
      */
     private void drawPlayer ()
     {
-        int playerX = Math.round(this.world.player.getX());
-        int playerY = Math.round(this.world.player.getY());
-
-        // todo: это надо перенести в самого игрока
-        // double playerAngle =  this.world.player.getAngle();
-
         Graphics g = this.game.getGraphics();
+
+        this.drawPlayerHitBox(g);
+
+        int playerX = Math.round(this.world.player.getLeft());
+        int playerY = Math.round(this.world.player.getTop());
+
+        /*
+         * 12 = 0.5 * 64 (player sprite width) - 40 (player hitbox width)
+         */
         g.drawPixmap(
             Assets.player,
-            Math.round(playerX) - 32,
-            Math.round(playerY) - 32,
-                this.world.player.sprite.getX(),
-                this.world.player.sprite.getY(),
+            Math.round(playerX) - 12, //
+            Math.round(playerY) - 12,
+                this.world.player.sprite.getLeft(),
+                this.world.player.sprite.getTop(),
             64,
             64);
 
-        // отрисовываем ршеищч
-        g.drawRect(this.world.player.hitBox.getDrawRect(), this.paint.getColor());
+
+        this.drawPlayerAngle(g);
+    }
+
+    private void drawPlayerHitBox (Graphics g) {
+        g.drawRect(this.world.player.hitBox.getDrawRect(), this.hitBoxPaint);
+    }
+
+    private void drawPlayerAngle (Graphics g)
+    {
+        int centerLeft = Math.round(this.world.player.hitBox.getCenterLeft());
+        int centerTop = Math.round(this.world.player.hitBox.getCenterTop());
 
         // отрисовываем вектор направления
         double s = Math.sin(this.world.player.getAngle() * Math.PI);
         double c = Math.cos(this.world.player.getAngle() * Math.PI);
 
-        g.drawLine(playerX, playerY,
-                playerX + (int) Math.round(s * 50),
-                playerY + (int) Math.round(c * 50),
+        g.drawLine(centerLeft, centerTop,
+                centerLeft + (int) Math.round(s * 50),
+                centerTop + (int) Math.round(c * 50),
                 Color.MAGENTA);
-
     }
 
     private void drawStain ()
