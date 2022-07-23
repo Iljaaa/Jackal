@@ -33,7 +33,6 @@ public class GameScreen extends Screen
     String score = "0";
 
     // проверочная рамка для проверки столкновения
-    Rect r;
     Paint paint;
 
     public GameScreen(Game game) {
@@ -41,7 +40,6 @@ public class GameScreen extends Screen
         this.world = new World();
         this.sidebar = new Sidebar();
 
-        this.r = new Rect(400, 400, 500, 500);
         this.paint = new Paint();
         this.paint.setColor(Color.GRAY);
     }
@@ -52,12 +50,10 @@ public class GameScreen extends Screen
         // todo: подмать какуюто абстрацию над этим всем делом
         List<Input.TouchEvent> touchEvents = this.game.getInput().getTouchEvents();
 
-        List<Input.KeyEvent> keyEvents = this.game.getInput().getKeyEvents();;
+        List<Input.KeyEvent> keyEvents = this.game.getInput().getKeyEvents();
 
         //
         Controller c = this.game.getInput().getController();
-
-
 
 
         /*int keyEventsLength = keyEvents.size();
@@ -103,11 +99,11 @@ public class GameScreen extends Screen
             if(event.type == Input.TouchEvent.TOUCH_DOWN) {
                 if(event.x < 200) {
                     this.world.snake.turnLeft();
-                    this.world.player.moveLeft(deltaTime);
+                    this.world.player.moveLeft(this.world.map, deltaTime);
                 }
                 if(event.x > 200) {
                     this.world.snake.turnRight();
-                    this.world.player.moveRight(deltaTime);
+                    this.world.player.moveRight(this.world.map, deltaTime);
                 }
             }
         }
@@ -120,33 +116,33 @@ public class GameScreen extends Screen
 
         if (controller.isTopButtonDown())  {
             if (controller.isRightButtonDown()) {
-                this.world.player.move(Player.MOVE_TOP_RIGHT, deltaTime);
+                this.world.player.move(Player.MOVE_TOP_RIGHT, this.world.map, deltaTime);
             }
             else if (controller.isLeftButtonDown()) {
-                this.world.player.move(Player.MOVE_TOP_LEFT, deltaTime);
+                this.world.player.move(Player.MOVE_TOP_LEFT, this.world.map, deltaTime);
             }
             else {
-                this.world.player.move(Player.MOVE_TOP, deltaTime);
+                this.world.player.move(Player.MOVE_TOP, this.world.map, deltaTime);
             }
         }
 
         else if (controller.isBottomButtonDown())  {
             if (controller.isRightButtonDown()) {
-                this.world.player.move(Player.MOVE_DOWN_RIGHT, deltaTime);
+                this.world.player.move(Player.MOVE_DOWN_RIGHT, this.world.map, deltaTime);
             }
             else if (controller.isLeftButtonDown()) {
-                this.world.player.move(Player.MOVE_DOWN_LEFT, deltaTime);
+                this.world.player.move(Player.MOVE_DOWN_LEFT, this.world.map, deltaTime);
             }
             else {
-                this.world.player.move(Player.MOVE_DOWN, deltaTime);
+                this.world.player.move(Player.MOVE_DOWN, this.world.map, deltaTime);
             }
         }
         else {
             if (controller.isLeftButtonDown()) {
-                this.world.player.move(Player.MOVE_LEFT, deltaTime);
+                this.world.player.move(Player.MOVE_LEFT, this.world.map, deltaTime);
             }
             if (controller.isRightButtonDown()) {
-                this.world.player.move(Player.MOVE_RIGHT, deltaTime);
+                this.world.player.move(Player.MOVE_RIGHT, this.world.map, deltaTime);
             }
         }
 
@@ -193,17 +189,17 @@ public class GameScreen extends Screen
                 Log.d("key", String.valueOf(event.keyCode));
                 if (event.keyCode == 32) {
                     this.world.snake.turnRight();
-                    this.world.player.moveRight(deltaTime);
+                    this.world.player.moveRight(this.world.map, deltaTime);
                 }
                 else if (event.keyCode == 29) {
                     this.world.snake.turnLeft();
-                    this.world.player.moveLeft(deltaTime);
+                    this.world.player.moveLeft(this.world.map, deltaTime);
                 }
                 else if (event.keyCode == 51) {
-                    this.world.player.moveTop(deltaTime);
+                    this.world.player.moveTop(this.world.map, deltaTime);
                 }
                 else if (event.keyCode == 47) {
-                    this.world.player.moveDown(deltaTime);
+                    this.world.player.moveDown(this.world.map, deltaTime);
                 }
                 else if (event.keyCode == 62) {
                     this.world.player.fire(deltaTime);
@@ -218,17 +214,18 @@ public class GameScreen extends Screen
 
         // сначала мы проверяем глобальный подзод
         // надо вычислить строку на которой находится машинка и проверить три
-        if (this.world.player.hitBox.top > this.r.top) {
+        if (this.world.player.hitBox.bottom > this.world.map.testRect.top)
+        {
             this.paint.setColor(Color.RED);
         }
         else {
-            this.paint.setColor(Color.GRAY);;
+            this.paint.setColor(Color.GRAY);
         }
 
         // fixme: при завершении f[s выводить не будем
         this.sidebar.setFps(this.game.getRenderView().fps);
         this.sidebar.setPlayerAngle(this.world.player.angle);
-        this.sidebar.setPlayerPos(Math.round(this.world.player.x), Math.round(this.world.player.y));
+        this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
         this.sidebar.setMapPos(this.world.map.x, this.world.map.y);
 
 
@@ -335,7 +332,7 @@ public class GameScreen extends Screen
         this.drawMap();
 
         // рамка для проверки столкновений
-        this.game.getGraphics().drawRect(this.r.left, this.r.top, this.r.width(), this.r.height(), Color.RED);
+        this.game.getGraphics().drawRect(this.world.map.testRect.getDrawRect(), this.paint.getColor());
 
         // draw player
         this.drawPlayer();
@@ -406,8 +403,8 @@ public class GameScreen extends Screen
 
                 g.drawPixmap(
                         Assets.tank,
-                        Math.round(b.x),
-                        Math.round(b.y),
+                        Math.round(b.hitBox.left),
+                        Math.round(b.hitBox.top),
                         this.world.player.sprite.getX(),
                         this.world.player.sprite.getY(),
                         64,
@@ -415,7 +412,6 @@ public class GameScreen extends Screen
             }
         }
     }
-
 
     protected void  drawMap()
     {
@@ -452,7 +448,6 @@ public class GameScreen extends Screen
         // todo: это надо перенести в самого игрока
         // double playerAngle =  this.world.player.getAngle();
 
-
         Graphics g = this.game.getGraphics();
         g.drawPixmap(
             Assets.player,
@@ -463,6 +458,8 @@ public class GameScreen extends Screen
             64,
             64);
 
+        // отрисовываем ршеищч
+        g.drawRect(this.world.player.hitBox.getDrawRect(), this.paint.getColor());
 
         // отрисовываем вектор направления
         double s = Math.sin(this.world.player.getAngle() * Math.PI);

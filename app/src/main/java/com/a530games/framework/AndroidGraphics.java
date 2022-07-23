@@ -33,7 +33,7 @@ public class AndroidGraphics implements Graphics
     @Override
     public Pixmap newPixmap(String fileName, PixmapFormat format)
     {
-        Bitmap.Config config = null;
+        Bitmap.Config config;
         if (format == PixmapFormat.RGB565)
             config = Bitmap.Config.RGB_565;
         else if (format == PixmapFormat.ARGB4444)
@@ -45,7 +45,7 @@ public class AndroidGraphics implements Graphics
         options.inPreferredConfig = config;
 
         InputStream in = null;
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         try {
             in = this.assets.open(fileName);
             bitmap = BitmapFactory.decodeStream(in);
@@ -89,6 +89,12 @@ public class AndroidGraphics implements Graphics
         this.paint.setColor(color);
         this.paint.setStyle(Paint.Style.FILL);
         this.canvas.drawRect(x, y, x + width - 1, y + width - 1, paint);
+    }
+    @Override
+    public void drawRect(Rect r, int color) {
+        this.paint.setColor(color);
+        this.paint.setStyle(Paint.Style.FILL);
+        this.canvas.drawRect(r, this.paint);
     }
 
     @Override

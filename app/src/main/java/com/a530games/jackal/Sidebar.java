@@ -20,7 +20,6 @@ public class Sidebar {
 
     /**
      * Надо ли обновлять сайдбар
-     * @return
      */
     public boolean isNeedRedraw(){
         return this.isNeedRedraw;
@@ -38,7 +37,7 @@ public class Sidebar {
             this.playerX = x;
             this.isNeedRedraw = true;
         }
-        if (this.playerY != x) {
+        if (this.playerY != y) {
             this.playerY = y;
             this.isNeedRedraw = true;
         }
@@ -49,7 +48,7 @@ public class Sidebar {
             this.mapX = x;
             this.isNeedRedraw = true;
         }
-        if (this.mapY != x) {
+        if (this.mapY != y) {
             this.mapY = y;
             this.isNeedRedraw = true;
         }

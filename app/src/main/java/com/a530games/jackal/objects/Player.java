@@ -1,8 +1,10 @@
 package com.a530games.jackal.objects;
 
+import android.graphics.Rect;
 import android.util.Log;
 
 import com.a530games.jackal.Bullet;
+import com.a530games.jackal.Map;
 import com.a530games.jackal.Sprite;
 
 public class Player extends Vehicle
@@ -29,7 +31,10 @@ public class Player extends Vehicle
 
     public Sprite sprite;
 
-    public Player(int startX, int startY) {
+    private float _newPos = 0;
+
+    public Player(int startX, int startY)
+    {
         super(startX, startY);
         this.sprite = new Sprite(2, 1);
     }
@@ -120,27 +125,40 @@ public class Player extends Vehicle
 
     /**
      *
-     * @param direction
      */
-    public void move(int direction, float deltaTime)
+    public void move(int direction, Map map, float deltaTime)
     {
         switch (direction) {
-            case Player.MOVE_DOWN: this.moveDown(deltaTime); break;
-            case Player.MOVE_DOWN_RIGHT: this.moveDownRight(deltaTime); break;
-            case Player.MOVE_RIGHT: this.moveRight(deltaTime); break;
-            case Player.MOVE_TOP_RIGHT: this.moveTopRight(deltaTime); break;
-            case Player.MOVE_TOP: this.moveTop(deltaTime); break;
-            case Player.MOVE_TOP_LEFT: this.moveTopLeft(deltaTime); break;
-            case Player.MOVE_LEFT: this.moveLeft(deltaTime); break;
-            case Player.MOVE_DOWN_LEFT:  this.moveDownLeft(deltaTime); break;
+            case Player.MOVE_DOWN: this.moveDown(map, deltaTime); break;
+            case Player.MOVE_DOWN_RIGHT: this.moveDownRight(map, deltaTime); break;
+            case Player.MOVE_RIGHT: this.moveRight(map, deltaTime); break;
+            case Player.MOVE_TOP_RIGHT: this.moveTopRight(map, deltaTime); break;
+            case Player.MOVE_TOP: this.moveTop(map, deltaTime); break;
+            case Player.MOVE_TOP_LEFT: this.moveTopLeft(map, deltaTime); break;
+            case Player.MOVE_LEFT: this.moveLeft(map, deltaTime); break;
+            case Player.MOVE_DOWN_LEFT:  this.moveDownLeft(map, deltaTime); break;
         }
     }
 
-    public void moveDown(float deltaTime)
+    public void moveDown(Map map, float deltaTime)
     {
-        this.y += (deltaTime * this.speed);
+        // move don
+        // this._newPos = this.y + (deltaTime * this.speed);
 
-        // traget 0
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x, this.y + (deltaTime * this.speed));
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.y = this.hitBox.top;
+
+
+        // target 0
 
         if (1 <= this.angle) {
             this.angle += 0.05;
@@ -155,10 +173,36 @@ public class Player extends Vehicle
         Log.d("angle", String.valueOf(this.angle));
     }
 
-    public void moveDownRight(float deltaTime)
+    public void moveDownRight(Map map, float deltaTime)
     {
-        this.x += (deltaTime * this.speed);
-        this.y += (deltaTime * this.speed);
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x, this.y + (deltaTime * this.speed));
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.y = this.hitBox.top;
+
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x + (deltaTime * this.speed), this.y);
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.x = this.hitBox.left;
+
+        // this.x += (deltaTime * this.speed);
+        // this.y += (deltaTime * this.speed);
+        // this.hitBox.left = Math.round(this.x);
+        // this.hitBox.top = Math.round(this.y);
 
         // target 0.25
 
@@ -178,9 +222,22 @@ public class Player extends Vehicle
         }
     }
 
-    public void moveRight(float deltaTime)
+    public void moveRight(Map map, float deltaTime)
     {
-        this.x += (deltaTime * this.speed);
+        // this.x += (deltaTime * this.speed);
+
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x + (deltaTime * this.speed), this.y);
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.x = this.hitBox.left;
+
 
         // target 0.5
 
@@ -203,10 +260,34 @@ public class Player extends Vehicle
         Log.d("angle", String.valueOf(this.angle));
     }
 
-    public void moveTopRight(float deltaTime)
+    public void moveTopRight(Map map, float deltaTime)
     {
-        this.x += (deltaTime * this.speed);
-        this.y -= (deltaTime * this.speed);
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x, this.y - (deltaTime * this.speed));
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.y = this.hitBox.top;
+
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x + (deltaTime * this.speed), this.y);
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.x = this.hitBox.left;
+
+        // this.x += (deltaTime * this.speed);
+        // this.y -= (deltaTime * this.speed);
 
         // target: 0,75
         if (1.75 <= this.angle) {
@@ -225,9 +306,21 @@ public class Player extends Vehicle
         }
     }
 
-    public void moveTop(float deltaTime)
+    public void moveTop(Map map, float deltaTime)
     {
-        this.y -= (deltaTime * this.speed);
+        // this.y -= (deltaTime * this.speed);
+
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x, this.y - (deltaTime * this.speed));
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.y = this.hitBox.top;
 
         // traget 1
 
@@ -245,10 +338,34 @@ public class Player extends Vehicle
         Log.d("angle", String.valueOf(this.angle));
     }
 
-    public void moveTopLeft(float deltaTime)
+    public void moveTopLeft(Map map, float deltaTime)
     {
-        this.x -= (deltaTime * this.speed);
-        this.y -= (deltaTime * this.speed);
+        //this.x -= (deltaTime * this.speed);
+        // this.y -= (deltaTime * this.speed);
+
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x, this.y - (deltaTime * this.speed));
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.y = this.hitBox.top;
+
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x - (deltaTime * this.speed), this.y);
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.x = this.hitBox.left;
 
         // target 1.25
 
@@ -268,9 +385,21 @@ public class Player extends Vehicle
         }
     }
 
-    public void moveLeft(float deltaTime)
+    public void moveLeft(Map map, float deltaTime)
     {
-        this.x -= (deltaTime * this.speed);
+        // this.x -= (deltaTime * this.speed);
+
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x - (deltaTime * this.speed), this.y);
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.x = this.hitBox.left;
 
         // target 1,5
 
@@ -292,10 +421,34 @@ public class Player extends Vehicle
         Log.d("angle", String.valueOf(this.angle));
     }
 
-    public void moveDownLeft(float deltaTime)
+    public void moveDownLeft(Map map, float deltaTime)
     {
-        this.x -= (deltaTime * this.speed);
-        this.y += (deltaTime * this.speed);
+        // this.x -= (deltaTime * this.speed);
+        // this.y += (deltaTime * this.speed);
+
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x, this.y + (deltaTime * this.speed));
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.y = this.hitBox.top;
+
+        // двигаем хитбокс
+        this.hitBox.moveTo(this.x - (deltaTime * this.speed), this.y);
+
+        // проверяем пересечение с тестовой рамкой
+        if (map.testRect.isIntersect(this.hitBox)) {
+            // this.y = this._newPos;
+            this.hitBox.rollback();
+        }
+
+        //fixme:  temp update
+        this.x = this.hitBox.left;
 
         // target 1.75
 
@@ -319,7 +472,6 @@ public class Player extends Vehicle
 
     /**
      * Возвращает пулю если выстрел удлася
-     * @param deltaTime
      */
     public Bullet fire(float deltaTime)
     {

@@ -1,6 +1,7 @@
 package com.a530games.jackal.objects;
 
-import android.graphics.Rect;
+import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.RollbackFloatRect;
 
 /**
  * Общий класс для транспортного средства
@@ -11,14 +12,14 @@ public abstract class Vehicle
     public float x;
     public float y;
 
-    public Rect hitBox;
+    public RollbackFloatRect hitBox;
 
-    public Vehicle(int startX, int startY)
+    public Vehicle(float startX, float startY)
     {
         this.x = startX;
         this.y = startY;
 
-        this.hitBox = new Rect(Math.round(this.x), Math.round(this.y), Math.round(this.x) + 20, Math.round(this.y) + 20);
+        this.hitBox = new RollbackFloatRect(this.x, this.y, this.x + 20, this.y + 20);
     }
 
     public abstract void update(float deltaTime);
