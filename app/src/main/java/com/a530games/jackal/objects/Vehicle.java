@@ -9,13 +9,25 @@ import com.a530games.jackal.Map;
 public abstract class Vehicle
 {
 
+    public static final int MOVE_DOWN = 0;
+    public static final int MOVE_DOWN_RIGHT = 25;
+    public static final int MOVE_RIGHT = 50;
+    public static final int MOVE_TOP_RIGHT = 75;
+    public static final int MOVE_TOP = 100;
+    public static final int MOVE_TOP_LEFT = 125;
+    public static final int MOVE_LEFT = 150;
+    public static final int MOVE_DOWN_LEFT = 175;
+
     // скорость перемещения
-    private float speed = 100;
+    protected float speed = 100;
 
     public RollbackFloatRect hitBox;
 
-    public Vehicle(float startX, float startY)
+    protected Map map;
+
+    public Vehicle(Map map, float startX, float startY)
     {
+        this.map = map;
         this.hitBox = new RollbackFloatRect(startX, startY, startX + 40, startY + 40);
     }
 
@@ -32,22 +44,22 @@ public abstract class Vehicle
     /**
      *
      */
-    public void move(int direction, Map map, float deltaTime)
+    public void move(int direction, float deltaTime)
     {
         switch (direction) {
-            case Player.MOVE_DOWN: this.moveDown(map, deltaTime); break;
-            case Player.MOVE_DOWN_RIGHT: this.moveDownRight(map, deltaTime); break;
-            case Player.MOVE_RIGHT: this.moveRight(map, deltaTime); break;
-            case Player.MOVE_TOP_RIGHT: this.moveTopRight(map, deltaTime); break;
-            case Player.MOVE_TOP: this.moveTop(map, deltaTime); break;
-            case Player.MOVE_TOP_LEFT: this.moveTopLeft(map, deltaTime); break;
-            case Player.MOVE_LEFT: this.moveLeft(map, deltaTime); break;
-            case Player.MOVE_DOWN_LEFT:  this.moveDownLeft(map, deltaTime); break;
+            case Player.MOVE_DOWN: this.moveDown(deltaTime); break;
+            case Player.MOVE_DOWN_RIGHT: this.moveDownRight(deltaTime); break;
+            case Player.MOVE_RIGHT: this.moveRight(deltaTime); break;
+            case Player.MOVE_TOP_RIGHT: this.moveTopRight(deltaTime); break;
+            case Player.MOVE_TOP: this.moveTop(deltaTime); break;
+            case Player.MOVE_TOP_LEFT: this.moveTopLeft(deltaTime); break;
+            case Player.MOVE_LEFT: this.moveLeft(deltaTime); break;
+            case Player.MOVE_DOWN_LEFT:  this.moveDownLeft(deltaTime); break;
         }
     }
 
 
-    public void moveDown(Map map, float deltaTime)
+    public void moveDown(float deltaTime)
     {
         // move don
         // this._newPos = this.y + (deltaTime * this.speed);
@@ -56,19 +68,19 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             // this.hitBox.top = this._newPos;
             this.hitBox.rollback();
         }
     }
 
-    public void moveDownRight(Map map, float deltaTime)
+    public void moveDownRight(float deltaTime)
     {
         // двигаем хитбокс
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             // this.y = this._newPos;
             this.hitBox.rollback();
         }
@@ -77,7 +89,7 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
@@ -87,7 +99,7 @@ public abstract class Vehicle
         // this.hitBox.top = Math.round(this.y);
     }
 
-    public void moveRight(Map map, float deltaTime)
+    public void moveRight(float deltaTime)
     {
         // this.x += (deltaTime * this.speed);
 
@@ -95,18 +107,18 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
 
-    public void moveTopRight(Map map, float deltaTime)
+    public void moveTopRight(float deltaTime)
     {
         // двигаем хитбокс
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
@@ -114,12 +126,12 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
 
-    public void moveTop(Map map, float deltaTime)
+    public void moveTop(float deltaTime)
     {
         // this.y -= (deltaTime * this.speed);
 
@@ -127,12 +139,12 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
 
-    public void moveTopLeft(Map map, float deltaTime)
+    public void moveTopLeft(float deltaTime)
     {
         //this.x -= (deltaTime * this.speed);
         // this.y -= (deltaTime * this.speed);
@@ -141,7 +153,7 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
@@ -149,13 +161,13 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
     }
 
-    public void moveLeft(Map map, float deltaTime)
+    public void moveLeft(float deltaTime)
     {
         // this.x -= (deltaTime * this.speed);
 
@@ -163,12 +175,12 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
 
-    public void moveDownLeft(Map map, float deltaTime)
+    public void moveDownLeft(float deltaTime)
     {
         // this.x -= (deltaTime * this.speed);
         // this.y += (deltaTime * this.speed);
@@ -177,7 +189,7 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
@@ -185,7 +197,7 @@ public abstract class Vehicle
         this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.testRect.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }

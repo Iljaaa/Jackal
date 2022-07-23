@@ -14,8 +14,8 @@ public abstract class RotateVehicle extends Vehicle
     public double angle = 0;
 
 
-    public RotateVehicle(float startX, float startY) {
-        super(startX, startY);
+    public RotateVehicle(Map map, float startX, float startY) {
+        super(map, startX, startY);
     }
 
     public double getAngle() {
@@ -23,9 +23,9 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void moveDown(Map map, float deltaTime)
+    public void moveDown(float deltaTime)
     {
-        super.moveDown(map, deltaTime);
+        super.moveDown(deltaTime);
 
         // target 0
 
@@ -41,9 +41,9 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void moveDownRight(Map map, float deltaTime)
+    public void moveDownRight(float deltaTime)
     {
-        super.moveDownRight(map, deltaTime);
+        super.moveDownRight(deltaTime);
 
         if (1.25 <= this.angle) {
             this.angle += 0.05;
@@ -62,9 +62,9 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void moveRight(Map map, float deltaTime)
+    public void moveRight(float deltaTime)
     {
-        super.moveRight(map, deltaTime);
+        super.moveRight(deltaTime);
 
         // target 0.5
 
@@ -85,9 +85,9 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void moveTopRight(Map map, float deltaTime)
+    public void moveTopRight(float deltaTime)
     {
-        super.moveTopRight(map, deltaTime);
+        super.moveTopRight(deltaTime);
 
         // this.x += (deltaTime * this.speed);
         // this.y -= (deltaTime * this.speed);
@@ -110,9 +110,9 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void moveTop(Map map, float deltaTime)
+    public void moveTop(float deltaTime)
     {
-        super.moveTop(map, deltaTime);
+        super.moveTop(deltaTime);
 
         // traget 1
 
@@ -128,9 +128,9 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void moveTopLeft(Map map, float deltaTime)
+    public void moveTopLeft(float deltaTime)
     {
-        super.moveTopLeft(map, deltaTime);
+        super.moveTopLeft(deltaTime);
 
         // target 1.25
 
@@ -151,9 +151,9 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void moveLeft(Map map, float deltaTime)
+    public void moveLeft(float deltaTime)
     {
-        super.moveLeft(map, deltaTime);
+        super.moveLeft(deltaTime);
 
         // target 1,5
 
@@ -174,9 +174,9 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void moveDownLeft(Map map, float deltaTime)
+    public void moveDownLeft(float deltaTime)
     {
-        super.moveDownLeft(map, deltaTime);
+        super.moveDownLeft(deltaTime);
 
         // target 1.75
 

@@ -106,11 +106,11 @@ public class GameScreen extends Screen
             if(event.type == Input.TouchEvent.TOUCH_DOWN) {
                 if(event.x < 200) {
                     this.world.snake.turnLeft();
-                    this.world.player.moveLeft(this.world.map, deltaTime);
+                    this.world.player.moveLeft(deltaTime);
                 }
                 if(event.x > 200) {
                     this.world.snake.turnRight();
-                    this.world.player.moveRight(this.world.map, deltaTime);
+                    this.world.player.moveRight(deltaTime);
                 }
             }
         }
@@ -123,33 +123,32 @@ public class GameScreen extends Screen
 
         if (controller.isTopButtonDown())  {
             if (controller.isRightButtonDown()) {
-                this.world.player.move(Player.MOVE_TOP_RIGHT, this.world.map, deltaTime);
+                this.world.player.move(Player.MOVE_TOP_RIGHT, deltaTime);
             }
             else if (controller.isLeftButtonDown()) {
-                this.world.player.move(Player.MOVE_TOP_LEFT, this.world.map, deltaTime);
+                this.world.player.move(Player.MOVE_TOP_LEFT, deltaTime);
             }
             else {
-                this.world.player.move(Player.MOVE_TOP, this.world.map, deltaTime);
+                this.world.player.move(Player.MOVE_TOP, deltaTime);
             }
         }
-
         else if (controller.isBottomButtonDown())  {
             if (controller.isRightButtonDown()) {
-                this.world.player.move(Player.MOVE_DOWN_RIGHT, this.world.map, deltaTime);
+                this.world.player.move(Player.MOVE_DOWN_RIGHT, deltaTime);
             }
             else if (controller.isLeftButtonDown()) {
-                this.world.player.move(Player.MOVE_DOWN_LEFT, this.world.map, deltaTime);
+                this.world.player.move(Player.MOVE_DOWN_LEFT, deltaTime);
             }
             else {
-                this.world.player.move(Player.MOVE_DOWN, this.world.map, deltaTime);
+                this.world.player.move(Player.MOVE_DOWN, deltaTime);
             }
         }
         else {
             if (controller.isLeftButtonDown()) {
-                this.world.player.move(Player.MOVE_LEFT, this.world.map, deltaTime);
+                this.world.player.move(Player.MOVE_LEFT, deltaTime);
             }
             if (controller.isRightButtonDown()) {
-                this.world.player.move(Player.MOVE_RIGHT, this.world.map, deltaTime);
+                this.world.player.move(Player.MOVE_RIGHT, deltaTime);
             }
         }
 
@@ -196,17 +195,17 @@ public class GameScreen extends Screen
                 Log.d("key", String.valueOf(event.keyCode));
                 if (event.keyCode == 32) {
                     this.world.snake.turnRight();
-                    this.world.player.moveRight(this.world.map, deltaTime);
+                    this.world.player.moveRight(deltaTime);
                 }
                 else if (event.keyCode == 29) {
                     this.world.snake.turnLeft();
-                    this.world.player.moveLeft(this.world.map, deltaTime);
+                    this.world.player.moveLeft(deltaTime);
                 }
                 else if (event.keyCode == 51) {
-                    this.world.player.moveTop(this.world.map, deltaTime);
+                    this.world.player.moveTop(deltaTime);
                 }
                 else if (event.keyCode == 47) {
-                    this.world.player.moveDown(this.world.map, deltaTime);
+                    this.world.player.moveDown(deltaTime);
                 }
                 else if (event.keyCode == 62) {
                     this.world.player.fire(deltaTime);
@@ -405,7 +404,8 @@ public class GameScreen extends Screen
         //
         int enemiesSize = this.world.enemies.size();
         if (enemiesSize > 0) {
-            for (int i = 0; i < enemiesSize; i++) {
+            for (int i = 0; i < enemiesSize; i++)
+            {
                 Vehicle b = this.world.enemies.get(i);
 
                 g.drawPixmap(

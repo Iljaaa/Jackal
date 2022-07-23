@@ -44,23 +44,24 @@ public class World
     public int score = 0;
 
     // поле, большой массив
-    boolean fields[][] = new boolean[WORLD_WIDTH][WORLD_HEIGHT];
+    boolean[][] fields = new boolean[WORLD_WIDTH][WORLD_HEIGHT];
     Random random = new Random();
     float tickTime = 0;
     static float tick = TICK_INITIAL;
 
     public World()
     {
-        this.player = new Player(300, 300);
         this.map = new Map();
+
+        this.player = new Player(this.map, 300, 300);
         this.snake = new Snake();
 
         // инициализируем массиа с пулями
-        this.bullets = new ArrayList<Bullet>(10);
+        this.bullets = new ArrayList<>(10);
 
         // пока только 10 злодеев
-        this.enemies = new ArrayList<Vehicle>(10);
-        this.enemies.add(new Tank(100, 100));
+        this.enemies = new ArrayList<>(10);
+        this.enemies.add(new Tank(this.map,100, 100));
 
         this.placeStain();
     }

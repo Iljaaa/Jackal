@@ -9,23 +9,15 @@ import com.a530games.jackal.Sprite;
 
 public class Player extends RotateVehicle
 {
-    public static final int MOVE_DOWN = 0;
-    public static final int MOVE_DOWN_RIGHT = 25;
-    public static final int MOVE_RIGHT = 50;
-    public static final int MOVE_TOP_RIGHT = 75;
-    public static final int MOVE_TOP = 100;
-    public static final int MOVE_TOP_LEFT = 125;
-    public static final int MOVE_LEFT = 150;
-    public static final int MOVE_DOWN_LEFT = 175;
 
     // задержка перед выстрелом
     private float fireDelay = 0;
 
     public Sprite sprite;
 
-    public Player(int startX, int startY)
+    public Player(Map map, int startX, int startY)
     {
-        super(startX, startY);
+        super(map, startX, startY);
         this.sprite = new Sprite(2, 1);
     }
 
