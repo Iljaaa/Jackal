@@ -23,9 +23,6 @@ public class Player extends Vehicle
      */
     public double angle = 0;
 
-    // скорость перемещения
-    private float speed = 100;
-
     // задержка перед выстрелом
     private float fireDelay = 0;
 
@@ -138,19 +135,10 @@ public class Player extends Vehicle
         }
     }
 
+    @Override
     public void moveDown(Map map, float deltaTime)
     {
-        // move don
-        // this._newPos = this.y + (deltaTime * this.speed);
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            // this.hitBox.top = this._newPos;
-            this.hitBox.rollback();
-        }
+        super.moveDown(map, deltaTime);
 
         // target 0
 
@@ -167,31 +155,10 @@ public class Player extends Vehicle
         Log.d("angle", String.valueOf(this.angle));
     }
 
+    @Override
     public void moveDownRight(Map map, float deltaTime)
     {
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            // this.y = this._newPos;
-            this.hitBox.rollback();
-        }
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
-
-        // this.x += (deltaTime * this.speed);
-        // this.y += (deltaTime * this.speed);
-        // this.hitBox.left = Math.round(this.x);
-        // this.hitBox.top = Math.round(this.y);
-
-        // target 0.25
+        super.moveDownRight(map, deltaTime);
 
         if (1.25 <= this.angle) {
             this.angle += 0.05;
@@ -209,17 +176,10 @@ public class Player extends Vehicle
         }
     }
 
+    @Override
     public void moveRight(Map map, float deltaTime)
     {
-        // this.x += (deltaTime * this.speed);
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
+        super.moveRight(map, deltaTime);
 
         // target 0.5
 
@@ -242,23 +202,10 @@ public class Player extends Vehicle
         Log.d("angle", String.valueOf(this.angle));
     }
 
+    @Override
     public void moveTopRight(Map map, float deltaTime)
     {
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
+        super.moveTopRight(map, deltaTime);
 
         // this.x += (deltaTime * this.speed);
         // this.y -= (deltaTime * this.speed);
@@ -280,17 +227,10 @@ public class Player extends Vehicle
         }
     }
 
+    @Override
     public void moveTop(Map map, float deltaTime)
     {
-        // this.y -= (deltaTime * this.speed);
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
+        super.moveTop(map, deltaTime);
 
         // traget 1
 
@@ -308,26 +248,10 @@ public class Player extends Vehicle
         Log.d("angle", String.valueOf(this.angle));
     }
 
+    @Override
     public void moveTopLeft(Map map, float deltaTime)
     {
-        //this.x -= (deltaTime * this.speed);
-        // this.y -= (deltaTime * this.speed);
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
+        super.moveTopLeft(map, deltaTime);
 
         // target 1.25
 
@@ -347,17 +271,10 @@ public class Player extends Vehicle
         }
     }
 
+    @Override
     public void moveLeft(Map map, float deltaTime)
     {
-        // this.x -= (deltaTime * this.speed);
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
+        super.moveLeft(map, deltaTime);
 
         // target 1,5
 
@@ -379,26 +296,10 @@ public class Player extends Vehicle
         Log.d("angle", String.valueOf(this.angle));
     }
 
+    @Override
     public void moveDownLeft(Map map, float deltaTime)
     {
-        // this.x -= (deltaTime * this.speed);
-        // this.y += (deltaTime * this.speed);
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
-
-        // двигаем хитбокс
-        this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
-
-        // проверяем пересечение с тестовой рамкой
-        if (map.testRect.isIntersect(this.hitBox)) {
-            this.hitBox.rollback();
-        }
+        super.moveDownLeft(map, deltaTime);
 
         // target 1.75
 
