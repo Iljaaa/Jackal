@@ -477,7 +477,7 @@ public class GameScreen extends Screen
          * 12 = 0.5 * 64 (player sprite width) - 40 (player hitbox width)
          */
         g.drawPixmap(
-            Assets.player,
+            this.world.player.sprite.image,
             Math.round(playerX) - 12, //
             Math.round(playerY) - 12,
                 this.world.player.sprite.getLeft(),
@@ -485,6 +485,15 @@ public class GameScreen extends Screen
             64,
             64);
 
+        // draw turret
+        g.drawPixmap(
+                this.world.player.gun.image,
+                Math.round(playerX) - 12, //
+                Math.round(playerY) - 12,
+                this.world.player.gun.getLeft(),
+                this.world.player.gun.getTop(),
+                64,
+                64);
 
         this.drawPlayerAngle(g);
     }
