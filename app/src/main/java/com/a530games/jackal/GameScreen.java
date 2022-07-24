@@ -409,11 +409,11 @@ public class GameScreen extends Screen
                 Vehicle b = this.world.enemies.get(i);
 
                 g.drawPixmap(
-                        Assets.tank,
+                        b.sprite.image,
                         Math.round(b.hitBox.left),
                         Math.round(b.hitBox.top),
-                        this.world.player.sprite.getLeft(),
-                        this.world.player.sprite.getTop(),
+                        b.sprite.getLeft(),
+                        b.sprite.getTop(),
                         64,
                         64);
             }
@@ -452,10 +452,13 @@ public class GameScreen extends Screen
         }
     }
 
-    private void drawActiveCell () {
+    private void drawActiveCell ()
+    {
         int row = this.world.map.getRowByTop(this.world.player.getTop());
-        int col = this.world.map.getRowByTop(this.world.player.getTop());
-        this.game.getGraphics().drawRect(0, row * Map.SPRITE_HEIGHT, 640, (row * Map.SPRITE_HEIGHT) + Map.SPRITE_HEIGHT, Color.WHITE);
+        int col = this.world.map.getColByLeft(this.world.player.getLeft());
+        Graphics g = this.game.getGraphics();
+        // g.drawRect(0, row * Map.SPRITE_HEIGHT, 640, 20, Color.WHITE);
+        g.drawRect( col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, Map.SPRITE_WIDTH, Map.SPRITE_HEIGHT, Color.YELLOW);
     }
 
     /**

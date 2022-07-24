@@ -1,12 +1,14 @@
 package com.a530games.jackal.objects;
 
+import com.a530games.framework.Pixmap;
 import com.a530games.framework.helpers.RollbackFloatRect;
 import com.a530games.jackal.Map;
+import com.a530games.jackal.Sprite;
 
 /**
  * Общий класс для транспортного средства
  */
-public abstract class Vehicle
+public abstract class Vehicle extends GameObject
 {
 
     public static final int MOVE_DOWN = 0;
@@ -25,8 +27,13 @@ public abstract class Vehicle
 
     protected Map map;
 
-    public Vehicle(Map map, float startX, float startY)
+    public Vehicle(Map map, float startX, float startY, Pixmap image)
     {
+        super(image);
+
+        // default sprite
+        this.sprite.set(1, 2);
+
         this.map = map;
         this.hitBox = new RollbackFloatRect(startX, startY, startX + 40, startY + 40);
     }

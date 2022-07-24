@@ -1,5 +1,7 @@
 package com.a530games.jackal.objects;
 
+import com.a530games.framework.Pixmap;
+import com.a530games.jackal.Assets;
 import com.a530games.jackal.Map;
 
 import java.util.Random;
@@ -24,7 +26,7 @@ public class Tank extends Vehicle
 
     public Tank(Map map, int startX, int startY)
     {
-        super(map, startX, startY);
+        super(map, startX, startY, Assets.tank);
 
         this.r = new Random();
     }
@@ -36,12 +38,59 @@ public class Tank extends Vehicle
             this.rotateTimer = 1;
 
             this.driveDirection = this.directions[this.r.nextInt(8)];
+
+            this.updateSprite(this.driveDirection);
         }
 
         this.move(this.driveDirection, deltaTime);
 
         this.rotateTimer -= deltaTime;
+    }
 
+    private void updateSprite(int direction)
+    {
+        // this.sprite.row = 0;
+        // this.sprite.col = 0;
+
+        // down
+        if (direction == Vehicle.MOVE_DOWN) {
+            this.sprite.set(1, 2);
+        }
+
+        // down right
+        if (direction == Vehicle.MOVE_DOWN_RIGHT) {
+            this.sprite.set(2, 2);
+        }
+
+        // to the right
+        if (direction == Vehicle.MOVE_RIGHT) {
+            this.sprite.set(2, 1);
+        }
+
+        // top right
+        if (direction == Vehicle.MOVE_TOP_RIGHT) {
+            this.sprite.set(2, 0);
+        }
+
+        // to the top
+        if (direction == Vehicle.MOVE_TOP) {
+            this.sprite.set(1, 0);
+        }
+
+        // left top
+        if (direction == Vehicle.MOVE_TOP_LEFT) {
+            this.sprite.set(0, 0);
+        }
+
+        // to the left
+        if (direction == Vehicle.MOVE_LEFT) {
+            this.sprite.set(0, 1);
+        }
+
+        // left down
+        if (direction == Vehicle.MOVE_DOWN_LEFT) {
+            this.sprite.set(0, 2);
+        }
 
     }
 }
