@@ -132,6 +132,12 @@ public class AndroidGraphics implements Graphics
         this.canvas.drawBitmap(((AndroidPixmap)pixmap).bitmap, x, y, null);
     }
 
+
+    @Override
+    public void drawBitmap(Bitmap bitmap, int x, int y) {
+        this.canvas.drawBitmap(bitmap, x, y, null);
+    }
+
     @Override
     public void drawText(String text, int x, int y, int textSize, int color)
     {
@@ -149,5 +155,10 @@ public class AndroidGraphics implements Graphics
     @Override
     public int getHeight() {
         return this.frameBuffer.getHeight();
+    }
+
+    @Override
+    public AssetManager getAssetManager() {
+        return this.assets;
     }
 }

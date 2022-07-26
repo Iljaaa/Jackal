@@ -1,9 +1,11 @@
-package com.a530games.jackal;
+package com.a530games.jackal.screens;
 
 import android.graphics.Color;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Screen;
+import com.a530games.jackal.Assets;
+import com.a530games.jackal.Jackal;
 import com.a530games.jackal.screens.GameScreen;
 
 public class LoadingScreen extends Screen
@@ -26,7 +28,7 @@ public class LoadingScreen extends Screen
 
         if (this.timer > 5) {
             // start loading
-            this.game.setScreen(new GameScreen(this.game));
+            this.game.setScreen(new LoadingLevelScreen(this.game));
             return;
         }
 
@@ -34,7 +36,8 @@ public class LoadingScreen extends Screen
     }
 
     @Override
-    public void present(float deltaTime) {
+    public void present(float deltaTime)
+    {
         this.game.getGraphics().drawLine(0, 0, this.game.getGraphics().getWidth(), this.game.getGraphics().getHeight(), Color.YELLOW);
         this.game.getGraphics().drawText("530 games", 100, 150, 100, Color.MAGENTA);
         this.game.getGraphics().drawPixmap(Assets.bg, 10, 10);

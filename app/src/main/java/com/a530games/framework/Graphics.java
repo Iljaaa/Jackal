@@ -1,5 +1,7 @@
 package com.a530games.framework;
 
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -17,11 +19,17 @@ public interface Graphics {
     void drawRect(Rect r, int color);
     void drawRect(Rect r, Paint paint);
     void drawCircle(int x, int y, int radius, int color);
-    void drawPixmap(Pixmap pixmap, int x, int y, int srcX, int srcY,
-                           int srcWidth, int srcHeight);
+
+    void drawPixmap(Pixmap pixmap, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight);
     void drawPixmap(Pixmap pixmap, int x, int y);
+
+    void drawBitmap(Bitmap bitmap, int x, int y);
+
     void drawText(String text, int x, int y, int textSize, int color);
+
     int getWidth();
     int getHeight();
+
+    AssetManager getAssetManager();
 
 }

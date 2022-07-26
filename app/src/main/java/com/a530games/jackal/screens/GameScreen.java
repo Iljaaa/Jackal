@@ -433,9 +433,10 @@ public class GameScreen extends Screen
         }
     }
 
-    protected void  drawMap()
+    protected void drawMap()
     {
         Graphics g = this.game.getGraphics();
+        g.drawBitmap(this.world.map.testBitmap, 0 ,0);
 
         this.drawMapNet(g);
 
