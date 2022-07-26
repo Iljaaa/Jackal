@@ -1,4 +1,4 @@
-package com.a530games.jackal;
+package com.a530games.jackal.map;
 
 public class MapCell
 {

@@ -1,8 +1,7 @@
 package com.a530games.jackal.objects;
 
-import com.a530games.framework.Pixmap;
 import com.a530games.jackal.Assets;
-import com.a530games.jackal.Map;
+import com.a530games.jackal.map.Map;
 
 import java.util.Random;
 

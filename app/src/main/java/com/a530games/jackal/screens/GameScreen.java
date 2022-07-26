@@ -1,4 +1,4 @@
-package com.a530games.jackal;
+package com.a530games.jackal.screens;
 
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,6 +10,16 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.Screen;
+import com.a530games.jackal.Assets;
+import com.a530games.jackal.Bullet;
+import com.a530games.jackal.Settings;
+import com.a530games.jackal.Sidebar;
+import com.a530games.jackal.Snake;
+import com.a530games.jackal.SnakePart;
+import com.a530games.jackal.Stain;
+import com.a530games.jackal.World;
+import com.a530games.jackal.map.Map;
+import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.Vehicle;
 

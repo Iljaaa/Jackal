@@ -1,6 +1,4 @@
-package com.a530games.jackal;
-
-import android.graphics.Rect;
+package com.a530games.jackal.map;
 
 import com.a530games.framework.helpers.FloatRect;
 
@@ -20,10 +18,12 @@ public class Map
     // rect for test intersection
     public FloatRect testRect;
 
+
+
     /**
      * массив полей
      */
-    MapCell[][] fields; // = new MapCell[1][1];
+    public MapCell[][] fields; // = new MapCell[1][1];
 
     public Map() {
         this.fields = new MapCell[MapRows][MapCols];
@@ -33,6 +33,8 @@ public class Map
         c.isRock = true;
 
         this.testRect = new FloatRect(400, 400, 500, 500);
+
+
     }
 
     public int getRowByTop(float top) {

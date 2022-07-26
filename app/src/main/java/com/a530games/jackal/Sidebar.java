@@ -2,17 +2,17 @@ package com.a530games.jackal;
 
 public class Sidebar {
 
-        private boolean isNeedRedraw = true;
+    private boolean isNeedRedraw = true;
 
-    int fps = 0;
+    public int fps = 0;
 
     public double playerAngle;
 
-    int playerX = 0;
-    int playerY = 0;
+    public int playerX = 0;
+    public int playerY = 0;
 
-    int mapX = 0;
-    int mapY = 0;
+    public int mapX = 0;
+    public int mapY = 0;
 
     public Sidebar() {
 

@@ -1,5 +1,6 @@
 package com.a530games.jackal;
 
+import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.Tank;
 import com.a530games.jackal.objects.Vehicle;

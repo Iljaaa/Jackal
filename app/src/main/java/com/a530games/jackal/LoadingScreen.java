@@ -1,11 +1,10 @@
 package com.a530games.jackal;
 
 import android.graphics.Color;
-import android.view.InputDevice;
 
-import com.a530games.framework.Game;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Screen;
+import com.a530games.jackal.screens.GameScreen;
 
 public class LoadingScreen extends Screen
 {
