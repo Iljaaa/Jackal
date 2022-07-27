@@ -19,6 +19,8 @@ public class Assets {
     public static Pixmap tank;
     public static Pixmap bullet;
 
+    public static Pixmap mapSprite;
+
     public static Pixmap rock;
 
     public static Sound fire;

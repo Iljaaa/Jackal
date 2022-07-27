@@ -438,12 +438,12 @@ public class GameScreen extends Screen
         Graphics g = this.game.getGraphics();
         g.drawBitmap(this.world.map.testBitmap, 0 ,0);
 
-        this.drawMapNet(g);
+        // this.drawMapNet(g);
 
         this.drawActiveCell();
 
-        for (int row = 0; row < this.world.map.MapRows; row++) {
-            for (int col = 0; col < this.world.map.MapCols; col++) {
+        for (int row = 0; row < this.world.map.mapRows; row++) {
+            for (int col = 0; col < this.world.map.mapCols; col++) {
                 MapCell c = this.world.map.fields[row][col];
                 if (c == null) continue;
                 if (c.isRock) {
@@ -528,7 +528,7 @@ public class GameScreen extends Screen
         g.drawLine(centerLeft, centerTop,
                 centerLeft + (int) Math.round(s * 50),
                 centerTop + (int) Math.round(c * 50),
-                Color.MAGENTA);
+                Color.GREEN);
     }
 
     private void drawStain ()
@@ -578,7 +578,6 @@ public class GameScreen extends Screen
     {
         Graphics g = game.getGraphics();
         // g.drawPixmap(Assets.ready, 47, 100);
-        // g.drawLine(0, 416, 480, 416, Color.BLACK);
         g.drawText("Ready", 100, 100, 100, Color.RED);
         g.drawText("Tab screen no press start to begin you journey", 100, 150, 30, Color.RED);
     }
@@ -593,8 +592,6 @@ public class GameScreen extends Screen
     }
     private void drawPausedUI() {
         Graphics g = game.getGraphics();
-        /*g.drawPixmap(Assets.pause, 80, 100);
-        g.drawLine(0, 416, 480, 416, Color.BLACK);*/
         g.drawText("Pause", 100, 200, 300, Color.RED);
     }
     private void drawGameOverUI() {
