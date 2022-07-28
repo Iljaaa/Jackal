@@ -74,7 +74,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             // this.hitBox.top = this._newPos;
             this.hitBox.rollback();
         }
@@ -86,7 +86,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             // this.y = this._newPos;
             this.hitBox.rollback();
         }
@@ -95,7 +95,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
@@ -113,7 +113,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
@@ -124,7 +124,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
@@ -132,7 +132,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
@@ -145,7 +145,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
@@ -159,7 +159,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
@@ -167,7 +167,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
@@ -181,7 +181,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
@@ -195,7 +195,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
@@ -203,7 +203,7 @@ public abstract class Vehicle extends GameObject
         this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
         // проверяем пересечение с тестовой рамкой
-        if (this.map.testRect.isIntersect(this.hitBox)) {
+        if (this.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
     }

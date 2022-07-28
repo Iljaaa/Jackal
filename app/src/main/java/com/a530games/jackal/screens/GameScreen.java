@@ -133,7 +133,7 @@ public class GameScreen extends Screen
             return;
         }*/
 
-
+        // move player
         if (controller.isTopButtonDown())  {
             if (controller.isRightButtonDown()) {
                 this.world.player.move(Player.MOVE_TOP_RIGHT, deltaTime);
@@ -446,9 +446,10 @@ public class GameScreen extends Screen
             for (int col = 0; col < this.world.map.mapCols; col++) {
                 MapCell c = this.world.map.fields[row][col];
                 if (c == null) continue;
-                if (c.isRock) {
-                    g.drawPixmap(Assets.rock, col * 64, row * 64);
-                }
+                g.drawRect(c.hitBox, this.hitBoxPaint);
+                /*if (c.isRock) {
+                    g.drawRect(c.hitBox, this.hitBoxPaint);
+                }*/
             }
         }
     }
