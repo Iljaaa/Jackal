@@ -245,7 +245,7 @@ public class GameScreen extends Screen
         this.sidebar.setFps(this.game.getRenderView().fps);
         this.sidebar.setPlayerAngle(this.world.player.angle);
         this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
-        this.sidebar.setMapPos(this.world.map.x, this.world.map.y);
+        this.sidebar.setMapPos((int) Math.floor(this.world.map.x), (int) Math.floor(this.world.map.y));
 
 
         // обновление боковой информации
@@ -438,7 +438,14 @@ public class GameScreen extends Screen
         Graphics g = this.game.getGraphics();
 
         // draw part of map
-        g.drawBitmap(this.world.map.testBitmap, 0, 0, -1 * this.world.map.x, -1 * this.world.map.y, 640, 640);
+        g.drawBitmap(
+                this.world.map.testBitmap,
+                0,
+                0,
+                -1 * (int) Math.floor(this.world.map.x),
+                -1 * (int )Math.floor(this.world.map.y),
+                640,
+                640);
 
         // this.drawMapNet(g);
 
@@ -451,8 +458,8 @@ public class GameScreen extends Screen
                 if (c == null) continue;
                 // g.drawRect(c.hitBox, this.hitBoxPaint);
                 g.drawRect(
-                    c.hitBox.left + this.world.map.x,
-                    c.hitBox.top + this.world.map.y,
+                    (int) Math.floor(c.hitBox.left + this.world.map.x),
+                    (int) Math.floor(c.hitBox.top + this.world.map.y),
                     c.hitBox.width(),
                     c.hitBox.height(),
                     this.hitBoxPaint

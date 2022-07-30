@@ -19,9 +19,8 @@ public class Map
     public static final int SPRITE_WIDTH = 64;
 
     // map position
-    // todo: refactor to float
-    public int x = 0;
-    public int y = 0;
+    public float x = 0;
+    public float y = 0;
 
     // min ,ap position
     public int minX = 0;
@@ -273,10 +272,10 @@ public class Map
         if (topOnScreen < 200)
         // if (player.hitBox.top < 200)
         {
-            int delta = (int) Math.floor(200 - topOnScreen);
+            // int delta = (int) Math.floor(200 - topOnScreen);
 
             // move map on left
-            this.y = this.y + delta;
+            this.y = this.y + (200 - topOnScreen);
 
             if (this.y > 0) {
                 // delta = delta - this.y;
@@ -290,10 +289,10 @@ public class Map
         int rightOnScreen = this.screenLeftPotion(player.hitBox.right);
         if (rightOnScreen > 440)
         {
-            int delta = (int) Math.floor(rightOnScreen - 440);
+            // int delta = (int) Math.floor(rightOnScreen - 440);
 
             // move map on left
-            this.x = this.x - delta;
+            this.x = this.x - (rightOnScreen - 440);
 
             if (this.x < this.minX) {
                 //delta = delta - (this.y - this.minY);
@@ -309,11 +308,11 @@ public class Map
         int bottomScreen = this.screenTopPotion(player.hitBox.bottom);
         if (bottomScreen > 440)
         {
-            int delta = bottomScreen - 440;
+            // int delta = bottomScreen - 440;
 
             // move map on left
             // move map on left
-            this.y = this.y - delta;
+            this.y = this.y - (bottomScreen - 440);
 
             if (this.y < this.minY) {
                 //delta = delta - (this.y - this.minY);
@@ -328,10 +327,10 @@ public class Map
         int leftOnScreen = this.screenLeftPotion(player.hitBox.left);
         if (leftOnScreen < 200)
         {
-            int delta = (int) Math.floor(200 - leftOnScreen);
+            // int delta = (int) Math.floor(200 - leftOnScreen);
 
             // move map on left
-            this.x = this.x + delta;
+            this.x = this.x + (200 - leftOnScreen);
 
             if (this.x > 0) {
                 // delta = delta - this.x;
