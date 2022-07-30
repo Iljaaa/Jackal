@@ -88,7 +88,7 @@ public class Map
         this.fields[0][1] = new MapCell(0, 1, 64, MapCell.MOVE_ROCK_1);
         this.fields[0][2] = new MapCell(0, 2, 64, MapCell.MOVE_ROCK_2);
         this.fields[0][3] = new MapCell(0, 3, 64, MapCell.MOVE_ROCK_3);
-        this.fields[0][4] = new MapCell(0, 4, 64, MapCell.MOVE_ROCK_1);
+        //  this.fields[0][4] = new MapCell(0, 4, 64, MapCell.MOVE_ROCK_1);
         this.fields[0][5] = new MapCell(0, 5, 64, MapCell.MOVE_ROCK_2);
         this.fields[0][6] = new MapCell(0, 6, 64, MapCell.MOVE_ROCK_3);
         this.fields[0][7] = new MapCell(0, 7, 64, MapCell.MOVE_ROCK_1);
@@ -107,7 +107,7 @@ public class Map
 
         this.fields[1][0] = new MapCell(1, 0, 64, MapCell.MOVE_BUSH_1);
         this.fields[2][0] = new MapCell(2, 0, 64, MapCell.MOVE_BUSH_2);
-        this.fields[3][0] = new MapCell(3, 0, 64, MapCell.MOVE_BUSH_1);
+        // this.fields[3][0] = new MapCell(3, 0, 64, MapCell.MOVE_BUSH_1);
         this.fields[4][0] = new MapCell(4, 0, 64, MapCell.MOVE_BUSH_2);
         this.fields[5][0] = new MapCell(5, 0, 64, MapCell.MOVE_BUSH_1);
         this.fields[6][0] = new MapCell(6, 0, 64, MapCell.MOVE_BUSH_2);
@@ -122,6 +122,7 @@ public class Map
         this.fields[15][0] = new MapCell(15, 0, 64, MapCell.MOVE_BUSH_2);
         this.fields[16][0] = new MapCell(16, 0, 64, MapCell.MOVE_BUSH_2);
         this.fields[17][0] = new MapCell(17, 0, 64, MapCell.MOVE_BUSH_2);
+        this.fields[18][0] = new MapCell(17, 0, 64, MapCell.MOVE_BUSH_2);
 
         this.fields[9][3] = new MapCell(9, 3, 64, MapCell.MOVE_ROCK_3);
         this.fields[9][4] = new MapCell(9, 4, 64, MapCell.MOVE_ROCK_1);
@@ -134,7 +135,7 @@ public class Map
         this.fields[19][5] = new MapCell(19, 5, 64, MapCell.MOVE_ROCK_2);
         this.fields[19][6] = new MapCell(19, 6, 64, MapCell.MOVE_ROCK_3);
         this.fields[19][7] = new MapCell(19, 7, 64, MapCell.MOVE_ROCK_1);
-        this.fields[19][8] = new MapCell(19, 8, 64, MapCell.MOVE_ROCK_2);
+        // this.fields[19][8] = new MapCell(19, 8, 64, MapCell.MOVE_ROCK_2);
         this.fields[19][9] = new MapCell(19, 9, 64, MapCell.MOVE_ROCK_2);
         this.fields[19][10] = new MapCell(19, 10, 64, MapCell.MOVE_ROCK_2);
         this.fields[19][11] = new MapCell(19, 11, 64, MapCell.MOVE_ROCK_2);
@@ -155,7 +156,7 @@ public class Map
         this.fields[6][19] = new MapCell(6, 19, 64, MapCell.MOVE_BUSH_4);
         this.fields[7][19] = new MapCell(7, 19, 64, MapCell.MOVE_BUSH_3);
         this.fields[8][19] = new MapCell(8, 19, 64, MapCell.MOVE_BUSH_1);
-        this.fields[9][19] = new MapCell(9, 19, 64, MapCell.MOVE_BUSH_1);
+        // this.fields[9][19] = new MapCell(9, 19, 64, MapCell.MOVE_BUSH_1);
         this.fields[10][19] = new MapCell(10, 19, 64, MapCell.MOVE_BUSH_1);
         this.fields[11][19] = new MapCell(11, 19, 64, MapCell.MOVE_BUSH_1);
         this.fields[12][19] = new MapCell(12, 19, 64, MapCell.MOVE_BUSH_1);
@@ -353,8 +354,8 @@ public class Map
             {
                 if (forCol < 0) continue;
                 if (forRow < 0) continue;
-                if (forCol > this.mapCols) continue;
-                if (forRow > this.mapRows) continue;
+                if (forCol >= this.mapCols) continue;
+                if (forRow >= this.mapRows) continue;
 
                 MapCell cell = this.fields[forRow][forCol];
                 if (cell == null) continue;
