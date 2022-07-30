@@ -62,7 +62,7 @@ public class World
 
         // пока только 10 злодеев
         this.enemies = new ArrayList<>(10);
-        // this.enemies.add(new Tank(this.map,100, 100));
+        this.enemies.add(new Tank(this.map,100, 100));
 
         this.placeStain();
     }

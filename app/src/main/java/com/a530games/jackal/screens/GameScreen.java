@@ -423,14 +423,31 @@ public class GameScreen extends Screen
 
                 g.drawPixmap(
                         b.sprite.image,
-                        Math.round(b.hitBox.left),
-                        Math.round(b.hitBox.top),
+                        this.world.map.screenLeftPotion(b.hitBox.left) - 12,
+                        this.world.map.screenTopPotion(b.hitBox.top) - 12,
                         b.sprite.getLeft(),
                         b.sprite.getTop(),
                         64,
                         64);
+
+                this.drawEnemyHitBox(
+                        g,
+                        this.world.map.screenLeftPotion(b.hitBox.left),
+                        this.world.map.screenTopPotion(b.hitBox.top),
+                        Math.round(b.hitBox.getWidth()),
+                        Math.round(b.hitBox.getHeight())
+                );
             }
         }
+    }
+
+    private void drawEnemyHitBox (Graphics g, int enemyScreenLeft, int enemyScreenTop, int enemyWidth, int enemyHeight) {
+        g.drawRect(
+            enemyScreenLeft,
+            enemyScreenTop,
+            enemyWidth,
+            enemyHeight,
+                this.hitBoxPaint);
     }
 
     protected void drawMap()
