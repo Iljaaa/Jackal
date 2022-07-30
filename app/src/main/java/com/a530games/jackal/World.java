@@ -55,6 +55,7 @@ public class World
         this.map = new Map();
 
         this.player = new Player(this.map, 300, 300);
+        // this.player = new Player(this.map, this.map.playerStartX, this.map.playerStartY);
         this.snake = new Snake();
 
         // инициализируем массиа с пулями

@@ -30,6 +30,10 @@ public class Map
     public int mapRows;
     public int mapCols;
 
+    // player start position
+    public int playerStartX = 0;
+    public int playerStartY = 0;
+
     // rect for test intersection
     public FloatRect testRect;
 
@@ -67,8 +71,9 @@ public class Map
     /**
      * Prepare map
      */
-    public void init (int collums, int rows, AssetManager assets)
+    public void init (int collums, int rows, AssetManager assets, Player player)
     {
+        // map size in cols
         this.mapCols = collums;
         this.mapRows = rows;
 
@@ -78,6 +83,16 @@ public class Map
         this.minX = -1 * ((collums * Map.SPRITE_WIDTH) - 640);
         this.minY = -1 * ((rows * Map.SPRITE_HEIGHT) - 640);
 
+        // this.playerStartX = 400;
+        // this.playerStartY = 1100;
+        // move player on start position
+        player.hitBox.moveTo(400, 1100);
+
+        // calculate start map position
+        this.x = -1 * (player.hitBox.left - 320 - 20);
+        this.y = -1 * (player.hitBox.top - 320 - 20);
+        if (this.x < this.minX) this.x = this.minX;
+        if (this.y < this.minY) this.y = this.minY;
 
         // init fields
         this.fields = new MapCell[mapRows][mapCols];
@@ -309,8 +324,6 @@ public class Map
         if (bottomScreen > 440)
         {
             // int delta = bottomScreen - 440;
-
-            // move map on left
             // move map on left
             this.y = this.y - (bottomScreen - 440);
 
