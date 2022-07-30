@@ -482,9 +482,13 @@ public class GameScreen extends Screen
     {
         int row = this.world.map.getRowByTop(this.world.player.getTop());
         int col = this.world.map.getColByLeft(this.world.player.getLeft());
+
+        int top = this.world.map.screenTopPotion(row * Map.SPRITE_HEIGHT);
+        int left = this.world.map.screenLeftPotion(col * Map.SPRITE_WIDTH);
+
         Graphics g = this.game.getGraphics();
         // g.drawRect(0, row * Map.SPRITE_HEIGHT, 640, 20, Color.WHITE);
-        g.drawRect( col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, Map.SPRITE_WIDTH, Map.SPRITE_HEIGHT, Color.YELLOW);
+        g.drawRect( left, top, Map.SPRITE_WIDTH, Map.SPRITE_HEIGHT, Color.YELLOW);
     }
 
     /**
@@ -494,18 +498,20 @@ public class GameScreen extends Screen
     {
         Graphics g = this.game.getGraphics();
 
-        this.drawPlayerHitBox(g);
+        // int playerScreenX = Math.round(this.world.player.hitBox.left);
+        int playerScreenX = this.world.map.screenLeftPotion(this.world.player.hitBox.left);
+        // int playerSourceY = Math.round(this.world.player.hitBox.top);
+        int playerSourceY = this.world.map.screenTopPotion(this.world.player.hitBox.top);
 
-        int playerX = Math.round(this.world.player.getLeft());
-        int playerY = Math.round(this.world.player.getTop());
+        this.drawPlayerHitBox(g, playerScreenX, playerSourceY);
 
         /*
          * 12 = 0.5 * 64 (player sprite width) - 40 (player hitbox width)
          */
         g.drawPixmap(
             this.world.player.sprite.image,
-            Math.round(playerX) - 12, //
-            Math.round(playerY) - 12,
+            Math.round(playerScreenX) - 12, //
+            Math.round(playerSourceY) - 12,
                 this.world.player.sprite.getLeft(),
                 this.world.player.sprite.getTop(),
             64,
@@ -514,24 +520,27 @@ public class GameScreen extends Screen
         // draw turret
         g.drawPixmap(
                 this.world.player.gun.image,
-                Math.round(playerX) - 12, //
-                Math.round(playerY) - 12,
+                Math.round(playerScreenX) - 12, //
+                Math.round(playerSourceY) - 12,
                 this.world.player.gun.getLeft(),
                 this.world.player.gun.getTop(),
                 64,
                 64);
 
-        this.drawPlayerAngle(g);
+        this.drawPlayerAngle(g, playerScreenX, playerSourceY);
     }
 
-    private void drawPlayerHitBox (Graphics g) {
-        g.drawRect(this.world.player.hitBox.getDrawRect(), this.hitBoxPaint);
+    private void drawPlayerHitBox (Graphics g, int playerScreenX, int playerScreenY) {
+        // g.drawRect(this.world.player.hitBox.getDrawRect(), this.hitBoxPaint);
+        g.drawRect(playerScreenX, playerScreenY, Math.round(this.world.player.hitBox.getWidth()), Math.round(this.world.player.hitBox.getHeight()), this.hitBoxPaint);
     }
 
-    private void drawPlayerAngle (Graphics g)
+    private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)
     {
-        int centerLeft = Math.round(this.world.player.hitBox.getCenterLeft());
-        int centerTop = Math.round(this.world.player.hitBox.getCenterTop());
+        int centerLeft = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
+        // int centerLeft = Math.round(this.world.player.hitBox.getCenterLeft());
+        int centerTop = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
+        // int centerTop = Math.round(this.world.player.hitBox.getCenterTop());
 
         // отрисовываем вектор направления
         double s = Math.sin(this.world.player.getAngle() * Math.PI);

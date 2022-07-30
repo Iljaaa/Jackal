@@ -19,6 +19,7 @@ public class Map
     public static final int SPRITE_WIDTH = 64;
 
     // map position
+    // todo: refactor to float
     public int x = 0;
     public int y = 0;
 
@@ -268,25 +269,28 @@ public class Map
     public void update(Player player, float deltaTime)
     {
         // on top
-        if (player.hitBox.top < 200)
+        int topOnScreen = this.screenTopPotion(player.hitBox.top);
+        if (topOnScreen < 200)
+        // if (player.hitBox.top < 200)
         {
-            int delta = (int) Math.floor(200 - player.hitBox.top);
+            int delta = (int) Math.floor(200 - topOnScreen);
 
             // move map on left
             this.y = this.y + delta;
 
             if (this.y > 0) {
-                delta = delta - this.y;
+                // delta = delta - this.y;
                 this.y = 0;
             }
 
-            player.hitBox.move(0, delta);
+            // player.hitBox.move(0, delta);*/
         }
 
         // on the right border
-        if (player.hitBox.left > 440)
+        int rightOnScreen = this.screenLeftPotion(player.hitBox.right);
+        if (rightOnScreen > 440)
         {
-            int delta = (int) Math.floor(player.hitBox.left - 440);
+            int delta = (int) Math.floor(rightOnScreen - 440);
 
             // move map on left
             this.x = this.x - delta;
@@ -295,16 +299,17 @@ public class Map
                 //delta = delta - (this.y - this.minY);
                 this.x = this.minX;
             }
-            else {
-                player.hitBox.move(-1 * delta, 0);
-            }
+            /*else {
+                // player.hitBox.move(-1 * delta, 0);
+            }*/
         }
 
 
         // on down
-        if (player.hitBox.top > 440)
+        int bottomScreen = this.screenTopPotion(player.hitBox.bottom);
+        if (bottomScreen > 440)
         {
-            int delta = (int) Math.floor(player.hitBox.top - 440);
+            int delta = bottomScreen - 440;
 
             // move map on left
             // move map on left
@@ -314,39 +319,39 @@ public class Map
                 //delta = delta - (this.y - this.minY);
                 this.y = this.minY;
             }
-            else {
-                player.hitBox.move(0, -1 * delta);
-            }
+            /*else {
+                // player.hitBox.move(0, -1 * delta);
+            }*/
         }
 
         // on the left border
-        if (this.x < 0 && player.hitBox.left < 200)
+        int leftOnScreen = this.screenLeftPotion(player.hitBox.left);
+        if (leftOnScreen < 200)
         {
-            int delta = (int) Math.floor(200 - player.hitBox.left);
+            int delta = (int) Math.floor(200 - leftOnScreen);
 
             // move map on left
             this.x = this.x + delta;
 
             if (this.x > 0) {
-                delta = delta - this.x;
+                // delta = delta - this.x;
                 this.x = 0;
             }
 
-            player.hitBox.move(delta, 0);
+            // player.hitBox.move(delta, 0);*/
         }
     }
 
-    public boolean isIntersect (FloatRect rect)
+    public boolean isIntersect (FloatRect rectOnMap)
     {
-        // todo: refactor to temp rect
-        int rectTopOnMap = (int) Math.floor(rect.top - this.y);
-        int rectRightOnMap = (int) Math.floor(rect.right - this.x);
-        int rectBottomOnMap = (int) Math.floor(rect.bottom - this.y);
-        int rectLeftOnMap = (int) Math.floor(rect.left - this.x);
+        /*int rectTopOnMap = (int) Math.floor(rectOnMap.top - this.y);
+        int rectRightOnMap = (int) Math.floor(rectOnMap.right - this.x);
+        int rectBottomOnMap = (int) Math.floor(rectOnMap.bottom - this.y);
+        int rectLeftOnMap = (int) Math.floor(rectOnMap.left - this.x);*/
 
         // for left top take 3 top
-        int row = (int) Math.floor(rectTopOnMap / Map.SPRITE_HEIGHT);
-        int col = (int) Math.floor(rectLeftOnMap / Map.SPRITE_WIDTH);
+        int row = (int) Math.floor(rectOnMap.top / Map.SPRITE_HEIGHT);
+        int col = (int) Math.floor(rectOnMap.left / Map.SPRITE_WIDTH);
 
         // take nine sqars
         for (int forCol = col - 1; forCol <= col + 1; forCol++) {
@@ -360,16 +365,16 @@ public class Map
                 MapCell cell = this.fields[forRow][forCol];
                 if (cell == null) continue;
 
-                if (cell.hitBox.bottom < rectTopOnMap){
+                if (cell.hitBox.bottom < rectOnMap.top){
                     continue;
                 }
-                if (cell.hitBox.top > rectBottomOnMap){
+                if (cell.hitBox.top > rectOnMap.bottom){
                     continue;
                 }
-                if (cell.hitBox.right < rectLeftOnMap){
+                if (cell.hitBox.right < rectOnMap.left){
                     continue;
                 }
-                if (cell.hitBox.left > rectRightOnMap){
+                if (cell.hitBox.left > rectOnMap.right){
                     continue;
                 }
 
@@ -386,5 +391,13 @@ public class Map
 
     public int getColByLeft(float left) {
         return (int) Math.floor(left / Map.SPRITE_WIDTH);
+    }
+
+    public int screenTopPotion (float globalTop){
+        return (int) Math.floor(globalTop + this.y);
+    }
+
+    public int screenLeftPotion (float globalLeft){
+        return (int) Math.floor(globalLeft + this.x);
     }
 }
