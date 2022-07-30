@@ -88,6 +88,11 @@ public class AndroidGraphics implements Graphics
     public void drawRect(int x, int y, int width, int height, int color) {
         this.paint.setColor(color);
         this.paint.setStyle(Paint.Style.FILL);
+        this.canvas.drawRect(x, y, x + width - 1, y + width - 1, this.paint);
+    }
+
+    @Override
+    public void drawRect(int x, int y, int width, int height, Paint paint) {
         this.canvas.drawRect(x, y, x + width - 1, y + width - 1, paint);
     }
 
@@ -95,6 +100,8 @@ public class AndroidGraphics implements Graphics
     public void drawRect(Rect r, Paint paint) {
         this.canvas.drawRect(r, paint);
     }
+
+
 
     @Override
     public void drawRect(Rect r, int color) {
@@ -132,11 +139,27 @@ public class AndroidGraphics implements Graphics
         this.canvas.drawBitmap(((AndroidPixmap)pixmap).bitmap, x, y, null);
     }
 
-
     @Override
     public void drawBitmap(Bitmap bitmap, int x, int y) {
         this.canvas.drawBitmap(bitmap, x, y, null);
     }
+
+    @Override
+    public void drawBitmap(Bitmap bitmap, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight)
+    {
+        this.srcRect.left = srcX;
+        this.srcRect.top = srcY;
+        this.srcRect.right = srcX + srcWidth - 1;
+        this.srcRect.bottom = srcY + srcHeight - 1;
+
+        this.dstRect.left = x;
+        this.dstRect.top = y;
+        this.dstRect.right = x + srcWidth - 1;
+        this.dstRect.bottom = y + srcHeight - 1;
+
+        this.canvas.drawBitmap(bitmap, srcRect, dstRect, null);
+    }
+
 
     @Override
     public void drawText(String text, int x, int y, int textSize, int color)

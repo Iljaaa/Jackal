@@ -436,17 +436,28 @@ public class GameScreen extends Screen
     protected void drawMap()
     {
         Graphics g = this.game.getGraphics();
-        g.drawBitmap(this.world.map.testBitmap, 0 ,0);
+
+        // draw part of map
+        g.drawBitmap(this.world.map.testBitmap, 0, 0, -1 * this.world.map.x, -1 * this.world.map.y, 640, 640);
 
         // this.drawMapNet(g);
 
         this.drawActiveCell();
 
+        // todo: calculate objects on screen
         for (int row = 0; row < this.world.map.mapRows; row++) {
             for (int col = 0; col < this.world.map.mapCols; col++) {
                 MapCell c = this.world.map.fields[row][col];
                 if (c == null) continue;
-                g.drawRect(c.hitBox, this.hitBoxPaint);
+                // g.drawRect(c.hitBox, this.hitBoxPaint);
+                g.drawRect(
+                    c.hitBox.left + this.world.map.x,
+                    c.hitBox.top + this.world.map.y,
+                    c.hitBox.width(),
+                    c.hitBox.height(),
+                    this.hitBoxPaint
+                    );
+
                 /*if (c.isRock) {
                     g.drawRect(c.hitBox, this.hitBoxPaint);
                 }*/

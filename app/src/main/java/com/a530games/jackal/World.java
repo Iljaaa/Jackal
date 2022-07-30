@@ -62,7 +62,7 @@ public class World
 
         // пока только 10 злодеев
         this.enemies = new ArrayList<>(10);
-        this.enemies.add(new Tank(this.map,100, 100));
+        // this.enemies.add(new Tank(this.map,100, 100));
 
         this.placeStain();
     }
@@ -73,8 +73,11 @@ public class World
 
         this.tickTime += deltaTime;
 
-        // обновляем игрока
+        // update player
         this.player.update(deltaTime);
+
+        // update map
+        this.map.update(this.player, deltaTime);
 
         // бновляем пули игрока
         int bulletSize = this.bullets.size();
@@ -97,7 +100,7 @@ public class World
             }
         }
 
-        // отсчитываем назад игровые тики
+        // rollback ticks
         while (this.tickTime > tick)
         {
             this.tickTime -= tick;

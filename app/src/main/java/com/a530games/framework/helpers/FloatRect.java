@@ -21,14 +21,14 @@ public class FloatRect
         this.drawRect = new Rect();
     }
 
-    /*public void move(float deltaX, float deltaY)
+    public void move(float deltaX, float deltaY)
     {
         this.right = (this.left + deltaX) + this.getWidth();
         this.left = (this.left + deltaX);
 
         this.bottom = (this.top + deltaY) + this.getHeight();
         this.top = (this.top + deltaY);
-    }*/
+    }
 
     public void moveTo (float x, float y)
     {
