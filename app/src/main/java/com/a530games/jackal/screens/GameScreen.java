@@ -399,8 +399,10 @@ public class GameScreen extends Screen
         //
         int bulletSize = this.world.bullets.size();
         if (bulletSize > 0) {
-            for (int i = 0; i < bulletSize; i++) {
+            for (int i = 0; i < bulletSize; i++)
+            {
                 Bullet b = this.world.bullets.get(i);
+                if (b.isOut()) continue;
 
                 g.drawPixmap(
                         Assets.bullet,
@@ -629,12 +631,12 @@ public class GameScreen extends Screen
     }
 
     private void drawRunningUI() {
-       Graphics g = game.getGraphics();
+       // Graphics g = game.getGraphics();
          /*g.drawPixmap(Assets.buttons, 0, 0, 64, 128, 64, 64);
         g.drawLine(0, 416, 480, 416, Color.BLACK);
         g.drawPixmap(Assets.buttons, 0, 416, 64, 64, 64, 64);
         g.drawPixmap(Assets.buttons, 256, 416, 0, 64, 64, 64);*/
-        g.drawText("Fire!!!!", 150, 200, 100, Color.RED);
+        // g.drawText("Fire!!!!", 150, 200, 100, Color.RED);
     }
     private void drawPausedUI() {
         Graphics g = game.getGraphics();

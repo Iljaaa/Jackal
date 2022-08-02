@@ -354,6 +354,9 @@ public class Map
         }
     }
 
+    /**
+     * Intersect for rect
+     */
     public boolean isIntersect (FloatRect rectOnMap)
     {
         /*int rectTopOnMap = (int) Math.floor(rectOnMap.top - this.y);
@@ -377,6 +380,7 @@ public class Map
                 MapCell cell = this.fields[forRow][forCol];
                 if (cell == null) continue;
 
+                // todo: make intersect inside rect
                 if (cell.hitBox.bottom < rectOnMap.top){
                     continue;
                 }
@@ -395,6 +399,22 @@ public class Map
         }
 
         return false;
+    }
+
+    /**
+     * Intersect for point
+     */
+    public boolean isIntersectPoint (float left, float top)
+    {
+        int row = this.getRowByTop(top);
+        int col = this.getColByLeft(left);
+
+        // take nine sqars
+
+        MapCell cell = this.fields[row][col];
+        if (cell == null) return false;
+
+        return cell.isIntersectPintInsideRect(left, top);
     }
 
     public int getRowByTop(float top) {

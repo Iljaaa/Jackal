@@ -48,7 +48,7 @@ public class World
     boolean[][] fields = new boolean[WORLD_WIDTH][WORLD_HEIGHT];
     Random random = new Random();
     float tickTime = 0;
-    static float tick = TICK_INITIAL;
+    static float aTick = TICK_INITIAL;
 
     public World()
     {
@@ -85,6 +85,10 @@ public class World
         if (bulletSize > 0) {
             for (int i = 0; i < bulletSize; i++) {
                 Bullet b = this.bullets.get(i);
+                if (map.isIntersectPoint(b.x, b.y)) {
+                    b.setIsOutOnIntersectWithMap();
+                }
+
                 b.update(deltaTime);
                 // if (b.isOut()) this.bullets.remove(i);
             }
@@ -102,9 +106,9 @@ public class World
         }
 
         // rollback ticks
-        while (this.tickTime > tick)
+        while (this.tickTime > aTick)
         {
-            this.tickTime -= tick;
+            this.tickTime -= aTick;
 
             // перемещение змеи
             snake.advance();
@@ -130,8 +134,8 @@ public class World
                 }
 
                 // инкрементация скорости
-                if (this.score % 100 == 0 && tick - TICK_DECREMENT > 0) {
-                    this.tick -= TICK_DECREMENT;
+                if (this.score % 100 == 0 && aTick - TICK_DECREMENT > 0) {
+                    this.aTick -= TICK_DECREMENT;
                 }
             }
         }

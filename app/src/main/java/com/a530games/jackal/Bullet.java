@@ -2,16 +2,24 @@ package com.a530games.jackal;
 
 public class Bullet
 {
-    private float x;
-    private float y;
+    private final float lifeTime  = 1.5f;
 
-    private int speed = 100;
+    // position
+    public float x;
+    public float y;
+
+    private int speed = 150;
 
     private boolean isOut = false;
 
-    public Bullet(float x, float y) {
+    private float timer;
+
+    public Bullet(float x, float y)
+    {
         this.x = x;
         this.y = y;
+
+        this.timer = this.lifeTime;
     }
 
     public float getX() {
@@ -22,18 +30,30 @@ public class Bullet
         return y;
     }
 
+    /**
+     * If bullet has intersect with map is out
+     */
+    public void setIsOutOnIntersectWithMap()
+    {
+        this.isOut = true;
+    }
+
     public boolean isOut() {
-        return isOut;
+        return this.isOut;
     }
 
     public void update(float deltaTime)
     {
         if (this.isOut) return;
 
-        if (this.y < 10) {
+        if (this.timer <= 0) {
             this.isOut = true;
+            return;
         }
 
+        this.timer -= deltaTime;
+
+        // move
         this.y -= deltaTime * this.speed;
     }
 
@@ -45,5 +65,6 @@ public class Bullet
         this.x = x;
         this.y = y;
         this.isOut = false;
+        this.timer = this.lifeTime;
     }
 }

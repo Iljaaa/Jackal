@@ -15,7 +15,10 @@ public class MapCell
     public static final int MOVE_BUSH_3 = 12;
     public static final int MOVE_BUSH_4 = 13;
 
-    public boolean isRock = false;
+    /**
+     * Can be sho
+     */
+    public boolean isRock = true;
 
     public Rect hitBox;
 
@@ -30,5 +33,12 @@ public class MapCell
 
         // create hitbox
         this.hitBox = new Rect(col * cellSize, row * cellSize, (col * cellSize) + cellSize, (row * cellSize) + cellSize);
+    }
+
+    /**
+     * Is intersect point inside rect
+     */
+    public boolean isIntersectPintInsideRect(float mapLeft, float mapTop) {
+        return this.isRock;
     }
 }
