@@ -404,8 +404,9 @@ public class GameScreen extends Screen
 
                 g.drawPixmap(
                         Assets.bullet,
-                        Math.round(b.getX()),
-                        Math.round(b.getY()));
+                        this.world.map.screenLeftPotion(Math.round(b.getX())),
+                        this.world.map.screenTopPotion(Math.round(b.getY()))
+                );
             }
         }
     }
