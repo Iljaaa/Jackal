@@ -26,8 +26,12 @@ public class EnemiesCollection
         this.enemies.add(it);
     }
 
-    public boolean fff (Vehicle ignoreVehicle){
-        int inj = this.enemies.indexOf(ignoreVehicle);
+    /**
+     *
+     */
+    public boolean isAnyEnemyIntersectWith (Vehicle vehicle)
+    {
+        int inj = this.enemies.indexOf(vehicle);
         int enemiesSize = this.size();
 
         for (int i = 0; i < enemiesSize; i++) {
@@ -38,7 +42,7 @@ public class EnemiesCollection
             Vehicle e = this.get(i);
 
             // check intersect
-            if (Map.isIntersectsTwoRect(ignoreVehicle.hitBox, e.hitBox)){
+            if (Map.isIntersectsTwoRect(vehicle.hitBox, e.hitBox)){
                 return true;
             }
         }
