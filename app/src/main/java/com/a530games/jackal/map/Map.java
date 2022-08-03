@@ -246,7 +246,8 @@ public class Map
         // draw backend
         for (int row = 0; row < this.mapRows; row++) {
             for (int col = 0; col < this.mapCols; col++) {
-                this.g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 0, 64, 64);
+                // fixme: wtf? 65? not 64
+                this.g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 0, 65, 65);
             }
         }
 
