@@ -1,6 +1,8 @@
 package com.a530games.jackal;
 
 import com.a530games.jackal.map.Map;
+import com.a530games.jackal.objects.Bullet;
+import com.a530games.jackal.objects.EnemiesCollection;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.Tank;
 import com.a530games.jackal.objects.Vehicle;
@@ -34,7 +36,8 @@ public class World
     public ArrayList<Bullet> bullets;
 
     // враги
-    public ArrayList<Vehicle> enemies;
+    // public ArrayList<Vehicle> enemies;
+    public EnemiesCollection enemies;
 
     // пульки
     public ArrayList<Bullet> enemyBullets;
@@ -54,16 +57,19 @@ public class World
     {
         this.map = new Map();
 
-        this.player = new Player(this.map, 300, 300);
+        this.player = new Player(this, 300, 300);
+
+        // пока только 10 злодеев
+        // this.enemies = new ArrayList<>(10);
+        this.enemies = new EnemiesCollection();
+        this.enemies.add(new Tank(this,100, 100));
+
+
         // this.player = new Player(this.map, this.map.playerStartX, this.map.playerStartY);
         this.snake = new Snake();
 
         // инициализируем массиа с пулями
         this.bullets = new ArrayList<>(10);
-
-        // пока только 10 злодеев
-        this.enemies = new ArrayList<>(10);
-        this.enemies.add(new Tank(this.map,100, 100));
 
         this.placeStain();
     }

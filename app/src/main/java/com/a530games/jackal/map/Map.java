@@ -61,6 +61,28 @@ public class Map
         this.testRect = new FloatRect(400, 400, 500, 500);
     }
 
+    public static boolean isIntersectsTwoRect(FloatRect r1, FloatRect r2)
+    {
+        //
+        if (r1.bottom < r2.top){
+            return false;
+        }
+
+        if (r1.top > r2.bottom){
+            return false;
+        }
+
+        if (r1.right < r2.left){
+            return false;
+        }
+
+        if (r1.left > r2.right) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Loading map sprite
      */

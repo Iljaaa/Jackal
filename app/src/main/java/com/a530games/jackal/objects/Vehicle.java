@@ -2,6 +2,7 @@ package com.a530games.jackal.objects;
 
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.helpers.RollbackFloatRect;
+import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 
 /**
@@ -24,16 +25,21 @@ public abstract class Vehicle extends GameObject
 
     public RollbackFloatRect hitBox;
 
-    protected Map map;
+    /**
+     * For get map for move
+     * enemies in move
+     */
+    protected World world;
 
-    public Vehicle(Map map, float startX, float startY, Pixmap image)
+    public Vehicle(World world, float startX, float startY, Pixmap image)
     {
         super(image);
 
         // default sprite
         this.sprite.set(1, 2);
 
-        this.map = map;
+        this.world = world;
+
         this.hitBox = new RollbackFloatRect(startX, startY, startX + 40, startY + 40);
     }
 
@@ -70,33 +76,69 @@ public abstract class Vehicle extends GameObject
         // move don
         // this._newPos = this.y + (deltaTime * this.speed);
 
-        // двигаем хитбокс
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             // this.hitBox.top = this._newPos;
             this.hitBox.rollback();
+        }
+
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
         }
     }
 
     public void moveDownRight(float deltaTime)
     {
-        // двигаем хитбокс
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             // this.y = this._newPos;
             this.hitBox.rollback();
         }
 
-        // двигаем хитбокс
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
+        }
+
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
+        }
+
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
         }
 
         // this.x += (deltaTime * this.speed);
@@ -109,31 +151,67 @@ public abstract class Vehicle extends GameObject
     {
         // this.x += (deltaTime * this.speed);
 
-        // двигаем хитбокс
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
+        }
+
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
         }
     }
 
     public void moveTopRight(float deltaTime)
     {
-        // двигаем хитбокс
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
-        // двигаем хитбокс
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
+        }
+
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
+        }
+
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
         }
     }
 
@@ -141,13 +219,28 @@ public abstract class Vehicle extends GameObject
     {
         // this.y -= (deltaTime * this.speed);
 
-        // двигаем хитбокс
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
+
+        // intersect with enemies
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
+        }
+
     }
 
     public void moveTopLeft(float deltaTime)
@@ -155,21 +248,47 @@ public abstract class Vehicle extends GameObject
         //this.x -= (deltaTime * this.speed);
         // this.y -= (deltaTime * this.speed);
 
-        // двигаем хитбокс
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
-        // двигаем хитбокс
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
+        }
+
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
+
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
+        }
+
+        //
 
     }
 
@@ -177,12 +296,24 @@ public abstract class Vehicle extends GameObject
     {
         // this.x -= (deltaTime * this.speed);
 
-        // двигаем хитбокс
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
+        }
+
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
         }
     }
 
@@ -191,20 +322,44 @@ public abstract class Vehicle extends GameObject
         // this.x -= (deltaTime * this.speed);
         // this.y += (deltaTime * this.speed);
 
-        // двигаем хитбокс
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
         }
 
-        // двигаем хитбокс
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
+        }
+
+        // move hibox
         this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
 
-        // проверяем пересечение с тестовой рамкой
-        if (this.map.isIntersect(this.hitBox)) {
+        // intersect with map
+        if (this.world.map.isIntersect(this.hitBox)) {
             this.hitBox.rollback();
+        }
+
+        // Vehicle me = this.e
+        if (this.world.enemies.fff(this)) {
+            this.hitBox.rollback();
+        }
+
+        // intersect with player
+        if (!this.world.player.equals(this)){
+            if (Map.isIntersectsTwoRect(this.hitBox, this.world.player.hitBox)) {
+                this.hitBox.rollback();
+            }
         }
     }
 

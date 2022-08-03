@@ -1,6 +1,7 @@
 package com.a530games.jackal.objects;
 
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 
 import java.util.Random;
@@ -23,9 +24,9 @@ public class Tank extends Vehicle
         Vehicle.MOVE_DOWN_LEFT
     };
 
-    public Tank(Map map, int startX, int startY)
+    public Tank(World world, int startX, int startY)
     {
-        super(map, startX, startY, Assets.tank);
+        super(world, startX, startY, Assets.tank);
 
         this.r = new Random();
     }

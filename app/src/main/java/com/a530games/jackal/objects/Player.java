@@ -1,7 +1,7 @@
 package com.a530games.jackal.objects;
 
 import com.a530games.jackal.Assets;
-import com.a530games.jackal.Bullet;
+import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.Sprite;
 
@@ -13,9 +13,9 @@ public class Player extends RotateVehicle
 
     public Sprite gun;
 
-    public Player(Map map, int startX, int startY)
+    public Player(World world, int startX, int startY)
     {
-        super(map, startX, startY, Assets.player);
+        super(world, startX, startY, Assets.player);
 
         this.gun = new Sprite(Assets.gun);
         this.gun.set(1, 2);

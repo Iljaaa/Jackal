@@ -11,7 +11,7 @@ import com.a530games.framework.Input;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.Screen;
 import com.a530games.jackal.Assets;
-import com.a530games.jackal.Bullet;
+import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
 import com.a530games.jackal.Snake;

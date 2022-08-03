@@ -1,6 +1,7 @@
 package com.a530games.jackal.objects;
 
 import com.a530games.framework.Pixmap;
+import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 
 /**
@@ -15,8 +16,8 @@ public abstract class RotateVehicle extends Vehicle
     public double angle = 0;
 
 
-    public RotateVehicle(Map map, float startX, float startY, Pixmap image) {
-        super(map, startX, startY, image);
+    public RotateVehicle(World world, float startX, float startY, Pixmap image) {
+        super(world, startX, startY, image);
     }
 
     public double getAngle() {
