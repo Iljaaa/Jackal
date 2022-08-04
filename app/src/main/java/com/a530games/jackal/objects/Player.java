@@ -18,7 +18,7 @@ public class Player extends RotateVehicle
         super(world, startX, startY, Assets.player);
 
         this.gun = new Sprite(Assets.gun);
-        this.gun.set(1, 2);
+        this.gun.set(0, 1);
 
     }
 

@@ -28,8 +28,11 @@ public abstract class Vehicle extends GameObject
 
     public RollbackFloatRect hitBox;
 
+    // hit box rect in map position for draw
+    private Rect hitBoxForDraw;
+
     /**
-     * For get map for move
+     * To check the intersection while moving
      * enemies in move
      */
     protected World world;
@@ -39,11 +42,14 @@ public abstract class Vehicle extends GameObject
         super(image);
 
         // default sprite
-        this.sprite.set(1, 2);
+        this.sprite.set(0, 1);
 
         this.world = world;
 
         this.hitBox = new RollbackFloatRect(startX, startY, startX + 40, startY + 40);
+
+        // hitbox for draw
+        this.hitBoxForDraw = new Rect();
     }
 
     public abstract void update(float deltaTime);
@@ -227,5 +233,28 @@ public abstract class Vehicle extends GameObject
 
         return false;
     }
+
+    // ----------> methods move in interface
+
+    public float turretAngle = 0.5f;
+
+    public Rect getScreenDrawRect ()
+    {
+
+        // this.hitBoxForDraw.left = (int) Math.ceil(this.hitBox.left);
+        this.hitBoxForDraw.left = this.world.map.screenLeftPotion(this.hitBox.left);
+        this.hitBoxForDraw.top = this.world.map.screenTopPotion(this.hitBox.top);
+        // this.hitBoxForDraw.right = (int) Math.round(this.hitBox);
+        this.hitBoxForDraw.right =  Math.round(this.hitBoxForDraw.left + this.hitBox.getWidth());
+        // this.hitBoxForDraw.bottom = (int) Math.round(this.hitBox);
+        this.hitBoxForDraw.bottom = Math.round(this.hitBoxForDraw.top + this.hitBox.getHeight());
+        return this.hitBoxForDraw;
+    }
+
+
+    public boolean hasTurret (){
+        return true;
+    }
+
 
 }

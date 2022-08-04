@@ -13,7 +13,7 @@ public abstract class RotateVehicle extends Vehicle
     /**
      * угол поворота машинки 0 - 2
      */
-    public double angle = 0;
+    public double angle = 1;
 
 
     public RotateVehicle(World world, float startX, float startY, Pixmap image) {

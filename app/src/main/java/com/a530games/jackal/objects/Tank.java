@@ -10,7 +10,11 @@ public class Tank extends Vehicle
 {
     private int driveDirection = 0;
 
+    private double targetAngle = 0;
+
     private float rotateTimer = 0;
+
+    private int doConst = 0;
 
     private Random r;
 
@@ -34,15 +38,28 @@ public class Tank extends Vehicle
     @Override
     public void update(float deltaTime)
     {
-        if (this.rotateTimer <= 0) {
+        if (this.rotateTimer <= 0)
+        {
             this.rotateTimer = 1;
 
-            this.driveDirection = this.directions[this.r.nextInt(8)];
+            this.doConst = (this.doConst > 0) ? 0 : 1;
 
+            //
+            this.driveDirection = this.directions[this.r.nextInt(8)];
             this.updateSprite(this.driveDirection);
+
+            // random angle
+            this.targetAngle = this.r.nextFloat() * 2;
         }
 
-        this.move(this.driveDirection, deltaTime);
+        if (this.doConst == 0) {
+            this.move(this.driveDirection, deltaTime);
+        }
+        else {
+            if (this.turretAngle < this.targetAngle) this.turretAngle += 0.05;
+            if (this.turretAngle > this.targetAngle) this.turretAngle -= 0.05;
+        }
+
 
         this.rotateTimer -= deltaTime;
     }

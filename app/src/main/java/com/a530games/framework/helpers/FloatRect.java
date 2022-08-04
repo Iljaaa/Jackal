@@ -86,10 +86,10 @@ public class FloatRect
 
     public Rect getDrawRect ()
     {
-        this.drawRect.left = Math.round(this.left);
-        this.drawRect.top = Math.round(this.top);
-        this.drawRect.right = Math.round(this.right);
-        this.drawRect.bottom = Math.round(this.bottom);
+        this.drawRect.left = (int) Math.ceil(this.left);
+        this.drawRect.top = (int) Math.round(this.top);
+        this.drawRect.right = (int) Math.round(this.right);
+        this.drawRect.bottom = (int) Math.round(this.bottom);
         return this.drawRect;
     }
 }

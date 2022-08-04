@@ -2,6 +2,7 @@ package com.a530games.jackal.screens;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 
 import com.a530games.framework.Controller;
@@ -423,6 +424,7 @@ public class GameScreen extends Screen
             for (int i = 0; i < enemiesSize; i++)
             {
                 Vehicle b = this.world.enemies.get(i);
+                Rect mapHitBox = b.getScreenDrawRect();
 
                 g.drawPixmap(
                         b.sprite.image,
@@ -433,17 +435,30 @@ public class GameScreen extends Screen
                         64,
                         64);
 
-                this.drawEnemyHitBox(
+                // draw hitbox
+                g.drawRect(mapHitBox, this.hitBoxPaint);
+                /*this.drawEnemyHitBox(
                         g,
                         this.world.map.screenLeftPotion(b.hitBox.left),
                         this.world.map.screenTopPotion(b.hitBox.top),
                         Math.round(b.hitBox.getWidth()),
                         Math.round(b.hitBox.getHeight())
-                );
+                );*/
+
+                // its only for tanks and turrets
+                if (b.hasTurret())
+                {
+                    this.drawAngle(g,
+                            mapHitBox.centerX(),
+                            mapHitBox.centerY(),
+                            b.turretAngle
+                    );
+                }
             }
         }
     }
 
+    /*
     private void drawEnemyHitBox (Graphics g, int enemyScreenLeft, int enemyScreenTop, int enemyWidth, int enemyHeight) {
         g.drawRect(
             enemyScreenLeft,
@@ -451,7 +466,7 @@ public class GameScreen extends Screen
             enemyWidth,
             enemyHeight,
                 this.hitBoxPaint);
-    }
+    }*/
 
     protected void drawMap()
     {
@@ -564,18 +579,38 @@ public class GameScreen extends Screen
 
     private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)
     {
-        int centerLeft = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
-        // int centerLeft = Math.round(this.world.player.hitBox.getCenterLeft());
-        int centerTop = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
+        // int centerLeft = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
+        // int centerTop = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
+
+        // отрисовываем вектор направления
+        // double s = Math.sin(this.world.player.getAngle() * Math.PI);
+        // double c = Math.cos(this.world.player.getAngle() * Math.PI);
+
+        this.drawAngle(g,
+                (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth())),
+                (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight())),
+                this.world.player.getAngle());
+
+        /*g.drawLine(centerLeft, centerTop,
+                centerLeft + (int) Math.round(s * 50),
+                centerTop + (int) Math.round(c * 50),
+                Color.GREEN);*/
+    }
+
+
+    private void drawAngle (Graphics g, int screenCenterLeft, int screenCenterTop, double angle)
+    {
         // int centerTop = Math.round(this.world.player.hitBox.getCenterTop());
 
         // отрисовываем вектор направления
-        double s = Math.sin(this.world.player.getAngle() * Math.PI);
-        double c = Math.cos(this.world.player.getAngle() * Math.PI);
+        // double s = Math.sin(this.world.player.getAngle() * Math.PI);
+        // double c = Math.cos(this.world.player.getAngle() * Math.PI);
 
-        g.drawLine(centerLeft, centerTop,
-                centerLeft + (int) Math.round(s * 50),
-                centerTop + (int) Math.round(c * 50),
+        g.drawLine(
+                screenCenterLeft,
+                screenCenterTop,
+                screenCenterLeft + (int) Math.round(Math.sin(angle * Math.PI) * 50),
+                screenCenterTop + (int) Math.round(Math.cos(angle * Math.PI) * 50),
                 Color.GREEN);
     }
 
