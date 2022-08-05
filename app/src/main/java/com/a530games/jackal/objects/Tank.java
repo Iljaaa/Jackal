@@ -1,6 +1,7 @@
 package com.a530games.jackal.objects;
 
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.Settings;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 
@@ -42,7 +43,8 @@ public class Tank extends Vehicle
         {
             this.rotateTimer = 1;
 
-            this.doConst = (this.doConst > 0) ? 0 : 1;
+            this.doConst++;
+            // if (this.doConst > 1) this.doConst = 0;
 
             //
             this.driveDirection = this.directions[this.r.nextInt(8)];
@@ -55,13 +57,27 @@ public class Tank extends Vehicle
         if (this.doConst == 0) {
             this.move(this.driveDirection, deltaTime);
         }
-        else {
+
+        if (this.doConst == 1) {
             if (this.turretAngle < this.targetAngle) this.turretAngle += 0.05;
             if (this.turretAngle > this.targetAngle) this.turretAngle -= 0.05;
         }
 
+        if (this.doConst == 2) {
+            this.fire();
+            this.doConst = 0;
+        }
 
         this.rotateTimer -= deltaTime;
+    }
+
+    private void fire()
+    {
+        Bullet b = this.world.enemyBullets.getFreeBullet();
+        if (b == null) return;
+
+        b.reNew(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle);
+        if(Settings.soundEnabled) Assets.fire.play(1);
     }
 
     private void updateSprite(int direction)

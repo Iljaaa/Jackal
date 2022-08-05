@@ -412,6 +412,22 @@ public class GameScreen extends Screen
                 );
             }
         }
+
+        //
+        int enemyBulletsSize = this.world.enemyBullets.size();
+        if (enemyBulletsSize > 0) {
+            for (int i = 0; i < enemyBulletsSize; i++)
+            {
+                Bullet b = this.world.enemyBullets.get(i);
+                if (b.isOut()) continue;
+
+                g.drawPixmap(
+                        Assets.bullet,
+                        this.world.map.screenLeftPotion(Math.round(b.getX())),
+                        this.world.map.screenTopPotion(Math.round(b.getY()))
+                );
+            }
+        }
     }
 
     private void drawEnemies()

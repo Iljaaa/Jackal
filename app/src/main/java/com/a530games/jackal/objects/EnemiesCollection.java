@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class EnemiesCollection
 {
-    // враги
+    // enemies array
     private ArrayList<Vehicle> enemies;
 
     public EnemiesCollection()

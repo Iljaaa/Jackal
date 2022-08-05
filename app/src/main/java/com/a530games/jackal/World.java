@@ -3,6 +3,7 @@ package com.a530games.jackal;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemiesCollection;
+import com.a530games.jackal.objects.EnemyBulletsCollection;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.Tank;
 import com.a530games.jackal.objects.Vehicle;
@@ -16,7 +17,7 @@ public class World
     static final int WORLD_WIDTH = 10;
     static final int WORLD_HEIGHT = 13;
 
-    // максимальное колиечество патронов на экране
+    // max bullets size
     static final int MAX_BULLETS_SIZE = 20;
 
     static final int SCORE_INCREMENT = 10;
@@ -35,12 +36,12 @@ public class World
     // пульки
     public ArrayList<Bullet> bullets;
 
-    // враги
+    // enemies
     // public ArrayList<Vehicle> enemies;
     public EnemiesCollection enemies;
 
-    // пульки
-    public ArrayList<Bullet> enemyBullets;
+    //
+    public EnemyBulletsCollection enemyBullets;
 
     public Map map;
 
@@ -71,6 +72,8 @@ public class World
         // инициализируем массиа с пулями
         this.bullets = new ArrayList<>(10);
 
+        this.enemyBullets = new EnemyBulletsCollection();
+
         this.placeStain();
     }
 
@@ -86,7 +89,7 @@ public class World
         // update map
         this.map.update(this.player, deltaTime);
 
-        // бновляем пули игрока
+        // player bullets update
         int bulletSize = this.bullets.size();
         if (bulletSize > 0) {
             for (int i = 0; i < bulletSize; i++) {
@@ -100,12 +103,26 @@ public class World
             }
         }
 
-        // обновляем врагов
-        // бновляем пули игрока
+        // update enemies
         int enemiesSize = this.enemies.size();
         if (enemiesSize > 0) {
             for (int i = 0; i < enemiesSize; i++) {
                 Vehicle b = this.enemies.get(i);
+                b.update(deltaTime);
+                // if (b.isOut()) this.bullets.remove(i);
+            }
+        }
+
+        // бновляем пули игрока
+        // this.enemyBullets.update(deltaTime);
+        int enemyBulletsSize = this.enemyBullets.size();
+        if (enemyBulletsSize > 0) {
+            for (int i = 0; i < enemyBulletsSize; i++) {
+                Bullet b = this.enemyBullets.get(i);
+                if (map.isIntersectPoint(b.x, b.y)) {
+                    b.setIsOutOnIntersectWithMap();
+                }
+
                 b.update(deltaTime);
                 // if (b.isOut()) this.bullets.remove(i);
             }
@@ -186,6 +203,7 @@ public class World
 
     /**
      * Add new bullet
+     * refactor by get free
      */
     public boolean addBullet (Bullet bullet)
     {
@@ -196,7 +214,7 @@ public class World
             Bullet b = this.bullets.get(i);
             if (b.isOut()) {
                 // this.bullets.set(i, bullet);
-                b.reNew(bullet.getX(), bullet.getY());
+                b.reNew(bullet.getX(), bullet.getY(), 1);
                 return true;
             }
         }
