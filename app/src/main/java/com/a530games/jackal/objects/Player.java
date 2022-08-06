@@ -85,13 +85,14 @@ public class Player extends RotateVehicle
 
 
     /**
-     * Возвращает пулю если выстрел удлася
+     * Fire
      */
-    public Bullet fire(float deltaTime)
+    public boolean fire()
     {
-        if (this.fireDelay > 0) return null;
+        if (this.fireDelay > 0) return false;
 
         this.fireDelay = 0.55f;
-        return new Bullet(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1);
+        return true;
+        // return new Bullet(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1);
     }
 }

@@ -60,6 +60,13 @@ public class Bullet
     {
         this.isOut = true;
     }
+    /**
+     * If bullet hit enemy mark as out
+     */
+    public void setIsOutOnHitEnemy()
+    {
+        this.isOut = true;
+    }
 
     public boolean isOut() {
         return this.isOut;

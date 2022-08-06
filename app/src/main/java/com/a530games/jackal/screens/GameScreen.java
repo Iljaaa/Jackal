@@ -189,9 +189,8 @@ public class GameScreen extends Screen
         // todo: сделать абстракцию кнопку огонек
         if (controller.isA())
         {
-            Bullet b = this.world.player.fire(deltaTime);
-            if (b != null) {
-                if (this.world.addBullet(b)){
+            if (this.world.player.fire()) {
+                if (this.world.addBullet(this.world.player.hitBox.getCenterLeft(), this.world.player.hitBox.getCenterTop(), 1)){
                     if(Settings.soundEnabled) Assets.fire.play(1);
                 }
             }
@@ -222,7 +221,7 @@ public class GameScreen extends Screen
                     this.world.player.moveDown(deltaTime);
                 }
                 else if (event.keyCode == 62) {
-                    this.world.player.fire(deltaTime);
+                    this.world.player.fire();
                 }
             }
         }

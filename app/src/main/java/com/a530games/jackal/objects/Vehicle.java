@@ -4,6 +4,7 @@ import android.graphics.Rect;
 
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.helpers.RollbackFloatRect;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
@@ -26,7 +27,7 @@ public abstract class Vehicle extends GameObject
     // скорость перемещения
     protected float speed = 100;
 
-    public RollbackFloatRect hitBox;
+    public HitBox hitBox;
 
     // hit box rect in map position for draw
     private Rect hitBoxForDraw;
@@ -46,7 +47,7 @@ public abstract class Vehicle extends GameObject
 
         this.world = world;
 
-        this.hitBox = new RollbackFloatRect(startX, startY, startX + 40, startY + 40);
+        this.hitBox = new HitBox(startX, startY, startX + 40, startY + 40);
 
         // hitbox for draw
         this.hitBoxForDraw = new Rect();

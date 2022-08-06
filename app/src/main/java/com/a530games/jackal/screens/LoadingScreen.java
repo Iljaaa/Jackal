@@ -26,6 +26,10 @@ public class LoadingScreen extends Screen
             Assets.loadPart1(this.game.getGraphics(), this.game.getAudio());
         }
 
+        if (this.timer > 3) {
+            Assets.loadPart2(this.game.getGraphics(), this.game.getAudio());
+        }
+
         if (this.timer > 5) {
             // start loading
             this.game.setScreen(new LoadingLevelScreen(this.game));

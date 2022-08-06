@@ -1,10 +1,12 @@
 package com.a530games.jackal.objects;
 
+import com.a530games.framework.Sound;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Tank extends Vehicle
@@ -64,20 +66,24 @@ public class Tank extends Vehicle
         }
 
         if (this.doConst == 2) {
-            this.fire();
+            if (this.fire()){
+                if (Settings.soundEnabled) {
+                    Assets.tankFire.play(1);
+                }
+            }
             this.doConst = 0;
         }
 
         this.rotateTimer -= deltaTime;
     }
 
-    private void fire()
+    private boolean fire()
     {
         Bullet b = this.world.enemyBullets.getFreeBullet();
-        if (b == null) return;
+        if (b == null) return false;
 
         b.reNew(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle);
-        if(Settings.soundEnabled) Assets.fire.play(1);
+        return true;
     }
 
     private void updateSprite(int direction)

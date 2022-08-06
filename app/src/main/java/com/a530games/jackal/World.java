@@ -1,10 +1,12 @@
 package com.a530games.jackal;
 
+import com.a530games.framework.Sound;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemiesCollection;
 import com.a530games.jackal.objects.EnemyBulletsCollection;
 import com.a530games.jackal.objects.Player;
+import com.a530games.jackal.objects.PlayerBulletsCollection;
 import com.a530games.jackal.objects.Tank;
 import com.a530games.jackal.objects.Vehicle;
 
@@ -33,8 +35,8 @@ public class World
     // игрок
     public Player player;
 
-    // пульки
-    public ArrayList<Bullet> bullets;
+    // player bullets
+    public PlayerBulletsCollection bullets;
 
     // enemies
     // public ArrayList<Vehicle> enemies;
@@ -45,12 +47,17 @@ public class World
 
     public Map map;
 
+    Random random = new Random();
+
+
+    private ArrayList<Sound> tankHitSounds;
+
     public boolean gameOver = false;
     public int score = 0;
 
     // поле, большой массив
     boolean[][] fields = new boolean[WORLD_WIDTH][WORLD_HEIGHT];
-    Random random = new Random();
+
     float tickTime = 0;
     static float aTick = TICK_INITIAL;
 
@@ -65,14 +72,17 @@ public class World
         this.enemies = new EnemiesCollection();
         this.enemies.add(new Tank(this,100, 100));
 
+        // инициализируем массиа с пулями
+        this.bullets = new PlayerBulletsCollection();
+        this.enemyBullets = new EnemyBulletsCollection();
+
+        this.tankHitSounds = new ArrayList<>();
+        this.tankHitSounds.add(Assets.tankHit1);
+        this.tankHitSounds.add(Assets.tankHit2);
+        this.tankHitSounds.add(Assets.playerBlow);
 
         // this.player = new Player(this.map, this.map.playerStartX, this.map.playerStartY);
         this.snake = new Snake();
-
-        // инициализируем массиа с пулями
-        this.bullets = new ArrayList<>(10);
-
-        this.enemyBullets = new EnemyBulletsCollection();
 
         this.placeStain();
     }
@@ -92,24 +102,39 @@ public class World
         // player bullets update
         int bulletSize = this.bullets.size();
         if (bulletSize > 0) {
-            for (int i = 0; i < bulletSize; i++) {
+            for (int i = 0; i < bulletSize; i++)
+            {
                 Bullet b = this.bullets.get(i);
-                if (map.isIntersectPoint(b.x, b.y)) {
+                if (b.isOut()) continue;
+
+                if (this.map.isIntersectPoint(b.x, b.y)) {
                     b.setIsOutOnIntersectWithMap();
                 }
 
                 b.update(deltaTime);
-                // if (b.isOut()) this.bullets.remove(i);
             }
         }
 
         // update enemies
         int enemiesSize = this.enemies.size();
         if (enemiesSize > 0) {
-            for (int i = 0; i < enemiesSize; i++) {
-                Vehicle b = this.enemies.get(i);
-                b.update(deltaTime);
-                // if (b.isOut()) this.bullets.remove(i);
+            for (int i = 0; i < enemiesSize; i++)
+            {
+                Vehicle enemy = this.enemies.get(i);
+                enemy.update(deltaTime);
+
+                // check intersect with player bullets
+                for (int bulletIndex = 0; bulletIndex < bulletSize; bulletIndex++) {
+                    Bullet b = this.bullets.get(bulletIndex);
+                    if (b.isOut()) continue;
+                    if (enemy.hitBox.isHit(b))
+                    {
+                        b.setIsOutOnHitEnemy();
+                        if(Settings.soundEnabled) {
+                            this.tankHitSounds.get(this.random.nextInt(this.tankHitSounds.size())).play(1);
+                        }
+                    }
+                }
             }
         }
 
@@ -119,12 +144,23 @@ public class World
         if (enemyBulletsSize > 0) {
             for (int i = 0; i < enemyBulletsSize; i++) {
                 Bullet b = this.enemyBullets.get(i);
-                if (map.isIntersectPoint(b.x, b.y)) {
+                if (b.isOut()) continue;
+
+                if (this.map.isIntersectPoint(b.x, b.y)) {
                     b.setIsOutOnIntersectWithMap();
+                    continue;
                 }
 
                 b.update(deltaTime);
                 // if (b.isOut()) this.bullets.remove(i);
+
+                if (this.player.hitBox.isHit(b))
+                {
+                    b.setIsOutOnHitEnemy();
+                    if(Settings.soundEnabled) {
+                        Assets.playerHit.play(1);
+                    }
+                }
             }
         }
 
@@ -202,18 +238,23 @@ public class World
     }
 
     /**
-     * Add new bullet
+     * Add player bullet
      * refactor by get free
      */
-    public boolean addBullet (Bullet bullet)
+    public boolean addBullet (float playerCenterX, float playerCenterY, float playerTurretAngle )
     {
-        // находим свободное место под пулю
-        int size = this.bullets.size();
+        Bullet b = this.bullets.getFreeBullet();
+        if (b == null) return false;
+
+        b.reNew(playerCenterX, playerCenterY, playerTurretAngle);
+        if(Settings.soundEnabled) Assets.fire.play(1);
+        return true;
+
+        /*int size = this.bullets.size();
 
         for (int i = 0; i < size; i++) {
             Bullet b = this.bullets.get(i);
             if (b.isOut()) {
-                // this.bullets.set(i, bullet);
                 b.reNew(bullet.getX(), bullet.getY(), 1);
                 return true;
             }
@@ -222,6 +263,6 @@ public class World
         if (size >= MAX_BULLETS_SIZE) return false;
 
         this.bullets.add(bullet);
-        return true;
+        return true;*/
     }
 }

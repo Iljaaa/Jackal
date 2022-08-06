@@ -2,6 +2,8 @@ package com.a530games.framework.helpers;
 
 import android.graphics.Rect;
 
+import com.a530games.jackal.objects.Bullet;
+
 public class FloatRect
 {
     public float left;
