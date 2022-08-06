@@ -1,11 +1,11 @@
-package com.a530games.jackal.objects;
+package com.a530games.jackal.objects.enemies;
 
 import com.a530games.framework.Pixmap;
 import com.a530games.jackal.World;
-import com.a530games.jackal.map.Map;
+import com.a530games.jackal.objects.enemies.Vehicle;
 
 /**
- * Общий класс для транспортного средства
+ * Diff rotate vehicle like player
  */
 public abstract class RotateVehicle extends Vehicle
 {

@@ -1,27 +1,25 @@
-package com.a530games.jackal.objects;
+package com.a530games.jackal.objects.enemies;
 
+import android.graphics.Rect;
 import android.util.Log;
 
-import com.a530games.framework.helpers.FloatPoint;
-import com.a530games.framework.helpers.Vector;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.World;
+import com.a530games.jackal.objects.Bullet;
+import com.a530games.jackal.objects.GameObject;
 
 import java.util.Random;
 
-public class Tank extends Vehicle
+public class Commandos extends GameObject implements Enemy
 {
     private int driveDirection = 0;
-
-    private double targetAngle;
-    // private Vector targetAngle;
 
     private float rotateTimer = 0;
 
     private int doConst = 0;
-
-    private Random r;
 
     private int[] directions = { Vehicle.MOVE_DOWN,
         Vehicle.MOVE_DOWN_RIGHT,
@@ -33,13 +31,30 @@ public class Tank extends Vehicle
         Vehicle.MOVE_DOWN_LEFT
     };
 
-    public Tank(World world, int startX, int startY)
+    public Commandos(World world, int startX, int startY)
     {
-        super(world, startX, startY, Assets.tank);
+        super(world, Assets.man);
 
-        //this.turretAngle = new Vector(0.5f, 0.5f);
+        // default sprite
+        this.sprite.set(0, 1);
+        this.sprite.setSpriteSize(31, 46);
 
-        this.r = new Random();
+        this.hitBox = new HitBox(startX, startY, startX + 31, startY + 46);
+    }
+
+    @Override
+    public HitBox getHitBox() {
+        return this.hitBox;
+    }
+
+    @Override
+    public boolean hasTurret() {
+        return false;
+    }
+
+    @Override
+    public double getTurretAngle() {
+        return 0;
     }
 
     @Override
@@ -47,37 +62,24 @@ public class Tank extends Vehicle
     {
         if (this.rotateTimer <= 0)
         {
-            this.rotateTimer = 1;
+            this.rotateTimer = Jackal.getRandom().nextFloat() * 2;
 
             this.doConst++;
             // if (this.doConst > 1) this.doConst = 0;
 
             //
-            this.driveDirection = this.directions[this.r.nextInt(8)];
+            this.driveDirection = this.directions[Jackal.getRandom().nextInt(8)];
             this.updateSprite(this.driveDirection);
 
-            // calculate angle by who points
-            // FloatPoint playerCenter = player.getHitBox().getCenter();
-            // FloatPoint tankCenter = this.hitBox.getCenter();
-
-            // d
-            /*float x = playerCenter.left- tankCenter.left;
-            float y = playerCenter.top - tankCenter.top;
-            double d = Math.sqrt((x * x) + (y * y));
-            Vector v = new Vector((float) (x / d), (float) (y / d));*/
-
-            // random angle
-            this.targetAngle = this.r.nextFloat() * 2;
-            Log.d("player angle", String.valueOf(this.targetAngle));
         }
 
         if (this.doConst == 0) {
-            this.move(this.driveDirection, deltaTime);
+            // this.move(this.driveDirection, deltaTime);
         }
 
         if (this.doConst == 1) {
-            if (this.turretAngle < this.targetAngle) this.turretAngle += 0.05;
-            if (this.turretAngle > this.targetAngle) this.turretAngle -= 0.05;
+            /*if (this.turretAngle < this.targetAngle) this.turretAngle += 0.05;
+            if (this.turretAngle > this.targetAngle) this.turretAngle -= 0.05;*/
         }
 
         if (this.doConst == 2) {
@@ -92,12 +94,13 @@ public class Tank extends Vehicle
         this.rotateTimer -= deltaTime;
     }
 
+
     private boolean fire()
     {
         Bullet b = this.world.enemyBullets.getFreeBullet();
         if (b == null) return false;
 
-        b.reNew(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle);
+        b.reNew(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1.5f);
         return true;
     }
 

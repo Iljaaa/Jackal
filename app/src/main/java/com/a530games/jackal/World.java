@@ -4,11 +4,12 @@ import com.a530games.framework.Sound;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemiesCollection;
+import com.a530games.jackal.objects.enemies.Commandos;
+import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.EnemyBulletsCollection;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.PlayerBulletsCollection;
-import com.a530games.jackal.objects.Tank;
-import com.a530games.jackal.objects.Vehicle;
+import com.a530games.jackal.objects.enemies.Tank;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -70,6 +71,7 @@ public class World
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
         this.enemies.add(new Tank(this,100, 100));
+        this.enemies.add(new Commandos(this,300, 800));
 
         // инициализируем массиа с пулями
         this.bullets = new PlayerBulletsCollection();
@@ -119,14 +121,14 @@ public class World
         if (enemiesSize > 0) {
             for (int i = 0; i < enemiesSize; i++)
             {
-                Vehicle enemy = this.enemies.get(i);
+                Enemy enemy = this.enemies.get(i);
                 enemy.update(deltaTime, this.player);
 
                 // check intersect with player bullets
                 for (int bulletIndex = 0; bulletIndex < bulletSize; bulletIndex++) {
                     Bullet b = this.bullets.get(bulletIndex);
                     if (b.isOut()) continue;
-                    if (enemy.hitBox.isHit(b))
+                    if (enemy.getHitBox().isHit(b))
                     {
                         b.setIsOutOnHitEnemy();
                         if(Settings.soundEnabled) {

@@ -13,6 +13,9 @@ public class Assets {
     public static Pixmap gun;
 
     public static Pixmap tank;
+
+    public static Pixmap man;
+
     public static Pixmap bullet;
 
     public static Pixmap mapSprite;
@@ -39,6 +42,7 @@ public class Assets {
         Assets.bullet = g.newPixmap("images/bullet.png", Graphics.PixmapFormat.RGB565);
         Assets.rock = g.newPixmap("images/rock.png", Graphics.PixmapFormat.RGB565);
         Assets.gun = g.newPixmap("images/gun.png", Graphics.PixmapFormat.RGB565);
+        Assets.man = g.newPixmap("images/man.png", Graphics.PixmapFormat.RGB565);
 
         Assets.fire = a.newSound("sound/fire.mp3");
         Assets.playerHit = a.newSound("sound/player_hit.wav");

@@ -2,8 +2,9 @@ package com.a530games.jackal.objects;
 
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.World;
-import com.a530games.jackal.map.Map;
 import com.a530games.jackal.Sprite;
+import com.a530games.jackal.objects.enemies.Enemy;
+import com.a530games.jackal.objects.enemies.RotateVehicle;
 
 public class Player extends RotateVehicle
 {
@@ -28,6 +29,16 @@ public class Player extends RotateVehicle
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;
 
         this.updateSprite(this.angle);
+    }
+
+    @Override
+    public boolean hasTurret() {
+        return false;
+    }
+
+    @Override
+    public double getTurretAngle() {
+        return 0;
     }
 
     private void updateSprite(double playerAngle)

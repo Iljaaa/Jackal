@@ -12,6 +12,7 @@ import com.a530games.framework.Input;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.Screen;
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.Sprite;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
@@ -21,8 +22,8 @@ import com.a530games.jackal.Stain;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
+import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.Player;
-import com.a530games.jackal.objects.Vehicle;
 
 import java.util.List;
 
@@ -438,20 +439,26 @@ public class GameScreen extends Screen
         if (enemiesSize > 0) {
             for (int i = 0; i < enemiesSize; i++)
             {
-                Vehicle b = this.world.enemies.get(i);
-                Rect mapHitBox = b.getScreenDrawRect();
+                Enemy enemy = this.world.enemies.get(i);
+                Rect screenHitBox = enemy.getScreenDrawHitbox(this.world.map);
+
+                Sprite s = enemy.getSprite();
+
+                // todo: not draw enemie if if is not in screem
 
                 g.drawPixmap(
-                        b.sprite.image,
-                        this.world.map.screenLeftPotion(b.hitBox.left) - 12,
-                        this.world.map.screenTopPotion(b.hitBox.top) - 12,
-                        b.sprite.getLeft(),
-                        b.sprite.getTop(),
-                        64,
-                        64);
+                        s.image,
+                        screenHitBox.left + s.screenMarginLeft,
+                        // this.world.map.screenLeftPotion(enemy.getHitBox().left) - 12,
+                        screenHitBox.top + s.screenMarginTop,
+                        // this.world.map.screenTopPotion(enemy.getHitBox().top) - 12,
+                        s.getLeft(),
+                        s.getTop(),
+                        s.width,
+                        s.height);
 
                 // draw hitbox
-                g.drawRect(mapHitBox, this.hitBoxPaint);
+                g.drawRect(screenHitBox, this.hitBoxPaint);
                 /*this.drawEnemyHitBox(
                         g,
                         this.world.map.screenLeftPotion(b.hitBox.left),
@@ -461,12 +468,12 @@ public class GameScreen extends Screen
                 );*/
 
                 // its only for tanks and turrets
-                if (b.hasTurret())
+                if (enemy.hasTurret())
                 {
                     this.drawAngle(g,
-                            mapHitBox.centerX(),
-                            mapHitBox.centerY(),
-                            b.turretAngle
+                            screenHitBox.centerX(),
+                            screenHitBox.centerY(),
+                            enemy.getTurretAngle()
                     );
                 }
             }

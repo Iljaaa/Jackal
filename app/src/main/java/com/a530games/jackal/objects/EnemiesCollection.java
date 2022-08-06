@@ -1,13 +1,14 @@
 package com.a530games.jackal.objects;
 
 import com.a530games.jackal.map.Map;
+import com.a530games.jackal.objects.enemies.Enemy;
 
 import java.util.ArrayList;
 
 public class EnemiesCollection
 {
     // enemies array
-    private ArrayList<Vehicle> enemies;
+    private final ArrayList<Enemy> enemies;
 
     public EnemiesCollection()
     {
@@ -18,31 +19,32 @@ public class EnemiesCollection
         return this.enemies.size();
     }
 
-    public Vehicle get (int index){
+    public Enemy get (int index){
         return this.enemies.get(index);
     }
 
-    public void add(Vehicle it){
+    public void add(Enemy it){
         this.enemies.add(it);
     }
 
     /**
      *
      */
-    public boolean isAnyEnemyIntersectWith (Vehicle vehicle)
+    public boolean isAnyEnemyIntersectWith (Enemy vehicle)
     {
         int inj = this.enemies.indexOf(vehicle);
-        int enemiesSize = this.size();
 
-        for (int i = 0; i < enemiesSize; i++) {
+        for (int i = 0; i < this.size(); i++)
+        {
+            // ignore him self
             if (i == inj) {
                 continue;
             }
 
-            Vehicle e = this.get(i);
+            Enemy e = this.get(i);
 
             // check intersect
-            if (Map.isIntersectsTwoRect(vehicle.hitBox, e.hitBox)){
+            if (Map.isIntersectsTwoRect(vehicle.getHitBox(), e.getHitBox())){
                 return true;
             }
         }
