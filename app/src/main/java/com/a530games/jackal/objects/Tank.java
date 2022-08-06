@@ -1,19 +1,21 @@
 package com.a530games.jackal.objects;
 
-import com.a530games.framework.Sound;
+import android.util.Log;
+
+import com.a530games.framework.helpers.FloatPoint;
+import com.a530games.framework.helpers.Vector;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.World;
-import com.a530games.jackal.map.Map;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Tank extends Vehicle
 {
     private int driveDirection = 0;
 
-    private double targetAngle = 0;
+    private double targetAngle;
+    // private Vector targetAngle;
 
     private float rotateTimer = 0;
 
@@ -35,11 +37,13 @@ public class Tank extends Vehicle
     {
         super(world, startX, startY, Assets.tank);
 
+        //this.turretAngle = new Vector(0.5f, 0.5f);
+
         this.r = new Random();
     }
 
     @Override
-    public void update(float deltaTime)
+    public void update(float deltaTime, Enemy player)
     {
         if (this.rotateTimer <= 0)
         {
@@ -52,8 +56,19 @@ public class Tank extends Vehicle
             this.driveDirection = this.directions[this.r.nextInt(8)];
             this.updateSprite(this.driveDirection);
 
+            // calculate angle by who points
+            // FloatPoint playerCenter = player.getHitBox().getCenter();
+            // FloatPoint tankCenter = this.hitBox.getCenter();
+
+            // d
+            /*float x = playerCenter.left- tankCenter.left;
+            float y = playerCenter.top - tankCenter.top;
+            double d = Math.sqrt((x * x) + (y * y));
+            Vector v = new Vector((float) (x / d), (float) (y / d));*/
+
             // random angle
             this.targetAngle = this.r.nextFloat() * 2;
+            Log.d("player angle", String.valueOf(this.targetAngle));
         }
 
         if (this.doConst == 0) {

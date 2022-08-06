@@ -22,7 +22,7 @@ public class Player extends RotateVehicle
 
     }
 
-    public void update(float deltaTime)
+    public void update(float deltaTime, Enemy player)
     {
         // уменьшаем задержку выстрела
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;

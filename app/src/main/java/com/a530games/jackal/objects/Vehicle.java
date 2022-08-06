@@ -12,7 +12,7 @@ import com.a530games.jackal.map.Map;
 /**
  * Общий класс для транспортного средства
  */
-public abstract class Vehicle extends GameObject
+public abstract class Vehicle extends GameObject implements Enemy
 {
 
     public static final int MOVE_DOWN = 0;
@@ -53,7 +53,12 @@ public abstract class Vehicle extends GameObject
         this.hitBoxForDraw = new Rect();
     }
 
-    public abstract void update(float deltaTime);
+    @Override
+    public HitBox getHitBox() {
+        return this.hitBox;
+    }
+
+    // public abstract void update(float deltaTime);
 
     public float getLeft() {
         return this.hitBox.left;

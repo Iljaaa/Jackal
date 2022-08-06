@@ -49,7 +49,6 @@ public class World
 
     Random random = new Random();
 
-
     private ArrayList<Sound> tankHitSounds;
 
     public boolean gameOver = false;
@@ -94,7 +93,7 @@ public class World
         this.tickTime += deltaTime;
 
         // update player
-        this.player.update(deltaTime);
+        this.player.update(deltaTime, null);
 
         // update map
         this.map.update(this.player, deltaTime);
@@ -121,7 +120,7 @@ public class World
             for (int i = 0; i < enemiesSize; i++)
             {
                 Vehicle enemy = this.enemies.get(i);
-                enemy.update(deltaTime);
+                enemy.update(deltaTime, this.player);
 
                 // check intersect with player bullets
                 for (int bulletIndex = 0; bulletIndex < bulletSize; bulletIndex++) {
@@ -194,7 +193,7 @@ public class World
 
                 // инкрементация скорости
                 if (this.score % 100 == 0 && aTick - TICK_DECREMENT > 0) {
-                    this.aTick -= TICK_DECREMENT;
+                    World.aTick -= TICK_DECREMENT;
                 }
             }
         }

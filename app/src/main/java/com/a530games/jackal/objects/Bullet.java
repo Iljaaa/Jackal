@@ -99,4 +99,19 @@ public class Bullet
         this.isOut = false;
         this.timer = this.lifeTime;
     }
+
+    /**
+     * Перезапускаем пульку для повторного использования
+     */
+    public void reNewByVector (float x, float y, float directionX, float directionY)
+    {
+        this.x = x;
+        this.y = y;
+        // this.direction.updateByAngle(angle);
+        this.direction.x = directionX;
+        this.direction.y = directionY;
+
+        this.isOut = false;
+        this.timer = this.lifeTime;
+    }
 }

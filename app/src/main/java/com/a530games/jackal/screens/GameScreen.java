@@ -351,7 +351,7 @@ public class GameScreen extends Screen
         this.drawMap();
 
         // рамка для проверки столкновений
-        this.game.getGraphics().drawRect(this.world.map.testRect.getDrawRect(), this.paint.getColor());
+        this.game.getGraphics().drawRect(this.world.map.testRect.get_drawRect(), this.paint.getColor());
 
         // draw player
         this.drawPlayer();

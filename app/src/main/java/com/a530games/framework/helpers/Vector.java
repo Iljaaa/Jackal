@@ -15,4 +15,8 @@ public class Vector {
         this.x = (float) Math.sin(angle * Math.PI);
         this.y = (float) Math.cos(angle * Math.PI);
     }
+
+    public double getAngle() {
+        return Math.atan(this.x / this.y);
+    }
 }

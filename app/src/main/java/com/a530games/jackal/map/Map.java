@@ -432,6 +432,22 @@ public class Map
         int row = this.getRowByTop(top);
         int col = this.getColByLeft(left);
 
+        if (col < 0) {
+            return false;
+        }
+
+        if (row < 0) {
+            return false;
+        }
+
+        if (row >= this.mapRows) {
+            return false;
+        }
+
+        if (col >= this.mapCols) {
+            return false;
+        }
+
         // take nine sqars
 
         MapCell cell = this.fields[row][col];

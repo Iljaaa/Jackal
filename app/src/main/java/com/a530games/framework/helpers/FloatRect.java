@@ -2,8 +2,6 @@ package com.a530games.framework.helpers;
 
 import android.graphics.Rect;
 
-import com.a530games.jackal.objects.Bullet;
-
 public class FloatRect
 {
     public float left;
@@ -11,7 +9,8 @@ public class FloatRect
     public float right;
     public float bottom;
 
-    private Rect drawRect;
+    private final Rect _drawRect;
+    private final FloatPoint _center;
 
     public FloatRect(float left, float top, float right, float bottom)
     {
@@ -20,7 +19,8 @@ public class FloatRect
         this.right = right;
         this.bottom = bottom;
 
-        this.drawRect = new Rect();
+        this._drawRect = new Rect();
+        this._center = new FloatPoint();
     }
 
     public void move(float deltaX, float deltaY)
@@ -58,9 +58,15 @@ public class FloatRect
         return this.top + (this.getHeight() / 2);
     }
 
+    public FloatPoint getCenter () {
+        this._center.left = this.getCenterLeft();
+        this._center.top = this.getCenterTop();
+        return _center;
+    }
+
     /**
      * @return bool
-     */
+
     public boolean isIntersect(FloatRect rect)
     {
         // if block higher
@@ -84,14 +90,14 @@ public class FloatRect
         }
 
         return true;
-    }
+    }*/
 
-    public Rect getDrawRect ()
+    public Rect get_drawRect()
     {
-        this.drawRect.left = (int) Math.ceil(this.left);
-        this.drawRect.top = (int) Math.round(this.top);
-        this.drawRect.right = (int) Math.round(this.right);
-        this.drawRect.bottom = (int) Math.round(this.bottom);
-        return this.drawRect;
+        this._drawRect.left = (int) Math.ceil(this.left);
+        this._drawRect.top = (int) Math.round(this.top);
+        this._drawRect.right = (int) Math.round(this.right);
+        this._drawRect.bottom = (int) Math.round(this.bottom);
+        return this._drawRect;
     }
 }
