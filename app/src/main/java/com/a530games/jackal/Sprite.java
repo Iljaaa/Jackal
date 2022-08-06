@@ -4,8 +4,8 @@ import com.a530games.framework.Pixmap;
 
 public class Sprite
 {
-    protected int col = 0;
-    protected int row = 0;
+    public int col = 0;
+    public int row = 0;
 
     public int width = 64;
     public int height = 64;

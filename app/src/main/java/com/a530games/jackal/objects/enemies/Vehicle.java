@@ -62,14 +62,14 @@ public abstract class Vehicle extends GameObject implements Enemy
     public void move(int direction, float deltaTime)
     {
         switch (direction) {
-            case Player.MOVE_DOWN: this.moveDown(deltaTime); break;
-            case Player.MOVE_DOWN_RIGHT: this.moveDownRight(deltaTime); break;
-            case Player.MOVE_RIGHT: this.moveRight(deltaTime); break;
-            case Player.MOVE_TOP_RIGHT: this.moveTopRight(deltaTime); break;
-            case Player.MOVE_TOP: this.moveTop(deltaTime); break;
-            case Player.MOVE_TOP_LEFT: this.moveTopLeft(deltaTime); break;
-            case Player.MOVE_LEFT: this.moveLeft(deltaTime); break;
-            case Player.MOVE_DOWN_LEFT:  this.moveDownLeft(deltaTime); break;
+            case Vehicle.MOVE_DOWN: this.moveDown(deltaTime); break;
+            case Vehicle.MOVE_DOWN_RIGHT: this.moveDownRight(deltaTime); break;
+            case Vehicle.MOVE_RIGHT: this.moveRight(deltaTime); break;
+            case Vehicle.MOVE_TOP_RIGHT: this.moveTopRight(deltaTime); break;
+            case Vehicle.MOVE_TOP: this.moveTop(deltaTime); break;
+            case Vehicle.MOVE_TOP_LEFT: this.moveTopLeft(deltaTime); break;
+            case Vehicle.MOVE_LEFT: this.moveLeft(deltaTime); break;
+            case Vehicle.MOVE_DOWN_LEFT:  this.moveDownLeft(deltaTime); break;
         }
     }
 
