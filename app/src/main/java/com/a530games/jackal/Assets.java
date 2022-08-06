@@ -21,6 +21,7 @@ public class Assets {
     public static Pixmap mapSprite;
 
     public static Pixmap rock;
+    public static Pixmap bigStone;
 
     public static Sound fire;
     public static Sound playerHit;
@@ -41,6 +42,7 @@ public class Assets {
         Assets.player = g.newPixmap("images/player.png", Graphics.PixmapFormat.RGB565);
         Assets.bullet = g.newPixmap("images/bullet.png", Graphics.PixmapFormat.RGB565);
         Assets.rock = g.newPixmap("images/rock.png", Graphics.PixmapFormat.RGB565);
+        Assets.bigStone = g.newPixmap("images/big_stone.png", Graphics.PixmapFormat.RGB565);
         Assets.gun = g.newPixmap("images/gun.png", Graphics.PixmapFormat.RGB565);
         Assets.man = g.newPixmap("images/man.png", Graphics.PixmapFormat.RGB565);
 

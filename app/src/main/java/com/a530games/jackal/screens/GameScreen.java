@@ -46,9 +46,6 @@ public class GameScreen extends Screen
     int oldScore = 0;
     String score = "0";
 
-    // проверочная рамка для проверки столкновения
-    Paint paint;
-
     // paint for the hit box
     Paint hitBoxPaint;
 
@@ -56,9 +53,6 @@ public class GameScreen extends Screen
         super(game);
         this.world = new World();
         this.sidebar = new Sidebar();
-
-        this.paint = new Paint();
-        this.paint.setColor(Color.GRAY);
 
         this.hitBoxPaint = new Paint();
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);
@@ -230,18 +224,6 @@ public class GameScreen extends Screen
         // обновление мира
         this.world.update(deltaTime);
 
-        // определяем пересечение с тестовой рамкой
-
-        // сначала мы проверяем глобальный подзод
-        // надо вычислить строку на которой находится машинка и проверить три
-        if (this.world.player.hitBox.bottom > this.world.map.testRect.top && (this.world.player.hitBox.top < this.world.map.testRect.bottom))
-        {
-            this.paint.setColor(Color.RED);
-        }
-        else {
-            this.paint.setColor(Color.GRAY);
-        }
-
         // fixme: при завершении f[s выводить не будем
         this.sidebar.setFps(this.game.getRenderView().fps);
         this.sidebar.setPlayerAngle(this.world.player.angle);
@@ -350,9 +332,6 @@ public class GameScreen extends Screen
     {
         // рисуем карку
         this.drawMap();
-
-        // рамка для проверки столкновений
-        this.game.getGraphics().drawRect(this.world.map.testRect.get_drawRect(), this.paint.getColor());
 
         // draw player
         this.drawPlayer();
