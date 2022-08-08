@@ -2,6 +2,7 @@ package com.a530games.jackal;
 
 import com.a530games.framework.Audio;
 import com.a530games.framework.Graphics;
+import com.a530games.framework.Music;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.Sound;
 
@@ -31,6 +32,8 @@ public class Assets {
     public static Sound tankHit2;
     public static Sound tankFire;
 
+    public static Music music;
+
     private static boolean isPart1Loaded = false;
     private static boolean isPart2Loaded = false;
 
@@ -49,6 +52,8 @@ public class Assets {
         Assets.fire = a.newSound("sound/fire.mp3");
         Assets.playerHit = a.newSound("sound/player_hit.wav");
         Assets.playerBlow = a.newSound("sound/player_blow.wav");
+
+        // Assets.music = a.newMusic("music/jj.wav");
 
         Assets.isPart1Loaded = true;
     }

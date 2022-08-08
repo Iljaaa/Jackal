@@ -58,6 +58,11 @@ public class GameScreen extends Screen
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);
         this.hitBoxPaint.setStrokeWidth(2);
         this.hitBoxPaint.setColor(Color.YELLOW);
+
+        // Assets.music.setLooping(true);
+        // Assets.music.setVolume(0.5f);
+        // Assets.music.play();
+
     }
 
     @Override
@@ -285,20 +290,20 @@ public class GameScreen extends Screen
     private void updateGameOver(List<Input.TouchEvent> touchEvents)
     {
         // определяяем клик для перехода в главное меню
-        int len = touchEvents.size();
+        /*int len = touchEvents.size();
         for(int i = 0; i < len; i++) {
             Input.TouchEvent event = touchEvents.get(i);
             if(event.type == Input.TouchEvent.TOUCH_UP)
             {
                 // по клику перезапускаем игру
-                /*if(event.x >= 128 && event.x <= 192 && event.y >= 200 && event.y <= 264) {
+                if(event.x >= 128 && event.x <= 192 && event.y >= 200 && event.y <= 264) {
                     // todo: enable sound
                     // if(Settings.soundEnabled) Assets.click.play(1);
                     // game.setScreen(new MainMenuScreen(game));
                     return;
-                }*/
+                }
             }
-        }
+        }*/
     }
 
     @Override
