@@ -11,6 +11,7 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.Screen;
+import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.objects.Bullet;
@@ -49,6 +50,16 @@ public class GameScreen extends Screen
     // paint for the hit box
     Paint hitBoxPaint;
 
+
+    /////////////////
+    Vector2 cannonPos;
+    Vector2 cannonAngle;
+    int cannonRotateSpeed = 3;
+    // float cannonAngle = 0;
+
+
+
+
     public GameScreen(Game game) {
         super(game);
         this.world = new World();
@@ -63,6 +74,8 @@ public class GameScreen extends Screen
         // Assets.music.setVolume(0.5f);
         // Assets.music.play();
 
+        this.cannonPos = new Vector2(200, 1000);
+        this.cannonAngle = new Vector2(1, 0);
     }
 
     @Override
@@ -76,6 +89,21 @@ public class GameScreen extends Screen
         //
         Controller c = this.game.getInput().getController();
 
+        //
+
+
+
+        Vector2 vectorToPlayer = new Vector2(
+                this.world.player.hitBox.getCenterLeft() - this.cannonPos.x,
+                this.world.player.hitBox.getCenterTop() - this.cannonPos.y
+        );
+
+        float ca = this.cannonAngle.angleInDegrees();
+        float vp = vectorToPlayer.angleInDegrees();
+        float t = (float) Math.abs(ca - vp);
+        if (this.cannonRotateSpeed < Math.abs(ca - vp)) {
+            this.cannonAngle.rotate(3);
+        }
 
         /*int keyEventsLength = keyEvents.size();
         if (keyEventsLength > 0) {
@@ -328,9 +356,33 @@ public class GameScreen extends Screen
         // draw score
         // this.drawText(g, score, g.getWidth() / 2 - score.length()*20 / 2, g.getHeight() - 42);
 
+        // this.game.getGraphics().drawPixmap(Assets.bg, 10, 10);
+        g.drawLine(
+                this.world.map.screenLeftPotion(this.cannonPos.x),
+                this.world.map.screenTopPotion(this.cannonPos.y),
+                this.world.map.screenLeftPotion(this.cannonPos.x + this.cannonAngle.x * 50),
+                this.world.map.screenTopPotion(this.cannonPos.y + this.cannonAngle.y * 50),
+                Color.MAGENTA);
 
-        this.game.getGraphics().drawPixmap(Assets.bg, 10, 10);
+        /*Vector2 vectorToPlayer = this.cannonAngle.cpy();
+        vectorToPlayer.set(
+                this.world.player.hitBox.getCenterLeft() - this.cannonAngle.x,
+                this.world.player.hitBox.getCenterTop() - this.cannonAngle.y
+        );
 
+        float ca = this.cannonAngle.angleInDegrees();
+        float vp = vectorToPlayer.angleInDegrees();
+        int t = (int) Math.ceil(Math.abs(ca - vp));
+        if (t < this.cannonRotateSpeed) {
+            int a = 3;
+        }
+
+        g.drawLine(
+                this.world.map.screenLeftPotion(this.cannonPos.x),
+                this.world.map.screenTopPotion(this.cannonPos.y),
+                this.world.map.screenLeftPotion(vectorToPlayer.x),
+                this.world.map.screenTopPotion(vectorToPlayer.y),
+                Color.MAGENTA);*/
     }
 
     private void drawWorld(World world)
