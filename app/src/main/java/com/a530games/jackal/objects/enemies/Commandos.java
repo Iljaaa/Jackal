@@ -2,9 +2,9 @@ package com.a530games.jackal.objects.enemies;
 
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
+import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
-import com.a530games.jackal.Settings;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.Bullet;
@@ -12,12 +12,12 @@ import com.a530games.jackal.objects.GameObject;
 
 public class Commandos extends GameObject implements Enemy
 {
-    private int moveDirection = 0;
+    private Vector2 velocity;
 
     private float rotateTimer = 0;
     private float spriteTimer = 0;
 
-    protected float speed = 20;
+    /*protected float speed = 20;
 
     private int[] directions = {
         Vehicle.MOVE_DOWN,
@@ -28,6 +28,17 @@ public class Commandos extends GameObject implements Enemy
         Vehicle.MOVE_TOP_LEFT,
         Vehicle.MOVE_LEFT,
         Vehicle.MOVE_DOWN_LEFT
+    };*/
+
+    private int[][] dirs = {
+        {20, 4},
+        {20, -4},
+        {20, 0},
+        {-20, 4},
+        {-20, -4},
+        {-20, 0},
+        {0, -20},
+        {0, 20},
     };
 
     public Commandos(World world, int startX, int startY)
@@ -41,6 +52,8 @@ public class Commandos extends GameObject implements Enemy
 
         this.hitBox = new HitBox(startX, startY, startX + 51, startY + 60);
         this.sprite.setScreenMargin(10, 6);
+
+        this.velocity = new Vector2(20, 0);
     }
 
     @Override
@@ -66,14 +79,17 @@ public class Commandos extends GameObject implements Enemy
             this.rotateTimer = 5;
             this.spriteTimer = 0.15f;
 
+            int[] a = this.dirs[Jackal.getRandom().nextInt(this.dirs.length)];
+            this.velocity.set(a[0], a[1]);
+
             //
-            this.moveDirection = this.directions[Jackal.getRandom().nextInt(8)];
+            // this.moveDirection = this.directions[Jackal.getRandom().nextInt(8)];
 
 
             // if (this.doConst > 1) this.doConst = 0;
 
             //
-            this.updateSprite(this.moveDirection);
+            this.updateSprite(this.velocity);
 
         }
 
@@ -82,7 +98,7 @@ public class Commandos extends GameObject implements Enemy
             this.tickSprite();
         }
 
-        this.move(this.moveDirection, deltaTime);
+        this.move(this.velocity, deltaTime);
 
         /*if (this.doConst == 2) {
             if (this.fire()){
@@ -107,12 +123,36 @@ public class Commandos extends GameObject implements Enemy
         return true;
     }
 
-    private void updateSprite(int direction)
+    private void updateSprite(Vector2 velocity) //int direction)
     {
         // this.sprite.row = 0;
         // this.sprite.col = 0;
 
-        switch (direction) {
+        // up|down
+        if (velocity.y > 0) {
+            if (velocity.x < 0) {
+                this.sprite.set(0, 2);
+            }
+            else if (velocity.x > 0) {
+                this.sprite.set(0, 1);
+            }
+            else {
+                this.sprite.set(0, 0);
+            }
+        }
+        else {
+            if (velocity.x < 0) {
+                this.sprite.set(0, 2);
+            }
+            else if (velocity.x > 0) {
+                this.sprite.set(0, 1);
+            }
+            else {
+                this.sprite.set(0, 3);
+            }
+        }
+
+        /*switch (direction) {
             case Vehicle.MOVE_DOWN:
                 this.sprite.set(0, 0);
                 break;
@@ -129,7 +169,7 @@ public class Commandos extends GameObject implements Enemy
             case Vehicle.MOVE_TOP:
                 this.sprite.set(0, 3);
                 break;
-        }
+        }*/
     }
 
     private void tickSprite()
@@ -144,9 +184,9 @@ public class Commandos extends GameObject implements Enemy
     /**
      *
      */
-    public void move(int direction, float deltaTime)
+    public void move(Vector2 velocity, float deltaTime)
     {
-        switch (direction) {
+        /*switch (direction) {
             case Vehicle.MOVE_DOWN: this.moveDown(deltaTime, this.speed); break;
             case Vehicle.MOVE_DOWN_RIGHT: this.moveDownRight(deltaTime); break;
             case Vehicle.MOVE_RIGHT: this.moveRight(deltaTime, this.speed); break;
@@ -155,10 +195,36 @@ public class Commandos extends GameObject implements Enemy
             case Vehicle.MOVE_TOP_LEFT: this.moveTopLeft(deltaTime); break;
             case Vehicle.MOVE_LEFT: this.moveLeft(deltaTime, this.speed); break;
             case Vehicle.MOVE_DOWN_LEFT:  this.moveDownLeft(deltaTime); break;
+        }*/
+
+        if (velocity.x != 0) {
+            this.moveHorizontal(velocity, deltaTime);
+        }
+
+        if (velocity.y != 0) {
+            this.moveVertical(velocity, deltaTime);
         }
     }
 
-    public void moveDown(float deltaTime, float speed)
+    private void moveHorizontal(Vector2 velocity, float deltaTime)
+    {
+        this.hitBox.moveTo(this.hitBox.left + (deltaTime * velocity.x), this.hitBox.top);
+
+        if (this.isIntersectMove(this.hitBox)) {
+            this.hitBox.rollback();
+        }
+    }
+
+    private void moveVertical(Vector2 velocity, float deltaTime)
+    {
+        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * velocity.y));
+
+        if (this.isIntersectMove(this.hitBox)) {
+            this.hitBox.rollback();
+        }
+    }
+
+    /*public void moveDown(float deltaTime, float speed)
     {
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * speed));
 
@@ -218,9 +284,12 @@ public class Commandos extends GameObject implements Enemy
     {
         this.moveLeft(deltaTime, this.speed);
         this.moveDown(deltaTime, this.speed / 4);
-    }
+    }*/
 
-    private boolean checkIntersectFroMove (FloatRect aHitbox)
+    /**
+     * Check intersect with: map, enemies and player fjo moving
+     */
+    private boolean isIntersectMove(FloatRect aHitbox)
     {
 
         // intersect with map
@@ -234,11 +303,11 @@ public class Commandos extends GameObject implements Enemy
         }
 
         // intersect with player
-        if (!this.world.player.equals(this)) {
+        // if (!this.world.player.equals(this)) {
             if (Map.isIntersectsTwoRect(aHitbox, this.world.player.hitBox)) {
                 return true;
             }
-        }
+        // }
 
         return false;
     }
