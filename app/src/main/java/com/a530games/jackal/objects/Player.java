@@ -1,5 +1,6 @@
 package com.a530games.jackal.objects;
 
+import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.World;
 import com.a530games.jackal.Sprite;
@@ -28,7 +29,7 @@ public class Player extends RotateVehicle
         // уменьшаем задержку выстрела
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;
 
-        this.updateSprite(this.angle);
+        this.updateSprite(this.direction);
     }
 
     @Override
@@ -41,11 +42,44 @@ public class Player extends RotateVehicle
         return 0;
     }
 
-    private void updateSprite(double playerAngle)
+    private void updateSprite(Vector2 direction)
     {
+        float angle = direction.angleInDegrees();
+
+        if (22 > angle || angle >= 337) {
+            this.sprite.set(2, 1);
+        }
+
+        if (22 < angle && angle <= 68) {
+            this.sprite.set(2, 2);
+        }
+
+        if (68 < angle && angle <= 112) {
+            this.sprite.set(1, 2);
+        }
+
+        if (112 < angle && angle <= 157) {
+            this.sprite.set(0, 2);
+        }
+
+        if (157 < angle && angle <= 202) {
+            this.sprite.set(0, 1);
+        }
+
+        if (202 < angle && angle <= 248) {
+            this.sprite.set(0, 0);
+        }
+
+        if (248 < angle && angle <= 292) {
+            this.sprite.set(1, 0);
+        }
+
+        if (292 < angle && angle <= 337) {
+            this.sprite.set(2, 0);
+        }
 
         // вниз
-        if (0 <= playerAngle && playerAngle < 0.125) {
+        /*if (0 <= playerAngle && playerAngle < 0.125) {
             this.sprite.set(1, 2);
             this.gun.set(1, 2);
         }
@@ -90,8 +124,7 @@ public class Player extends RotateVehicle
         if (1.625 <= playerAngle && playerAngle < 2) {
             this.sprite.set(0, 2);
             this.gun.set(0, 2);
-        }
-        // Log.d("part", String.valueOf(part));
+        }*/
     }
 
 

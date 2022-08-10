@@ -1,12 +1,14 @@
 package com.a530games.jackal;
 
+import com.a530games.framework.math.Vector2;
+
 public class Sidebar {
 
     private boolean isNeedRedraw = true;
 
     public int fps = 0;
 
-    public double playerAngle;
+    public Vector2 playerAngle;
 
     public int playerX = 0;
     public int playerY = 0;
@@ -15,7 +17,7 @@ public class Sidebar {
     public int mapY = 0;
 
     public Sidebar() {
-
+        this.playerAngle = new Vector2();
     }
 
     /**
@@ -54,8 +56,8 @@ public class Sidebar {
         }
     }
 
-    public void setPlayerAngle(double angle) {
-        if (this.playerAngle != angle){
+    public void setPlayerAngle(Vector2 angle) {
+        if (this.playerAngle.x != angle.x || this.playerAngle.y != angle.y) {
             this.playerAngle = angle;
             this.isNeedRedraw = true;
         }

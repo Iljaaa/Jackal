@@ -96,6 +96,19 @@ public class Vector2
         this.y = newY;
     }
 
+    public void setAngleInDegrees(float angleInDegrees)
+    {
+        float rad = angleInDegrees * TO_RADIANS;
+        // float cos = FloatMath.cos(rad);
+        // float sin = FloatMath.sin(rad);
+        float cos = (float) Math.cos(rad);
+        float sin = (float) Math.sin(rad);
+        float newX = this.x * cos - this.y * sin;
+        float newY = this.x * sin + this.y * cos;
+        this.x = newX;
+        this.y = newY;
+    }
+
     public float dist(Vector2 other) {
         float distX = this.x - other.x;
         float distY = this.y - other.y;

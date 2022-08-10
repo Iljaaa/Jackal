@@ -148,11 +148,11 @@ public class GameScreen extends Screen
             if(event.type == Input.TouchEvent.TOUCH_DOWN) {
                 if(event.x < 200) {
                     this.world.snake.turnLeft();
-                    this.world.player.moveLeft(deltaTime);
+                    // this.world.player.moveLeft(deltaTime);
                 }
                 if(event.x > 200) {
                     this.world.snake.turnRight();
-                    this.world.player.moveRight(deltaTime);
+                    // this.world.player.moveRight(deltaTime);
                 }
             }
         }
@@ -165,32 +165,40 @@ public class GameScreen extends Screen
         // move player
         if (controller.isTopButtonDown())  {
             if (controller.isRightButtonDown()) {
-                this.world.player.move(Player.MOVE_TOP_RIGHT, deltaTime);
+                // this.world.player.move(Player.MOVE_TOP_RIGHT, deltaTime);
+                this.world.player.move(1, -1, deltaTime);
             }
             else if (controller.isLeftButtonDown()) {
-                this.world.player.move(Player.MOVE_TOP_LEFT, deltaTime);
+                // this.world.player.move(Player.MOVE_TOP_LEFT, deltaTime);
+                this.world.player.move(-1, -1, deltaTime);
             }
             else {
-                this.world.player.move(Player.MOVE_TOP, deltaTime);
+                // this.world.player.move(Player.MOVE_TOP, deltaTime);
+                this.world.player.move(0, -1, deltaTime);
             }
         }
         else if (controller.isBottomButtonDown())  {
             if (controller.isRightButtonDown()) {
-                this.world.player.move(Player.MOVE_DOWN_RIGHT, deltaTime);
+                // this.world.player.move(Player.MOVE_DOWN_RIGHT, deltaTime);
+                this.world.player.move(1, 1, deltaTime);
             }
             else if (controller.isLeftButtonDown()) {
-                this.world.player.move(Player.MOVE_DOWN_LEFT, deltaTime);
+                // this.world.player.move(Player.MOVE_DOWN_LEFT, deltaTime);
+                this.world.player.move(-1, 1, deltaTime);
             }
             else {
-                this.world.player.move(Player.MOVE_DOWN, deltaTime);
+                // this.world.player.move(Player.MOVE_DOWN, deltaTime);
+                this.world.player.move(0, 1, deltaTime);
             }
         }
         else {
             if (controller.isLeftButtonDown()) {
-                this.world.player.move(Player.MOVE_LEFT, deltaTime);
+                // this.world.player.move(Player.MOVE_LEFT, deltaTime);
+                this.world.player.move(-1, 0, deltaTime);
             }
             if (controller.isRightButtonDown()) {
-                this.world.player.move(Player.MOVE_RIGHT, deltaTime);
+                // this.world.player.move(Player.MOVE_RIGHT, deltaTime);
+                this.world.player.move(1, 0, deltaTime);
             }
         }
 
@@ -236,17 +244,17 @@ public class GameScreen extends Screen
                 Log.d("key", String.valueOf(event.keyCode));
                 if (event.keyCode == 32) {
                     this.world.snake.turnRight();
-                    this.world.player.moveRight(deltaTime);
+                    // this.world.player.moveRight(deltaTime);
                 }
                 else if (event.keyCode == 29) {
                     this.world.snake.turnLeft();
-                    this.world.player.moveLeft(deltaTime);
+                    //this.world.player.moveLeft(deltaTime);
                 }
                 else if (event.keyCode == 51) {
-                    this.world.player.moveTop(deltaTime);
+                    //this.world.player.moveTop(deltaTime);
                 }
                 else if (event.keyCode == 47) {
-                    this.world.player.moveDown(deltaTime);
+                    //this.world.player.moveDown(deltaTime);
                 }
                 else if (event.keyCode == 62) {
                     this.world.player.fire();
@@ -259,7 +267,7 @@ public class GameScreen extends Screen
 
         // fixme: при завершении f[s выводить не будем
         this.sidebar.setFps(this.game.getRenderView().fps);
-        this.sidebar.setPlayerAngle(this.world.player.angle);
+        this.sidebar.setPlayerAngle(this.world.player.direction);
         this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
         this.sidebar.setMapPos((int) Math.floor(this.world.map.x), (int) Math.floor(this.world.map.y));
 
@@ -415,7 +423,7 @@ public class GameScreen extends Screen
 
         this.game.getGraphics().drawText("fps: " + sidebar.fps, 650, 50, 20, Color.MAGENTA);
         this.game.getGraphics().drawText("player: " + sidebar.playerX+ "x"+sidebar.playerY, 650, 80, 20, Color.MAGENTA);
-        this.game.getGraphics().drawText("angle: " + sidebar.playerAngle, 650, 110, 20, Color.MAGENTA);
+        this.game.getGraphics().drawText("angle: " + sidebar.playerAngle.x + "x" + sidebar.playerAngle.y, 650, 110, 20, Color.MAGENTA);
         this.game.getGraphics().drawText("map: " + sidebar.mapX+ "x"+sidebar.mapY, 650, 140, 20, Color.MAGENTA);
 
         // рисуем линю отделяющею сайдбар
@@ -542,7 +550,7 @@ public class GameScreen extends Screen
 
         // this.drawMapNet(g);
 
-        this.drawActiveCell();
+        // this.drawActiveCell();
 
         // todo: calculate objects on screen
         for (int row = 0; row < this.world.map.mapRows; row++) {
@@ -644,15 +652,25 @@ public class GameScreen extends Screen
         // double s = Math.sin(this.world.player.getAngle() * Math.PI);
         // double c = Math.cos(this.world.player.getAngle() * Math.PI);
 
-        this.drawAngle(g,
+        /*this.drawAngle(g,
                 (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth())),
                 (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight())),
-                this.world.player.getAngle());
+                this.world.player.getDirection());*/
 
         /*g.drawLine(centerLeft, centerTop,
                 centerLeft + (int) Math.round(s * 50),
                 centerTop + (int) Math.round(c * 50),
                 Color.GREEN);*/
+
+        int centerX = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
+        int centerY = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
+
+        g.drawLine(
+                centerX,
+                centerY,
+                (int) Math.ceil(centerX + (this.world.player.direction.x * 50)),
+                (int) Math.ceil(centerY + (this.world.player.direction.y * 50)),
+                Color.MAGENTA);
     }
 
 

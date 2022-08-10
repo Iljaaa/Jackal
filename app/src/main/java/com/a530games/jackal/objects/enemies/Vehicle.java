@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
+import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.GameObject;
@@ -59,9 +60,17 @@ public abstract class Vehicle extends GameObject implements Enemy
     /**
      *
      */
-    public void move(int direction, float deltaTime)
+    public void move(int x, int y, float deltaTime)
     {
-        switch (direction) {
+        if (x != 0) {
+            this.moveHorizontal(x * this.speed, deltaTime);
+        }
+
+        if (y != 0) {
+            this.moveVertical(y * this.speed, deltaTime);
+        }
+
+        /*switch (direction) {
             case Vehicle.MOVE_DOWN: this.moveDown(deltaTime); break;
             case Vehicle.MOVE_DOWN_RIGHT: this.moveDownRight(deltaTime); break;
             case Vehicle.MOVE_RIGHT: this.moveRight(deltaTime); break;
@@ -70,10 +79,28 @@ public abstract class Vehicle extends GameObject implements Enemy
             case Vehicle.MOVE_TOP_LEFT: this.moveTopLeft(deltaTime); break;
             case Vehicle.MOVE_LEFT: this.moveLeft(deltaTime); break;
             case Vehicle.MOVE_DOWN_LEFT:  this.moveDownLeft(deltaTime); break;
+        }*/
+    }
+
+    private void moveHorizontal(float xSpeed, float deltaTime)
+    {
+        this.hitBox.moveTo(this.hitBox.left + (deltaTime * xSpeed), this.hitBox.top);
+
+        if (this.checkIntersectFroMove(this.hitBox)) {
+            this.hitBox.rollback();
         }
     }
 
-    public void moveDown(float deltaTime)
+    private void moveVertical(float ySpeed, float deltaTime)
+    {
+        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * ySpeed));
+
+        if (this.checkIntersectFroMove(this.hitBox)) {
+            this.hitBox.rollback();
+        }
+    }
+
+    /*public void moveDown(float deltaTime)
     {
         // move don
         // this._newPos = this.y + (deltaTime * this.speed);
@@ -92,18 +119,7 @@ public abstract class Vehicle extends GameObject implements Enemy
         this.moveDown(deltaTime);
         this.moveRight(deltaTime);
         // move hibox
-        /*this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
-        if (this.checkIntersectFroMove(this.hitBox)) {
-            this.hitBox.rollback();
-        }
-
-        // move hibox
-        this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
-
-        if (this.checkIntersectFroMove(this.hitBox)) {
-            this.hitBox.rollback();
-        }*/
 
         // this.x += (deltaTime * this.speed);
         // this.y += (deltaTime * this.speed);
@@ -127,19 +143,7 @@ public abstract class Vehicle extends GameObject implements Enemy
     {
         this.moveTop(deltaTime);
         this.moveRight(deltaTime);
-        // move hibox
-        /*this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
-        if (this.checkIntersectFroMove(this.hitBox)) {
-            this.hitBox.rollback();
-        }
-
-        // move hibox
-        this.hitBox.moveTo(this.hitBox.left + (deltaTime * this.speed), this.hitBox.top);
-
-        if (this.checkIntersectFroMove(this.hitBox)) {
-            this.hitBox.rollback();
-        }*/
     }
 
     public void moveTop(float deltaTime)
@@ -161,19 +165,7 @@ public abstract class Vehicle extends GameObject implements Enemy
         // this.y -= (deltaTime * this.speed);
         this.moveTop(deltaTime);
         this.moveLeft(deltaTime);
-        // move hibox
-        /*this.hitBox.moveTo(this.hitBox.left, this.hitBox.top - (deltaTime * this.speed));
 
-        if (this.checkIntersectFroMove(this.hitBox)) {
-            this.hitBox.rollback();
-        }
-
-        // move hibox
-        this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
-
-        if (this.checkIntersectFroMove(this.hitBox)) {
-            this.hitBox.rollback();
-        }*/
 
     }
 
@@ -197,21 +189,10 @@ public abstract class Vehicle extends GameObject implements Enemy
         this.moveDown(deltaTime);
 
         // move hibox
-        /*this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * this.speed));
 
-        if (this.checkIntersectFroMove(this.hitBox)) {
-            this.hitBox.rollback();
-        }
+    }*/
 
-        // move hibox
-        this.hitBox.moveTo(this.hitBox.left - (deltaTime * this.speed), this.hitBox.top);
-
-        if (this.checkIntersectFroMove(this.hitBox)) {
-            this.hitBox.rollback();
-        }*/
-    }
-
-    private boolean checkIntersectFroMove (FloatRect aHitbox)
+    protected boolean checkIntersectFroMove (FloatRect aHitbox)
     {
 
         // intersect with map
