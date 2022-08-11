@@ -11,6 +11,9 @@ public class EnemyBulletsCollection
 
     public EnemyBulletsCollection() {
         this.bullets = new ArrayList<>(MAX_BULLETS_SIZE);
+        for (int i = 0; i < MAX_BULLETS_SIZE; i++) {
+            this.bullets.add(new Bullet(true));
+        }
     }
 
     public int size() {
@@ -53,11 +56,11 @@ public class EnemyBulletsCollection
             }
         }
 
-        if (size >= MAX_BULLETS_SIZE) return null;
+        /*if (size >= MAX_BULLETS_SIZE) return null;
 
         Bullet b = new Bullet(0, 0, 0);
         this.bullets.add(b);
-
-        return b;
+        return b;*/
+        return null;
     }
 }

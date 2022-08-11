@@ -21,6 +21,11 @@ public class Bullet
 
     private float timer;
 
+    public Bullet(boolean isOut) {
+        this.isOut = isOut;
+        this.direction = new Vector(0 ,1);
+    }
+
     public Bullet(float x, float y, float angle)
     {
         this.x = x;
