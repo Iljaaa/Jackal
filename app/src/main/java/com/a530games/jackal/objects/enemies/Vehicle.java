@@ -215,9 +215,6 @@ public abstract class Vehicle extends GameObject implements Enemy
         return false;
     }
 
-    // ----------> methods move in interface
-
-    public float turretAngle = 0.5f;
 
 
 }

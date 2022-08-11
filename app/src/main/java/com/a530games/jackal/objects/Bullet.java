@@ -94,6 +94,7 @@ public class Bullet
     }
 
     /**
+     * @deprecated use renewByVector
      * Перезапускаем пульку для повторного использования
      */
     public void reNew (float x, float y, float angle)

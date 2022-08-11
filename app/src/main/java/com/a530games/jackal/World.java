@@ -157,7 +157,12 @@ public class World
 
                 if (this.player.hitBox.isHit(b))
                 {
+                    // player hit
+                    this.player.hit(1);
+
+                    // mark bullet is out
                     b.setIsOutOnHitEnemy();
+
                     if(Settings.soundEnabled) {
                         Assets.playerHit.play(1);
                     }

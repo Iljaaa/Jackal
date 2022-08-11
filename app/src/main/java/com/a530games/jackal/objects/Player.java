@@ -38,8 +38,13 @@ public class Player extends RotateVehicle
     }
 
     @Override
-    public double getTurretAngle() {
-        return 0;
+    public Vector2 getTurretAngle() {
+        return null;
+    }
+
+    @Override
+    public Vector2 getTargetAngle() {
+        return null;
     }
 
     private void updateSprite(Vector2 direction)
@@ -138,5 +143,13 @@ public class Player extends RotateVehicle
         this.fireDelay = 0.55f;
         return true;
         // return new Bullet(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1);
+    }
+
+    /**
+     * Hit by enemy bullet
+     * @param damage
+     */
+    public void hit (int damage) {
+        // hp mines
     }
 }

@@ -514,10 +514,20 @@ public class GameScreen extends Screen
                 // its only for tanks and turrets
                 if (enemy.hasTurret())
                 {
+                    // target
                     this.drawAngle(g,
                             screenHitBox.centerX(),
                             screenHitBox.centerY(),
-                            enemy.getTurretAngle()
+                            enemy.getTargetAngle(),
+                            Color.LTGRAY
+                    );
+
+                    // turret
+                    this.drawAngle(g,
+                            screenHitBox.centerX(),
+                            screenHitBox.centerY(),
+                            enemy.getTurretAngle(),
+                            Color.GREEN
                     );
                 }
             }
@@ -645,23 +655,6 @@ public class GameScreen extends Screen
 
     private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)
     {
-        // int centerLeft = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
-        // int centerTop = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
-
-        // отрисовываем вектор направления
-        // double s = Math.sin(this.world.player.getAngle() * Math.PI);
-        // double c = Math.cos(this.world.player.getAngle() * Math.PI);
-
-        /*this.drawAngle(g,
-                (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth())),
-                (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight())),
-                this.world.player.getDirection());*/
-
-        /*g.drawLine(centerLeft, centerTop,
-                centerLeft + (int) Math.round(s * 50),
-                centerTop + (int) Math.round(c * 50),
-                Color.GREEN);*/
-
         int centerX = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
         int centerY = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
 
@@ -673,8 +666,14 @@ public class GameScreen extends Screen
                 Color.MAGENTA);
     }
 
-
-    private void drawAngle (Graphics g, int screenCenterLeft, int screenCenterTop, double angle)
+    /**
+     *
+     * @param g
+     * @param screenCenterLeft
+     * @param screenCenterTop
+     * @param angleVector normal vector
+     */
+    private void drawAngle (Graphics g, int screenCenterLeft, int screenCenterTop, Vector2 angleVector, int color)
     {
         // int centerTop = Math.round(this.world.player.hitBox.getCenterTop());
 
@@ -682,12 +681,19 @@ public class GameScreen extends Screen
         // double s = Math.sin(this.world.player.getAngle() * Math.PI);
         // double c = Math.cos(this.world.player.getAngle() * Math.PI);
 
-        g.drawLine(
+        /*g.drawLine(
                 screenCenterLeft,
                 screenCenterTop,
                 screenCenterLeft + (int) Math.round(Math.sin(angle * Math.PI) * 50),
                 screenCenterTop + (int) Math.round(Math.cos(angle * Math.PI) * 50),
-                Color.GREEN);
+                Color.GREEN);*/
+
+        g.drawLine(
+                screenCenterLeft,
+                screenCenterTop,
+                Math.round(screenCenterLeft + (angleVector.x * 50)),
+                Math.round(screenCenterTop + (angleVector.y * 50)),
+                color);
     }
 
     private void drawStain ()

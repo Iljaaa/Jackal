@@ -2,6 +2,7 @@ package com.a530games.jackal.objects.enemies;
 
 import android.util.Log;
 
+import com.a530games.framework.helpers.FloatPoint;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
@@ -9,18 +10,27 @@ import com.a530games.jackal.Settings;
 import com.a530games.jackal.World;
 import com.a530games.jackal.objects.Bullet;
 
+/**
+ * todo: сделать прицеливание не ограниченым по времени
+ * todo: сделать прицеливание по оптимальной траектории
+ */
 public class Tank extends Vehicle
 {
     private Vector2 velocity;
 
-    private double targetAngle;
+
+    private Vector2 targetAngle = new Vector2(1, 0);
     // private Vector targetAngle;
+
+    //
+    public Vector2 turretAngle = new Vector2(1, 0);
 
     private float rotateTimer = 0;
 
     private int doConst = 0;
 
-    private int[] directions = { Vehicle.MOVE_DOWN,
+    private int[] directions = {
+        Vehicle.MOVE_DOWN,
         Vehicle.MOVE_DOWN_RIGHT,
         Vehicle.MOVE_RIGHT,
         Vehicle.MOVE_TOP_RIGHT,
@@ -53,8 +63,13 @@ public class Tank extends Vehicle
     }
 
     @Override
-    public double getTurretAngle() {
+    public Vector2 getTurretAngle() {
         return this.turretAngle;
+    }
+
+    @Override
+    public Vector2 getTargetAngle() {
+        return this.targetAngle;
     }
 
     @Override
@@ -72,17 +87,27 @@ public class Tank extends Vehicle
 
 
             // calculate angle by who points
-            // FloatPoint playerCenter = player.getHitBox().getCenter();
-            // FloatPoint tankCenter = this.hitBox.getCenter();
+            FloatPoint playerCenter = player.getHitBox().getCenter();
+            FloatPoint tankCenter = this.hitBox.getCenter();
 
             // d
-            /*float x = playerCenter.left- tankCenter.left;
             float y = playerCenter.top - tankCenter.top;
-            double d = Math.sqrt((x * x) + (y * y));
-            Vector v = new Vector((float) (x / d), (float) (y / d));*/
+            float x = playerCenter.left- tankCenter.left;
+            // double d = Math.sqrt((x * x) + (y * y));
+            // Vector v = new Vector((float) (x / d), (float) (y / d));
+
+            float angle = (float) Math.atan2(y, x) * Vector2.TO_DEGREES;
 
             // random angle
-            this.targetAngle = Jackal.getRandom().nextFloat() * 2;
+            // this.targetAngle = Jackal.getRandom().nextFloat() * 2;
+            // this.targetAngle.set(Jackal.getRandom().nextFloat(), Jackal.getRandom().nextFloat());
+            this.targetAngle.set(x, y);
+            this.targetAngle.nor();
+
+
+            // angle to playes
+            // this.world.player.hitBox
+
             // Log.d("player angle", String.valueOf(this.targetAngle));
         }
 
@@ -90,9 +115,21 @@ public class Tank extends Vehicle
             this.move2(this.velocity, deltaTime);
         }
 
-        if (this.doConst == 1) {
-            if (this.turretAngle < this.targetAngle) this.turretAngle += 0.05;
-            if (this.turretAngle > this.targetAngle) this.turretAngle -= 0.05;
+        if (this.doConst == 1)
+        {
+            float turretAngleInDegrees = this.turretAngle.angleInDegrees();
+            float targetAngleInDegrees = this.targetAngle.angleInDegrees();
+            // if (turretAngleInDegrees < this.targetAngle) this.turretAngle += 0.05;
+            // if (turretAngleInDegrees > this.targetAngle) this.turretAngle -= 0.05;
+
+            float degDelta = targetAngleInDegrees - turretAngleInDegrees;
+            float rotate = (turretAngleInDegrees < targetAngleInDegrees) ? 5 : -5;
+            if (Math.abs(degDelta) < 5) rotate = degDelta;
+
+
+            this.turretAngle.rotate(rotate);
+            //if (turretAngleInDegrees < targetAngleInDegrees) this.turretAngle.rotate(5);
+            // if (turretAngleInDegrees > targetAngleInDegrees) this.turretAngle.rotate(-5);
         }
 
         if (this.doConst == 2) {
@@ -119,7 +156,8 @@ public class Tank extends Vehicle
         Bullet b = this.world.enemyBullets.getFreeBullet();
         if (b == null) return false;
 
-        b.reNew(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle);
+        // b.reNew(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle.angleInDegrees());
+        b.reNewByVector(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle.x, this.turretAngle.y);
         return true;
     }
 

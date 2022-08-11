@@ -3,6 +3,7 @@ package com.a530games.jackal.objects.enemies;
 import android.graphics.Rect;
 
 import com.a530games.framework.helpers.HitBox;
+import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.map.Map;
 
@@ -26,7 +27,17 @@ public interface Enemy
 
     boolean hasTurret();
 
-    double getTurretAngle();
+    /**
+     * Normal vector on turret angle
+     * @return
+     */
+    Vector2 getTurretAngle();
+
+    /**
+     * Normal vector to target
+     * @return
+     */
+    Vector2 getTargetAngle();
 
     void update(float deltaTime, Enemy player);
 

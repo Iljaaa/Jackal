@@ -67,8 +67,13 @@ public class Commandos extends GameObject implements Enemy
     }
 
     @Override
-    public double getTurretAngle() {
-        return 0;
+    public Vector2 getTurretAngle() {
+        return null;
+    }
+
+    @Override
+    public Vector2 getTargetAngle() {
+        return null;
     }
 
     @Override
