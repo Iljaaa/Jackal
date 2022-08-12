@@ -108,7 +108,8 @@ public class World
                 Bullet b = this.bullets.get(i);
                 if (b.isOut()) continue;
 
-                if (this.map.isIntersectPoint(b.x, b.y)) {
+                // if (this.map.isIntersectPoint(b.x, b.y)) {
+                if (this.map.isIntersectPoint(b.mapPosition.left, b.mapPosition.top)) {
                     b.setIsOutOnIntersectWithMap();
                 }
 
@@ -147,7 +148,8 @@ public class World
                 Bullet b = this.enemyBullets.get(i);
                 if (b.isOut()) continue;
 
-                if (this.map.isIntersectPoint(b.x, b.y)) {
+                // if (this.map.isIntersectPoint(b.x, b.y)) {
+                if (this.map.isIntersectPoint(b.mapPosition.left, b.mapPosition.top)) {
                     b.setIsOutOnIntersectWithMap();
                     continue;
                 }
@@ -243,16 +245,29 @@ public class World
         this.stain = new Stain(stainX, stainY, random.nextInt(3));
     }
 
+
+    /**
+     * Player press fire button
+     */
+    public boolean playerFire()
+    {
+        // check delay
+        if (!this.player.fire()) return false;
+
+        // add bullet
+        return this.addBullet(this.player.hitBox.getCenterLeft(), this.player.hitBox.getCenterTop() - 20);
+    }
+
     /**
      * Add player bullet
      * refactor by get free
      */
-    public boolean addBullet (float playerCenterX, float playerCenterY, float playerTurretAngle )
+    public boolean addBullet (float playerCenterX, float playerCenterY )
     {
         Bullet b = this.bullets.getFreeBullet();
         if (b == null) return false;
 
-        b.reNew(playerCenterX, playerCenterY, playerTurretAngle);
+        b.reNewByVector(playerCenterX, playerCenterY, 0, -1);
         if(Settings.soundEnabled) Assets.fire.play(1);
         return true;
 

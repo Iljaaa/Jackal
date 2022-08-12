@@ -1,7 +1,6 @@
 package com.a530games.jackal.objects;
 
-import android.graphics.Color;
-
+import com.a530games.framework.helpers.FloatPoint;
 import com.a530games.framework.helpers.Vector;
 
 public class Bullet
@@ -9,27 +8,40 @@ public class Bullet
     private final float lifeTime  = 1;
 
     // position
-    public float x;
-    public float y;
+    public FloatPoint mapPosition;
+    // public float x;
+    // public float y;
+
+    // start position
+    // for calculate shot blow
+    public FloatPoint startMapPosition;
 
     //
     public Vector direction;
 
+    //
     private int speed = 12;
 
     private boolean isOut = false;
 
-    private float timer;
+    // timer to death
+    public float timer = 0;
 
     public Bullet(boolean isOut) {
         this.isOut = isOut;
         this.direction = new Vector(0 ,1);
+        this.mapPosition = new FloatPoint(0, 0);
+        this.startMapPosition = new FloatPoint(0, 0);
     }
 
     public Bullet(float x, float y, float angle)
     {
-        this.x = x;
-        this.y = y;
+        this.mapPosition.left = x;
+        this.mapPosition.top = y;
+        this.startMapPosition.left = x;
+        this.startMapPosition.top = y;
+//        this.x = x;
+//        this.y = y;
 
         // отрисовываем вектор направления
         // double x = Math.sin(this.world.player.getAngle() * Math.PI);
@@ -47,15 +59,17 @@ public class Bullet
                 (float) Math.cos(angle * Math.PI)
         );
 
-        this.timer = this.lifeTime;
+        this.timer = 0;
     }
 
     public float getX() {
-        return x;
+        // return x;
+        return this.mapPosition.left;
     }
 
     public float getY() {
-        return y;
+        // return y;
+        return this.mapPosition.top;
     }
 
     /**
@@ -81,43 +95,53 @@ public class Bullet
     {
         if (this.isOut) return;
 
-        if (this.timer <= 0) {
+        if (this.timer >= this.lifeTime) {
             this.isOut = true;
             return;
         }
 
-        this.timer -= deltaTime;
+        this.timer += deltaTime;
 
         // move
-        this.y += this.direction.y * this.speed;
-        this.x += this.direction.x * this.speed;
+        this.mapPosition.left += this.direction.x * this.speed;
+        this.mapPosition.top += this.direction.y * this.speed;
+        // this.y += this.direction.y * this.speed;
+        // this.x += this.direction.x * this.speed;
     }
 
-    /**
+    /*
      * @deprecated use renewByVector
      * Перезапускаем пульку для повторного использования
-     */
+
     public void reNew (float x, float y, float angle)
     {
-        this.x = x;
-        this.y = y;
+        this.mapPosition.left = x;
+        this.mapPosition.top = y;
+        this.startMapPosition.left = x;
+        this.startMapPosition.top = y;
+        // this.x = x;
+        // this.y = y;
         this.direction.updateByAngle(angle);
         this.isOut = false;
-        this.timer = this.lifeTime;
-    }
+        this.timer = 0;
+    } */
 
     /**
      * Перезапускаем пульку для повторного использования
      */
     public void reNewByVector (float x, float y, float directionX, float directionY)
     {
-        this.x = x;
-        this.y = y;
+        this.mapPosition.left = x;
+        this.mapPosition.top = y;
+        this.startMapPosition.left = x;
+        this.startMapPosition.top = y;
+        // this.x = x;
+        // this.y = y;
         // this.direction.updateByAngle(angle);
         this.direction.x = directionX;
         this.direction.y = directionY;
 
         this.isOut = false;
-        this.timer = this.lifeTime;
+        this.timer = 0;
     }
 }
