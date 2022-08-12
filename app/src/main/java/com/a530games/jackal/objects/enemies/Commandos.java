@@ -124,7 +124,7 @@ public class Commandos extends GameObject implements Enemy
         Bullet b = this.world.enemyBullets.getFreeBullet();
         if (b == null) return false;
 
-        b.reNew(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1.5f);
+        b.reNewByVector(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1, 0);
         return true;
     }
 
