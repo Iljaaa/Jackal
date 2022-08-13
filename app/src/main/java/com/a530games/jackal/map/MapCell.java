@@ -2,43 +2,40 @@ package com.a530games.jackal.map;
 
 import android.graphics.Rect;
 
-import com.a530games.jackal.Sprite;
+import com.a530games.framework.Graphics;
 
-public class MapCell
+public abstract class MapCell
 {
-    public static final int MOVE_ROCK_1 = 1;
-    public static final int MOVE_ROCK_2 = 2;
-    public static final int MOVE_ROCK_3 = 3;
-
-    public static final int MOVE_BUSH_1 = 10;
-    public static final int MOVE_BUSH_2 = 11;
-    public static final int MOVE_BUSH_3 = 12;
-    public static final int MOVE_BUSH_4 = 13;
-
-    /**
-     * Can be sho
-     */
-    public boolean isRock = true;
 
     public Rect hitBox;
 
-    public int type;
-
-    public MapCell(int row, int col, int cellSize, int type)
+    public MapCell(int row, int col, int cellWidth, int cellHeight)
     {
-        this.type = type;
-
-        /*this.row = row;
-        this.col = col;*/
-
-        // create hitbox
-        this.hitBox = new Rect(col * cellSize, row * cellSize, (col * cellSize) + cellSize, (row * cellSize) + cellSize);
+        this.hitBox = new Rect(col * cellWidth, row * cellHeight, (col * cellWidth) + cellWidth, (row * cellHeight) + cellHeight);
     }
 
     /**
-     * Is intersect point inside rect
+     * Draw block on background
+     * @param g Graphic object
      */
-    public boolean isIntersectPintInsideRect(float mapLeft, float mapTop) {
-        return this.isRock;
-    }
+    abstract void drawOnBackground(Graphics g);
+
+    /**
+     * Update not static block before craw
+     */
+    abstract void update(float deltaTime);
+
+    /**
+     * Draw block
+     * @param g Graphic object
+     */
+    public abstract void draw(Graphics g, Map map);
+
+    /**
+     * Check intersect inside rect
+     * @param mapLeft left position on map
+     * @param mapTop top position on map
+     * @return is has intersect pint inside block
+     */
+    abstract boolean isIntersectPointInsideRect(float mapLeft, float mapTop);
 }

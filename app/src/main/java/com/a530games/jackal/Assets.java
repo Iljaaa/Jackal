@@ -25,6 +25,8 @@ public class Assets {
     public static Pixmap rock;
     public static Pixmap bigStone;
 
+    public static Pixmap botLine;
+
     public static Sound fire;
     public static Sound playerHit;
     public static Sound playerBlow;
@@ -67,6 +69,9 @@ public class Assets {
         Assets.tankHit1 = a.newSound("sound/tank_hit_1.wav");
         Assets.tankHit2 = a.newSound("sound/tank_hit_2.wav");
         Assets.tankFire = a.newSound("sound/tank_fire.wav");
+
+        Assets.botLine = g.newPixmap("images/bot_line.png", Graphics.PixmapFormat.RGB565);
+
 
         Assets.isPart2Loaded = true;
     }

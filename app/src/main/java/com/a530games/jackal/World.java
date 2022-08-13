@@ -101,76 +101,14 @@ public class World
         this.map.update(this.player, deltaTime);
 
         // player bullets update
-        int bulletSize = this.bullets.size();
-        if (bulletSize > 0) {
-            for (int i = 0; i < bulletSize; i++)
-            {
-                Bullet b = this.bullets.get(i);
-                if (b.isOut()) continue;
-
-                // if (this.map.isIntersectPoint(b.x, b.y)) {
-                if (this.map.isIntersectPoint(b.mapPosition.left, b.mapPosition.top)) {
-                    b.setIsOutOnIntersectWithMap();
-                }
-
-                b.update(deltaTime);
-            }
-        }
+        this.updatePlayerBullets(deltaTime);
 
         // update enemies
-        int enemiesSize = this.enemies.size();
-        if (enemiesSize > 0) {
-            for (int i = 0; i < enemiesSize; i++)
-            {
-                Enemy enemy = this.enemies.get(i);
-                enemy.update(deltaTime, this.player);
-
-                // check intersect with player bullets
-                for (int bulletIndex = 0; bulletIndex < bulletSize; bulletIndex++) {
-                    Bullet b = this.bullets.get(bulletIndex);
-                    if (b.isOut()) continue;
-                    if (enemy.getHitBox().isHit(b))
-                    {
-                        b.setIsOutOnHitEnemy();
-                        if(Settings.soundEnabled) {
-                            this.tankHitSounds.get(this.random.nextInt(this.tankHitSounds.size())).play(1);
-                        }
-                    }
-                }
-            }
-        }
+        this.updateEnemies(deltaTime);
 
         // бновляем пули игрока
         // this.enemyBullets.update(deltaTime);
-        int enemyBulletsSize = this.enemyBullets.size();
-        if (enemyBulletsSize > 0) {
-            for (int i = 0; i < enemyBulletsSize; i++) {
-                Bullet b = this.enemyBullets.get(i);
-                if (b.isOut()) continue;
-
-                // if (this.map.isIntersectPoint(b.x, b.y)) {
-                if (this.map.isIntersectPoint(b.mapPosition.left, b.mapPosition.top)) {
-                    b.setIsOutOnIntersectWithMap();
-                    continue;
-                }
-
-                b.update(deltaTime);
-                // if (b.isOut()) this.bullets.remove(i);
-
-                if (this.player.hitBox.isHit(b))
-                {
-                    // player hit
-                    this.player.hit(1);
-
-                    // mark bullet is out
-                    b.setIsOutOnHitEnemy();
-
-                    if(Settings.soundEnabled) {
-                        Assets.playerHit.play(1);
-                    }
-                }
-            }
-        }
+        this.updateEnemyBullets(deltaTime);
 
         // rollback ticks
         while (this.tickTime > aTick)
@@ -208,8 +146,88 @@ public class World
         }
     }
 
+    private void updatePlayerBullets(float deltaTime)
+    {
+        int bulletSize = this.bullets.size();
+        if (bulletSize > 0) {
+            for (int i = 0; i < bulletSize; i++)
+            {
+                Bullet b = this.bullets.get(i);
+                if (b.isOut()) continue;
+
+                // if (this.map.isIntersectPoint(b.x, b.y)) {
+                if (this.map.isIntersectPoint(b.mapPosition.left, b.mapPosition.top)) {
+                    b.setIsOutOnIntersectWithMap();
+                }
+
+                b.update(deltaTime);
+            }
+        }
+    }
+
+    private void updateEnemies (float deltaTime)
+    {
+        int enemiesSize = this.enemies.size();
+        int playerBulletsSize = this.bullets.size();
+
+        if (enemiesSize > 0) {
+            for (int i = 0; i < enemiesSize; i++)
+            {
+                Enemy enemy = this.enemies.get(i);
+                enemy.update(deltaTime, this.player);
+
+                // check intersect with player bullets
+                for (int bulletIndex = 0; bulletIndex < playerBulletsSize; bulletIndex++) {
+                    Bullet b = this.bullets.get(bulletIndex);
+                    if (b.isOut()) continue;
+                    if (enemy.getHitBox().isHit(b))
+                    {
+                        b.setIsOutOnHitEnemy();
+                        if(Settings.soundEnabled) {
+                            this.tankHitSounds.get(this.random.nextInt(this.tankHitSounds.size())).play(1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateEnemyBullets (float deltaTime)
+    {
+        int enemyBulletsSize = this.enemyBullets.size();
+        if (enemyBulletsSize > 0) {
+            for (int i = 0; i < enemyBulletsSize; i++) {
+                Bullet b = this.enemyBullets.get(i);
+                if (b.isOut()) continue;
+
+                // if (this.map.isIntersectPoint(b.x, b.y)) {
+                if (this.map.isIntersectPoint(b.mapPosition.left, b.mapPosition.top)) {
+                    b.setIsOutOnIntersectWithMap();
+                    continue;
+                }
+
+                b.update(deltaTime);
+                // if (b.isOut()) this.bullets.remove(i);
+
+                if (this.player.hitBox.isHit(b))
+                {
+                    // player hit
+                    this.player.hit(1);
+
+                    // mark bullet is out
+                    b.setIsOutOnHitEnemy();
+
+                    if(Settings.soundEnabled) {
+                        Assets.playerHit.play(1);
+                    }
+                }
+            }
+        }
+    }
+
+
     /**
-     * Ставим приманку
+     * Place nom stain
      */
     private void placeStain()
     {

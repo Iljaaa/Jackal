@@ -24,11 +24,20 @@ public class Sprite
         this.image = image;
     }
 
+    public Sprite(Pixmap image, int col, int row) {
+        this.col = col;
+        this.row = row;
+        this.image = image;
+    }
+
     public void setSpriteSize (int width, int height){
         this.height = height;
         this.width = width;
     }
 
+    /**
+     * Margin sprite position on screen on draw
+     */
     public void setScreenMargin (int leftMargin, int topMargin){
         this.screenMarginLeft = leftMargin;
         this.screenMarginTop = topMargin;

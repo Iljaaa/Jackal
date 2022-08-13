@@ -14,6 +14,7 @@ import com.a530games.framework.Screen;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
+import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
@@ -22,9 +23,8 @@ import com.a530games.jackal.SnakePart;
 import com.a530games.jackal.Stain;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
-import com.a530games.jackal.map.MapCell;
+import com.a530games.jackal.map.Rock;
 import com.a530games.jackal.objects.enemies.Enemy;
-import com.a530games.jackal.objects.Player;
 
 import java.util.List;
 
@@ -114,7 +114,7 @@ public class GameScreen extends Screen
 
         float ca = this.cannonAngle.angleInDegrees();
         float vp = vectorToPlayer.angleInDegrees();
-        float t = (float) Math.abs(ca - vp);
+        // float t = Math.abs(ca - vp);
         if (this.cannonRotateSpeed < Math.abs(ca - vp)) {
             this.cannonAngle.rotate(3);
         }
@@ -560,7 +560,7 @@ public class GameScreen extends Screen
     {
         Graphics g = this.game.getGraphics();
 
-        // draw part of map
+        // draw back part of map
         g.drawBitmap(
                 this.world.map.testBitmap,
                 0,
@@ -570,27 +570,43 @@ public class GameScreen extends Screen
                 640,
                 640);
 
+
+        // draw blocks
+        for (int row = 0; row < this.world.map.mapRows; row++) {
+            for (int col = 0; col < this.world.map.mapCols; col++)
+            {
+                MapCell c = this.world.map.fields[row][col];
+                if (c == null) continue;
+
+                c.draw(g, this.world.map);
+            }
+        }
+
         // this.drawMapNet(g);
 
         // this.drawActiveCell();
 
-        // todo: calculate objects on screen
-        for (int row = 0; row < this.world.map.mapRows; row++) {
-            for (int col = 0; col < this.world.map.mapCols; col++) {
-                MapCell c = this.world.map.fields[row][col];
-                if (c == null) continue;
-                // g.drawRect(c.hitBox, this.hitBoxPaint);
-                g.drawRect(
-                    (int) Math.floor(c.hitBox.left + this.world.map.x),
-                    (int) Math.floor(c.hitBox.top + this.world.map.y),
-                    c.hitBox.width(),
-                    c.hitBox.height(),
-                    this.hitBoxPaint
-                    );
+        // this.drawMapObjectsHitBoxes(g, this.world.map);
+    }
 
-                /*if (c.isRock) {
-                    g.drawRect(c.hitBox, this.hitBoxPaint);
-                }*/
+    /**
+     * Hit boxes for map objects
+     * @param g Graphics object
+     * @param map Map object
+     */
+    private void drawMapObjectsHitBoxes(Graphics g, Map map)
+    {
+        for (int row = 0; row < map.mapRows; row++) {
+            for (int col = 0; col < map.mapCols; col++) {
+                MapCell c = map.fields[row][col];
+                if (c == null) continue;
+                g.drawRect(
+                        (int) Math.floor(c.hitBox.left + map.x),
+                        (int) Math.floor(c.hitBox.top + map.y),
+                        c.hitBox.width(),
+                        c.hitBox.height(),
+                        this.hitBoxPaint
+                );
             }
         }
     }
