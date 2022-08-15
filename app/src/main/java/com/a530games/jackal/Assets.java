@@ -22,8 +22,10 @@ public class Assets {
 
     public static Pixmap mapSprite;
 
+    // temp object must move on map sprite
     public static Pixmap rock;
     public static Pixmap bigStone;
+    public static Pixmap bigPillar;
 
     public static Pixmap botLine;
 
@@ -48,10 +50,13 @@ public class Assets {
         Assets.player = g.newPixmap("images/player.png", Graphics.PixmapFormat.RGB565);
         Assets.bullet = g.newPixmap("images/bullet.png", Graphics.PixmapFormat.RGB565);
         Assets.bullet2 = g.newPixmap("images/bullet2.png", Graphics.PixmapFormat.RGB565);
-        Assets.rock = g.newPixmap("images/rock.png", Graphics.PixmapFormat.RGB565);
-        Assets.bigStone = g.newPixmap("images/big_stone.png", Graphics.PixmapFormat.RGB565);
         Assets.gun = g.newPixmap("images/gun.png", Graphics.PixmapFormat.RGB565);
         Assets.man = g.newPixmap("images/man.png", Graphics.PixmapFormat.RGB565);
+
+        Assets.rock = g.newPixmap("images/rock.png", Graphics.PixmapFormat.RGB565);
+        Assets.bigStone = g.newPixmap("images/big_stone.png", Graphics.PixmapFormat.RGB565);
+        Assets.botLine = g.newPixmap("images/bot_line.png", Graphics.PixmapFormat.RGB565);
+        Assets.bigPillar = g.newPixmap("images/big_pillar.png", Graphics.PixmapFormat.RGB565);
 
         Assets.fire = a.newSound("sound/fire.mp3");
         Assets.playerHit = a.newSound("sound/player_hit.wav");
@@ -69,9 +74,6 @@ public class Assets {
         Assets.tankHit1 = a.newSound("sound/tank_hit_1.wav");
         Assets.tankHit2 = a.newSound("sound/tank_hit_2.wav");
         Assets.tankFire = a.newSound("sound/tank_fire.wav");
-
-        Assets.botLine = g.newPixmap("images/bot_line.png", Graphics.PixmapFormat.RGB565);
-
 
         Assets.isPart2Loaded = true;
     }

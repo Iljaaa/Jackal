@@ -123,13 +123,17 @@ public class AndroidGraphics implements Graphics
     {
         this.srcRect.left = srcX;
         this.srcRect.top = srcY;
-        this.srcRect.right = srcX + srcWidth - 1;
-        this.srcRect.bottom = srcY + srcHeight - 1;
+        this.srcRect.right = srcX + srcWidth;
+        this.srcRect.bottom = srcY + srcHeight;
+        // this.srcRect.right = srcX + srcWidth - 1;
+        // this.srcRect.bottom = srcY + srcHeight - 1;
 
         this.dstRect.left = x;
         this.dstRect.top = y;
-        this.dstRect.right = x + srcWidth - 1;
-        this.dstRect.bottom = y + srcHeight - 1;
+        // this.dstRect.right = x + srcWidth - 1;
+        // this.dstRect.bottom = y + srcHeight - 1;
+        this.dstRect.right = x + srcWidth;
+        this.dstRect.bottom = y + srcHeight;
 
         this.canvas.drawBitmap(((AndroidPixmap) pixmap).bitmap, srcRect, dstRect, null);
     }

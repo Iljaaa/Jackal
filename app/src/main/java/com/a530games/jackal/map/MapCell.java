@@ -7,11 +7,15 @@ import com.a530games.framework.Graphics;
 public abstract class MapCell
 {
 
-    public Rect hitBox;
+    protected Rect hitBox;
 
     public MapCell(int row, int col, int cellWidth, int cellHeight)
     {
         this.hitBox = new Rect(col * cellWidth, row * cellHeight, (col * cellWidth) + cellWidth, (row * cellHeight) + cellHeight);
+    }
+
+    public Rect getHitBox() {
+        return this.hitBox;
     }
 
     /**

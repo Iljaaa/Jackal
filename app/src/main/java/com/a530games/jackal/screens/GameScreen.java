@@ -23,7 +23,6 @@ import com.a530games.jackal.SnakePart;
 import com.a530games.jackal.Stain;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
-import com.a530games.jackal.map.Rock;
 import com.a530games.jackal.objects.enemies.Enemy;
 
 import java.util.List;
@@ -368,7 +367,7 @@ public class GameScreen extends Screen
 
     private void drawWorld(World world)
     {
-        // рисуем карку
+        // draw backend
         this.drawMap();
 
         // draw player
@@ -382,6 +381,12 @@ public class GameScreen extends Screen
         this.drawSnakeHead();
 
         this.drawBullets();
+
+        // map top level
+        // this.drawMapTop();
+
+
+        //this.drawSky();
     }
 
     private void drawSidebar(Sidebar sidebar)
@@ -562,7 +567,7 @@ public class GameScreen extends Screen
 
         // draw back part of map
         g.drawBitmap(
-                this.world.map.testBitmap,
+                this.world.map.drawBitmap,
                 0,
                 0,
                 -1 * (int) Math.floor(this.world.map.x),
@@ -571,7 +576,7 @@ public class GameScreen extends Screen
                 640);
 
 
-        // draw blocks
+        // draw animated blocks
         for (int row = 0; row < this.world.map.mapRows; row++) {
             for (int col = 0; col < this.world.map.mapCols; col++)
             {
@@ -596,15 +601,21 @@ public class GameScreen extends Screen
      */
     private void drawMapObjectsHitBoxes(Graphics g, Map map)
     {
+        // todo: draw object only n screen
+
         for (int row = 0; row < map.mapRows; row++) {
             for (int col = 0; col < map.mapCols; col++) {
                 MapCell c = map.fields[row][col];
                 if (c == null) continue;
+                Rect hitBox = c.getHitBox();
+                if (hitBox == null) continue;
                 g.drawRect(
-                        (int) Math.floor(c.hitBox.left + map.x),
-                        (int) Math.floor(c.hitBox.top + map.y),
-                        c.hitBox.width(),
-                        c.hitBox.height(),
+                        // (int) Math.floor(c.hitBox.left + map.x),
+                        // (int) Math.floor(c.hitBox.top + map.y),
+                        map.screenLeftPotion(hitBox.left),
+                        map.screenTopPotion(hitBox.top),
+                        hitBox.width(),
+                        hitBox.height(),
                         this.hitBoxPaint
                 );
             }

@@ -40,7 +40,9 @@ public class Map
     Rect drawRect;
     Canvas testCanvas;
     Paint testPaint;
-    public Bitmap testBitmap;
+
+
+    public Bitmap drawBitmap;
 
     Graphics g;
 
@@ -99,7 +101,7 @@ public class Map
         this.mapCols = collums;
         this.mapRows = rows;
 
-        // calculate map map position
+        // calculate max map positions`
         // fixme: magic numbers
         // 640 its screenSize
         this.minX = -1 * ((collums * Map.SPRITE_WIDTH) - 640);
@@ -241,6 +243,15 @@ public class Map
         this.addRock(17, 9, Rock.MOVE_BUSH_1);
         this.addRock(18, 9, Rock.MOVE_BUSH_1);
 
+        this.fields[13][3] = new BigPillar(13, 3, BigPillar.PART_LEFT_TOP);
+        this.fields[13][4] = new BigPillar(13, 4, BigPillar.PART_RIGHT_TOP);
+        this.fields[14][3] = new BigPillar(14, 3, BigPillar.PART_LEFT_L1);
+        this.fields[14][4] = new BigPillar(14, 4, BigPillar.PART_RIGHT_L1);
+        this.fields[15][3] = new BigPillar(15, 3, BigPillar.PART_LEFT_L2);
+        this.fields[15][4] = new BigPillar(15, 4, BigPillar.PART_RIGHT_L2);
+        this.fields[16][3] = new BigPillar(16, 3, BigPillar.PART_LEFT_DOWN);
+        this.fields[16][4] = new BigPillar(16, 4, BigPillar.PART_RIGHT_DOWN);
+
         /*MapCell c = this.fields[3][2];
         c.isRock = true;*/
 
@@ -250,11 +261,11 @@ public class Map
         this.testCanvas = new Canvas();
         this.testPaint = new Paint();
 
-        this.testBitmap = Bitmap.createBitmap(this.drawRect.width(), this.drawRect.height(), Bitmap.Config.ARGB_8888);
-        this.testCanvas.setBitmap(this.testBitmap);
+        this.drawBitmap = Bitmap.createBitmap(this.drawRect.width(), this.drawRect.height(), Bitmap.Config.ARGB_8888);
+        this.testCanvas.setBitmap(this.drawBitmap);
         // this.testCanvas.getClipBounds(this.mapRect);
 
-        this.g = new AndroidGraphics(assets, this.testBitmap);
+        this.g = new AndroidGraphics(assets, this.drawBitmap);
 
         // draw objects
         // this.b = new BitmapFactory();
