@@ -67,16 +67,17 @@ public class World
 
         this.player = new Player(this, 300, 300);
 
-        // пока только 10 злодеев
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
+
         this.enemies.add(new Tank(this,100, 100));
-        this.enemies.add(new Commandos(this,300, 800));
+        this.enemies.add(new Commandos(this,400, 800));
 
         // инициализируем массиа с пулями
         this.bullets = new PlayerBulletsCollection();
         this.enemyBullets = new EnemyBulletsCollection();
 
+        //
         this.tankHitSounds = new ArrayList<>();
         this.tankHitSounds.add(Assets.tankHit1);
         this.tankHitSounds.add(Assets.tankHit2);

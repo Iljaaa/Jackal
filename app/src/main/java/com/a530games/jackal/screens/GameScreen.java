@@ -49,12 +49,15 @@ public class GameScreen extends Screen
     // paint for the hit box
     Paint hitBoxPaint;
 
-
     /////////////////
     Vector2 cannonPos;
     Vector2 cannonAngle;
     int cannonRotateSpeed = 3;
     // float cannonAngle = 0;
+
+    //
+    Sprite tempBoom;
+    float boomTimer;
 
     public GameScreen(Game game) {
         super(game);
@@ -72,6 +75,12 @@ public class GameScreen extends Screen
 
         this.cannonPos = new Vector2(200, 1000);
         this.cannonAngle = new Vector2(1, 0);
+
+        //
+
+        this.tempBoom = new Sprite(Assets.boom, 0, 0);
+        this.tempBoom.setSpriteSize(96, 96);
+        this.boomTimer = 0.2f;
     }
 
     @Override
@@ -263,6 +272,14 @@ public class GameScreen extends Screen
         // обновление мира
         this.world.update(deltaTime);
 
+        // tmpppp
+        this.boomTimer -= deltaTime;
+        if (this.boomTimer <= 0) {
+            this.tempBoom.set(this.tempBoom.col+1, this.tempBoom.row);
+            if (this.tempBoom.col >= 8) this.tempBoom.col = 0;
+            this.boomTimer = 0.09f;
+        }
+
         // fixme: при завершении f[s выводить не будем
         this.sidebar.setFps(this.game.getRenderView().fps);
         this.sidebar.setPlayerAngle(this.world.player.direction);
@@ -382,6 +399,12 @@ public class GameScreen extends Screen
 
         this.drawBullets();
 
+        //
+        // this.drawMapTop();
+
+        this.drawBlow();
+
+        // this.drawSky();
         // map top level
         // this.drawMapTop();
 
@@ -415,141 +438,6 @@ public class GameScreen extends Screen
 
     }
 
-    private void drawBullets()
-    {
-        Graphics g = this.game.getGraphics();
-
-        // player bullets
-        int bulletSize = this.world.bullets.size();
-        if (bulletSize > 0) {
-            for (int i = 0; i < bulletSize; i++)
-            {
-                Bullet b = this.world.bullets.get(i);
-                if (b.isOut()) continue;
-
-                g.drawPixmap(
-                        Assets.bullet2,
-                        this.world.map.screenLeftPotion(Math.round(b.getX())) - 32,
-                        this.world.map.screenTopPotion(Math.round(b.getY())) - 32,
-                        192,
-                        0,
-                        64,
-                        64
-                );
-
-                // drww blow
-                if (b.timer <= 0.2f) {
-                    g.drawPixmap(
-                            Assets.bullet2,
-                            this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
-                            this.world.map.screenTopPotion(b.startMapPosition.top) - 32,
-                            0,
-                            0,
-                            64,
-                            64
-                    );
-                }
-                else if (0.2f < b.timer && b.timer <= 0.4f) {
-                    g.drawPixmap(
-                            Assets.bullet2,
-                            this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
-                            this.world.map.screenTopPotion(b.startMapPosition.top) - 32,
-                            64,
-                            0,
-                            64,
-                            64
-                    );
-                }
-                else if (0.4f < b.timer && b.timer <= 0.6f) {
-                    g.drawPixmap(
-                            Assets.bullet2,
-                            this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
-                            this.world.map.screenTopPotion(b.startMapPosition.top) - 32,
-                            128,
-                            0,
-                            64,
-                            64
-                    );
-                }
-            }
-        }
-
-        // enemy bullets
-        int enemyBulletsSize = this.world.enemyBullets.size();
-        if (enemyBulletsSize > 0) {
-            for (int i = 0; i < enemyBulletsSize; i++)
-            {
-                Bullet b = this.world.enemyBullets.get(i);
-                if (b.isOut()) continue;
-
-                g.drawPixmap(
-                        Assets.bullet,
-                        this.world.map.screenLeftPotion(Math.round(b.getX())),
-                        this.world.map.screenTopPotion(Math.round(b.getY()))
-                );
-            }
-        }
-    }
-
-    private void drawEnemies()
-    {
-        Graphics g = this.game.getGraphics();
-
-        //
-        int enemiesSize = this.world.enemies.size();
-        if (enemiesSize > 0) {
-            for (int i = 0; i < enemiesSize; i++)
-            {
-                Enemy enemy = this.world.enemies.get(i);
-                Rect screenHitBox = enemy.getScreenDrawHitbox(this.world.map);
-
-                Sprite s = enemy.getSprite();
-
-                // todo: not draw enemie if if is not in screem
-
-                g.drawPixmap(
-                        s.image,
-                        screenHitBox.left + s.screenMarginLeft,
-                        // this.world.map.screenLeftPotion(enemy.getHitBox().left) - 12,
-                        screenHitBox.top + s.screenMarginTop,
-                        // this.world.map.screenTopPotion(enemy.getHitBox().top) - 12,
-                        s.getLeft(),
-                        s.getTop(),
-                        s.width,
-                        s.height);
-
-                // draw hitbox
-                g.drawRect(screenHitBox, this.hitBoxPaint);
-                /*this.drawEnemyHitBox(
-                        g,
-                        this.world.map.screenLeftPotion(b.hitBox.left),
-                        this.world.map.screenTopPotion(b.hitBox.top),
-                        Math.round(b.hitBox.getWidth()),
-                        Math.round(b.hitBox.getHeight())
-                );*/
-
-                // its only for tanks and turrets
-                if (enemy.hasTurret())
-                {
-                    // target
-                    this.drawAngle(g,
-                            screenHitBox.centerX(),
-                            screenHitBox.centerY(),
-                            enemy.getTargetAngle(),
-                            Color.LTGRAY
-                    );
-
-                    // turret
-                    this.drawAngle(g,
-                            screenHitBox.centerX(),
-                            screenHitBox.centerY(),
-                            enemy.getTurretAngle(),
-                            Color.GREEN
-                    );
-                }
-            }
-        }
-    }
 
     /*
     private void drawEnemyHitBox (Graphics g, int enemyScreenLeft, int enemyScreenTop, int enemyWidth, int enemyHeight) {
@@ -591,7 +479,7 @@ public class GameScreen extends Screen
 
         // this.drawActiveCell();
 
-        // this.drawMapObjectsHitBoxes(g, this.world.map);
+        this.drawMapObjectsHitBoxes(g, this.world.map);
     }
 
     /**
@@ -691,7 +579,7 @@ public class GameScreen extends Screen
         // int playerSourceY = Math.round(this.world.player.hitBox.top);
         int playerSourceY = this.world.map.screenTopPotion(this.world.player.hitBox.top);
 
-        this.drawPlayerHitBox(g, playerScreenX, playerSourceY);
+        // this.drawPlayerHitBox(g, playerScreenX, playerSourceY);
 
         /*
          * 12 = 0.5 * 64 (player sprite width) - 40 (player hitbox width)
@@ -702,8 +590,8 @@ public class GameScreen extends Screen
             Math.round(playerSourceY) - 12,
                 this.world.player.sprite.getLeft(),
                 this.world.player.sprite.getTop(),
-            64,
-            64);
+                this.world.player.sprite.width, // 64,
+            this.world.player.sprite.height); // 64);
 
         // draw turret
         g.drawPixmap(
@@ -712,8 +600,8 @@ public class GameScreen extends Screen
                 Math.round(playerSourceY) - 12,
                 this.world.player.gun.getLeft(),
                 this.world.player.gun.getTop(),
-                64,
-                64);
+                this.world.player.gun.width, // 64,
+                this.world.player.gun.height); // 64);
 
         this.drawPlayerAngle(g, playerScreenX, playerSourceY);
     }
@@ -735,6 +623,164 @@ public class GameScreen extends Screen
                 (int) Math.ceil(centerY + (this.world.player.direction.y * 50)),
                 Color.MAGENTA);
     }
+
+    private void drawEnemies()
+    {
+        Graphics g = this.game.getGraphics();
+
+        //
+        int enemiesSize = this.world.enemies.size();
+        if (enemiesSize > 0) {
+            for (int i = 0; i < enemiesSize; i++)
+            {
+                Enemy enemy = this.world.enemies.get(i);
+                Rect screenHitBox = enemy.getScreenDrawHitbox(this.world.map);
+
+                Sprite s = enemy.getSprite();
+
+                // todo: not draw enemie if if is not in screem
+
+                g.drawPixmap(
+                        s.image,
+                        screenHitBox.left + s.screenMarginLeft,
+                        // this.world.map.screenLeftPotion(enemy.getHitBox().left) - 12,
+                        screenHitBox.top + s.screenMarginTop,
+                        // this.world.map.screenTopPotion(enemy.getHitBox().top) - 12,
+                        s.getLeft(),
+                        s.getTop(),
+                        s.width,
+                        s.height);
+
+                // draw hitbox
+                g.drawRect(screenHitBox, this.hitBoxPaint);
+                /*this.drawEnemyHitBox(
+                        g,
+                        this.world.map.screenLeftPotion(b.hitBox.left),
+                        this.world.map.screenTopPotion(b.hitBox.top),
+                        Math.round(b.hitBox.getWidth()),
+                        Math.round(b.hitBox.getHeight())
+                );*/
+
+                // its only for tanks and turrets
+                if (enemy.hasTurret())
+                {
+                    // target
+                    this.drawAngle(g,
+                            screenHitBox.centerX(),
+                            screenHitBox.centerY(),
+                            enemy.getTargetAngle(),
+                            Color.LTGRAY
+                    );
+
+                    // turret
+                    this.drawAngle(g,
+                            screenHitBox.centerX(),
+                            screenHitBox.centerY(),
+                            enemy.getTurretAngle(),
+                            Color.GREEN
+                    );
+                }
+            }
+        }
+    }
+
+    private void drawBullets()
+    {
+        Graphics g = this.game.getGraphics();
+
+        // player bullets
+        int bulletSize = this.world.bullets.size();
+        if (bulletSize > 0) {
+            for (int i = 0; i < bulletSize; i++)
+            {
+                Bullet b = this.world.bullets.get(i);
+                if (b.isOut()) continue;
+
+                // todo: make bullet sprite
+                g.drawPixmap(
+                        Assets.bullet2,
+                        this.world.map.screenLeftPotion(b.getX()) - 32,
+                        this.world.map.screenTopPotion(b.getY()) - 10, // <- ammmm
+                        0,
+                        0,
+                        64,
+                        64
+                );
+
+                this.drawPlayerShotBlow(g, b);
+            }
+        }
+
+        // enemy bullets
+        int enemyBulletsSize = this.world.enemyBullets.size();
+        if (enemyBulletsSize > 0) {
+            for (int i = 0; i < enemyBulletsSize; i++)
+            {
+                Bullet b = this.world.enemyBullets.get(i);
+                if (b.isOut()) continue;
+
+                g.drawPixmap(
+                        Assets.bullet,
+                        this.world.map.screenLeftPotion(Math.round(b.getX())),
+                        this.world.map.screenTopPotion(Math.round(b.getY()))
+                );
+            }
+        }
+    }
+
+    private void drawPlayerShotBlow(Graphics g, Bullet b)
+    {
+        // drww blow
+        if (b.timer <= 0.2f) {
+            g.drawPixmap(
+                    Assets.playerFire,
+                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
+                    this.world.map.screenTopPotion(b.startMapPosition.top) - 20,
+                    0,
+                    0,
+                    64,
+                    64
+            );
+        }
+        else if (0.2f < b.timer && b.timer <= 0.4f) {
+            g.drawPixmap(
+                    Assets.playerFire,
+                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
+                    this.world.map.screenTopPotion(b.startMapPosition.top) - 20,
+                    64,
+                    0,
+                    64,
+                    64
+            );
+        }
+        else if (0.4f < b.timer && b.timer <= 0.6f) {
+            g.drawPixmap(
+                    Assets.playerFire,
+                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
+                    this.world.map.screenTopPotion(b.startMapPosition.top) - 20,
+                    128,
+                    0,
+                    64,
+                    64
+            );
+        }
+    }
+
+
+    private void drawBlow()
+    {
+        Graphics g = this.game.getGraphics();
+        g.drawPixmap(
+                this.tempBoom.image,
+                this.world.map.screenLeftPotion(400),
+                this.world.map.screenTopPotion(900),
+                this.tempBoom.getLeft(),
+                this.tempBoom.getTop(),
+                this.tempBoom.width,
+                this.tempBoom.height
+        );
+    }
+
 
     /**
      *

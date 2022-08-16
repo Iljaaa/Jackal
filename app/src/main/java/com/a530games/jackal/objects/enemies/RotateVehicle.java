@@ -18,7 +18,8 @@ public abstract class RotateVehicle extends Vehicle
 
     public RotateVehicle(World world, float startX, float startY, Pixmap image) {
         super(world, startX, startY, image);
-        this.direction = new Vector2(0 , 1);
+        // show top
+        this.direction = new Vector2(0 , -1);
     }
 
     public Vector2 getDirection() {

@@ -252,6 +252,12 @@ public class Map
         this.fields[16][3] = new BigPillar(16, 3, BigPillar.PART_LEFT_DOWN);
         this.fields[16][4] = new BigPillar(16, 4, BigPillar.PART_RIGHT_DOWN);
 
+
+        this.fields[16][1] = new Bush(16, 1, Assets.bush1);
+        this.fields[16][2] = new Bush(16, 2, Assets.bush2);
+
+
+
         /*MapCell c = this.fields[3][2];
         c.isRock = true;*/
 
