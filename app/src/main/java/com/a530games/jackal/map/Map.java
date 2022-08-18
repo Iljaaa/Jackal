@@ -51,7 +51,6 @@ public class Map
      */
     public MapCell[][] fields; // = new MapCell[1][1];
 
-
     public Map()
     {
         // this.fields = new MapCell[mapRows][mapCols];
@@ -121,10 +120,38 @@ public class Map
         // init fields
         this.fields = new MapCell[this.mapRows][this.mapCols];
 
+        //
+        this.addObjectToMap();
 
+
+        /*MapCell c = this.fields[3][2];
+        c.isRock = true;*/
+
+        // big map rect for a drawing
+        this.drawRect = new Rect(0, 0, collums * Map.SPRITE_WIDTH, rows * Map.SPRITE_HEIGHT);
+
+        this.testCanvas = new Canvas();
+        this.testPaint = new Paint();
+
+        this.drawBitmap = Bitmap.createBitmap(this.drawRect.width(), this.drawRect.height(), Bitmap.Config.ARGB_8888);
+        this.testCanvas.setBitmap(this.drawBitmap);
+        // this.testCanvas.getClipBounds(this.mapRect);
+
+        this.g = new AndroidGraphics(assets, this.drawBitmap);
+
+        // draw objects
+        // this.b = new BitmapFactory();
+        this.testPaint.setStyle(Paint.Style.FILL);
+        this.testPaint.setColor(Color.RED);
+
+    }
+
+    private void addObjectToMap ()
+    {
         // fixme: fix magic constants
         this.addRock(3, 2, Rock.MOVE_ROCK_1);
 
+        // top line
         this.addRock(0, 0, Rock.MOVE_ROCK_3);
         this.addRock(0, 1, Rock.MOVE_ROCK_1);
         this.addRock(0, 2, Rock.MOVE_ROCK_2);
@@ -146,6 +173,7 @@ public class Map
         this.addRock(0, 18, Rock.MOVE_ROCK_2);
         this.addRock(0, 19, Rock.MOVE_ROCK_2);
 
+        // left line
         this.addRock(1, 0, Rock.MOVE_BUSH_1);
         this.addRock(2, 0, Rock.MOVE_BUSH_2);
         this.addRock(3, 0, Rock.MOVE_BUSH_1);
@@ -189,6 +217,7 @@ public class Map
         this.addRock(19, 18, Rock.MOVE_ROCK_2);
         this.addRock(19, 19, Rock.MOVE_ROCK_2);*/
 
+        // bottom linr
         this.addBeach(19, 0);
         this.addBeach(19, 1);
         this.addBeach(19, 2);
@@ -243,6 +272,8 @@ public class Map
         this.addRock(17, 9, Rock.MOVE_BUSH_1);
         this.addRock(18, 9, Rock.MOVE_BUSH_1);
 
+        this.fields[16][8] = new Wall(16, 8);
+
         this.fields[13][3] = new BigPillar(13, 3, BigPillar.PART_LEFT_TOP);
         this.fields[13][4] = new BigPillar(13, 4, BigPillar.PART_RIGHT_TOP);
         this.fields[14][3] = new BigPillar(14, 3, BigPillar.PART_LEFT_L1);
@@ -255,29 +286,6 @@ public class Map
 
         this.fields[16][1] = new Bush(16, 1, Assets.bush1);
         this.fields[16][2] = new Bush(16, 2, Assets.bush2);
-
-
-
-        /*MapCell c = this.fields[3][2];
-        c.isRock = true;*/
-
-        // big map rect for a drawing
-        this.drawRect = new Rect(0, 0, collums * Map.SPRITE_WIDTH, rows * Map.SPRITE_HEIGHT);
-
-        this.testCanvas = new Canvas();
-        this.testPaint = new Paint();
-
-        this.drawBitmap = Bitmap.createBitmap(this.drawRect.width(), this.drawRect.height(), Bitmap.Config.ARGB_8888);
-        this.testCanvas.setBitmap(this.drawBitmap);
-        // this.testCanvas.getClipBounds(this.mapRect);
-
-        this.g = new AndroidGraphics(assets, this.drawBitmap);
-
-        // draw objects
-        // this.b = new BitmapFactory();
-        this.testPaint.setStyle(Paint.Style.FILL);
-        this.testPaint.setColor(Color.RED);
-
     }
 
     private void addRock (int row, int col, int type)
@@ -432,7 +440,7 @@ public class Map
     }
 
     /**
-     * Intersect for rect
+     * Intersect object with map hitboxes elements
      */
     public boolean isIntersect (FloatRect rectOnMap)
     {
@@ -456,22 +464,26 @@ public class Map
 
                 MapCell cell = this.fields[forRow][forCol];
                 if (cell == null) continue;
+                // if (!cell.hasHitBox()) continue;
+
+                // check intersect on hitbox
+                Rect hitbox = cell.getHitBox();
 
                 // todo: make intersect inside rect
-                if (cell.hitBox.bottom < rectOnMap.top){
+                if (hitbox.bottom < rectOnMap.top){
                     continue;
                 }
-                if (cell.hitBox.top > rectOnMap.bottom){
+                if (hitbox.top > rectOnMap.bottom){
                     continue;
                 }
-                if (cell.hitBox.right < rectOnMap.left){
+                if (hitbox.right < rectOnMap.left){
                     continue;
                 }
-                if (cell.hitBox.left > rectOnMap.right){
+                if (hitbox.left > rectOnMap.right){
                     continue;
                 }
 
-                return true;
+                return cell.isIntersectRectInsideCell(rectOnMap);
             }
         }
 
@@ -486,13 +498,8 @@ public class Map
         int row = this.getRowByTop(top);
         int col = this.getColByLeft(left);
 
-        if (col < 0) {
-            return false;
-        }
-
-        if (row < 0) {
-            return false;
-        }
+        if (col < 0) return false;
+        if (row < 0) return false;
 
         if (row >= this.mapRows) {
             return false;
@@ -506,6 +513,7 @@ public class Map
 
         MapCell cell = this.fields[row][col];
         if (cell == null) return false;
+        // if (!cell.hasHitBox()) return false; // if object have no hitbox
 
         return cell.isIntersectPointInsideRect(left, top);
     }

@@ -195,6 +195,7 @@ public class World
 
     private void updateEnemyBullets (float deltaTime)
     {
+
         int enemyBulletsSize = this.enemyBullets.size();
         if (enemyBulletsSize > 0) {
             for (int i = 0; i < enemyBulletsSize; i++) {

@@ -2,7 +2,7 @@ package com.a530games.jackal.map;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Pixmap;
-import com.a530games.jackal.Assets;
+import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Sprite;
 
 public class Bush extends MapCell
@@ -15,7 +15,7 @@ public class Bush extends MapCell
     public Bush(int row, int col, Pixmap image)
     {
         // todo: remove magic numbers
-        super(row, col,64, 64);
+        super(row, col);
 
         this.sprite = new Sprite(image, 0, 0);
     }
@@ -45,11 +45,12 @@ public class Bush extends MapCell
     }
 
     @Override
-    public void draw(Graphics g, Map map) {
+    public void draw(Graphics g, Map map)
+    {
         g.drawPixmap(
                 this.sprite.image,
-                map.screenLeftPotion(this.hitBox.left),
-                map.screenTopPotion(this.hitBox.top),
+                map.screenLeftPotion(this.col * Map.SPRITE_WIDTH),
+                map.screenTopPotion(this.row * Map.SPRITE_WIDTH),
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,
@@ -60,8 +61,14 @@ public class Bush extends MapCell
     /**
      * Is intersect point inside rect
      */
+    @Override
     public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
         // return this.isRock;
+        return true;
+    }
+
+    @Override
+    boolean isIntersectRectInsideCell(FloatRect r) {
         return true;
     }
 }

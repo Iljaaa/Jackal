@@ -15,6 +15,7 @@ import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.map.MapCell;
+import com.a530games.jackal.map.Wall;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
@@ -49,6 +50,9 @@ public class GameScreen extends Screen
     // paint for the hit box
     Paint hitBoxPaint;
 
+    // paint for the hit box
+    Paint otherHitBoxPaint;
+
     /////////////////
     Vector2 cannonPos;
     Vector2 cannonAngle;
@@ -68,6 +72,11 @@ public class GameScreen extends Screen
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);
         this.hitBoxPaint.setStrokeWidth(2);
         this.hitBoxPaint.setColor(Color.YELLOW);
+
+        this.otherHitBoxPaint = new Paint();
+        this.otherHitBoxPaint.setStyle(Paint.Style.STROKE);
+        this.otherHitBoxPaint.setStrokeWidth(2);
+        this.otherHitBoxPaint.setColor(Color.GREEN);
 
         // Assets.music.setLooping(true);
         // Assets.music.setVolume(0.5f);
@@ -477,7 +486,7 @@ public class GameScreen extends Screen
 
         // this.drawMapNet(g);
 
-        // this.drawActiveCell();
+        this.drawActiveCell();
 
         this.drawMapObjectsHitBoxes(g, this.world.map);
     }
@@ -497,15 +506,15 @@ public class GameScreen extends Screen
                 if (c == null) continue;
                 Rect hitBox = c.getHitBox();
                 if (hitBox == null) continue;
+
                 g.drawRect(
-                        // (int) Math.floor(c.hitBox.left + map.x),
-                        // (int) Math.floor(c.hitBox.top + map.y),
                         map.screenLeftPotion(hitBox.left),
                         map.screenTopPotion(hitBox.top),
                         hitBox.width(),
                         hitBox.height(),
                         this.hitBoxPaint
                 );
+
             }
         }
     }
@@ -523,16 +532,18 @@ public class GameScreen extends Screen
         }
     }
 
+    /**
+     * Draw cell on
+     */
     private void drawActiveCell ()
     {
-        int row = this.world.map.getRowByTop(this.world.player.getTop());
-        int col = this.world.map.getColByLeft(this.world.player.getLeft());
+        int row = this.world.map.getRowByTop(this.world.player.hitBox.top);
+        int col = this.world.map.getColByLeft(this.world.player.hitBox.left);
 
         int top = this.world.map.screenTopPotion(row * Map.SPRITE_HEIGHT);
         int left = this.world.map.screenLeftPotion(col * Map.SPRITE_WIDTH);
 
         Graphics g = this.game.getGraphics();
-        // g.drawRect(0, row * Map.SPRITE_HEIGHT, 640, 20, Color.WHITE);
         g.drawRect( left, top, Map.SPRITE_WIDTH, Map.SPRITE_HEIGHT, Color.YELLOW);
     }
 

@@ -1,10 +1,13 @@
 package com.a530games.jackal.map;
 
+import android.graphics.Rect;
+
 import com.a530games.framework.Graphics;
+import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 
-public class BigPillar extends MapCell
+public class BigPillar extends MapCellWithHitbox
 {
 
     public static final int PART_LEFT_TOP = 0;
@@ -80,5 +83,10 @@ public class BigPillar extends MapCell
     @Override
     boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
         return false;
+    }
+
+    @Override
+    boolean isIntersectRectInsideCell(FloatRect r) {
+        return true;
     }
 }

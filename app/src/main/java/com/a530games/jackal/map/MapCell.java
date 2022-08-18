@@ -3,19 +3,16 @@ package com.a530games.jackal.map;
 import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
+import com.a530games.framework.helpers.FloatRect;
 
 public abstract class MapCell
 {
+    protected int row, col;
 
-    protected Rect hitBox;
-
-    public MapCell(int row, int col, int cellWidth, int cellHeight)
+    public MapCell(int row, int col)
     {
-        this.hitBox = new Rect(col * cellWidth, row * cellHeight, (col * cellWidth) + cellWidth, (row * cellHeight) + cellHeight);
-    }
-
-    public Rect getHitBox() {
-        return this.hitBox;
+        this.row = row;
+        this.col = col;
     }
 
     /**
@@ -36,10 +33,25 @@ public abstract class MapCell
     public abstract void draw(Graphics g, Map map);
 
     /**
+     * Return not exists hitbox map
+     * @return Hitbox rect
+     */
+    public Rect getHitBox() {
+        return null;
+    }
+
+    /**
      * Check intersect inside rect
      * @param mapLeft left position on map
      * @param mapTop top position on map
      * @return is has intersect pint inside block
      */
     abstract boolean isIntersectPointInsideRect(float mapLeft, float mapTop);
+
+    /**
+     * Check intersect inside rect
+     * @param r Rect to check
+     * @return is intersected
+     */
+    abstract boolean isIntersectRectInsideCell (FloatRect r);
 }

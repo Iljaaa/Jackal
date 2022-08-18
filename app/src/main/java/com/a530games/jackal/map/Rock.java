@@ -3,10 +3,11 @@ package com.a530games.jackal.map;
 import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
+import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 
-public class Rock extends MapCell
+public class Rock extends MapCellWithHitbox
 {
     public static final int MOVE_ROCK_1 = 1;
     public static final int MOVE_ROCK_2 = 2;
@@ -75,8 +76,14 @@ public class Rock extends MapCell
     /**
      * Is intersect point inside rect
      */
-    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
+    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop)
+    {
         // return this.isRock;
+        return true;
+    }
+
+    @Override
+    boolean isIntersectRectInsideCell(FloatRect r) {
         return true;
     }
 }

@@ -1,10 +1,13 @@
 package com.a530games.jackal.map;
 
+import android.graphics.Rect;
+
 import com.a530games.framework.Graphics;
+import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 
-public class Beach extends MapCell
+public class Beach extends MapCellWithHitbox
 {
     Sprite sprite;
 
@@ -51,6 +54,11 @@ public class Beach extends MapCell
      */
     public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
         // return this.isRock;
+        return true;
+    }
+
+    @Override
+    boolean isIntersectRectInsideCell(FloatRect r) {
         return true;
     }
 }
