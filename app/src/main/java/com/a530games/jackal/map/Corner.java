@@ -1,15 +1,13 @@
 package com.a530games.jackal.map;
 
-import android.graphics.Color;
-
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 
-public class Corner extends MapCellWithHitbox
+abstract public class Corner extends MapCellWithHitbox
 {
-    Sprite sprite;
+    protected Sprite sprite;
 
     public Corner(int row, int col)
     {

@@ -152,7 +152,33 @@ public class Map
         this.addRock(3, 2, Rock.MOVE_ROCK_1);
 
         // top line
-        this.addRock(0, 0, Rock.MOVE_ROCK_3);
+        for (int col = 1; col < this.mapCols - 1; col++) {
+            this.fields[0][col] = new TopHalfWall(0, col);
+        }
+
+        // bottom line
+         for (int col = 1; col < this.mapCols - 1; col++) {
+             this.addBeach(this.mapRows - 1, col);
+         }
+
+         // left line
+        for (int row = 1; row < this.mapRows - 1; row++) {
+            this.fields[row][0] = new LeftHalfWall(row, 0);
+        }
+
+         // right line
+        for (int row = 1; row < this.mapRows - 1; row++) {
+            this.fields[row][this.mapCols - 1] = new RightHalfWall(row, this.mapCols - 1);
+        }
+
+        // left top corner
+        // right top corner
+        // left bottom corner
+        // right bottom corner
+
+
+        // top line
+        /*this.addRock(0, 0, Rock.MOVE_ROCK_3);
         this.addRock(0, 1, Rock.MOVE_ROCK_1);
         this.addRock(0, 2, Rock.MOVE_ROCK_2);
         this.addRock(0, 3, Rock.MOVE_ROCK_3);
@@ -171,10 +197,10 @@ public class Map
         this.addRock(0, 16, Rock.MOVE_ROCK_2);
         this.addRock(0, 17, Rock.MOVE_ROCK_2);
         this.addRock(0, 18, Rock.MOVE_ROCK_2);
-        this.addRock(0, 19, Rock.MOVE_ROCK_2);
+        this.addRock(0, 19, Rock.MOVE_ROCK_2);*/
 
         // left line
-        this.addRock(1, 0, Rock.MOVE_BUSH_1);
+        /*this.addRock(1, 0, Rock.MOVE_BUSH_1);
         this.addRock(2, 0, Rock.MOVE_BUSH_2);
         this.addRock(3, 0, Rock.MOVE_BUSH_1);
         this.addRock(4, 0, Rock.MOVE_BUSH_2);
@@ -191,7 +217,7 @@ public class Map
         this.addRock(15, 0, Rock.MOVE_BUSH_2);
         this.addRock(16, 0, Rock.MOVE_BUSH_2);
         this.addRock(17, 0, Rock.MOVE_BUSH_2);
-        this.addRock(18, 0, Rock.MOVE_BUSH_2);
+        this.addRock(18, 0, Rock.MOVE_BUSH_2);*/
 
         this.addRock(9, 3, Rock.MOVE_ROCK_3);
         this.addRock(9, 4, Rock.MOVE_ROCK_1);
@@ -218,7 +244,7 @@ public class Map
         this.addRock(19, 19, Rock.MOVE_ROCK_2);*/
 
         // bottom linr
-        this.addBeach(19, 0);
+        /*this.addBeach(19, 0);
         this.addBeach(19, 1);
         this.addBeach(19, 2);
         this.addBeach(19, 3);
@@ -237,10 +263,10 @@ public class Map
         this.addBeach(19, 16);
         this.addBeach(19, 17);
         this.addBeach(19, 18);
-        this.addBeach(19, 19);
+        this.addBeach(19, 19);*/
 
 
-        this.addRock(1, 19, Rock.MOVE_BUSH_3);
+        /*this.addRock(1, 19, Rock.MOVE_BUSH_3);
         this.addRock(2, 19, Rock.MOVE_BUSH_4);
         this.addRock(3, 19, Rock.MOVE_BUSH_3);
         this.addRock(4, 19, Rock.MOVE_BUSH_4);
@@ -257,7 +283,7 @@ public class Map
         this.addRock(15, 19, Rock.MOVE_BUSH_1);
         this.addRock(16, 19, Rock.MOVE_BUSH_1);
         this.addRock(17, 19, Rock.MOVE_BUSH_1);
-        this.addRock(18, 19, Rock.MOVE_BUSH_1);
+        this.addRock(18, 19, Rock.MOVE_BUSH_1);*/
 
         this.addRock(1, 9, Rock.MOVE_BUSH_3);
         this.addRock(2, 9, Rock.MOVE_BUSH_4);
@@ -266,15 +292,27 @@ public class Map
         this.addRock(5, 9, Rock.MOVE_BUSH_3);
         this.addRock(6, 9, Rock.MOVE_BUSH_4);
         this.addRock(7, 9, Rock.MOVE_BUSH_3);
-        this.addRock(14, 9, Rock.MOVE_BUSH_1);
-        this.addRock(15, 9, Rock.MOVE_BUSH_1);
-        this.addRock(16, 9, Rock.MOVE_BUSH_1);
-        this.addRock(17, 9, Rock.MOVE_BUSH_1);
-        this.addRock(18, 9, Rock.MOVE_BUSH_1);
+        // this.addRock(14, 9, Rock.MOVE_BUSH_1);
+        // this.addRock(15, 9, Rock.MOVE_BUSH_1);
+        // this.addRock(16, 9, Rock.MOVE_BUSH_1);
+        // this.addRock(17, 9, Rock.MOVE_BUSH_1);
+        // this.addRock(18, 9, Rock.MOVE_BUSH_1);
 
         this.fields[16][8] = new Wall(16, 8);
-        this.fields[14][8] = new Corner(14, 8);
         this.fields[12][8] = new FuncCorner(12, 8);
+
+
+        this.fields[12][11] = new LeftTopCorner(12, 11);
+        this.fields[12][12] = new RightTopCorner(12, 12);
+
+        this.fields[14][13] = new RightTopCorner(14, 13);
+        this.fields[15][13] = new RightBottomCorner(15, 13);
+
+        this.fields[17][11] = new LeftBottomCorner(17, 11);
+        this.fields[17][12] = new RightBottomCorner(17, 12);
+
+        this.fields[14][10] = new LeftTopCorner(14, 10);
+        this.fields[15][10] = new LeftBottomCorner(15, 10);
 
         this.fields[13][3] = new BigPillar(13, 3, BigPillar.PART_LEFT_TOP);
         this.fields[13][4] = new BigPillar(13, 4, BigPillar.PART_RIGHT_TOP);

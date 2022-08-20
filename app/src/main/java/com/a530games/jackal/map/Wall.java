@@ -1,7 +1,5 @@
 package com.a530games.jackal.map;
 
-import android.graphics.Rect;
-
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
@@ -9,14 +7,15 @@ import com.a530games.jackal.Sprite;
 
 public class Wall extends MapCellWithHitbox
 {
-    Sprite sprite;
+    protected Sprite sprite;
 
     public Wall(int row, int col)
     {
         super(row, col, 64, 64);
 
-        this.hitBox.left = (int) Math.ceil( (col + 0.5) * Map.SPRITE_WIDTH);
-        this.hitBox.right = this.hitBox.left + 32;
+        // right half wall
+        // this.hitBox.left = (int) Math.ceil( (col + 0.5) * Map.SPRITE_WIDTH);
+        // this.hitBox.right = this.hitBox.left + 32;
 
         this.sprite = new Sprite(Assets.mapSprite, 2, 1);
     }
