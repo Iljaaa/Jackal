@@ -485,7 +485,7 @@ public class GameScreen extends Screen
 
         // this.drawMapNet(g);
 
-        this.drawActiveCell();
+        // this.drawActiveCell();
 
         this.drawMapObjectsHitBoxes(g, this.world.map);
     }
@@ -747,7 +747,7 @@ public class GameScreen extends Screen
     private void drawPlayerShotBlow(Graphics g, Bullet b)
     {
         // drww blow
-        if (b.timer <= 0.2f) {
+        if (b.timer <= 0.05f) {
             g.drawPixmap(
                     Assets.playerFire,
                     this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
@@ -758,7 +758,7 @@ public class GameScreen extends Screen
                     64
             );
         }
-        else if (0.2f < b.timer && b.timer <= 0.4f) {
+        else if (0.05f < b.timer && b.timer <= 0.1f) {
             g.drawPixmap(
                     Assets.playerFire,
                     this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
@@ -769,7 +769,7 @@ public class GameScreen extends Screen
                     64
             );
         }
-        else if (0.4f < b.timer && b.timer <= 0.6f) {
+        else if (0.1f < b.timer && b.timer <= 0.15f) {
             g.drawPixmap(
                     Assets.playerFire,
                     this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,

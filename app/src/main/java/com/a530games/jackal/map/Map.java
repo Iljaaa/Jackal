@@ -34,9 +34,6 @@ public class Map
     public int playerStartX = 0;
     public int playerStartY = 0;
 
-    // rect for test intersection
-    public FloatRect testRect;
-
     Rect drawRect;
     Canvas testCanvas;
     Paint testPaint;
@@ -55,11 +52,6 @@ public class Map
     {
         // this.fields = new MapCell[mapRows][mapCols];
         // this.fields[3][2] = new MapCell();
-
-//        MapCell c =this.fields[3][2];
-//        c.isRock = true;
-
-        this.testRect = new FloatRect(400, 400, 500, 500);
     }
 
     public static boolean isIntersectsTwoRect(FloatRect r1, FloatRect r2)
@@ -171,10 +163,13 @@ public class Map
             this.fields[row][this.mapCols - 1] = new RightHalfWall(row, this.mapCols - 1);
         }
 
-        // left top corner
-        // right top corner
-        // left bottom corner
-        // right bottom corner
+        this.fields[0][0] = new LeftTopCorner(0, 0); // left top corner
+        this.fields[0][this.mapCols - 1] = new RightTopCorner(0, this.mapCols - 1); // right top corner
+        this.fields[this.mapRows - 1][0] = new LeftBottomCorner(this.mapRows - 1, 0); // left bottom corner
+        this.fields[this.mapRows - 1][this.mapCols - 1] = new RightBottomCorner(this.mapRows - 1, this.mapCols - 1);  // right bottom corner
+
+
+
 
 
         // top line
@@ -524,7 +519,9 @@ public class Map
                     continue;
                 }
 
-                return cell.isIntersectRectInsideCell(rectOnMap);
+                if (cell.isIntersectRectInsideCell(rectOnMap)){
+                    return true;
+                }
             }
         }
 
