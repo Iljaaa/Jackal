@@ -70,12 +70,12 @@ public class GameScreen extends Screen
 
         this.hitBoxPaint = new Paint();
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);
-        this.hitBoxPaint.setStrokeWidth(2);
+        this.hitBoxPaint.setStrokeWidth(1);
         this.hitBoxPaint.setColor(Color.YELLOW);
 
         this.otherHitBoxPaint = new Paint();
         this.otherHitBoxPaint.setStyle(Paint.Style.STROKE);
-        this.otherHitBoxPaint.setStrokeWidth(2);
+        this.otherHitBoxPaint.setStrokeWidth(1);
         this.otherHitBoxPaint.setColor(Color.GREEN);
 
         // Assets.music.setLooping(true);
@@ -447,7 +447,6 @@ public class GameScreen extends Screen
 
     }
 
-
     /*
     private void drawEnemyHitBox (Graphics g, int enemyScreenLeft, int enemyScreenTop, int enemyWidth, int enemyHeight) {
         g.drawRect(
@@ -617,11 +616,15 @@ public class GameScreen extends Screen
                 this.world.player.gun.height); // 64);
 
         this.drawPlayerAngle(g, playerScreenX, playerSourceY);
+
+        // player hitbox
+        this.drawPlayerHitBox(g);
     }
 
-    private void drawPlayerHitBox (Graphics g, int playerScreenX, int playerScreenY) {
+    private void drawPlayerHitBox (Graphics g) {
         // g.drawRect(this.world.player.hitBox.getDrawRect(), this.hitBoxPaint);
-        g.drawRect(playerScreenX, playerScreenY, Math.round(this.world.player.hitBox.getWidth()), Math.round(this.world.player.hitBox.getHeight()), this.hitBoxPaint);
+        // g.drawRect(playerScreenX, playerScreenY, Math.round(this.world.player.hitBox.getWidth()), Math.round(this.world.player.hitBox.getHeight()), this.hitBoxPaint);
+        g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.otherHitBoxPaint);
     }
 
     private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)

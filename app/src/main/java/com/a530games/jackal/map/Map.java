@@ -273,8 +273,8 @@ public class Map
         this.addRock(18, 9, Rock.MOVE_BUSH_1);
 
         this.fields[16][8] = new Wall(16, 8);
-        this.fields[15][8] = new Corner(15, 8);
-        this.fields[14][8] = new FuncCorner(14, 8);
+        this.fields[14][8] = new Corner(14, 8);
+        this.fields[12][8] = new FuncCorner(12, 8);
 
         this.fields[13][3] = new BigPillar(13, 3, BigPillar.PART_LEFT_TOP);
         this.fields[13][4] = new BigPillar(13, 4, BigPillar.PART_RIGHT_TOP);
@@ -470,6 +470,7 @@ public class Map
 
                 // check intersect on hitbox
                 Rect hitbox = cell.getHitBox();
+                if (hitbox == null) continue;
 
                 // todo: make intersect inside rect
                 if (hitbox.bottom < rectOnMap.top){

@@ -87,10 +87,22 @@ public class FuncCorner extends MapCellWithHitbox
     }
 
     @Override
-    boolean isIntersectRectInsideCell(FloatRect r)
+    boolean isIntersectRectInsideCell(FloatRect rectOnMap)
     {
-        // che
+        // check right top corner for top right corner
+        return (this.hitBox.top + this.getYByX(rectOnMap.right - this.hitBox.left) > rectOnMap.top);
 
-        return true;
+        // x position of right top coroner inside this rect
+        /*float delta = rectOnMap.right - this.hitBox.left;
+
+        // max top position of right top corner
+        float maxYOfRightCoroner = this.hitBox.top +  this.getYByX(delta);
+
+        if (maxYOfRightCoroner > rectOnMap.top) {
+            return true;
+        }
+
+        return false;*/
     }
+
 }

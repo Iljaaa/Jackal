@@ -103,10 +103,18 @@ public class Corner extends MapCellWithHitbox
     }
 
     @Override
-    boolean isIntersectRectInsideCell(FloatRect r)
+    boolean isIntersectRectInsideCell(FloatRect rectOnMap)
     {
-        // che
+        // check right top connor
 
-        return true;
+        if (rectOnMap.right > this.hitBox.centerX()) {
+            return true;
+        }
+
+        if (rectOnMap.top < this.hitBox.centerY()) {
+            return true;
+        }
+
+        return false;
     }
 }

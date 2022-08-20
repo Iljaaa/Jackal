@@ -66,8 +66,8 @@ public abstract class MapCell
 
     /**
      * Check intersect inside rect
-     * @param r Rect to check
+     * @param rectOnMap Rect in map coordinate system to check
      * @return is intersected
      */
-    abstract boolean isIntersectRectInsideCell (FloatRect r);
+    abstract boolean isIntersectRectInsideCell (FloatRect rectOnMap);
 }
