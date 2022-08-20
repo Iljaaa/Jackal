@@ -504,16 +504,18 @@ public class GameScreen extends Screen
             for (int col = 0; col < map.mapCols; col++) {
                 MapCell c = map.fields[row][col];
                 if (c == null) continue;
-                Rect hitBox = c.getHitBox();
-                if (hitBox == null) continue;
+                // Rect hitBox = c.getHitBox();
+                // if (hitBox == null) continue;
 
-                g.drawRect(
+                c.drawHitBox(g, map);
+
+                /*g.drawRect(
                         map.screenLeftPotion(hitBox.left),
                         map.screenTopPotion(hitBox.top),
                         hitBox.width(),
                         hitBox.height(),
                         this.hitBoxPaint
-                );
+                );*/
 
             }
         }

@@ -1,5 +1,7 @@
 package com.a530games.jackal.map;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
@@ -9,10 +11,17 @@ public abstract class MapCell
 {
     protected int row, col;
 
+    protected Paint hitBoxPaint;
+
     public MapCell(int row, int col)
     {
         this.row = row;
         this.col = col;
+
+        this.hitBoxPaint = new Paint();
+        this.hitBoxPaint.setStyle(Paint.Style.STROKE);
+        this.hitBoxPaint.setStrokeWidth(1);
+        this.hitBoxPaint.setColor(Color.YELLOW);
     }
 
     /**
@@ -31,6 +40,13 @@ public abstract class MapCell
      * @param g Graphic object
      */
     public abstract void draw(Graphics g, Map map);
+
+    /**
+     * Draw hitbox
+     * @param g Graphic object
+     * @param map Map object
+     */
+    public abstract void drawHitBox(Graphics g, Map map);
 
     /**
      * Return not exists hitbox map

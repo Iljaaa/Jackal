@@ -58,6 +58,17 @@ public class Bush extends MapCell
         );
     }
 
+    @Override
+    public void drawHitBox(Graphics g, Map map) {
+        /*g.drawRect(
+                map.screenLeftPotion(hitBox.left),
+                map.screenTopPotion(hitBox.top),
+                hitBox.width(),
+                hitBox.height(),
+                this.hitBoxPaint
+        );*/
+    }
+
     /**
      * Is intersect point inside rect
      */
