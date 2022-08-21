@@ -45,6 +45,11 @@ public class Wall extends MapCellWithHitbox
     }
 
     @Override
+    public void drawTopLayout(Graphics g, Map map) {
+
+    }
+
+    @Override
     boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
         return false;
     }

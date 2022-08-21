@@ -70,8 +70,8 @@ public class World
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
 
-        this.enemies.add(new Tank(this,100, 100));
-        this.enemies.add(new Commandos(this,400, 800));
+        // this.enemies.add(new Tank(this,100, 100));
+        // this.enemies.add(new Commandos(this,400, 800));
 
         // инициализируем массиа с пулями
         this.bullets = new PlayerBulletsCollection();

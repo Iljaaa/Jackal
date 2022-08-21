@@ -169,9 +169,6 @@ public class Map
         this.fields[this.mapRows - 1][this.mapCols - 1] = new RightBottomCorner(this.mapRows - 1, this.mapCols - 1);  // right bottom corner
 
 
-
-
-
         // top line
         /*this.addRock(0, 0, Rock.MOVE_ROCK_3);
         this.addRock(0, 1, Rock.MOVE_ROCK_1);
@@ -309,15 +306,14 @@ public class Map
         this.fields[14][10] = new LeftTopCorner(14, 10);
         this.fields[15][10] = new LeftBottomCorner(15, 10);
 
-        this.fields[13][3] = new BigPillar(13, 3, BigPillar.PART_LEFT_TOP);
-        this.fields[13][4] = new BigPillar(13, 4, BigPillar.PART_RIGHT_TOP);
-        this.fields[14][3] = new BigPillar(14, 3, BigPillar.PART_LEFT_L1);
-        this.fields[14][4] = new BigPillar(14, 4, BigPillar.PART_RIGHT_L1);
-        this.fields[15][3] = new BigPillar(15, 3, BigPillar.PART_LEFT_L2);
-        this.fields[15][4] = new BigPillar(15, 4, BigPillar.PART_RIGHT_L2);
-        this.fields[16][3] = new BigPillar(16, 3, BigPillar.PART_LEFT_DOWN);
-        this.fields[16][4] = new BigPillar(16, 4, BigPillar.PART_RIGHT_DOWN);
-
+        this.fields[13][3] = new BigPillarTopLeft(13, 3);
+        this.fields[13][4] = new BigPillarTopRight(13, 4);
+        this.fields[14][3] = new BigPillarSecondLeft(14, 3);
+        this.fields[14][4] = new BigPillarSecondRight(14, 4);
+        this.fields[15][3] = new BigPillarThirdLeft(15, 3);
+        this.fields[15][4] = new BigPillarThirdRight(15, 4);
+        this.fields[16][3] = new BigPillarBottomLeft(16, 3);
+        this.fields[16][4] = new BigPillarBottomRight(16, 4);
 
         this.fields[16][1] = new Bush(16, 1, Assets.bush1);
         this.fields[16][2] = new Bush(16, 2, Assets.bush2);

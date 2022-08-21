@@ -73,6 +73,11 @@ public class Rock extends MapCellWithHitbox
 
     }
 
+    @Override
+    public void drawTopLayout(Graphics g, Map map) {
+
+    }
+
     /**
      * Is intersect point inside rect
      */

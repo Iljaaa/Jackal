@@ -59,6 +59,11 @@ public class Bush extends MapCell
     }
 
     @Override
+    public void drawTopLayout(Graphics g, Map map) {
+
+    }
+
+    @Override
     public void drawHitBox(Graphics g, Map map) {
         /*g.drawRect(
                 map.screenLeftPotion(hitBox.left),

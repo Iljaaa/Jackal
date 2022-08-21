@@ -1,7 +1,5 @@
 package com.a530games.jackal.map;
 
-import android.graphics.Rect;
-
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
@@ -77,6 +75,11 @@ public class BigPillar extends MapCellWithHitbox
 
     @Override
     public void draw(Graphics g, Map map) {
+
+    }
+
+    @Override
+    public void drawTopLayout(Graphics g, Map map) {
 
     }
 

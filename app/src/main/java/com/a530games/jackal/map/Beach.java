@@ -49,6 +49,11 @@ public class Beach extends MapCellWithHitbox
                 this.sprite.height);
     }
 
+    @Override
+    public void drawTopLayout(Graphics g, Map map) {
+
+    }
+
     /**
      * Is intersect point inside rect
      */

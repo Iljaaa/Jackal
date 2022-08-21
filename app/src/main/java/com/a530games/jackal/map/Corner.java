@@ -42,6 +42,11 @@ abstract public class Corner extends MapCellWithHitbox
     }
 
     @Override
+    public void drawTopLayout(Graphics g, Map map) {
+
+    }
+
+    @Override
     public void drawHitBox(Graphics g, Map map)
     {
         g.drawLine(

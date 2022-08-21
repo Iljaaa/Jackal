@@ -415,8 +415,10 @@ public class GameScreen extends Screen
 
         // this.drawSky();
         // map top level
-        // this.drawMapTop();
+        this.drawMapTopLayout();
 
+        // map object hitboxes
+        this.drawMapObjectsHitBoxes();
 
         //this.drawSky();
     }
@@ -472,6 +474,7 @@ public class GameScreen extends Screen
                 640);
 
 
+        // todo: animted blocks only on screen
         // draw animated blocks
         for (int row = 0; row < this.world.map.mapRows; row++) {
             for (int col = 0; col < this.world.map.mapCols; col++)
@@ -486,27 +489,24 @@ public class GameScreen extends Screen
         // this.drawMapNet(g);
 
         // this.drawActiveCell();
-
-        this.drawMapObjectsHitBoxes(g, this.world.map);
     }
 
     /**
      * Hit boxes for map objects
-     * @param g Graphics object
-     * @param map Map object
      */
-    private void drawMapObjectsHitBoxes(Graphics g, Map map)
+    private void drawMapObjectsHitBoxes()
     {
-        // todo: draw object only n screen
+        Graphics g = this.game.getGraphics();
 
-        for (int row = 0; row < map.mapRows; row++) {
-            for (int col = 0; col < map.mapCols; col++) {
-                MapCell c = map.fields[row][col];
+        // todo: draw object only n screen
+        for (int row = 0; row < this.world.map.mapRows; row++) {
+            for (int col = 0; col < this.world.map.mapCols; col++) {
+                MapCell c = this.world.map.fields[row][col];
                 if (c == null) continue;
                 // Rect hitBox = c.getHitBox();
                 // if (hitBox == null) continue;
 
-                c.drawHitBox(g, map);
+                c.drawHitBox(g, this.world.map);
 
                 /*g.drawRect(
                         map.screenLeftPotion(hitBox.left),
@@ -782,7 +782,6 @@ public class GameScreen extends Screen
         }
     }
 
-
     private void drawBlow()
     {
         Graphics g = this.game.getGraphics();
@@ -797,6 +796,24 @@ public class GameScreen extends Screen
         );
     }
 
+    /**
+     * Draw map objects top layer checkbox
+     */
+    private void drawMapTopLayout()
+    {
+        Graphics g = this.game.getGraphics();
+
+        // todo: draw only on sceen objects
+        for (int row = 0; row < this.world.map.mapRows; row++) {
+            for (int col = 0; col < this.world.map.mapCols; col++)
+            {
+                MapCell c = this.world.map.fields[row][col];
+                if (c == null) continue;
+
+                c.drawTopLayout(g, this.world.map);
+            }
+        }
+    }
 
     /**
      *

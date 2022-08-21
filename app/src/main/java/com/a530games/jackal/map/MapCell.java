@@ -49,6 +49,11 @@ public abstract class MapCell
     public abstract void drawHitBox(Graphics g, Map map);
 
     /**
+     * Draw objects over plyer
+     */
+    public abstract void drawTopLayout (Graphics g, Map map);
+
+    /**
      * Return not exists hitbox map
      * @return Hitbox rect
      */
