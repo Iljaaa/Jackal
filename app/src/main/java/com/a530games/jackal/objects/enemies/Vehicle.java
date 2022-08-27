@@ -39,7 +39,6 @@ public abstract class Vehicle extends GameObject implements Enemy
         this.sprite.setScreenMargin(-12, -12);
 
         this.hitBox = new HitBox(startX, startY, startX + 40, startY + 40);
-
     }
 
     @Override
@@ -58,16 +57,16 @@ public abstract class Vehicle extends GameObject implements Enemy
     }
 
     /**
-     *
+     * move vehicle on map
      */
-    public void move(int x, int y, float deltaTime)
+    public void move(Vector2 direction, float deltaTime)
     {
-        if (x != 0) {
-            this.moveHorizontal(x * this.speed, deltaTime);
+        if (direction.x != 0) {
+            this.moveHorizontal(direction.x * this.speed, deltaTime);
         }
 
-        if (y != 0) {
-            this.moveVertical(y * this.speed, deltaTime);
+        if (direction.y != 0) {
+            this.moveVertical(direction.y * this.speed, deltaTime);
         }
 
         /*switch (direction) {

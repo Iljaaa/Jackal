@@ -12,17 +12,31 @@ public class AndroidInput implements Input
 
     private TouchHandler touchHandler;
 
+    private MotionEventHandler motionEventsHandler;
+
     private Controller controller;
 
+    /**
+     *
+     * @param context content
+     * @param view view
+     * @param scaleX Screen scale by X axe
+     * @param scaleY Screen scale by Y axe
+     */
     public AndroidInput(Context context, View view, float scaleX, float scaleY)
     {
         this.keyHandler = new KeyboardHandler(view);
+
         this.touchHandler = new MultiTouchHandler(view, scaleX, scaleY);
 
+        this.motionEventsHandler = new AndroidMotionEventHandler(view);
 
         // https://developer.android.com/training/game-controllers/controller-input
-        this.controller = new Controller();
-        view.setOnKeyListener(this.controller);
+        this.controller = new Controller(this.motionEventsHandler);
+
+        // bind key listener
+        // view.setOnKeyListener(this.controller);
+
 
         // тут мы определяем подключен ли джлйстик
         // todo: здесь надо дописать сохранения ид девайса что бы сделать несколько джойстиков

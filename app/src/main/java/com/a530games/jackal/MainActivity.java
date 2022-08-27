@@ -1,34 +1,13 @@
 package com.a530games.jackal;
 
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.a530games.framework.AndroidGame;
 import com.a530games.framework.FastRenderView;
-import com.a530games.framework.RenderView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.PowerManager;
-import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.a530games.jackal.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,12 +25,6 @@ public class MainActivity extends AppCompatActivity {
         //
         PowerManager powerManager = (PowerManager) this.getSystemService(POWER_SERVICE);
         PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
-
-
-
-
-
-        // /home/ilja/Загрузки/photo_2022-07-01_22-54-25.jpg
 
         this.renderView = new FastRenderView(this);
         this.setContentView(this.renderView);

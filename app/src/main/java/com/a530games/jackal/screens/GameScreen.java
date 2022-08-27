@@ -181,44 +181,49 @@ public class GameScreen extends Screen
         }*/
 
         // move player
-        if (controller.isTopButtonDown())  {
+        Vector2 leftStick = controller.getLeftStickDirection();
+        if (leftStick.x != 0 || leftStick.y != 0) {
+            this.world.player.move(leftStick, deltaTime);
+        }
+
+        // set player turret angle
+        Vector2 rightStick = controller.getRightStickDirection();
+        if (rightStick.x != 0 || rightStick.y != 0) {
+            this.world.player.turret.set(rightStick);
+        }
+
+
+        // move player
+        /*if (controller.isTopButtonDown())  {
             if (controller.isRightButtonDown()) {
-                // this.world.player.move(Player.MOVE_TOP_RIGHT, deltaTime);
                 this.world.player.move(1, -1, deltaTime);
             }
             else if (controller.isLeftButtonDown()) {
-                // this.world.player.move(Player.MOVE_TOP_LEFT, deltaTime);
                 this.world.player.move(-1, -1, deltaTime);
             }
             else {
-                // this.world.player.move(Player.MOVE_TOP, deltaTime);
                 this.world.player.move(0, -1, deltaTime);
             }
         }
         else if (controller.isBottomButtonDown())  {
             if (controller.isRightButtonDown()) {
-                // this.world.player.move(Player.MOVE_DOWN_RIGHT, deltaTime);
                 this.world.player.move(1, 1, deltaTime);
             }
             else if (controller.isLeftButtonDown()) {
-                // this.world.player.move(Player.MOVE_DOWN_LEFT, deltaTime);
                 this.world.player.move(-1, 1, deltaTime);
             }
             else {
-                // this.world.player.move(Player.MOVE_DOWN, deltaTime);
                 this.world.player.move(0, 1, deltaTime);
             }
         }
         else {
             if (controller.isLeftButtonDown()) {
-                // this.world.player.move(Player.MOVE_LEFT, deltaTime);
                 this.world.player.move(-1, 0, deltaTime);
             }
             if (controller.isRightButtonDown()) {
-                // this.world.player.move(Player.MOVE_RIGHT, deltaTime);
                 this.world.player.move(1, 0, deltaTime);
             }
-        }
+        }*/
 
         /*
         старый вариант контора
@@ -239,13 +244,14 @@ public class GameScreen extends Screen
             this.world.player.moveLeft(deltaTime);
         }*/
 
+        // move player turret
+        // this.world.player.getTargetAngle()
+
         // fire
-        // todo: сделать абстракцию кнопку огонек
-        if (controller.isA()) {
+        if (controller.isA() || controller.isR1() || controller.isR2()) {
             if (this.world.playerFire()){
                 if(Settings.soundEnabled) Assets.fire.play(1);
             }
-
         }
 
         // обработка поворота
@@ -615,7 +621,9 @@ public class GameScreen extends Screen
                 this.world.player.gun.width, // 64,
                 this.world.player.gun.height); // 64);
 
-        this.drawPlayerAngle(g, playerScreenX, playerSourceY);
+        this.drawPlayerAngle(g);
+
+        this.drawPlayerTurretAngle(g);
 
         // player hitbox
         this.drawPlayerHitBox(g);
@@ -627,10 +635,17 @@ public class GameScreen extends Screen
         g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.otherHitBoxPaint);
     }
 
-    private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)
+    /**
+     * Draw line of layer turret angle
+     * @param g Graphics object
+     */
+    // private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)
+    private void drawPlayerAngle (Graphics g) // , int playerScreenX, int playerScreenY)
     {
-        int centerX = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
-        int centerY = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
+        // int centerX = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
+        // int centerY = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
+        int centerX = this.world.map.screenLeftPotion(this.world.player.hitBox.getCenterLeft());
+        int centerY = this.world.map.screenTopPotion(this.world.player.hitBox.getCenterTop());
 
         g.drawLine(
                 centerX,
@@ -638,6 +653,26 @@ public class GameScreen extends Screen
                 (int) Math.ceil(centerX + (this.world.player.direction.x * 50)),
                 (int) Math.ceil(centerY + (this.world.player.direction.y * 50)),
                 Color.MAGENTA);
+    }
+
+    /**
+     * Draw line of layer turret angle
+     * @param g Graphics object
+     */
+    // private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)
+    private void drawPlayerTurretAngle (Graphics g) // , int playerScreenX, int playerScreenY)
+    {
+        // int centerX = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
+        // int centerY = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
+        int centerX = this.world.map.screenLeftPotion(this.world.player.hitBox.getCenterLeft());
+        int centerY = this.world.map.screenTopPotion(this.world.player.hitBox.getCenterTop());
+
+        g.drawLine(
+                centerX,
+                centerY,
+                (int) Math.ceil(centerX + (this.world.player.turret.x * 50)),
+                (int) Math.ceil(centerY + (this.world.player.turret.y * 50)),
+                Color.GREEN);
     }
 
     private void drawEnemies()

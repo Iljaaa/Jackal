@@ -1,6 +1,7 @@
 package com.a530games.jackal;
 
 import com.a530games.framework.Sound;
+import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemiesCollection;
@@ -275,20 +276,20 @@ public class World
         if (!this.player.fire()) return false;
 
         // add bullet
-        return this.addBullet(this.player.hitBox.getCenterLeft(), this.player.hitBox.getCenterTop() - 20);
+        return this.addBullet(this.player.hitBox.getCenterLeft(), this.player.hitBox.getCenterTop(), this.player.getTurretAngle());
     }
 
     /**
      * Add player bullet
      * refactor by get free
      */
-    public boolean addBullet (float playerCenterX, float playerCenterY )
+    public boolean addBullet (float playerCenterX, float playerCenterY, Vector2 direction)
     {
         Bullet b = this.bullets.getFreeBullet();
         if (b == null) return false;
 
-        b.reNewByVector(playerCenterX, playerCenterY, 0, -1);
-        if(Settings.soundEnabled) Assets.fire.play(1);
+        b.reNewByDirectionVector(playerCenterX, playerCenterY, direction);
+        // if(Settings.soundEnabled) Assets.fire.play(1);
         return true;
 
         /*int size = this.bullets.size();

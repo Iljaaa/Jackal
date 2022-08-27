@@ -13,6 +13,9 @@ public class Player extends RotateVehicle
     // задержка перед выстрелом
     private float fireDelay = 0;
 
+    public Vector2 turret = new Vector2(0, -1);
+    // private Vector targetAngle;
+
     public Sprite gun;
 
     public Player(World world, int startX, int startY)
@@ -41,13 +44,14 @@ public class Player extends RotateVehicle
 
     @Override
     public Vector2 getTurretAngle() {
-        return null;
+        return this.turret;
     }
 
     @Override
     public Vector2 getTargetAngle() {
         return null;
     }
+
 
     private void updateSprite(Vector2 direction)
     {
@@ -89,7 +93,7 @@ public class Player extends RotateVehicle
 
 
     /**
-     * Fire
+     * Check can we fire
      */
     public boolean fire()
     {
@@ -102,7 +106,7 @@ public class Player extends RotateVehicle
 
     /**
      * Hit by enemy bullet
-     * @param damage
+     * @param damage damage
      */
     public void hit (int damage) {
         // hp mines

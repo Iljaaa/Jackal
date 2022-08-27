@@ -27,22 +27,29 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void move(int x, int y, float deltaTime)
+    public void move(Vector2 direction, float deltaTime)
     {
-        super.move(x, y, deltaTime);
+        super.move(direction, deltaTime);
 
         // float currentAngle = this.direction.angleInDegrees();
         //float targetAngle = direction.
 
-        int targetAngle = 0;
-        if (x == 1 &&  y == 0) targetAngle = 0;
-        if (x == 1 &&  y == 1) targetAngle = 45;
-        if (x == 0 &&  y == 1) targetAngle = 90;
-        if (x == -1 && y == 1) targetAngle = 135;
-        if (x == -1 && y == 0) targetAngle = 180;
-        if (x == -1 && y == -1) targetAngle = 225;
-        if (x == 0 &&  y == -1) targetAngle = 270;
-        if (x == 1 &&  y == -1) targetAngle = 315;
+        float directionAngle = direction.angleInDegrees();
+        float currentAngle = this.direction.angleInDegrees();
+        float newAngle = currentAngle - directionAngle;
+        if (newAngle < 180) this.direction.rotate(-5);
+        if (newAngle > 180) this.direction.rotate(5);
+
+
+       /* int targetAngle = 0;
+        if (direction.x == 1 &&  direction.y == 0) targetAngle = 0;
+        if (direction.x == 1 &&  direction.y == 1) targetAngle = 45;
+        if (direction.x == 0 &&  direction.y == 1) targetAngle = 90;
+        if (direction.x == -1 && direction.y == 1) targetAngle = 135;
+        if (direction.x == -1 && direction.y == 0) targetAngle = 180;
+        if (direction.x == -1 && direction.y == -1) targetAngle = 225;
+        if (direction.x == 0 &&  direction.y == -1) targetAngle = 270;
+        if (direction.x == 1 &&  direction.y == -1) targetAngle = 315;
 
         float currentAngle = this.direction.angleInDegrees();
 
@@ -163,7 +170,7 @@ public abstract class RotateVehicle extends Vehicle
                     this.direction.rotate(-5);
                 }
             }
-        }
+        }*/
     }
 
     /*@Override

@@ -2,6 +2,7 @@ package com.a530games.jackal.objects;
 
 import com.a530games.framework.helpers.FloatPoint;
 import com.a530games.framework.helpers.Vector;
+import com.a530games.framework.math.Vector2;
 
 public class Bullet
 {
@@ -17,7 +18,7 @@ public class Bullet
     public FloatPoint startMapPosition;
 
     //
-    public Vector direction;
+    public Vector2 direction;
 
     //
     private int speed = 12;
@@ -29,7 +30,7 @@ public class Bullet
 
     public Bullet(boolean isOut) {
         this.isOut = isOut;
-        this.direction = new Vector(0 ,1);
+        this.direction = new Vector2(0 ,1);
         this.mapPosition = new FloatPoint(0, 0);
         this.startMapPosition = new FloatPoint(0, 0);
     }
@@ -54,7 +55,7 @@ public class Bullet
                 screenCenterTop + (int) Math.round(Math.cos(angle * Math.PI) * 50),
                 Color.GREEN);*/
 
-        this.direction = new Vector(
+        this.direction = new Vector2(
                 (float) Math.sin(angle * Math.PI),
                 (float) Math.cos(angle * Math.PI)
         );
@@ -127,6 +128,7 @@ public class Bullet
     } */
 
     /**
+     * @deprecated use new method
      * Перезапускаем пульку для повторного использования
      */
     public void reNewByVector (float x, float y, float directionX, float directionY)
@@ -140,6 +142,28 @@ public class Bullet
         // this.direction.updateByAngle(angle);
         this.direction.x = directionX;
         this.direction.y = directionY;
+
+        this.isOut = false;
+        this.timer = 0;
+    }
+
+    /**
+     * Перезапускаем пульку для повторного использования
+     */
+    public void reNewByDirectionVector (float x, float y, Vector2 direction)
+    {
+        this.mapPosition.left = x;
+        this.mapPosition.top = y;
+        this.startMapPosition.left = x;
+        this.startMapPosition.top = y;
+        // this.x = x;
+        // this.y = y;
+        // this.direction.updateByAngle(angle);
+        this.direction.x = direction.x;
+        this.direction.y = direction.y;
+
+        // normarize vector
+        this.direction.nor();
 
         this.isOut = false;
         this.timer = 0;

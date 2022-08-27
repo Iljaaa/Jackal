@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.os.PowerManager;
 import android.util.Log;
+import android.view.InputDevice;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -208,6 +210,7 @@ public abstract class AndroidGame extends Activity implements Game
     @Override
     public void onConfigurationChanged(Configuration newConfig)
     {
+        // todo: fix orientation
         super.onConfigurationChanged(newConfig);
         this.screenOrientation = newConfig.orientation;
 

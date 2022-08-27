@@ -36,7 +36,7 @@ public class LoadingLevelScreen extends Screen
             GameScreen gs = new GameScreen(this.game);
 
             // test init map
-            gs.world.map.init(100, 1000, this.game.getGraphics().getAssetManager(), gs.world.player);
+            gs.world.map.init(100, 100, this.game.getGraphics().getAssetManager(), gs.world.player);
 
             // draw map
             gs.world.map.draw();
