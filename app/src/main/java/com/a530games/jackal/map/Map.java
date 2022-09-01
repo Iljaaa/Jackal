@@ -22,9 +22,11 @@ public class Map
     public float x = 0;
     public float y = 0;
 
-    // min ,ap position
-    public int minX = 0;
-    public int minY = 0;
+    // min|max map position
+    public int mapMinX = 0,  minMinY = 0;
+
+    // object min max position
+    private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
 
     // map size in blocks
     public int mapRows;
@@ -95,8 +97,14 @@ public class Map
         // calculate max map positions`
         // fixme: magic numbers
         // 640 its screenSize
-        this.minX = -1 * ((collums * Map.SPRITE_WIDTH) - 640);
-        this.minY = -1 * ((rows * Map.SPRITE_HEIGHT) - 640);
+        this.mapMinX = -1 * ((collums * Map.SPRITE_WIDTH) - 640);
+        this.minMinY = -1 * ((rows * Map.SPRITE_HEIGHT) - 640);
+
+        // calculate min|max objects position
+        this.objectMinX = Map.SPRITE_WIDTH;
+        this.objectMaxX = (this.mapCols * Map.SPRITE_WIDTH) - Map.SPRITE_WIDTH;
+        this.objectMinY = Map.SPRITE_HEIGHT;
+        this.objectMaxY = (this.mapRows * Map.SPRITE_HEIGHT) - Map.SPRITE_HEIGHT;
 
         // this.playerStartX = 400;
         // this.playerStartY = 1100;
@@ -104,10 +112,11 @@ public class Map
         player.hitBox.moveTo(400, 1100);
 
         // calculate start map position
+        // after move player
         this.x = -1 * (player.hitBox.left - 320 - 20);
         this.y = -1 * (player.hitBox.top - 320 - 20);
-        if (this.x < this.minX) this.x = this.minX;
-        if (this.y < this.minY) this.y = this.minY;
+        if (this.x < this.mapMinX) this.x = this.mapMinX;
+        if (this.y < this.minMinY) this.y = this.minMinY;
 
         // init fields
         this.fields = new MapCell[this.mapRows][this.mapCols];
@@ -144,29 +153,29 @@ public class Map
         this.addRock(3, 2, Rock.MOVE_ROCK_1);
 
         // top line
-        for (int col = 1; col < this.mapCols - 1; col++) {
-            this.fields[0][col] = new TopHalfWall(0, col);
-        }
+//        for (int col = 1; col < this.mapCols - 1; col++) {
+//            this.fields[0][col] = new TopHalfWall(0, col);
+//        }
 
         // bottom line
-         for (int col = 1; col < this.mapCols - 1; col++) {
+         for (int col = 0; col < this.mapCols; col++) {
              this.addBeach(this.mapRows - 1, col);
          }
 
          // left line
-        for (int row = 1; row < this.mapRows - 1; row++) {
+        /*for (int row = 1; row < this.mapRows - 1; row++) {
             this.fields[row][0] = new LeftHalfWall(row, 0);
-        }
+        }*/
 
          // right line
-        for (int row = 1; row < this.mapRows - 1; row++) {
+        /*for (int row = 1; row < this.mapRows - 1; row++) {
             this.fields[row][this.mapCols - 1] = new RightHalfWall(row, this.mapCols - 1);
-        }
+        }*/
 
-        this.fields[0][0] = new LeftTopCorner(0, 0); // left top corner
-        this.fields[0][this.mapCols - 1] = new RightTopCorner(0, this.mapCols - 1); // right top corner
-        this.fields[this.mapRows - 1][0] = new LeftBottomCorner(this.mapRows - 1, 0); // left bottom corner
-        this.fields[this.mapRows - 1][this.mapCols - 1] = new RightBottomCorner(this.mapRows - 1, this.mapCols - 1);  // right bottom corner
+        // this.fields[0][0] = new LeftTopCorner(0, 0); // left top corner
+        //this.fields[0][this.mapCols - 1] = new RightTopCorner(0, this.mapCols - 1); // right top corner
+        // this.fields[this.mapRows - 1][0] = new LeftBottomCorner(this.mapRows - 1, 0); // left bottom corner
+        // this.fields[this.mapRows - 1][this.mapCols - 1] = new RightBottomCorner(this.mapRows - 1, this.mapCols - 1);  // right bottom corner
 
 
         // top line
@@ -333,13 +342,33 @@ public class Map
     {
         // this.g.drawRect(100, 100, 200, 200, Color.RED);
 
-        // draw backend
+        // draw title backend
         for (int row = 0; row < this.mapRows; row++) {
             for (int col = 0; col < this.mapCols; col++) {
-                // fixme: wtf? 65? not 64
                 this.g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 0, 65, 65);
             }
         }
+
+        // draw walls
+        // top wall
+        for (int col = 1; col < this.mapCols - 1; col++) {
+            this.g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, 0, 256, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        }
+        // left wall
+        for (int row = 1; row < this.mapRows - 2; row++) {
+            this.g.drawPixmap(Assets.mapSprite, 0, row * Map.SPRITE_HEIGHT, 192, 64,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        }
+        // right wall
+        for (int row = 1; row < this.mapRows - 2; row++) {
+            this.g.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), row * Map.SPRITE_HEIGHT, 320, 64,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        }
+
+        // corners
+        this.g.drawPixmap(Assets.mapSprite, 0, 0, 192, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        this.g.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), 0, 320, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        // corners before bottom line
+        this.g.drawPixmap(Assets.mapSprite, 0, ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 512, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        this.g.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 384, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
 
         // draw objects
         for (int row = 0; row < this.mapRows; row++) {
@@ -425,9 +454,9 @@ public class Map
             // move map on left
             this.x = this.x - (rightOnScreen - 440);
 
-            if (this.x < this.minX) {
+            if (this.x < this.mapMinX) {
                 //delta = delta - (this.y - this.minY);
-                this.x = this.minX;
+                this.x = this.mapMinX;
             }
             /*else {
                 // player.hitBox.move(-1 * delta, 0);
@@ -443,9 +472,9 @@ public class Map
             // move map on left
             this.y = this.y - (bottomScreen - 440);
 
-            if (this.y < this.minY) {
+            if (this.y < this.minMinY) {
                 //delta = delta - (this.y - this.minY);
-                this.y = this.minY;
+                this.y = this.minMinY;
             }
             /*else {
                 // player.hitBox.move(0, -1 * delta);
@@ -479,6 +508,12 @@ public class Map
         int rectRightOnMap = (int) Math.floor(rectOnMap.right - this.x);
         int rectBottomOnMap = (int) Math.floor(rectOnMap.bottom - this.y);
         int rectLeftOnMap = (int) Math.floor(rectOnMap.left - this.x);*/
+
+        // check min max position
+        if (rectOnMap.left < this.objectMinX) return true;
+        if (rectOnMap.top < this.objectMinY) return true;
+        if (rectOnMap.right > this.objectMaxX) return true;
+        if (rectOnMap.bottom > this.objectMaxY) return true;
 
         // for left top take 3 top
         int row = (int) Math.floor(rectOnMap.top / Map.SPRITE_HEIGHT);

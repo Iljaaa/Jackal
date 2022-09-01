@@ -1,13 +1,13 @@
 package com.a530games.jackal.map;
 
-import android.graphics.Rect;
+// import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 
-public class Beach extends MapCellWithHitbox
+public class Beach extends MapCell
 {
     Sprite sprite;
 
@@ -15,7 +15,7 @@ public class Beach extends MapCellWithHitbox
 
     public Beach(int row, int col)
     {
-        super(row, col,64, 64);
+        super(row, col);
         this.sprite = new Sprite(Assets.botLine, 0, 0);
     }
 
@@ -41,8 +41,8 @@ public class Beach extends MapCellWithHitbox
     {
         g.drawPixmap(
                 this.sprite.image,
-                map.screenLeftPotion(this.hitBox.left),
-                map.screenTopPotion(this.hitBox.top),
+                map.screenLeftPotion(this.col * Map.SPRITE_WIDTH),
+                map.screenTopPotion(this.row * Map.SPRITE_HEIGHT),
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,
@@ -51,6 +51,11 @@ public class Beach extends MapCellWithHitbox
 
     @Override
     public void drawTopLayout(Graphics g, Map map) {
+
+    }
+
+    @Override
+    public void drawHitBox(Graphics g, Map map) {
 
     }
 
