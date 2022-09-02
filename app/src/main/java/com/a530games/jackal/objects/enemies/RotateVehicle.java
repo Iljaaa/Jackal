@@ -31,146 +31,16 @@ public abstract class RotateVehicle extends Vehicle
     {
         super.move(direction, deltaTime);
 
+        // just set direction
         // float currentAngle = this.direction.angleInDegrees();
         //float targetAngle = direction.
+        this.direction.set(direction);
 
-        float directionAngle = direction.angleInDegrees();
+        /*float directionAngle = direction.angleInDegrees();
         float currentAngle = this.direction.angleInDegrees();
         float newAngle = currentAngle - directionAngle;
         if (newAngle < 180) this.direction.rotate(-5);
-        if (newAngle > 180) this.direction.rotate(5);
-
-
-       /* int targetAngle = 0;
-        if (direction.x == 1 &&  direction.y == 0) targetAngle = 0;
-        if (direction.x == 1 &&  direction.y == 1) targetAngle = 45;
-        if (direction.x == 0 &&  direction.y == 1) targetAngle = 90;
-        if (direction.x == -1 && direction.y == 1) targetAngle = 135;
-        if (direction.x == -1 && direction.y == 0) targetAngle = 180;
-        if (direction.x == -1 && direction.y == -1) targetAngle = 225;
-        if (direction.x == 0 &&  direction.y == -1) targetAngle = 270;
-        if (direction.x == 1 &&  direction.y == -1) targetAngle = 315;
-
-        float currentAngle = this.direction.angleInDegrees();
-
-        if (targetAngle == 0) {
-            if (currentAngle != 0) {
-                if (currentAngle < 180) {
-                    this.direction.rotate(-5);
-                }
-                if (currentAngle > 180) {
-                    this.direction.rotate(5);
-                }
-            }
-        }
-
-        if (targetAngle == 45) {
-            if (currentAngle != 45) {
-                if (45 < currentAngle && currentAngle < 225) {
-                    this.direction.rotate(-5);
-                }
-
-                if (225 <= currentAngle && currentAngle <= 360) {
-                    this.direction.rotate(5);
-                }
-
-                if (0 <= currentAngle && currentAngle < 45) {
-                    this.direction.rotate(5);
-                }
-            }
-        }
-
-        if (targetAngle == 90) {
-            if (currentAngle != 90) {
-                if (90 < currentAngle && currentAngle < 270) {
-                    this.direction.rotate(-5);
-                }
-
-                if (270 <= currentAngle && currentAngle <= 360) {
-                    this.direction.rotate(5);
-                }
-
-                if (0 <= currentAngle && currentAngle < 90) {
-                    this.direction.rotate(5);
-                }
-            }
-        }
-
-        if (targetAngle == 135) {
-            if (currentAngle != 135) {
-                if (135 < currentAngle && currentAngle < 315) {
-                    this.direction.rotate(-5);
-                }
-
-                if (315 <= currentAngle && currentAngle <= 360) {
-                    this.direction.rotate(5);
-                }
-
-                if (0 <= currentAngle && currentAngle < 135) {
-                    this.direction.rotate(5);
-                }
-            }
-        }
-
-        if (targetAngle == 180) {
-            if (currentAngle != 180) {
-                if (currentAngle < 180) {
-                    this.direction.rotate(5);
-                }
-                if (currentAngle > 180) {
-                    this.direction.rotate(-5);
-                }
-            }
-        }
-
-
-        if (targetAngle == 225) {
-            if (currentAngle != 225) {
-                if (45 < currentAngle && currentAngle < 225) {
-                    this.direction.rotate(5);
-                }
-
-                if (225 <= currentAngle) {
-                    this.direction.rotate(-5);
-                }
-
-                if (0 <= currentAngle && currentAngle <= 45) {
-                    this.direction.rotate(-5);
-                }
-            }
-        }
-
-        if (targetAngle == 270) {
-            if (currentAngle != 270) {
-                if (90 < currentAngle && currentAngle < 270) {
-                    this.direction.rotate(5);
-                }
-
-                if (270 <= currentAngle) {
-                    this.direction.rotate(-5);
-                }
-
-                if (0 <= currentAngle && currentAngle <= 90) {
-                    this.direction.rotate(-5);
-                }
-            }
-        }
-
-        if (targetAngle == 315) {
-            if (currentAngle != 315) {
-                if (135 < currentAngle && currentAngle < 315) {
-                    this.direction.rotate(5);
-                }
-
-                if (315 <= currentAngle) {
-                    this.direction.rotate(-5);
-                }
-
-                if (0 <= currentAngle && currentAngle <= 135) {
-                    this.direction.rotate(-5);
-                }
-            }
-        }*/
+        if (newAngle > 180) this.direction.rotate(5);*/
     }
 
     /*@Override

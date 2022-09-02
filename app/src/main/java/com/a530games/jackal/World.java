@@ -275,8 +275,14 @@ public class World
         // check delay
         if (!this.player.fire()) return false;
 
+        Vector2 turretAngle = this.player.getTurretAngle();
+
         // add bullet
-        return this.addBullet(this.player.hitBox.getCenterLeft(), this.player.hitBox.getCenterTop(), this.player.getTurretAngle());
+        return this.addBullet(
+                this.player.hitBox.getCenterLeft() + turretAngle.x * 20,
+                this.player.hitBox.getCenterTop() + turretAngle.y * 20,
+                turretAngle
+        );
     }
 
     /**

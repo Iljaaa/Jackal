@@ -103,7 +103,7 @@ public class GameScreen extends Screen
         //
         Controller c = this.game.getInput().getController();
 
-        //
+        // temporary turret
         this.updateTurretAngle();
 
 
@@ -187,9 +187,11 @@ public class GameScreen extends Screen
         }
 
         // set player turret angle
+        // todo: has check config controller
         Vector2 rightStick = controller.getRightStickDirection();
         if (rightStick.x != 0 || rightStick.y != 0) {
-            this.world.player.turret.set(rightStick);
+            // this.world.player.turret.set(rightStick);
+            this.world.player.setTurretAngle(rightStick);
         }
 
 
@@ -642,8 +644,6 @@ public class GameScreen extends Screen
     // private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)
     private void drawPlayerAngle (Graphics g) // , int playerScreenX, int playerScreenY)
     {
-        // int centerX = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
-        // int centerY = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
         int centerX = this.world.map.screenLeftPotion(this.world.player.hitBox.getCenterLeft());
         int centerY = this.world.map.screenTopPotion(this.world.player.hitBox.getCenterTop());
 
@@ -785,34 +785,34 @@ public class GameScreen extends Screen
         if (b.timer <= 0.05f) {
             g.drawPixmap(
                     Assets.playerFire,
-                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
-                    this.world.map.screenTopPotion(b.startMapPosition.top) - 20,
+                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 16,
+                    this.world.map.screenTopPotion(b.startMapPosition.top) - 16,
                     0,
                     0,
-                    64,
-                    64
+                    32,
+                    32
             );
         }
         else if (0.05f < b.timer && b.timer <= 0.1f) {
             g.drawPixmap(
                     Assets.playerFire,
-                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
-                    this.world.map.screenTopPotion(b.startMapPosition.top) - 20,
-                    64,
+                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 16,
+                    this.world.map.screenTopPotion(b.startMapPosition.top) - 16,
+                    32,
                     0,
-                    64,
-                    64
+                    32,
+                    32
             );
         }
         else if (0.1f < b.timer && b.timer <= 0.15f) {
             g.drawPixmap(
                     Assets.playerFire,
-                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 32,
-                    this.world.map.screenTopPotion(b.startMapPosition.top) - 20,
-                    128,
-                    0,
+                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 16,
+                    this.world.map.screenTopPotion(b.startMapPosition.top) - 16,
                     64,
-                    64
+                    0,
+                    32,
+                    32
             );
         }
     }

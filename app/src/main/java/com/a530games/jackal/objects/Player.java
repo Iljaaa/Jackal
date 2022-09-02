@@ -26,7 +26,6 @@ public class Player extends RotateVehicle
         this.gun.set(0, 0);
 
         this.sprite.set(1, 0);
-
     }
 
     public void update(float deltaTime, Enemy player)
@@ -34,7 +33,43 @@ public class Player extends RotateVehicle
         // уменьшаем задержку выстрела
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;
 
-        this.updateSprite(this.direction);
+        // this.updateSprite(this.direction);
+    }
+
+    @Override
+    public void move(Vector2 direction, float deltaTime) {
+        super.move(direction, deltaTime);
+
+        // todo: make method
+        switch (direction.getQuater()) {
+            case 7: this.sprite.set(2, 0); break;
+            case 6: this.sprite.set(1, 0); break;
+            case 5: this.sprite.set(0, 0); break;
+            case 4: this.sprite.set(0, 1); break;
+            case 3: this.sprite.set(0, 2); break;
+            case 2: this.sprite.set(1, 2); break;
+            case 1: this.sprite.set(2, 2); break;
+            default: this.sprite.set(2, 1);
+                break;
+        }
+    }
+
+    public void setTurretAngle (Vector2 direction)
+    {
+        this.world.player.turret.set(direction);
+
+        // todo: make method
+        switch (direction.getQuater()) {
+            case 7: this.gun.set(2, 0); break;
+            case 6: this.gun.set(1, 0); break;
+            case 5: this.gun.set(0, 0); break;
+            case 4: this.gun.set(0, 1); break;
+            case 3: this.gun.set(0, 2); break;
+            case 2: this.gun.set(1, 2); break;
+            case 1: this.gun.set(2, 2); break;
+            default: this.gun.set(2, 1);
+                break;
+        }
     }
 
     @Override
@@ -52,8 +87,7 @@ public class Player extends RotateVehicle
         return null;
     }
 
-
-    private void updateSprite(Vector2 direction)
+    /*private void updateSprite(Vector2 direction)
     {
         float angle = direction.angleInDegrees();
 
@@ -89,7 +123,7 @@ public class Player extends RotateVehicle
             this.sprite.set(2, 0);
         }
 
-    }
+    }*/
 
 
     /**

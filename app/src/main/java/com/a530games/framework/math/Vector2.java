@@ -90,13 +90,30 @@ public class Vector2
         // float sin = FloatMath.sin(rad);
         float cos = (float) Math.cos(rad);
         float sin = (float) Math.sin(rad);
-        float newX = this.x * cos - this.y * sin;
-        float newY = this.x * sin + this.y * cos;
-        this.x = newX;
-        this.y = newY;
+        // float newX = this.x * cos - this.y * sin;
+        // float newY = this.x * sin + this.y * cos;
+        // this.x = newX;
+        // this.y = newY;
+        this.x = (this.x * cos) - (this.y * sin);
+        this.y = (this.x * sin) + (this.y * cos);
     }
 
-    public void setAngleInDegrees(float angleInDegrees)
+    public int getQuater ()
+    {
+        float angle = this.angleInDegrees();
+        if (angle > 335) return 0;
+        if (angle > 290) return 7;
+        if (angle > 245) return 6;
+        if (angle > 200) return 5;
+        if (angle > 155) return 4;
+        if (angle > 110) return 3;
+        if (angle > 65) return 2;
+        if (angle > 20) return 1;
+
+        return 0;
+    }
+
+    /*public void setAngleInDegrees(float angleInDegrees)
     {
         float rad = angleInDegrees * TO_RADIANS;
         // float cos = FloatMath.cos(rad);
@@ -107,7 +124,7 @@ public class Vector2
         float newY = this.x * sin + this.y * cos;
         this.x = newX;
         this.y = newY;
-    }
+    }*/
 
     public float dist(Vector2 other) {
         float distX = this.x - other.x;
