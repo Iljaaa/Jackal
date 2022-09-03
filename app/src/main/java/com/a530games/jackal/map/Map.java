@@ -223,6 +223,11 @@ public class Map
         this.addRock(9, 3, Rock.MOVE_ROCK_3);
         this.addRock(9, 4, Rock.MOVE_ROCK_1);
 
+
+        this.fields[9][11] = new Tree1(9, 11);
+        this.fields[9][15] = new Tree2(9, 15);
+
+
         /*this.addRock(19, 0, Rock.MOVE_ROCK_3);
         this.addRock(19, 1, Rock.MOVE_ROCK_1);
         this.addRock(19, 2, Rock.MOVE_ROCK_2);
@@ -326,6 +331,8 @@ public class Map
 
         this.fields[16][1] = new Bush(16, 1, Assets.bush1);
         this.fields[16][2] = new Bush(16, 2, Assets.bush2);
+
+
     }
 
     private void addRock (int row, int col, int type)

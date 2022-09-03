@@ -30,6 +30,8 @@ public class Assets {
     public static Pixmap bigPillar;
     public static Pixmap bush1;
     public static Pixmap bush2;
+    public static Pixmap tree1;
+    public static Pixmap tree2;
 
     public static Pixmap boom;
 
@@ -48,7 +50,6 @@ public class Assets {
 
     private static boolean isPart1Loaded = false;
     private static boolean isPart2Loaded = false;
-
     public static void loadPart1(Graphics g, Audio a)
     {
         if (Assets.isPart1Loaded) return;
@@ -67,6 +68,8 @@ public class Assets {
         Assets.bigPillar = g.newPixmap("images/big_pillar.png", Graphics.PixmapFormat.RGB565);
         Assets.bush1 = g.newPixmap("images/bush1.png", Graphics.PixmapFormat.RGB565);
         Assets.bush2 = g.newPixmap("images/bush2.png", Graphics.PixmapFormat.RGB565);
+        Assets.tree1 = g.newPixmap("images/tree1.png", Graphics.PixmapFormat.RGB565);
+        Assets.tree2 = g.newPixmap("images/tree2.png", Graphics.PixmapFormat.RGB565);
 
         Assets.boom = g.newPixmap("images/boom.png", Graphics.PixmapFormat.RGB565);
 
