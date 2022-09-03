@@ -1,8 +1,14 @@
 package com.a530games.jackal;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
+import com.a530games.framework.AndroidGraphics;
 import com.a530games.framework.math.Vector2;
 
-public class Sidebar {
+public class Sidebar
+{
 
     private boolean isNeedRedraw = true;
 
@@ -62,4 +68,21 @@ public class Sidebar {
             this.isNeedRedraw = true;
         }
     }
+
+    public void setRedraw()
+    {
+        this.isNeedRedraw = false;
+    }
+
+    /*public void draw ()
+    {
+        this.testCanvas = new Canvas();
+        this.testPaint = new Paint();
+
+        this.drawBitmap = Bitmap.createBitmap(this.drawRect.width(), this.drawRect.height(), Bitmap.Config.ARGB_8888);
+        this.testCanvas.setBitmap(this.drawBitmap);
+        // this.testCanvas.getClipBounds(this.mapRect);
+
+        this.g = new AndroidGraphics(assets, this.drawBitmap);
+    }*/
 }

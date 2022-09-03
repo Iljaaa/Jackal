@@ -36,6 +36,9 @@ public class Map
     public int playerStartX = 0;
     public int playerStartY = 0;
 
+    // map optimization min|max positions for draw
+    public int drawMinCol = 0, drawMaxCol = 0, drawMinRow = 0, drawMaxRow = 0;
+
     Rect drawRect;
     Canvas testCanvas;
     Paint testPaint;
@@ -120,6 +123,9 @@ public class Map
 
         // init fields
         this.fields = new MapCell[this.mapRows][this.mapCols];
+
+        // update draw limits
+        this.updateMapOptimizatonFields();
 
         //
         this.addObjectToMap();
@@ -224,8 +230,8 @@ public class Map
         this.addRock(9, 4, Rock.MOVE_ROCK_1);
 
 
-        this.fields[9][11] = new Tree1(9, 11);
-        this.fields[9][15] = new Tree2(9, 15);
+        this.fields[9][15] = new Tree1(9, 15);
+        this.fields[14][15] = new Tree2(14, 15);
 
 
         /*this.addRock(19, 0, Rock.MOVE_ROCK_3);
@@ -430,79 +436,68 @@ public class Map
 
         // move map
         this.updateMapPosition(player);
+
+        // update draw position
+        this.updateMapOptimizatonFields();
+    }
+
+    private void updateMapOptimizatonFields()
+    {
+        //
+        this.drawMinCol = this.getColByLeft(Math.abs(this.x)) - 2;
+        if (this.drawMinCol < 0) this.drawMinCol = 0;
+
+        this.drawMaxCol = this.drawMinCol + 13;
+        if (this.drawMaxCol > this.mapCols) this.drawMaxCol = this.mapCols;
+
+        this.drawMinRow = this.getRowByTop(Math.abs(this.y)) - 2;
+        if (this.drawMinRow < 0) this.drawMinRow = 0;
+
+        this.drawMaxRow = this.drawMinRow + 15;
+        if (this.drawMaxRow > this.mapRows) this.drawMaxRow = this.mapRows;
     }
 
     private void updateMapPosition (Player player)
     {
+        // todo fix magic numbers
+
         // on top
         int topOnScreen = this.screenTopPotion(player.hitBox.top);
         if (topOnScreen < 200)
-        // if (player.hitBox.top < 200)
         {
-            // int delta = (int) Math.floor(200 - topOnScreen);
-
             // move map on left
             this.y = this.y + (200 - topOnScreen);
 
-            if (this.y > 0) {
-                // delta = delta - this.y;
-                this.y = 0;
-            }
-
-            // player.hitBox.move(0, delta);*/
+            if (this.y > 0) this.y = 0;
         }
 
         // on the right border
         int rightOnScreen = this.screenLeftPotion(player.hitBox.right);
         if (rightOnScreen > 440)
         {
-            // int delta = (int) Math.floor(rightOnScreen - 440);
-
             // move map on left
             this.x = this.x - (rightOnScreen - 440);
 
-            if (this.x < this.mapMinX) {
-                //delta = delta - (this.y - this.minY);
-                this.x = this.mapMinX;
-            }
-            /*else {
-                // player.hitBox.move(-1 * delta, 0);
-            }*/
+            if (this.x < this.mapMinX) this.x = this.mapMinX;
         }
-
 
         // on down
         int bottomScreen = this.screenTopPotion(player.hitBox.bottom);
         if (bottomScreen > 440)
         {
-            // int delta = bottomScreen - 440;
             // move map on left
             this.y = this.y - (bottomScreen - 440);
 
-            if (this.y < this.minMinY) {
-                //delta = delta - (this.y - this.minY);
-                this.y = this.minMinY;
-            }
-            /*else {
-                // player.hitBox.move(0, -1 * delta);
-            }*/
+            if (this.y < this.minMinY) this.y = this.minMinY;
         }
 
         // on the left border
         int leftOnScreen = this.screenLeftPotion(player.hitBox.left);
         if (leftOnScreen < 200)
         {
-            // int delta = (int) Math.floor(200 - leftOnScreen);
-
-            // move map on left
             this.x = this.x + (200 - leftOnScreen);
 
-            if (this.x > 0) {
-                // delta = delta - this.x;
-                this.x = 0;
-            }
-
-            // player.hitBox.move(delta, 0);*/
+            if (this.x > 0) this.x = 0;
         }
     }
 

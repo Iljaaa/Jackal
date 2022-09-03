@@ -45,7 +45,8 @@ public class Tree2 extends MapCellWithHitbox
     }
 
     @Override
-    public void drawTopLayout(Graphics g, Map map) {
+    public void drawTopLayout(Graphics g, Map map)
+    {
         g.drawPixmap(
                 this.sprite.image,
                 map.screenLeftPotion(this.col * Map.SPRITE_WIDTH - 50),

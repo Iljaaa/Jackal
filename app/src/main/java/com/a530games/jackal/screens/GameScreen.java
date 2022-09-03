@@ -428,8 +428,9 @@ public class GameScreen extends Screen
 
     private void drawSidebar(Sidebar sidebar)
     {
+        // todo: make side bar drawwight object
         Graphics g = this.game.getGraphics();
-        g.drawLine(0, 0, this.game.getGraphics().getWidth(), this.game.getGraphics().getHeight(), Color.YELLOW);
+        //g.drawLine(0, 0, this.game.getGraphics().getWidth(), this.game.getGraphics().getHeight(), Color.YELLOW);
 
         // если сайдбар не нуждается в отрисовке
         if (!sidebar.isNeedRedraw()) {
@@ -449,6 +450,7 @@ public class GameScreen extends Screen
             g.drawLine(100, 640, 300, 640, Color.GREEN);
         }
 
+        // this.sidebar.setRedraw();
 
     }
 
@@ -477,10 +479,8 @@ public class GameScreen extends Screen
                 640);
 
 
-        // todo: animted blocks only on screen
-        // draw animated blocks
-        for (int row = 0; row < this.world.map.mapRows; row++) {
-            for (int col = 0; col < this.world.map.mapCols; col++)
+        for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
+            for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
             {
                 MapCell c = this.world.map.fields[row][col];
                 if (c == null) continue;
@@ -501,24 +501,13 @@ public class GameScreen extends Screen
     {
         Graphics g = this.game.getGraphics();
 
-        // todo: draw object only n screen
-        for (int row = 0; row < this.world.map.mapRows; row++) {
-            for (int col = 0; col < this.world.map.mapCols; col++) {
+        for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
+            for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
+            {
                 MapCell c = this.world.map.fields[row][col];
                 if (c == null) continue;
-                // Rect hitBox = c.getHitBox();
-                // if (hitBox == null) continue;
 
                 c.drawHitBox(g, this.world.map);
-
-                /*g.drawRect(
-                        map.screenLeftPotion(hitBox.left),
-                        map.screenTopPotion(hitBox.top),
-                        hitBox.width(),
-                        hitBox.height(),
-                        this.hitBoxPaint
-                );*/
-
             }
         }
     }
@@ -627,8 +616,6 @@ public class GameScreen extends Screen
     }
 
     private void drawPlayerHitBox (Graphics g) {
-        // g.drawRect(this.world.player.hitBox.getDrawRect(), this.hitBoxPaint);
-        // g.drawRect(playerScreenX, playerScreenY, Math.round(this.world.player.hitBox.getWidth()), Math.round(this.world.player.hitBox.getHeight()), this.hitBoxPaint);
         g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.otherHitBoxPaint);
     }
 
@@ -833,9 +820,8 @@ public class GameScreen extends Screen
     {
         Graphics g = this.game.getGraphics();
 
-        // todo: draw only on sceen objects
-        for (int row = 0; row < this.world.map.mapRows; row++) {
-            for (int col = 0; col < this.world.map.mapCols; col++)
+        for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
+            for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
             {
                 MapCell c = this.world.map.fields[row][col];
                 if (c == null) continue;
@@ -899,8 +885,6 @@ public class GameScreen extends Screen
         g.drawLine(0, 416, 480, 416, Color.BLACK);*/
         g.drawText("Game over", 100, 200, 300, Color.BLACK);
     }
-
-
 
     @Override
     public void pause() {
