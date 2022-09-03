@@ -409,11 +409,6 @@ public class GameScreen extends Screen
 
         this.drawEnemies();
 
-        // draw snake
-        this.drawStain();
-        this.drawSnakeTail();
-        this.drawSnakeHead();
-
         this.drawBullets();
 
         //
@@ -875,49 +870,6 @@ public class GameScreen extends Screen
                 Math.round(screenCenterLeft + (angleVector.x * 50)),
                 Math.round(screenCenterTop + (angleVector.y * 50)),
                 color);
-    }
-
-    private void drawStain ()
-    {
-    // отрисовываем пятно
-        Pixmap stainPixmap = null;
-        // todo: get stain tyoe
-        if(this.world.stain.type == Stain.TYPE_1) stainPixmap = Assets.bg;
-        if(this.world.stain.type == Stain.TYPE_2) stainPixmap = Assets.bg;
-        if(this.world.stain.type == Stain.TYPE_3) stainPixmap = Assets.bg;
-        this.game.getGraphics().drawPixmap(stainPixmap, this.world.stain.x * 32, this.world.stain.y * 32);
-    }
-
-    /**
-     * рисуем части хвоста
-     */
-    private void drawSnakeTail ()
-    {
-        Graphics g = this.game.getGraphics();
-        // todo: get new image
-        int len = this.world.snake.parts.size();
-        for(int i = 1; i < len; i++) {
-            SnakePart part = this.world.snake.parts.get(i);
-            g.drawPixmap(Assets.bg, part.x * 32, part.y * 32);
-        }
-    }
-
-    private void drawSnakeHead ()
-    {
-        // рисуем голову
-        Pixmap headPixmap = null;
-        // todo: make swith
-        if(this.world.snake.direction == Snake.UP) headPixmap = Assets.bg;
-        if(this.world.snake.direction == Snake.LEFT) headPixmap = Assets.bg;
-        if(this.world.snake.direction == Snake.DOWN) headPixmap = Assets.bg;
-        if(this.world.snake.direction == Snake.RIGHT) headPixmap = Assets.bg;
-
-        // fixme: not local variales
-        SnakePart head = this.world.snake.parts.get(0);
-        int x = head.x * 32 + 16;
-        int y = head.y * 32 + 16;
-
-        this.game.getGraphics().drawPixmap(headPixmap, x - headPixmap.getWidth() / 2, y -headPixmap.getHeight() / 2);
     }
 
     private void drawReadyUI()
