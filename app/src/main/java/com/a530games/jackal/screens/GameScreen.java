@@ -41,7 +41,9 @@ public class GameScreen extends Screen
     }
 
     GameState state = GameState.Ready;
+
     World world;
+
     Sidebar sidebar;
 
     int oldScore = 0;
@@ -302,6 +304,7 @@ public class GameScreen extends Screen
         this.sidebar.setPlayerAngle(this.world.player.direction);
         this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
         this.sidebar.setMapPos((int) Math.floor(this.world.map.x), (int) Math.floor(this.world.map.y));
+
 
 
         // обновление боковой информации

@@ -32,7 +32,7 @@ abstract public class Corner extends MapCellWithHitbox
     }
 
     @Override
-    void update(float deltaTime) {
+    void update(float deltaTime, CellEventCallbackHandler callbackHandler) {
 
     }
 

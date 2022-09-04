@@ -3,8 +3,11 @@ package com.a530games.jackal;
 import com.a530games.framework.Sound;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.map.Map;
+import com.a530games.jackal.map.MapCell;
+import com.a530games.jackal.map.MapEventsHandler;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemiesCollection;
+import com.a530games.jackal.objects.EnemyEventHandler;
 import com.a530games.jackal.objects.enemies.Commandos;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.EnemyBulletsCollection;
@@ -15,7 +18,7 @@ import com.a530games.jackal.objects.enemies.Tank;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class World
+public class World implements EnemyEventHandler, MapEventsHandler
 {
     // размер мира
     static final int WORLD_WIDTH = 10;
@@ -65,13 +68,14 @@ public class World
     public World()
     {
         this.map = new Map();
+        this.map.setEventHandler(this);
 
         this.player = new Player(this, 300, 300);
 
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
 
-        // this.enemies.add(new Tank(this,100, 100));
+        this.enemies.add(new Tank(this,100, 100));
         // this.enemies.add(new Commandos(this,400, 800));
 
         // инициализируем массиа с пулями
@@ -84,10 +88,7 @@ public class World
         this.tankHitSounds.add(Assets.tankHit2);
         this.tankHitSounds.add(Assets.playerBlow);
 
-        // this.player = new Player(this.map, this.map.playerStartX, this.map.playerStartY);
         this.snake = new Snake();
-
-        this.placeStain();
     }
 
     public void update(float deltaTime)
@@ -97,7 +98,7 @@ public class World
         this.tickTime += deltaTime;
 
         // update player
-        this.player.update(deltaTime, null);
+        this.player.update(deltaTime, null, null);
 
         // update map
         this.map.update(this.player, deltaTime);
@@ -108,12 +109,11 @@ public class World
         // update enemies
         this.updateEnemies(deltaTime);
 
-        // бновляем пули игрока
         // this.enemyBullets.update(deltaTime);
         this.updateEnemyBullets(deltaTime);
 
         // rollback ticks
-        while (this.tickTime > aTick)
+        /*while (this.tickTime > aTick)
         {
             this.tickTime -= aTick;
 
@@ -121,10 +121,10 @@ public class World
             snake.advance();
 
             // проверка укуса самого себя
-            /*if (snake.checkBitten()) {
+            if (snake.checkBitten()) {
 з                this.gameOver = true;
                 return;
-            }*/
+            }
 
             // проверка поедания пятна
             SnakePart head = this.snake.parts.get(0);
@@ -145,7 +145,7 @@ public class World
                     World.aTick -= TICK_DECREMENT;
                 }
             }
-        }
+        }*/
     }
 
     private void updatePlayerBullets(float deltaTime)
@@ -176,10 +176,11 @@ public class World
             for (int i = 0; i < enemiesSize; i++)
             {
                 Enemy enemy = this.enemies.get(i);
-                enemy.update(deltaTime, this.player);
+                enemy.update(deltaTime, this.player, this);
 
                 // check intersect with player bullets
-                for (int bulletIndex = 0; bulletIndex < playerBulletsSize; bulletIndex++) {
+                for (int bulletIndex = 0; bulletIndex < playerBulletsSize; bulletIndex++)
+                {
                     Bullet b = this.bullets.get(bulletIndex);
                     if (b.isOut()) continue;
                     if (enemy.getHitBox().isHit(b))
@@ -196,7 +197,6 @@ public class World
 
     private void updateEnemyBullets (float deltaTime)
     {
-
         int enemyBulletsSize = this.enemyBullets.size();
         if (enemyBulletsSize > 0) {
             for (int i = 0; i < enemyBulletsSize; i++) {
@@ -226,44 +226,6 @@ public class World
                 }
             }
         }
-    }
-
-
-    /**
-     * Place nom stain
-     */
-    private void placeStain()
-    {
-        // заполняем массив falsr
-        for (int x = 0; x < WORLD_WIDTH; x++) {
-            for (int y = 0; y < WORLD_HEIGHT; y++) {
-                fields[x][y] = false;
-            }
-        }
-
-        // проходим по частям змеи и помечаем занятые клетки
-        int len = snake.parts.size();
-        for (int i = 0; i < len; i++) {
-            SnakePart part = snake.parts.get(i);
-            fields[part.x][part.y] = true;
-        }
-
-        // генерируем след пятно
-        int stainX = random.nextInt(WORLD_WIDTH);
-        int stainY = random.nextInt(WORLD_HEIGHT);
-        while (true) {
-            if (fields[stainX][stainY] == false) break;
-            stainX += 1;
-            if (stainX >= WORLD_WIDTH) {
-                stainX = 0;
-                stainY += 1;
-                if (stainY >= WORLD_HEIGHT) {
-                    stainY = 0;
-                }
-            }
-        }
-
-        this.stain = new Stain(stainX, stainY, random.nextInt(3));
     }
 
 
@@ -312,5 +274,28 @@ public class World
 
         this.bullets.add(bullet);
         return true;*/
+    }
+
+    @Override
+    public void spownEnemyOnCell(MapCell spownCell)
+    {
+        Tank t = new Tank(this, spownCell.col * Map.SPRITE_WIDTH, spownCell.row * Map.SPRITE_HEIGHT);
+
+        // check intersect with map
+        if (this.enemies.isAnyEnemyIntersectWith(t)) {
+            return;
+        }
+
+        // check intersect by enemnies
+        if (Map.isIntersectsTwoRect(this.player.getHitBox(), t.getHitBox())) {
+            return;
+        }
+
+        // add tank
+        /*this.enemies.hasFreeSlot(){
+
+        }*/
+
+        this.enemies.add(t);
     }
 }

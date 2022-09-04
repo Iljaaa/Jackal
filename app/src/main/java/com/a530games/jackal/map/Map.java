@@ -12,8 +12,9 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.objects.Player;
+import com.a530games.jackal.objects.enemies.Enemy;
 
-public class Map
+public class Map implements CellEventCallbackHandler
 {
     public static final int SPRITE_HEIGHT = 64;
     public static final int SPRITE_WIDTH = 64;
@@ -43,10 +44,11 @@ public class Map
     Canvas testCanvas;
     Paint testPaint;
 
-
     public Bitmap drawBitmap;
 
-    Graphics g;
+    Graphics backgroundGraphic;
+
+    private MapEventsHandler eventsHandler = null;
 
     /**
      * fiels [row][col]
@@ -57,6 +59,10 @@ public class Map
     {
         // this.fields = new MapCell[mapRows][mapCols];
         // this.fields[3][2] = new MapCell();
+    }
+
+    public void setEventHandler(MapEventsHandler eventHandler) {
+        this.eventsHandler = eventHandler;
     }
 
     public static boolean isIntersectsTwoRect(FloatRect r1, FloatRect r2)
@@ -144,7 +150,7 @@ public class Map
         this.testCanvas.setBitmap(this.drawBitmap);
         // this.testCanvas.getClipBounds(this.mapRect);
 
-        this.g = new AndroidGraphics(assets, this.drawBitmap);
+        this.backgroundGraphic = new AndroidGraphics(assets, this.drawBitmap);
 
         // draw objects
         // this.b = new BitmapFactory();
@@ -225,6 +231,7 @@ public class Map
         this.addRock(16, 0, Rock.MOVE_BUSH_2);
         this.addRock(17, 0, Rock.MOVE_BUSH_2);
         this.addRock(18, 0, Rock.MOVE_BUSH_2);*/
+
 
         this.addRock(9, 3, Rock.MOVE_ROCK_3);
         this.addRock(9, 4, Rock.MOVE_ROCK_1);
@@ -339,6 +346,7 @@ public class Map
         this.fields[16][2] = new Bush(16, 2, Assets.bush2);
 
 
+        this.fields[11][3] = new Spown(11, 3);
     }
 
     private void addRock (int row, int col, int type)
@@ -358,30 +366,30 @@ public class Map
         // draw title backend
         for (int row = 0; row < this.mapRows; row++) {
             for (int col = 0; col < this.mapCols; col++) {
-                this.g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 0, 65, 65);
+                this.backgroundGraphic.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 0, 65, 65);
             }
         }
 
         // draw walls
         // top wall
         for (int col = 1; col < this.mapCols - 1; col++) {
-            this.g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, 0, 256, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+            this.backgroundGraphic.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, 0, 256, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
         }
         // left wall
         for (int row = 1; row < this.mapRows - 2; row++) {
-            this.g.drawPixmap(Assets.mapSprite, 0, row * Map.SPRITE_HEIGHT, 192, 64,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+            this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, row * Map.SPRITE_HEIGHT, 192, 64,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
         }
         // right wall
         for (int row = 1; row < this.mapRows - 2; row++) {
-            this.g.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), row * Map.SPRITE_HEIGHT, 320, 64,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+            this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), row * Map.SPRITE_HEIGHT, 320, 64,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
         }
 
         // corners
-        this.g.drawPixmap(Assets.mapSprite, 0, 0, 192, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
-        this.g.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), 0, 320, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, 0, 192, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), 0, 320, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
         // corners before bottom line
-        this.g.drawPixmap(Assets.mapSprite, 0, ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 512, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
-        this.g.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 384, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 512, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 384, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
 
         // draw objects
         for (int row = 0; row < this.mapRows; row++) {
@@ -392,7 +400,7 @@ public class Map
                 if (c == null) continue;
 
                 // draw block on background
-                c.drawOnBackground(this.g);
+                c.drawOnBackground(this.backgroundGraphic);
 
                 // this.g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 0, 64, 64);
             }
@@ -400,45 +408,48 @@ public class Map
 
         // draw bush
 
-        this.g.drawPixmap(Assets.mapSprite, 5 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 0, 64, 64, 64);
-        this.g.drawPixmap(Assets.mapSprite, 5 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 0, 128, 64, 64);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 5 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 0, 64, 64, 64);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 5 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 0, 128, 64, 64);
 
-        this.g.drawPixmap(Assets.mapSprite, 7 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 128, 64, 64, 64);
-        this.g.drawPixmap(Assets.mapSprite, 7 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 128, 128, 64, 64);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 7 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 128, 64, 64, 64);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 7 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 128, 128, 64, 64);
 
-        this.g.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 64, 128, 64, 64);
-        this.g.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 64, 0, 64, 64);
-        this.g.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 3 * Map.SPRITE_HEIGHT, 128, 0, 64, 64);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 64, 128, 64, 64);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 64, 0, 64, 64);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 3 * Map.SPRITE_HEIGHT, 128, 0, 64, 64);
 
-        this.g.drawPixmap(Assets.bigStone, 4 * Map.SPRITE_WIDTH, 5 * Map.SPRITE_HEIGHT, 0, 0, 192, 255);
+        this.backgroundGraphic.drawPixmap(Assets.bigStone, 4 * Map.SPRITE_WIDTH, 5 * Map.SPRITE_HEIGHT, 0, 0, 192, 255);
 
     }
 
     public void update(Player player, float deltaTime)
     {
-        // update animated blocks
-        // todo: do not update cells outside draw
-        int minColIndex = 0;
-        int maxCols = this.mapCols;
-
-        int minRowIndex = 0;
-        int maxRowIndex = this.mapRows;
-
-        for (int row = minRowIndex; row < maxRowIndex; row++) {
-            for (int col = minColIndex; col < maxCols; col++) {
-
-                MapCell c = this.fields[row][col];
-                if (c == null) continue;
-
-                c.update(deltaTime);
-            }
-        }
-
         // move map
         this.updateMapPosition(player);
 
         // update draw position
         this.updateMapOptimizatonFields();
+
+        // update map cells
+        this.updateCells(deltaTime);
+    }
+
+    /**
+     * update all map blocks
+     * todo: think about update only screen blocks
+     */
+    private void updateCells (float deltaTime)
+    {
+        for (int row = 0; row < this.mapRows; row++)
+        {
+            for (int col = 0; col <  this.mapCols; col++)
+            {
+                MapCell c = this.fields[row][col];
+                if (c == null) continue;
+
+                c.update(deltaTime, this);
+            }
+        }
     }
 
     private void updateMapOptimizatonFields()
@@ -506,11 +517,6 @@ public class Map
      */
     public boolean isIntersect (FloatRect rectOnMap)
     {
-        /*int rectTopOnMap = (int) Math.floor(rectOnMap.top - this.y);
-        int rectRightOnMap = (int) Math.floor(rectOnMap.right - this.x);
-        int rectBottomOnMap = (int) Math.floor(rectOnMap.bottom - this.y);
-        int rectLeftOnMap = (int) Math.floor(rectOnMap.left - this.x);*/
-
         // check min max position
         if (rectOnMap.left < this.objectMinX) return true;
         if (rectOnMap.top < this.objectMinY) return true;
@@ -603,5 +609,19 @@ public class Map
 
     public int screenLeftPotion (float globalLeft){
         return (int) Math.floor(globalLeft + this.x);
+    }
+
+    @Override
+    public Enemy spownEnemy(MapCell spownCell)
+    {
+        if (this.eventsHandler != null)
+        {
+            // check is cell clear
+            // if (this.isIntersect())
+
+            this.eventsHandler.spownEnemyOnCell(spownCell);
+        }
+
+        return null;
     }
 }

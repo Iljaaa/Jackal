@@ -46,10 +46,13 @@ public class Assets {
     public static Sound tankHit2;
     public static Sound tankFire;
 
+    public static Pixmap spown;
+
     public static Music music;
 
     private static boolean isPart1Loaded = false;
     private static boolean isPart2Loaded = false;
+
     public static void loadPart1(Graphics g, Audio a)
     {
         if (Assets.isPart1Loaded) return;
@@ -72,6 +75,8 @@ public class Assets {
         Assets.tree2 = g.newPixmap("images/tree2.png", Graphics.PixmapFormat.RGB565);
 
         Assets.boom = g.newPixmap("images/boom.png", Graphics.PixmapFormat.RGB565);
+
+        Assets.spown = g.newPixmap("images/spown.png", Graphics.PixmapFormat.RGB565);
 
         Assets.fire = a.newSound("sound/fire.mp3");
         Assets.playerHit = a.newSound("sound/player_hit.wav");

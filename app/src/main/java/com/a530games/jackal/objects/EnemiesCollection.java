@@ -10,9 +10,12 @@ public class EnemiesCollection
     // enemies array
     private final ArrayList<Enemy> enemies;
 
+    // max bullets size
+    static final int MAX_ENEMIES_SIZE = 30;
+
     public EnemiesCollection()
     {
-        this.enemies = new ArrayList<>(10);
+        this.enemies = new ArrayList<>(30);
     }
 
     public int size() {
@@ -25,6 +28,7 @@ public class EnemiesCollection
 
     public void add(Enemy it){
         this.enemies.add(it);
+        // this.enemies.re
     }
 
     /**
@@ -32,9 +36,12 @@ public class EnemiesCollection
      */
     public boolean isAnyEnemyIntersectWith (Enemy vehicle)
     {
+        //
         int inj = this.enemies.indexOf(vehicle);
+        // int len = EnemiesCollection.MAX_ENEMIES_SIZE;
+        int len = this.enemies.size();
 
-        for (int i = 0; i < this.size(); i++)
+        for (int i = 0; i < len; i++)
         {
             // ignore him self
             if (i == inj) {
@@ -42,6 +49,7 @@ public class EnemiesCollection
             }
 
             Enemy e = this.get(i);
+            if (e == null) continue;
 
             // check intersect
             if (Map.isIntersectsTwoRect(vehicle.getHitBox(), e.getHitBox())){

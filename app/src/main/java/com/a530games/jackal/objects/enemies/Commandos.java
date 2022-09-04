@@ -8,6 +8,7 @@ import com.a530games.jackal.Jackal;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.Bullet;
+import com.a530games.jackal.objects.EnemyEventHandler;
 import com.a530games.jackal.objects.GameObject;
 
 public class Commandos extends GameObject implements Enemy
@@ -77,7 +78,7 @@ public class Commandos extends GameObject implements Enemy
     }
 
     @Override
-    public void update(float deltaTime, Enemy player)
+    public void update(float deltaTime, Enemy player, EnemyEventHandler eventHandler)
     {
         if (this.rotateTimer <= 0)
         {
@@ -292,7 +293,7 @@ public class Commandos extends GameObject implements Enemy
     }*/
 
     /**
-     * Check intersect with: map, enemies and player fjo moving
+     * Check intersect with: map, enemies and player for moving
      */
     private boolean isIntersectMove(FloatRect aHitbox)
     {

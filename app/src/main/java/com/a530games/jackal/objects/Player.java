@@ -28,7 +28,7 @@ public class Player extends RotateVehicle
         this.sprite.set(1, 0);
     }
 
-    public void update(float deltaTime, Enemy player)
+    public void update(float deltaTime, Enemy player, EnemyEventHandler eventHandler)
     {
         // уменьшаем задержку выстрела
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;
@@ -56,7 +56,7 @@ public class Player extends RotateVehicle
 
     public void setTurretAngle (Vector2 direction)
     {
-        this.world.player.turret.set(direction);
+        this.turret.set(direction);
 
         // todo: make method
         switch (direction.getQuater()) {

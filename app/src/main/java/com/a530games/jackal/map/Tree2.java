@@ -30,7 +30,7 @@ public class Tree2 extends MapCellWithHitbox
     }
 
     @Override
-    void update(float deltaTime) {
+    void update(float deltaTime, CellEventCallbackHandler callbackHandler) {
         this.spriteTimer -= deltaTime;
         if (this.spriteTimer <= 0) {
             this.spriteTimer = 0.5f;

@@ -9,7 +9,8 @@ public class EnemyBulletsCollection
     // max bullets size
     static final int MAX_BULLETS_SIZE = 50;
 
-    public EnemyBulletsCollection() {
+    public EnemyBulletsCollection()
+    {
         this.bullets = new ArrayList<>(MAX_BULLETS_SIZE);
         for (int i = 0; i < MAX_BULLETS_SIZE; i++) {
             this.bullets.add(new Bullet(true));

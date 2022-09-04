@@ -9,6 +9,7 @@ import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.World;
 import com.a530games.jackal.objects.Bullet;
+import com.a530games.jackal.objects.EnemyEventHandler;
 
 /**
  * todo: сделать прицеливание не ограниченым по времени
@@ -17,7 +18,6 @@ import com.a530games.jackal.objects.Bullet;
 public class Tank extends Vehicle
 {
     private Vector2 velocity;
-
 
     private Vector2 targetAngle = new Vector2(1, 0);
     // private Vector targetAngle;
@@ -73,7 +73,7 @@ public class Tank extends Vehicle
     }
 
     @Override
-    public void update(float deltaTime, Enemy player)
+    public void update(float deltaTime, Enemy player, EnemyEventHandler eventHandler)
     {
         if (this.rotateTimer <= 0)
         {
@@ -132,7 +132,9 @@ public class Tank extends Vehicle
             // if (turretAngleInDegrees > targetAngleInDegrees) this.turretAngle.rotate(-5);
         }
 
-        if (this.doConst == 2) {
+        if (this.doConst == 2)
+        {
+
             if (this.fire()){
                 if (Settings.soundEnabled) {
                     Assets.tankFire.play(0.7f);
@@ -156,7 +158,6 @@ public class Tank extends Vehicle
         Bullet b = this.world.enemyBullets.getFreeBullet();
         if (b == null) return false;
 
-        // b.reNew(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle.angleInDegrees());
         b.reNewByVector(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle.x, this.turretAngle.y);
         return true;
     }

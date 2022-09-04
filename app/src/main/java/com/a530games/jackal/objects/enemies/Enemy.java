@@ -6,6 +6,7 @@ import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.map.Map;
+import com.a530games.jackal.objects.EnemyEventHandler;
 
 public interface Enemy
 {
@@ -29,16 +30,20 @@ public interface Enemy
 
     /**
      * Normal vector on turret angle
-     * @return
      */
     Vector2 getTurretAngle();
 
     /**
      * Normal vector to target
-     * @return
      */
     Vector2 getTargetAngle();
 
-    void update(float deltaTime, Enemy player);
+    /**
+     * Update enemy
+     * @param deltaTime Delta time
+     * @param player Player for check intersect
+     * @param eventHandler Events handler
+     */
+    void update(float deltaTime, Enemy player, EnemyEventHandler eventHandler);
 
 }

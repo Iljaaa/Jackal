@@ -26,7 +26,7 @@ public class Beach extends MapCell
     }
 
     @Override
-    void update(float deltaTime)
+    void update(float deltaTime, CellEventCallbackHandler callbackHandler)
     {
         this.spriteTimer -= deltaTime;
         if (this.spriteTimer <= 0) {

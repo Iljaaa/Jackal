@@ -1,28 +1,26 @@
 package com.a530games.jackal.map;
 
+
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
+import com.a530games.jackal.objects.enemies.Tank;
 
-public class Wall extends MapCellWithHitbox
+public class Spown extends MapCell
 {
-    protected Sprite sprite;
 
-    public Wall(int row, int col)
-    {
-        super(row, col, 64, 64);
+    private final Sprite sprite;
+    float spownTimer = 5;
 
-        // right half wall
-        // this.hitBox.left = (int) Math.ceil( (col + 0.5) * Map.SPRITE_WIDTH);
-        // this.hitBox.right = this.hitBox.left + 32;
-
-        this.sprite = new Sprite(Assets.mapSprite, 2, 1);
+    public Spown(int row, int col) {
+        super(row, col);
+        // this.tank = new Tank();
+        this.sprite = new Sprite(Assets.spown, 0, 0);
     }
 
     @Override
-    void drawOnBackground(Graphics g)
-    {
+    void drawOnBackground(Graphics g) {
         g.drawPixmap(
                 this.sprite.image,
                 this.col * Map.SPRITE_WIDTH,
@@ -35,12 +33,24 @@ public class Wall extends MapCellWithHitbox
     }
 
     @Override
-    void update(float deltaTime, CellEventCallbackHandler callbackHandler) {
+    void update(float deltaTime, CellEventCallbackHandler callbackHandler)
+    {
+        // on timer try to spown tank
+        if (this.spownTimer <= 0) {
+            this.spownTimer = 5;
+            callbackHandler.spownEnemy(this);
+        }
 
+        this.spownTimer -= deltaTime;
     }
 
     @Override
     public void draw(Graphics g, Map map) {
+
+    }
+
+    @Override
+    public void drawHitBox(Graphics g, Map map) {
 
     }
 
@@ -55,10 +65,7 @@ public class Wall extends MapCellWithHitbox
     }
 
     @Override
-    boolean isIntersectRectInsideCell(FloatRect r)
-    {
-        // che
-
-        return true;
+    boolean isIntersectRectInsideCell(FloatRect rectOnMap) {
+        return false;
     }
 }

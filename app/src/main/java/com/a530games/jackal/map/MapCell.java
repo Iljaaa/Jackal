@@ -9,7 +9,7 @@ import com.a530games.framework.helpers.FloatRect;
 
 public abstract class MapCell
 {
-    protected int row, col;
+    public int row, col;
 
     protected Paint hitBoxPaint;
 
@@ -33,7 +33,7 @@ public abstract class MapCell
     /**
      * Update not static block before craw
      */
-    abstract void update(float deltaTime);
+    abstract void update(float deltaTime, CellEventCallbackHandler callbackHandler);
 
     /**
      * Draw block
