@@ -10,7 +10,7 @@ public interface CellEventCallbackHandler
     /**
      * On enemy spown
      * @param spownCell cell where enemy spown
-     * @return Enemy Spown enemy
+     * @param enemy enemy
      */
-    Enemy spownEnemy(MapCell spownCell);
+    void spownEnemy(MapCell spownCell, Enemy enemy);
 }

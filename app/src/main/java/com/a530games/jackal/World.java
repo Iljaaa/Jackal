@@ -277,29 +277,21 @@ public class World implements EnemyEventHandler, MapEventsHandler
     }
 
     @Override
-    public void spownEnemyOnCell(MapCell spownCell)
+    public void spownEnemyOnCell(MapCell spownCell, Enemy enemy)
     {
-        // todo: rafactor create enemy insize cell
-        Tank t = new Tank(spownCell.col * Map.SPRITE_WIDTH, spownCell.row * Map.SPRITE_HEIGHT);
-        t.setEventHandler(this);
-
-        // check intersect with map
-        if (this.enemies.isAnyEnemyIntersectWith(t)) {
-            return;
-        }
-
         // check intersect by enemnies
-        if (Map.isIntersectsTwoRect(this.player.getHitBox(), t.getHitBox())) {
+        if (Map.isIntersectsTwoRect(this.player.getHitBox(), enemy.getHitBox())) {
             return;
         }
 
-        // add tank
-        /*this.enemies.hasFreeSlot(){
-
-        }*/
+        // todo: rafactor create enemy insize cell
+        // Tank t = new Tank(spownCell.col * Map.SPRITE_WIDTH, spownCell.row * Map.SPRITE_HEIGHT);
+        // t.setEventHandler(this);
+        enemy.setEventHandler(this);
 
         // todo: check free enemy
-        this.enemies.add(t);
+
+        this.enemies.add(enemy);
     }
 
     @Override

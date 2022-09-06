@@ -47,4 +47,9 @@ public interface Enemy
      */
     void update(float deltaTime, Enemy player, World world);
 
+    /**
+     * Setting event handler
+     * @param eventHandler object with handler
+     */
+    void setEventHandler(EnemyEventHandler eventHandler);
 }

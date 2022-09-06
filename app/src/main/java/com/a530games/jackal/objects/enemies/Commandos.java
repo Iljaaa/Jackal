@@ -309,4 +309,8 @@ public class Commandos extends Vehicle
         return false;
     }*/
 
+    @Override
+    public void setEventHandler(EnemyEventHandler eventHandler) {
+
+    }
 }

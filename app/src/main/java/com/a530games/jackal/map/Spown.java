@@ -38,7 +38,10 @@ public class Spown extends MapCell
         // on timer try to spown tank
         if (this.spownTimer <= 0) {
             this.spownTimer = 5;
-            callbackHandler.spownEnemy(this);
+            callbackHandler.spownEnemy(
+                    this,
+                    new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT)
+            );
         }
 
         this.spownTimer -= deltaTime;

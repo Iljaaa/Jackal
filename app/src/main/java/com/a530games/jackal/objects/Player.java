@@ -158,4 +158,9 @@ public class Player extends RotateVehicle
     public void hit (int damage) {
         // hp mines
     }
+
+    @Override
+    public void setEventHandler(EnemyEventHandler eventHandler) {
+
+    }
 }

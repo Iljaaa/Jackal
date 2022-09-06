@@ -612,16 +612,16 @@ public class Map implements CellEventCallbackHandler
     }
 
     @Override
-    public Enemy spownEnemy(MapCell spownCell)
+    public void spownEnemy(MapCell spownCell, Enemy enemy)
     {
-        if (this.eventsHandler != null)
-        {
-            // check is cell clear
-            // if (this.isIntersect())
+        if (this.eventsHandler == null) return;;
 
-            this.eventsHandler.spownEnemyOnCell(spownCell);
+        // check intersect with map
+        if (this.isIntersect(enemy.getHitBox())) {
+            return;
         }
 
-        return null;
+        // retrow to world
+        this.eventsHandler.spownEnemyOnCell(spownCell, enemy);
     }
 }
