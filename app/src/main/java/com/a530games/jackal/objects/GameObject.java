@@ -14,19 +14,12 @@ abstract public class GameObject
 
     public Sprite sprite;
 
-    /**
-     * To check the intersection while moving
-     * enemies in move
-     */
-    protected World world;
-
     // hit box rect in map position for draw
     private Rect hitBoxForDraw;
 
-    public GameObject(World world, Pixmap image)
+    public GameObject(Pixmap image)
     {
         this.sprite = new Sprite(image);
-        this.world = world;
 
         // hitbox for draw
         this.hitBoxForDraw = new Rect();

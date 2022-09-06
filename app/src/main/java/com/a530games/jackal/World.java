@@ -70,7 +70,7 @@ public class World implements EnemyEventHandler, MapEventsHandler
         this.map = new Map();
         this.map.setEventHandler(this);
 
-        this.player = new Player(this, 300, 300);
+        this.player = new Player(300, 300);
 
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
@@ -280,7 +280,7 @@ public class World implements EnemyEventHandler, MapEventsHandler
     public void spownEnemyOnCell(MapCell spownCell)
     {
         // todo: rafactor create enemy insize cell
-        Tank t = new Tank(this, spownCell.col * Map.SPRITE_WIDTH, spownCell.row * Map.SPRITE_HEIGHT);
+        Tank t = new Tank(spownCell.col * Map.SPRITE_WIDTH, spownCell.row * Map.SPRITE_HEIGHT);
         t.setEventHandler(this);
 
         // check intersect with map
@@ -298,6 +298,7 @@ public class World implements EnemyEventHandler, MapEventsHandler
 
         }*/
 
+        // todo: check free enemy
         this.enemies.add(t);
     }
 

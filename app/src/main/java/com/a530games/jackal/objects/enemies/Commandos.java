@@ -11,7 +11,7 @@ import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemyEventHandler;
 import com.a530games.jackal.objects.GameObject;
 
-public class Commandos extends GameObject implements Enemy
+public class Commandos extends Vehicle
 {
     private Vector2 velocity;
 
@@ -42,9 +42,9 @@ public class Commandos extends GameObject implements Enemy
         {0, 20},
     };
 
-    public Commandos(World world, int startX, int startY)
+    public Commandos(int startX, int startY)
     {
-        super(world, Assets.man);
+        super(startX, startY, Assets.man);
 
         // default sprite
         this.sprite.set(0, 1);
@@ -78,7 +78,7 @@ public class Commandos extends GameObject implements Enemy
     }
 
     @Override
-    public void update(float deltaTime, Enemy player, EnemyEventHandler eventHandler)
+    public void update(float deltaTime, Enemy player, World world)
     {
         if (this.rotateTimer <= 0)
         {
@@ -104,7 +104,7 @@ public class Commandos extends GameObject implements Enemy
             this.tickSprite();
         }
 
-        this.move(this.velocity, deltaTime);
+        this.move(this.velocity, deltaTime, world);
 
         /*if (this.doConst == 2) {
             if (this.fire()){
@@ -187,21 +187,12 @@ public class Commandos extends GameObject implements Enemy
         if (this.sprite.col == 4) this.sprite.col = 0;
     }
 
-    /**
+    /*
      *
-     */
+     *
     public void move(Vector2 velocity, float deltaTime)
     {
-        /*switch (direction) {
-            case Vehicle.MOVE_DOWN: this.moveDown(deltaTime, this.speed); break;
-            case Vehicle.MOVE_DOWN_RIGHT: this.moveDownRight(deltaTime); break;
-            case Vehicle.MOVE_RIGHT: this.moveRight(deltaTime, this.speed); break;
-            case Vehicle.MOVE_TOP_RIGHT: this.moveTopRight(deltaTime); break;
-            case Vehicle.MOVE_TOP: this.moveTop(deltaTime, this.speed); break;
-            case Vehicle.MOVE_TOP_LEFT: this.moveTopLeft(deltaTime); break;
-            case Vehicle.MOVE_LEFT: this.moveLeft(deltaTime, this.speed); break;
-            case Vehicle.MOVE_DOWN_LEFT:  this.moveDownLeft(deltaTime); break;
-        }*/
+
 
         if (velocity.x != 0) {
             this.moveHorizontal(velocity, deltaTime);
@@ -228,7 +219,7 @@ public class Commandos extends GameObject implements Enemy
         if (this.isIntersectMove(this.hitBox)) {
             this.hitBox.rollback();
         }
-    }
+    }*/
 
     /*public void moveDown(float deltaTime, float speed)
     {
@@ -292,9 +283,9 @@ public class Commandos extends GameObject implements Enemy
         this.moveDown(deltaTime, this.speed / 4);
     }*/
 
-    /**
+    /*
      * Check intersect with: map, enemies and player for moving
-     */
+     *
     private boolean isIntersectMove(FloatRect aHitbox)
     {
 
@@ -316,6 +307,6 @@ public class Commandos extends GameObject implements Enemy
         // }
 
         return false;
-    }
+    }*/
 
 }

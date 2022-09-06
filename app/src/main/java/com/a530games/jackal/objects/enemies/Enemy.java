@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Sprite;
+import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.EnemyEventHandler;
 
@@ -42,8 +43,8 @@ public interface Enemy
      * Update enemy
      * @param deltaTime Delta time
      * @param player Player for check intersect
-     * @param eventHandler Events handler
+     * @param world World for check intersect on move
      */
-    void update(float deltaTime, Enemy player, EnemyEventHandler eventHandler);
+    void update(float deltaTime, Enemy player, World world);
 
 }

@@ -16,8 +16,8 @@ public abstract class RotateVehicle extends Vehicle
     public Vector2 direction;
 
 
-    public RotateVehicle(World world, float startX, float startY, Pixmap image) {
-        super(world, startX, startY, image);
+    public RotateVehicle(float startX, float startY, Pixmap image) {
+        super(startX, startY, image);
         // show top
         this.direction = new Vector2(0 , -1);
     }
@@ -27,9 +27,9 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void move(Vector2 velocity, float deltaTime)
+    public void move(Vector2 velocity, float deltaTime, World world)
     {
-        super.move(velocity, deltaTime);
+        super.move(velocity, deltaTime, world);
 
         // just set direction
         // float currentAngle = this.direction.angleInDegrees();

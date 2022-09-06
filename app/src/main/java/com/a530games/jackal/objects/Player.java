@@ -23,9 +23,9 @@ public class Player extends RotateVehicle
 
     private Vector2 velocity;
 
-    public Player(World world, int startX, int startY)
+    public Player(int startX, int startY)
     {
-        super(world, startX, startY, Assets.player);
+        super(startX, startY, Assets.player);
 
         this.velocity = new Vector2();
 
@@ -35,7 +35,7 @@ public class Player extends RotateVehicle
         this.sprite.set(1, 0);
     }
 
-    public void update(float deltaTime, Enemy player, EnemyEventHandler eventHandler)
+    public void update(float deltaTime, Enemy player, World world)
     {
         // уменьшаем задержку выстрела
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;
@@ -44,14 +44,14 @@ public class Player extends RotateVehicle
     }
 
     @Override
-    public void move(Vector2 direction, float deltaTime)
+    public void move(Vector2 direction, float deltaTime, World world)
     {
         this.velocity.set(
             direction.x * this.speed,
             direction.y * this.speed
         );
 
-        super.move(this.velocity, deltaTime);
+        super.move(this.velocity, deltaTime, world);
 
         // todo: make method
         switch (direction.getQuater()) {

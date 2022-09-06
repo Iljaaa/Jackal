@@ -23,9 +23,9 @@ public abstract class Vehicle extends GameObject implements Enemy
     public static final int MOVE_LEFT = 150;
     public static final int MOVE_DOWN_LEFT = 175;*/
 
-    public Vehicle(World world, float startX, float startY, Pixmap image)
+    public Vehicle(float startX, float startY, Pixmap image)
     {
-        super(world, image);
+        super(image);
 
         // default sprite
         this.sprite.set(0, 1);
@@ -51,15 +51,16 @@ public abstract class Vehicle extends GameObject implements Enemy
 
     /**
      * move vehicle on map
+     * world to check intersect for move
      */
-    public void move(Vector2 velocity, float deltaTime)
+    public void move(Vector2 velocity, float deltaTime, World world)
     {
         if (velocity.x != 0) {
-            this.moveHorizontal(velocity.x, deltaTime);
+            this.moveHorizontal(velocity.x, deltaTime, world);
         }
 
         if (velocity.y != 0) {
-            this.moveVertical(velocity.y, deltaTime);
+            this.moveVertical(velocity.y, deltaTime, world);
         }
 
         /*switch (direction) {
@@ -74,20 +75,20 @@ public abstract class Vehicle extends GameObject implements Enemy
         }*/
     }
 
-    private void moveHorizontal(float xSpeed, float deltaTime)
+    private void moveHorizontal(float xSpeed, float deltaTime, World world)
     {
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * xSpeed), this.hitBox.top);
 
-        if (this.checkIntersectForMove(this.hitBox)) {
+        if (this.checkIntersectForMove(this.hitBox, world)) {
             this.hitBox.rollback();
         }
     }
 
-    private void moveVertical(float ySpeed, float deltaTime)
+    private void moveVertical(float ySpeed, float deltaTime, World world)
     {
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * ySpeed));
 
-        if (this.checkIntersectForMove(this.hitBox)) {
+        if (this.checkIntersectForMove(this.hitBox, world)) {
             this.hitBox.rollback();
         }
     }
@@ -184,22 +185,22 @@ public abstract class Vehicle extends GameObject implements Enemy
 
     }*/
 
-    protected boolean checkIntersectForMove(FloatRect aHitbox)
+    protected boolean checkIntersectForMove(FloatRect aHitbox, World world)
     {
 
         // intersect with map
-        if (this.world.map.isIntersect(aHitbox)) {
+        if (world.map.isIntersect(aHitbox)) {
             return true;
         }
 
         // intersect enemies
-        if (this.world.enemies.isAnyEnemyIntersectWith(this)) {
+        if (world.enemies.isAnyEnemyIntersectWith(this)) {
             return true;
         }
 
         // intersect with player
-        if (!this.world.player.equals(this)) {
-            if (Map.isIntersectsTwoRect(aHitbox, this.world.player.hitBox)) {
+        if (!world.player.equals(this)) {
+            if (Map.isIntersectsTwoRect(aHitbox, world.player.hitBox)) {
                 return true;
             }
         }

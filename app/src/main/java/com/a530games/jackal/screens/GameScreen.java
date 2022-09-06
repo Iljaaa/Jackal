@@ -185,7 +185,7 @@ public class GameScreen extends Screen
         // move player
         Vector2 leftStick = controller.getLeftStickDirection();
         if (leftStick.x != 0 || leftStick.y != 0) {
-            this.world.player.move(leftStick, deltaTime);
+            this.world.player.move(leftStick, deltaTime, this.world);
         }
 
         // set player turret angle

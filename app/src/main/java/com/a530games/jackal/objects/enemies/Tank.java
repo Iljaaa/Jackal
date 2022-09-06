@@ -37,9 +37,9 @@ public class Tank extends Vehicle
 
     private EnemyEventHandler eventHandler = null;
 
-    public Tank(World world, int startX, int startY)
+    public Tank(int startX, int startY)
     {
-        super(world, startX, startY, Assets.tank);
+        super(startX, startY, Assets.tank);
         this.velocity = new Vector2(0 ,1);
     }
 
@@ -59,7 +59,7 @@ public class Tank extends Vehicle
     }
 
     @Override
-    public void update(float deltaTime, Enemy player, EnemyEventHandler eventHandler)
+    public void update(float deltaTime, Enemy player, World world)
     {
         if (this.rotateTimer <= 0)
         {
@@ -83,7 +83,7 @@ public class Tank extends Vehicle
         }
 
         if (this.doConst == 0) {
-            this.move2(this.velocity, deltaTime);
+            this.move(this.velocity, deltaTime, world);
         }
 
         if (this.doConst == 1)
@@ -208,21 +208,12 @@ public class Tank extends Vehicle
 
     }
 
-    /**
+    /*
      *
      */
-    public void move2(Vector2 velocity, float deltaTime)
+    /*public void move2(Vector2 velocity, float deltaTime, World world)
     {
-        /*switch (direction) {
-            case Vehicle.MOVE_DOWN: this.moveDown(deltaTime, this.speed); break;
-            case Vehicle.MOVE_DOWN_RIGHT: this.moveDownRight(deltaTime); break;
-            case Vehicle.MOVE_RIGHT: this.moveRight(deltaTime, this.speed); break;
-            case Vehicle.MOVE_TOP_RIGHT: this.moveTopRight(deltaTime); break;
-            case Vehicle.MOVE_TOP: this.moveTop(deltaTime, this.speed); break;
-            case Vehicle.MOVE_TOP_LEFT: this.moveTopLeft(deltaTime); break;
-            case Vehicle.MOVE_LEFT: this.moveLeft(deltaTime, this.speed); break;
-            case Vehicle.MOVE_DOWN_LEFT:  this.moveDownLeft(deltaTime); break;
-        }*/
+
 
         if (velocity.x != 0) {
             this.moveHorizontal(velocity, deltaTime);
@@ -233,21 +224,21 @@ public class Tank extends Vehicle
         }
     }
 
-    private void moveHorizontal(Vector2 velocity, float deltaTime)
+    private void moveHorizontal(Vector2 velocity, float deltaTime, World world)
     {
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * velocity.x), this.hitBox.top);
 
-        if (this.checkIntersectForMove(this.hitBox)) {
+        if (this.checkIntersectForMove(this.hitBox, world)) {
             this.hitBox.rollback();
         }
     }
 
-    private void moveVertical(Vector2 velocity, float deltaTime)
+    private void moveVertical(Vector2 velocity, float deltaTime, World world)
     {
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * velocity.y));
 
-        if (this.checkIntersectForMove(this.hitBox)) {
+        if (this.checkIntersectForMove(this.hitBox, world)) {
             this.hitBox.rollback();
         }
-    }
+    }*/
 }
