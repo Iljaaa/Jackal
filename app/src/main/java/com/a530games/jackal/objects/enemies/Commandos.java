@@ -120,14 +120,14 @@ public class Commandos extends GameObject implements Enemy
     }
 
 
-    private boolean fire()
+    /*private boolean fire()
     {
         Bullet b = this.world.enemyBullets.getFreeBullet();
         if (b == null) return false;
 
         b.reNewByVector(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1, 0);
         return true;
-    }
+    }*/
 
     private void updateSprite(Vector2 velocity) //int direction)
     {

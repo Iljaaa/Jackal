@@ -19,7 +19,7 @@ public class Tank extends Vehicle
 {
     private Vector2 velocity;
 
-    private Vector2 targetAngle = new Vector2(1, 0);
+    private final Vector2 targetAngle = new Vector2(1, 0);
     // private Vector targetAngle;
 
     //
@@ -28,17 +28,6 @@ public class Tank extends Vehicle
     private float rotateTimer = 0;
 
     private int doConst = 0;
-
-    private int[] directions = {
-        Vehicle.MOVE_DOWN,
-        Vehicle.MOVE_DOWN_RIGHT,
-        Vehicle.MOVE_RIGHT,
-        Vehicle.MOVE_TOP_RIGHT,
-        Vehicle.MOVE_TOP,
-        Vehicle.MOVE_TOP_LEFT,
-        Vehicle.MOVE_LEFT,
-        Vehicle.MOVE_DOWN_LEFT
-    };
 
     private int[][] dirs = {
             {40, 0},
@@ -50,6 +39,8 @@ public class Tank extends Vehicle
             {0, -40},
             {40, -40},
     };
+
+    private EnemyEventHandler eventHandler = null;
 
     public Tank(World world, int startX, int startY)
     {
@@ -134,12 +125,7 @@ public class Tank extends Vehicle
 
         if (this.doConst == 2)
         {
-
-            if (this.fire()){
-                if (Settings.soundEnabled) {
-                    Assets.tankFire.play(0.7f);
-                }
-            }
+            this.fire();
 
             // generate new angle
             int[] a = this.dirs[Jackal.getRandom().nextInt(this.dirs.length)];
@@ -152,14 +138,17 @@ public class Tank extends Vehicle
         this.rotateTimer -= deltaTime;
     }
 
-
-    private boolean fire()
+    public void setEventHandler(EnemyEventHandler eventHandler)
     {
-        Bullet b = this.world.enemyBullets.getFreeBullet();
-        if (b == null) return false;
+        this.eventHandler = eventHandler;
+    }
 
-        b.reNewByVector(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle.x, this.turretAngle.y);
-        return true;
+    private void fire()
+    {
+        if (this.eventHandler != null) {
+            this.turretAngle.nor();
+            this.eventHandler.enemyFire(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle);
+        }
     }
 
     private void updateSprite(Vector2 direction)

@@ -75,7 +75,7 @@ public class World implements EnemyEventHandler, MapEventsHandler
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
 
-        this.enemies.add(new Tank(this,100, 100));
+        // this.enemies.add(new Tank(this,100, 100));
         // this.enemies.add(new Commandos(this,400, 800));
 
         // инициализируем массиа с пулями
@@ -279,7 +279,9 @@ public class World implements EnemyEventHandler, MapEventsHandler
     @Override
     public void spownEnemyOnCell(MapCell spownCell)
     {
+        // todo: rafactor create enemy insize cell
         Tank t = new Tank(this, spownCell.col * Map.SPRITE_WIDTH, spownCell.row * Map.SPRITE_HEIGHT);
+        t.setEventHandler(this);
 
         // check intersect with map
         if (this.enemies.isAnyEnemyIntersectWith(t)) {
@@ -297,5 +299,19 @@ public class World implements EnemyEventHandler, MapEventsHandler
         }*/
 
         this.enemies.add(t);
+    }
+
+    @Override
+    public void enemyFire(float mapPositionX, float mapPositionY,Vector2 direction)
+    {
+        Bullet b = this.enemyBullets.getFreeBullet();
+        if (b == null) return;
+
+        // b.reNewByVector(mapPositionX, mapPositionY, this.turretAngle.x, this.turretAngle.y);
+        b.reNewByDirectionVector(mapPositionX, mapPositionY, direction);
+
+        if (Settings.soundEnabled) {
+            Assets.tankFire.play(0.7f);
+        }
     }
 }

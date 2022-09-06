@@ -18,14 +18,14 @@ import com.a530games.jackal.objects.enemies.Enemy;
 public abstract class Vehicle extends GameObject implements Enemy
 {
 
-    public static final int MOVE_DOWN = 0;
+    /*public static final int MOVE_DOWN = 0;
     public static final int MOVE_DOWN_RIGHT = 25;
     public static final int MOVE_RIGHT = 50;
     public static final int MOVE_TOP_RIGHT = 75;
     public static final int MOVE_TOP = 100;
     public static final int MOVE_TOP_LEFT = 125;
     public static final int MOVE_LEFT = 150;
-    public static final int MOVE_DOWN_LEFT = 175;
+    public static final int MOVE_DOWN_LEFT = 175;*/
 
     // скорость перемещения
     protected float speed = 100;
