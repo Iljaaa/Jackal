@@ -616,11 +616,6 @@ public class Map implements CellEventCallbackHandler
     {
         if (this.eventsHandler == null) return;;
 
-        // check intersect with map
-        if (this.isIntersect(enemy.getHitBox())) {
-            return;
-        }
-
         // retrow to world
         this.eventsHandler.spownEnemyOnCell(spownCell, enemy);
     }

@@ -279,8 +279,13 @@ public class World implements EnemyEventHandler, MapEventsHandler
     @Override
     public void spownEnemyOnCell(MapCell spownCell, Enemy enemy)
     {
-        // check intersect by enemnies
+        // check intersect by player
         if (Map.isIntersectsTwoRect(this.player.getHitBox(), enemy.getHitBox())) {
+            return;
+        }
+
+        // check intersect with enem
+        if (this.enemies.isAnyEnemyIntersectWith(enemy)) {
             return;
         }
 
