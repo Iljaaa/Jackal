@@ -18,9 +18,16 @@ public class Player extends RotateVehicle
 
     public Sprite gun;
 
+    // скорость перемещения
+    protected float speed = 100;
+
+    private Vector2 velocity;
+
     public Player(World world, int startX, int startY)
     {
         super(world, startX, startY, Assets.player);
+
+        this.velocity = new Vector2();
 
         this.gun = new Sprite(Assets.gun);
         this.gun.set(0, 0);
@@ -37,8 +44,14 @@ public class Player extends RotateVehicle
     }
 
     @Override
-    public void move(Vector2 direction, float deltaTime) {
-        super.move(direction, deltaTime);
+    public void move(Vector2 direction, float deltaTime)
+    {
+        this.velocity.set(
+            direction.x * this.speed,
+            direction.y * this.speed
+        );
+
+        super.move(this.velocity, deltaTime);
 
         // todo: make method
         switch (direction.getQuater()) {

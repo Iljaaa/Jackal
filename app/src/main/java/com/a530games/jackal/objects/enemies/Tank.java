@@ -1,14 +1,10 @@
 package com.a530games.jackal.objects.enemies;
 
-import android.util.Log;
-
 import com.a530games.framework.helpers.FloatPoint;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
-import com.a530games.jackal.Settings;
 import com.a530games.jackal.World;
-import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemyEventHandler;
 
 /**
@@ -20,7 +16,6 @@ public class Tank extends Vehicle
     private Vector2 velocity;
 
     private final Vector2 targetAngle = new Vector2(1, 0);
-    // private Vector targetAngle;
 
     //
     public Vector2 turretAngle = new Vector2(1, 0);
@@ -71,11 +66,6 @@ public class Tank extends Vehicle
             this.rotateTimer = 1;
 
             this.doConst++;
-            // if (this.doConst > 1) this.doConst = 0;
-
-            //
-            /*this.velocity = this.directions[Jackal.getRandom().nextInt(8)];*/
-
 
             // calculate angle by who points
             FloatPoint playerCenter = player.getHitBox().getCenter();
@@ -84,22 +74,12 @@ public class Tank extends Vehicle
             // d
             float y = playerCenter.top - tankCenter.top;
             float x = playerCenter.left- tankCenter.left;
-            // double d = Math.sqrt((x * x) + (y * y));
-            // Vector v = new Vector((float) (x / d), (float) (y / d));
-
-            float angle = (float) Math.atan2(y, x) * Vector2.TO_DEGREES;
 
             // random angle
             // this.targetAngle = Jackal.getRandom().nextFloat() * 2;
             // this.targetAngle.set(Jackal.getRandom().nextFloat(), Jackal.getRandom().nextFloat());
             this.targetAngle.set(x, y);
             this.targetAngle.nor();
-
-
-            // angle to playes
-            // this.world.player.hitBox
-
-            // Log.d("player angle", String.valueOf(this.targetAngle));
         }
 
         if (this.doConst == 0) {
@@ -110,13 +90,10 @@ public class Tank extends Vehicle
         {
             float turretAngleInDegrees = this.turretAngle.angleInDegrees();
             float targetAngleInDegrees = this.targetAngle.angleInDegrees();
-            // if (turretAngleInDegrees < this.targetAngle) this.turretAngle += 0.05;
-            // if (turretAngleInDegrees > this.targetAngle) this.turretAngle -= 0.05;
+            float rotate = (turretAngleInDegrees < targetAngleInDegrees) ? 5 : -5;
 
             float degDelta = targetAngleInDegrees - turretAngleInDegrees;
-            float rotate = (turretAngleInDegrees < targetAngleInDegrees) ? 5 : -5;
             if (Math.abs(degDelta) < 5) rotate = degDelta;
-
 
             this.turretAngle.rotate(rotate);
             //if (turretAngleInDegrees < targetAngleInDegrees) this.turretAngle.rotate(5);
@@ -260,7 +237,7 @@ public class Tank extends Vehicle
     {
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * velocity.x), this.hitBox.top);
 
-        if (this.checkIntersectFroMove(this.hitBox)) {
+        if (this.checkIntersectForMove(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
@@ -269,7 +246,7 @@ public class Tank extends Vehicle
     {
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * velocity.y));
 
-        if (this.checkIntersectFroMove(this.hitBox)) {
+        if (this.checkIntersectForMove(this.hitBox)) {
             this.hitBox.rollback();
         }
     }

@@ -1,7 +1,5 @@
 package com.a530games.jackal.objects.enemies;
 
-import android.graphics.Rect;
-
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
@@ -9,8 +7,6 @@ import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.GameObject;
-import com.a530games.jackal.objects.Player;
-import com.a530games.jackal.objects.enemies.Enemy;
 
 /**
  * Общий класс для транспортного средства
@@ -26,9 +22,6 @@ public abstract class Vehicle extends GameObject implements Enemy
     public static final int MOVE_TOP_LEFT = 125;
     public static final int MOVE_LEFT = 150;
     public static final int MOVE_DOWN_LEFT = 175;*/
-
-    // скорость перемещения
-    protected float speed = 100;
 
     public Vehicle(World world, float startX, float startY, Pixmap image)
     {
@@ -59,14 +52,14 @@ public abstract class Vehicle extends GameObject implements Enemy
     /**
      * move vehicle on map
      */
-    public void move(Vector2 direction, float deltaTime)
+    public void move(Vector2 velocity, float deltaTime)
     {
-        if (direction.x != 0) {
-            this.moveHorizontal(direction.x * this.speed, deltaTime);
+        if (velocity.x != 0) {
+            this.moveHorizontal(velocity.x, deltaTime);
         }
 
-        if (direction.y != 0) {
-            this.moveVertical(direction.y * this.speed, deltaTime);
+        if (velocity.y != 0) {
+            this.moveVertical(velocity.y, deltaTime);
         }
 
         /*switch (direction) {
@@ -85,7 +78,7 @@ public abstract class Vehicle extends GameObject implements Enemy
     {
         this.hitBox.moveTo(this.hitBox.left + (deltaTime * xSpeed), this.hitBox.top);
 
-        if (this.checkIntersectFroMove(this.hitBox)) {
+        if (this.checkIntersectForMove(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
@@ -94,7 +87,7 @@ public abstract class Vehicle extends GameObject implements Enemy
     {
         this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * ySpeed));
 
-        if (this.checkIntersectFroMove(this.hitBox)) {
+        if (this.checkIntersectForMove(this.hitBox)) {
             this.hitBox.rollback();
         }
     }
@@ -191,7 +184,7 @@ public abstract class Vehicle extends GameObject implements Enemy
 
     }*/
 
-    protected boolean checkIntersectFroMove (FloatRect aHitbox)
+    protected boolean checkIntersectForMove(FloatRect aHitbox)
     {
 
         // intersect with map

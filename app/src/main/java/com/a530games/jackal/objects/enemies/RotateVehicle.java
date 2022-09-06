@@ -27,14 +27,15 @@ public abstract class RotateVehicle extends Vehicle
     }
 
     @Override
-    public void move(Vector2 direction, float deltaTime)
+    public void move(Vector2 velocity, float deltaTime)
     {
-        super.move(direction, deltaTime);
+        super.move(velocity, deltaTime);
 
         // just set direction
         // float currentAngle = this.direction.angleInDegrees();
         //float targetAngle = direction.
-        this.direction.set(direction);
+        this.direction.set(velocity);
+        this.direction.nor();
 
         /*float directionAngle = direction.angleInDegrees();
         float currentAngle = this.direction.angleInDegrees();
