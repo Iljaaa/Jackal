@@ -26,7 +26,10 @@ public interface Enemy
      */
     Sprite getSprite();
 
-
+    /**
+     * Has enemy turret
+     * @return boolean
+     */
     boolean hasTurret();
 
     /**
@@ -46,6 +49,11 @@ public interface Enemy
      * @param world World for check intersect on move
      */
     void update(float deltaTime, Enemy player, World world);
+
+    /**
+     * Is enemy hit by payer bullet
+     */
+    void hit(int damage);
 
     /**
      * Setting event handler

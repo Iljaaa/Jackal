@@ -151,12 +151,9 @@ public class Player extends RotateVehicle
         // return new Bullet(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1);
     }
 
-    /**
-     * Hit by enemy bullet
-     * @param damage damage
-     */
-    public void hit (int damage) {
-        // hp mines
+    @Override
+    public void hit(int damage) {
+
     }
 
     @Override

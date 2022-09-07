@@ -13,9 +13,20 @@ import com.a530games.jackal.objects.EnemyEventHandler;
  */
 public class Tank extends Vehicle
 {
+    public static final int STATE_READY = 0; // raady not inited
+    public static final int STATE_AIMING = 2; //
+    public static final int STATE_ROTATE_TURRET = 4; // rotate turret
+    public static final int STATE_MOVE = 6; //
+    public static final int STATE_BLOWUP = 95;
+    public static final int STATE_DEAD = 100;
+
     private Vector2 velocity;
 
     private final Vector2 targetAngle = new Vector2(1, 0);
+
+    private int state = Tank.STATE_READY;
+
+    private int hp = 2;
 
     //
     public Vector2 turretAngle = new Vector2(1, 0);
@@ -41,6 +52,7 @@ public class Tank extends Vehicle
     {
         super(startX, startY, Assets.tank);
         this.velocity = new Vector2(0 ,1);
+        this.state = Tank.STATE_MOVE;
     }
 
     @Override
@@ -61,33 +73,34 @@ public class Tank extends Vehicle
     @Override
     public void update(float deltaTime, Enemy player, World world)
     {
-        if (this.rotateTimer <= 0)
+        if (this.state == Tank.STATE_DEAD) {
+            return;
+        }
+
+        if (this.state == Tank.STATE_AIMING)
         {
-            this.rotateTimer = 1;
-
-            this.doConst++;
-
             // calculate angle by who points
             FloatPoint playerCenter = player.getHitBox().getCenter();
             FloatPoint tankCenter = this.hitBox.getCenter();
 
-            // d
             float y = playerCenter.top - tankCenter.top;
-            float x = playerCenter.left- tankCenter.left;
+            float x = playerCenter.left - tankCenter.left;
 
             // random angle
             // this.targetAngle = Jackal.getRandom().nextFloat() * 2;
             // this.targetAngle.set(Jackal.getRandom().nextFloat(), Jackal.getRandom().nextFloat());
             this.targetAngle.set(x, y);
             this.targetAngle.nor();
+
+            // goto turret
+            this.rotateTimer = 1;
+            this.state = Tank.STATE_ROTATE_TURRET;
         }
 
-        if (this.doConst == 0) {
-            this.move(this.velocity, deltaTime, world);
-        }
 
-        if (this.doConst == 1)
+        if (this.state == Tank.STATE_ROTATE_TURRET)
         {
+            // todo: rotate on speed
             float turretAngleInDegrees = this.turretAngle.angleInDegrees();
             float targetAngleInDegrees = this.targetAngle.angleInDegrees();
             float rotate = (turretAngleInDegrees < targetAngleInDegrees) ? 5 : -5;
@@ -96,23 +109,38 @@ public class Tank extends Vehicle
             if (Math.abs(degDelta) < 5) rotate = degDelta;
 
             this.turretAngle.rotate(rotate);
-            //if (turretAngleInDegrees < targetAngleInDegrees) this.turretAngle.rotate(5);
-            // if (turretAngleInDegrees > targetAngleInDegrees) this.turretAngle.rotate(-5);
+
+            // todo: if you aim
+
+            this.rotateTimer -= deltaTime;
+            if (this.rotateTimer <= 0)
+            {
+                this.fire();
+
+
+                // goto move
+
+                // generate new move angle
+                int[] a = this.dirs[Jackal.getRandom().nextInt(this.dirs.length)];
+                this.velocity.set(a[0], a[1]);
+                this.updateSprite(this.velocity);
+
+                this.rotateTimer = 1;
+                this.state = Tank.STATE_MOVE;
+                return;
+            }
         }
 
-        if (this.doConst == 2)
+
+        if (this.state == Tank.STATE_MOVE)
         {
-            this.fire();
+            this.move(this.velocity, deltaTime, world);
 
-            // generate new angle
-            int[] a = this.dirs[Jackal.getRandom().nextInt(this.dirs.length)];
-            this.velocity.set(a[0], a[1]);
-            this.updateSprite(this.velocity);
-
-            this.doConst = 0;
+            this.rotateTimer -= deltaTime;
+            if (this.rotateTimer <= 0){
+                this.state = Tank.STATE_AIMING;
+            }
         }
-
-        this.rotateTimer -= deltaTime;
     }
 
     public void setEventHandler(EnemyEventHandler eventHandler)
@@ -126,6 +154,20 @@ public class Tank extends Vehicle
             this.turretAngle.nor();
             this.eventHandler.enemyFire(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle);
         }
+    }
+
+    @Override
+    public void hit(int damage)
+    {
+        if (this.hp <= 0) return;
+
+        this.hp--;
+        if (this.hp == 0) {
+            this.state = Tank.STATE_BLOWUP;
+            // this.state = Tank.STATE_DEAD;
+        }
+
+        // todo: call event handler
     }
 
     private void updateSprite(Vector2 direction)

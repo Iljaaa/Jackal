@@ -13,6 +13,8 @@ public class Spown extends MapCell
     private final Sprite sprite;
     float spownTimer = 5;
 
+    private Tank spawnedTank = null;
+
     public Spown(int row, int col) {
         super(row, col);
         // this.tank = new Tank();
@@ -35,14 +37,16 @@ public class Spown extends MapCell
     @Override
     void update(float deltaTime, CellEventCallbackHandler callbackHandler)
     {
-        // on timer try to spown tank
-        if (this.spownTimer <= 0) {
+
+        if (this.spownTimer <= 0)
+        {
             this.spownTimer = 5;
-            callbackHandler.spownEnemy(
-                    this,
-                    new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT)
-            );
+            if (this.spawnedTank == null) {
+                this.spawnedTank = new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
+                callbackHandler.spownEnemy(this, this.spawnedTank);
+            }
         }
+
 
         this.spownTimer -= deltaTime;
     }

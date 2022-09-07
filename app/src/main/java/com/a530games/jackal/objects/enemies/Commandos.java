@@ -1,5 +1,7 @@
 package com.a530games.jackal.objects.enemies;
 
+import android.util.Log;
+
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2;
@@ -119,6 +121,10 @@ public class Commandos extends Vehicle
         this.spriteTimer -= deltaTime;
     }
 
+    @Override
+    public void hit(int damage) {
+        Log.d("Commandos", "hit by damage");
+    }
 
     /*private boolean fire()
     {
