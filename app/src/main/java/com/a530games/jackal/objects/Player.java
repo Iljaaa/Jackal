@@ -35,7 +35,8 @@ public class Player extends RotateVehicle
         this.sprite.set(1, 0);
     }
 
-    public void update(float deltaTime, Enemy player, World world)
+    @Override
+    public void update(float deltaTime, World world)
     {
         // уменьшаем задержку выстрела
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;

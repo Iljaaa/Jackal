@@ -98,7 +98,7 @@ public class World implements EnemyEventHandler, MapEventsHandler
         this.tickTime += deltaTime;
 
         // update player
-        this.player.update(deltaTime, null, null);
+        this.player.update(deltaTime, null);
 
         // update map
         this.map.update(this.player, deltaTime);
@@ -176,7 +176,7 @@ public class World implements EnemyEventHandler, MapEventsHandler
             for (int i = 0; i < enemiesSize; i++)
             {
                 Enemy enemy = this.enemies.get(i);
-                enemy.update(deltaTime, this.player, this);
+                enemy.update(deltaTime, this);
 
                 // check intersect with player bullets
                 for (int bulletIndex = 0; bulletIndex < playerBulletsSize; bulletIndex++)

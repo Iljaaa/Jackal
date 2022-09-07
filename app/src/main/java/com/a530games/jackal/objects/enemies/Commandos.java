@@ -80,7 +80,7 @@ public class Commandos extends Vehicle
     }
 
     @Override
-    public void update(float deltaTime, Enemy player, World world)
+    public void update(float deltaTime, World world)
     {
         if (this.rotateTimer <= 0)
         {

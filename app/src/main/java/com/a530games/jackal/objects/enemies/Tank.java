@@ -19,12 +19,16 @@ public class Tank extends Vehicle
     public static final int STATE_MOVE = 6; //
     public static final int STATE_BLOWUP = 95;
     public static final int STATE_DEAD = 100;
+    
+    /**
+     * Tank state
+     */
+    private int state;
 
     private Vector2 velocity;
 
     private final Vector2 targetAngle = new Vector2(1, 0);
 
-    private int state = Tank.STATE_READY;
 
     private int hp = 2;
 
@@ -71,7 +75,7 @@ public class Tank extends Vehicle
     }
 
     @Override
-    public void update(float deltaTime, Enemy player, World world)
+    public void update(float deltaTime, World world)
     {
         if (this.state == Tank.STATE_DEAD) {
             return;
@@ -80,7 +84,7 @@ public class Tank extends Vehicle
         if (this.state == Tank.STATE_AIMING)
         {
             // calculate angle by who points
-            FloatPoint playerCenter = player.getHitBox().getCenter();
+            FloatPoint playerCenter = world.player.getHitBox().getCenter();
             FloatPoint tankCenter = this.hitBox.getCenter();
 
             float y = playerCenter.top - tankCenter.top;

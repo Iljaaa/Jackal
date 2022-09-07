@@ -45,10 +45,9 @@ public interface Enemy
     /**
      * Update enemy
      * @param deltaTime Delta time
-     * @param player Player for check intersect
      * @param world World for check intersect on move
      */
-    void update(float deltaTime, Enemy player, World world);
+    void update(float deltaTime, World world);
 
     /**
      * Is enemy hit by payer bullet
