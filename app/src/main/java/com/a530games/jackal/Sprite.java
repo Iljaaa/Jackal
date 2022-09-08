@@ -4,6 +4,7 @@ import com.a530games.framework.Pixmap;
 
 public class Sprite
 {
+    // todo: move to another class
     public int col = 0;
     public int row = 0;
 

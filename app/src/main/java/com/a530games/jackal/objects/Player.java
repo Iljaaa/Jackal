@@ -1,5 +1,6 @@
 package com.a530games.jackal.objects;
 
+import com.a530games.framework.Graphics;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.World;
@@ -42,6 +43,11 @@ public class Player extends RotateVehicle
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;
 
         // this.updateSprite(this.direction);
+    }
+
+    @Override
+    public void present(Graphics ge, World world) {
+
     }
 
     @Override

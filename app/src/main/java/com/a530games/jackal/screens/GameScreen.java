@@ -670,52 +670,9 @@ public class GameScreen extends Screen
             for (int i = 0; i < enemiesSize; i++)
             {
                 Enemy enemy = this.world.enemies.get(i);
-                Rect screenHitBox = enemy.getScreenDrawHitbox(this.world.map);
+                // if (enemy == null) continue;
 
-                Sprite s = enemy.getSprite();
-
-                // todo: not draw enemie if if is not in screem
-
-                g.drawPixmap(
-                        s.image,
-                        screenHitBox.left + s.screenMarginLeft,
-                        // this.world.map.screenLeftPotion(enemy.getHitBox().left) - 12,
-                        screenHitBox.top + s.screenMarginTop,
-                        // this.world.map.screenTopPotion(enemy.getHitBox().top) - 12,
-                        s.getLeft(),
-                        s.getTop(),
-                        s.width,
-                        s.height);
-
-                // draw hitbox
-                g.drawRect(screenHitBox, this.hitBoxPaint);
-                /*this.drawEnemyHitBox(
-                        g,
-                        this.world.map.screenLeftPotion(b.hitBox.left),
-                        this.world.map.screenTopPotion(b.hitBox.top),
-                        Math.round(b.hitBox.getWidth()),
-                        Math.round(b.hitBox.getHeight())
-                );*/
-
-                // its only for tanks and turrets
-                if (enemy.hasTurret())
-                {
-                    // target
-                    this.drawAngle(g,
-                            screenHitBox.centerX(),
-                            screenHitBox.centerY(),
-                            enemy.getTargetAngle(),
-                            Color.LTGRAY
-                    );
-
-                    // turret
-                    this.drawAngle(g,
-                            screenHitBox.centerX(),
-                            screenHitBox.centerY(),
-                            enemy.getTurretAngle(),
-                            Color.GREEN
-                    );
-                }
+                enemy.present(g, this.world);
             }
         }
     }
@@ -834,32 +791,7 @@ public class GameScreen extends Screen
         }
     }
 
-    /**
-     *
-     * @param   g   graphic object
-     */
-    private void drawAngle (Graphics g, int screenCenterLeft, int screenCenterTop, Vector2 angleVector, int color)
-    {
-        // int centerTop = Math.round(this.world.player.hitBox.getCenterTop());
 
-        // отрисовываем вектор направления
-        // double s = Math.sin(this.world.player.getAngle() * Math.PI);
-        // double c = Math.cos(this.world.player.getAngle() * Math.PI);
-
-        /*g.drawLine(
-                screenCenterLeft,
-                screenCenterTop,
-                screenCenterLeft + (int) Math.round(Math.sin(angle * Math.PI) * 50),
-                screenCenterTop + (int) Math.round(Math.cos(angle * Math.PI) * 50),
-                Color.GREEN);*/
-
-        g.drawLine(
-                screenCenterLeft,
-                screenCenterTop,
-                Math.round(screenCenterLeft + (angleVector.x * 50)),
-                Math.round(screenCenterTop + (angleVector.y * 50)),
-                color);
-    }
 
     private void drawReadyUI()
     {

@@ -92,7 +92,8 @@ public class AndroidGraphics implements Graphics
     @Override
     public void drawRect(int x, int y, int width, int height, int color) {
         this.paint.setColor(color);
-        this.paint.setStyle(Paint.Style.FILL);
+        this.paint.setStyle(Paint.Style.STROKE);
+        this.paint.setStrokeWidth(1);
         this.canvas.drawRect(x, y, x + width, y + height, this.paint);
     }
 
@@ -111,7 +112,8 @@ public class AndroidGraphics implements Graphics
     @Override
     public void drawRect(Rect r, int color) {
         this.paint.setColor(color);
-        this.paint.setStyle(Paint.Style.FILL);
+        this.paint.setStyle(Paint.Style.STROKE);
+        this.paint.setStrokeWidth(1);
         this.canvas.drawRect(r, this.paint);
     }
 
@@ -119,7 +121,7 @@ public class AndroidGraphics implements Graphics
     public void drawCircle(int x, int y, int radius, int color) {
         this.paint.setColor(color);
         this.paint.setStyle(Paint.Style.STROKE);
-        this.paint.setStrokeWidth(2);
+        this.paint.setStrokeWidth(1);
         this.canvas.drawCircle(x, y, radius, this.paint);
     }
 

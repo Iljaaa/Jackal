@@ -2,6 +2,7 @@ package com.a530games.jackal.objects.enemies;
 
 import android.graphics.Rect;
 
+import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Sprite;
@@ -48,6 +49,11 @@ public interface Enemy
      * @param world World for check intersect on move
      */
     void update(float deltaTime, World world);
+
+    /**
+     * Present enemy
+     */
+    void present (Graphics g, World world);
 
     /**
      * Is enemy hit by payer bullet

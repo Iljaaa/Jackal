@@ -2,6 +2,7 @@ package com.a530games.jackal.objects.enemies;
 
 import android.util.Log;
 
+import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2;
@@ -119,6 +120,11 @@ public class Commandos extends Vehicle
 
         this.rotateTimer -= deltaTime;
         this.spriteTimer -= deltaTime;
+    }
+
+    @Override
+    public void present(Graphics g, World world) {
+
     }
 
     @Override
