@@ -174,10 +174,38 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
 
     private void updateEnemies (float deltaTime)
     {
-        int enemiesSize = this.enemies.size();
+
+        boolean enemyDeleted = false;
+        int enemiesSize = 0;
+
+        // delete dead enemies
+        do
+        {
+            enemiesSize = this.enemies.size();
+            enemyDeleted = false;
+            if (enemiesSize > 0)
+            {
+                // update enemies and check intersect with bullets
+                for (int i = 0; i < enemiesSize; i++) {
+                    // remove dead enemies
+                    if (this.enemies.get(i).isDead()) {
+                        this.enemies.remove(this.enemies.get(i));
+                        enemyDeleted = true;
+                        break;
+                    }
+                }
+            }
+        }
+        while (enemyDeleted && enemiesSize > 0);
+
+
+        //  update enemies and check intersect with bullets
+        enemiesSize = this.enemies.size();
         int playerBulletsSize = this.bullets.size();
 
-        if (enemiesSize > 0) {
+        if (enemiesSize > 0)
+        {
+            // update enemies and check intersect with bullets
             for (int i = 0; i < enemiesSize; i++)
             {
                 Enemy enemy = this.enemies.get(i);
@@ -199,11 +227,9 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
                         }
                     }
                 }
-
-                if (enemy.isDead()) {
-                    this.enemies.remove(enemy);
-                }
             }
+
+
         }
     }
 

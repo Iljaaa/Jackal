@@ -4,6 +4,7 @@ package com.a530games.jackal.map;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.enemies.EnemyDieEventHandler;
@@ -13,17 +14,20 @@ public class Spown extends MapCell implements EnemyDieEventHandler
 {
     private final Sprite sprite;
 
-    float spownTimer = 5;
+    float spownTimer;
 
     private Tank spawnedTank = null;
 
     int killedTanks = 0;
-    private final int needTanksKill = 1;
+    private final int needTanksKill = 5;
 
-    public Spown(int row, int col) {
+    public Spown(int row, int col)
+    {
         super(row, col);
         // this.tank = new Tank();
         this.sprite = new Sprite(Assets.spown, 0, 0);
+
+        this.spownTimer = Jackal.getRandom().nextFloat() * 10;
 
         // this.spawnedTank = new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
     }
@@ -44,11 +48,14 @@ public class Spown extends MapCell implements EnemyDieEventHandler
     @Override
     void update(float deltaTime, CellEventCallbackHandler callbackHandler)
     {
+        if (this.killedTanks >= this.needTanksKill) {
+            return;
+        }
 
         this.spownTimer -= deltaTime;
         if (this.spownTimer <= 0)
         {
-            this.spownTimer = 5;
+            this.spownTimer = Jackal.getRandom().nextFloat() * 10;
 
             if (this.spawnedTank == null) {
                 this.spawnedTank = new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
@@ -87,7 +94,7 @@ public class Spown extends MapCell implements EnemyDieEventHandler
 
     @Override
     public void enemyDie(Enemy enemy) {
-        this.spownTimer = 5;
+        this.spownTimer = Jackal.getRandom().nextFloat() * 10;
         this.spawnedTank = null;
         this.killedTanks++;
     }

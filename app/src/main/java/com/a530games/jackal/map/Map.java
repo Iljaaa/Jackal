@@ -347,6 +347,10 @@ public class Map implements CellEventCallbackHandler
 
 
         this.fields[11][3] = new Spown(11, 3);
+        this.fields[11][4] = new Spown(11, 4);
+        this.fields[11][5] = new Spown(11, 5);
+        this.fields[11][6] = new Spown(11, 6);
+        this.fields[11][7] = new Spown(11, 7);
     }
 
     private void addRock (int row, int col, int type)
@@ -424,7 +428,6 @@ public class Map implements CellEventCallbackHandler
 
     public void update(Player player, float deltaTime)
     {
-
         // move map
         this.updateMapPosition(player);
 
@@ -458,9 +461,7 @@ public class Map implements CellEventCallbackHandler
         }
 
         // this is win
-        if (isWin){
-            this.eventsHandler.mapWin();
-        }
+        if (isWin) this.eventsHandler.mapWin();
     }
 
     private void updateMapOptimizatonFields()
