@@ -7,18 +7,16 @@ import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.map.MapEventsHandler;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemiesCollection;
-import com.a530games.jackal.objects.EnemyEventHandler;
-import com.a530games.jackal.objects.enemies.Commandos;
+import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.EnemyBulletsCollection;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.PlayerBulletsCollection;
-import com.a530games.jackal.objects.enemies.Tank;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class World implements EnemyEventHandler, MapEventsHandler
+public class World implements EnemyFireEventHandler, MapEventsHandler
 {
     // размер мира
     static final int WORLD_WIDTH = 10;
@@ -194,6 +192,10 @@ public class World implements EnemyEventHandler, MapEventsHandler
                         }
                     }
                 }
+
+                if (enemy.isDead()) {
+                    this.enemies.remove(enemy);
+                }
             }
         }
     }
@@ -292,14 +294,17 @@ public class World implements EnemyEventHandler, MapEventsHandler
             return;
         }
 
-        // todo: rafactor create enemy insize cell
-        // Tank t = new Tank(spownCell.col * Map.SPRITE_WIDTH, spownCell.row * Map.SPRITE_HEIGHT);
-        // t.setEventHandler(this);
-        enemy.setEventHandler(this);
+        if (this.enemies.indexOf(enemy) <= 0)
+        {
+            // todo: rafactor create enemy insize cell
+            // Tank t = new Tank(spownCell.col * Map.SPRITE_WIDTH, spownCell.row * Map.SPRITE_HEIGHT);
+            // t.setEventHandler(this);
+            enemy.setFireEventHandler(this);
 
-        // todo: check free enemy
 
-        this.enemies.add(enemy);
+            this.enemies.add(enemy);
+        }
+
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.World;
 import com.a530games.jackal.Sprite;
-import com.a530games.jackal.objects.enemies.Enemy;
+import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.RotateVehicle;
 
 public class Player extends RotateVehicle
@@ -164,7 +164,12 @@ public class Player extends RotateVehicle
     }
 
     @Override
-    public void setEventHandler(EnemyEventHandler eventHandler) {
+    public boolean isDead() {
+        return false;
+    }
+
+    @Override
+    public void setFireEventHandler(EnemyFireEventHandler fireEventHandler) {
 
     }
 }

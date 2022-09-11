@@ -1,8 +1,8 @@
-package com.a530games.jackal.objects;
+package com.a530games.jackal.objects.enemies;
 
 import com.a530games.framework.math.Vector2;
 
-public interface EnemyEventHandler
+public interface EnemyFireEventHandler
 {
     /**
      * Enemy fire event

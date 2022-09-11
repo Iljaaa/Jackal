@@ -8,7 +8,6 @@ import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
-import com.a530games.jackal.objects.EnemyEventHandler;
 
 public interface Enemy
 {
@@ -44,6 +43,11 @@ public interface Enemy
     Vector2 getTargetAngle();
 
     /**
+     * @return is tank dead
+     */
+    boolean isDead();
+
+    /**
      * Update enemy
      * @param deltaTime Delta time
      * @param world World for check intersect on move
@@ -62,7 +66,7 @@ public interface Enemy
 
     /**
      * Setting event handler
-     * @param eventHandler object with handler
+     * @param fireEventHandler object with handler
      */
-    void setEventHandler(EnemyEventHandler eventHandler);
+    void setFireEventHandler(EnemyFireEventHandler fireEventHandler);
 }

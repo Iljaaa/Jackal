@@ -5,9 +5,11 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
+import com.a530games.jackal.objects.enemies.Enemy;
+import com.a530games.jackal.objects.enemies.EnemyDieEventHandler;
 import com.a530games.jackal.objects.enemies.Tank;
 
-public class Spown extends MapCell
+public class Spown extends MapCell implements EnemyDieEventHandler
 {
 
     private final Sprite sprite;
@@ -15,10 +17,14 @@ public class Spown extends MapCell
 
     private Tank spawnedTank = null;
 
+    int killedTanks = 0;
+
     public Spown(int row, int col) {
         super(row, col);
         // this.tank = new Tank();
         this.sprite = new Sprite(Assets.spown, 0, 0);
+
+        // this.spawnedTank = new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
     }
 
     @Override
@@ -38,17 +44,19 @@ public class Spown extends MapCell
     void update(float deltaTime, CellEventCallbackHandler callbackHandler)
     {
 
+        this.spownTimer -= deltaTime;
         if (this.spownTimer <= 0)
         {
             this.spownTimer = 5;
+
             if (this.spawnedTank == null) {
                 this.spawnedTank = new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
+                this.spawnedTank.setDieEventHandler(this);
+                // this.spawnedTank.reNew(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
+
                 callbackHandler.spownEnemy(this, this.spawnedTank);
             }
         }
-
-
-        this.spownTimer -= deltaTime;
     }
 
     @Override
@@ -74,5 +82,12 @@ public class Spown extends MapCell
     @Override
     boolean isIntersectRectInsideCell(FloatRect rectOnMap) {
         return false;
+    }
+
+    @Override
+    public void enemyDie(Enemy enemy) {
+        this.spownTimer = 5;
+        this.spawnedTank = null;
+        this.killedTanks++;
     }
 }

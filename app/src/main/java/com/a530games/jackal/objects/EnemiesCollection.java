@@ -31,6 +31,14 @@ public class EnemiesCollection
         // this.enemies.re
     }
 
+    public int indexOf(Enemy e) {
+        return this.enemies.indexOf(e);
+    }
+
+    public void remove(Enemy e) {
+        this.enemies.remove(e);
+    }
+
     /**
      *
      */

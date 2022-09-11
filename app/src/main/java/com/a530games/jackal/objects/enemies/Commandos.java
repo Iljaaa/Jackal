@@ -3,16 +3,11 @@ package com.a530games.jackal.objects.enemies;
 import android.util.Log;
 
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.World;
-import com.a530games.jackal.map.Map;
-import com.a530games.jackal.objects.Bullet;
-import com.a530games.jackal.objects.EnemyEventHandler;
-import com.a530games.jackal.objects.GameObject;
 
 public class Commandos extends Vehicle
 {
@@ -67,6 +62,11 @@ public class Commandos extends Vehicle
 
     @Override
     public boolean hasTurret() {
+        return false;
+    }
+
+    @Override
+    public boolean isDead() {
         return false;
     }
 
@@ -322,7 +322,7 @@ public class Commandos extends Vehicle
     }*/
 
     @Override
-    public void setEventHandler(EnemyEventHandler eventHandler) {
+    public void setFireEventHandler(EnemyFireEventHandler fireEventHandler) {
 
     }
 }

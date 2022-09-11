@@ -8,10 +8,8 @@ import com.a530games.framework.helpers.FloatPoint;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
-import com.a530games.jackal.Sprite;
 import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
-import com.a530games.jackal.objects.EnemyEventHandler;
 
 /**
  * todo: сделать прицеливание не ограниченым по времени
@@ -51,12 +49,23 @@ public class Tank extends Vehicle
      */
     private float rotateTimer = 0;
 
+    private float moveTimer = 0;
+
+
     /**
      * Blows after death
      */
     private SpriteWithAnimation[] blows;
 
+    /**
+     * One blow timer
+     */
     private float nextBlowIn = 0.5f;
+
+    /**
+     * Summery blow up timer
+     */
+    private float summeryBlowUpTimer = 5f;
 
     /**
      * Directions on random move
@@ -72,16 +81,13 @@ public class Tank extends Vehicle
             {40, -40},
     };
 
-    private EnemyEventHandler eventHandler = null;
+    private EnemyFireEventHandler fireEventHandler = null;
+    private EnemyDieEventHandler dieEventHandler = null;
 
     public Tank(int startX, int startY)
     {
         super(startX, startY, Assets.tank);
         this.velocity = new Vector2(0 ,1);
-        this.state = Tank.STATE_MOVE;
-
-        // this.blow = new SpriteWithAnimation(Assets.playerFire);
-        // this.blows = new SpriteWithAnimation(Assets.playerFire);
 
         this.blows = new SpriteWithAnimation[5];
         for (int i = 0; i < this.blows.length; i++) {
@@ -89,11 +95,18 @@ public class Tank extends Vehicle
             this.blows[i].setSpriteSize(32, 32);
             this.blows[i].setScreenMargin(16, 16);
         }
+
+        this.setMoved(2);
     }
 
     @Override
     public boolean hasTurret() {
         return true;
+    }
+
+    @Override
+    public boolean isDead() {
+        return (this.state == Tank.STATE_DEAD);
     }
 
     @Override
@@ -160,31 +173,50 @@ public class Tank extends Vehicle
         {
             this.fire();
 
-
-            // goto move
-
-            // generate new move angle
-            int[] a = this.dirs[Jackal.getRandom().nextInt(this.dirs.length)];
-            this.velocity.set(a[0], a[1]);
-            this.updateSprite(this.velocity);
-
-            this.rotateTimer = 1;
-            this.state = Tank.STATE_MOVE;
+            this.setMoved();
         }
+    }
+
+    private void setMoved()
+    {
+        this.setMoved(1);
+    }
+
+    private void setMoved(int moveTimer)
+    {
+        // generate new move angle
+        int[] a = this.dirs[Jackal.getRandom().nextInt(this.dirs.length)];
+        this.velocity.set(a[0], a[1]);
+        this.updateSprite(this.velocity);
+
+        this.moveTimer = moveTimer;
+        this.state = Tank.STATE_MOVE;
     }
 
     private void updateMove(float deltaTime, World world)
     {
         this.move(this.velocity, deltaTime, world);
 
-        this.rotateTimer -= deltaTime;
-        if (this.rotateTimer <= 0){
+        this.moveTimer -= deltaTime;
+        if (this.moveTimer <= 0){
             this.state = Tank.STATE_AIMING;
         }
     }
 
     private void updateBlow (float deltaTime)
     {
+        // is blows finish
+        this.summeryBlowUpTimer -= deltaTime;
+        if (this.summeryBlowUpTimer <= 0)
+        {
+            this.state = Tank.STATE_DEAD;
+
+            if (this.dieEventHandler != null) {
+                this.dieEventHandler.enemyDie(this);
+            }
+
+            return;
+        }
 
         for (int i = 0; i < this.blows.length; i++)
         {
@@ -209,11 +241,17 @@ public class Tank extends Vehicle
                 );
             }
         }
+
+
     }
 
     @Override
     public void present(Graphics g, World world)
     {
+        if (this.state == Tank.STATE_DEAD) {
+            return;
+        }
+
         Rect screenHitBox = this.getScreenDrawHitbox(world.map);
 
         // Sprite s = this.getSprite();
@@ -240,10 +278,13 @@ public class Tank extends Vehicle
         );*/
 
         // draw blow
-        for (int i = 0; i < this.blows.length; i++) {
-            // SpriteWithAnimation blow = this.blows[i];
-            this.blows[i].present(g, world);
+        if (this.state == Tank.STATE_BLOWUP) {
+            for (int i = 0; i < this.blows.length; i++) {
+                // SpriteWithAnimation blow = this.blows[i];
+                this.blows[i].present(g, world);
+            }
         }
+
 
         // its only for tanks and turrets
         if (this.hasTurret())
@@ -293,16 +334,19 @@ public class Tank extends Vehicle
                 color);
     }
 
-    public void setEventHandler(EnemyEventHandler eventHandler)
-    {
-        this.eventHandler = eventHandler;
+    public void setFireEventHandler(EnemyFireEventHandler fireEventHandler) {
+        this.fireEventHandler = fireEventHandler;
+    }
+
+    public void setDieEventHandler(EnemyDieEventHandler dieEventHandler) {
+        this.dieEventHandler = dieEventHandler;
     }
 
     private void fire()
     {
-        if (this.eventHandler != null) {
+        if (this.fireEventHandler != null) {
             this.turretAngle.nor();
-            this.eventHandler.enemyFire(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle);
+            this.fireEventHandler.enemyFire(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle);
         }
     }
 
@@ -317,7 +361,6 @@ public class Tank extends Vehicle
             // set blowup status
             this.state = Tank.STATE_BLOWUP;
             // this.state = Tank.STATE_DEAD;
-
 
         }
 
@@ -402,6 +445,15 @@ public class Tank extends Vehicle
             this.sprite.set(0, 2);
         }*/
 
+    }
+
+    public void reNew(float mapX, float mapY)
+    {
+        this.state = Tank.STATE_MOVE;
+        this.moveTimer = 2;
+        this.hp = 2;
+
+        this.hitBox.moveTo(mapX, mapY);
     }
 
     /*
