@@ -75,4 +75,12 @@ public abstract class MapCell
      * @return is intersected
      */
     abstract boolean isIntersectRectInsideCell (FloatRect rectOnMap);
+
+    /**
+     * Is cell conditions success for win
+     * @return boolean is success
+     */
+    public boolean isWin() {
+        return true;
+    }
 }

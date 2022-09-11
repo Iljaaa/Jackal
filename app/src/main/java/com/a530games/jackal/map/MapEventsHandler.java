@@ -12,4 +12,8 @@ public interface MapEventsHandler
      */
     void spownEnemyOnCell(MapCell spownCell, Enemy enemy);
 
+    /**
+     * On map win
+     */
+    void mapWin ();
 }

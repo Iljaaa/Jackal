@@ -55,13 +55,16 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
     private ArrayList<Sound> tankHitSounds;
 
     public boolean gameOver = false;
+    public boolean gameOverSuccess = false;
+
     public int score = 0;
 
     // поле, большой массив
-    boolean[][] fields = new boolean[WORLD_WIDTH][WORLD_HEIGHT];
+    // boolean[][] fields = new boolean[WORLD_WIDTH][WORLD_HEIGHT];
 
-    float tickTime = 0;
-    static float aTick = TICK_INITIAL;
+    // float tickTime = 0;
+    // static float aTick = TICK_INITIAL;
+
 
     public World()
     {
@@ -91,9 +94,13 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
 
     public void update(float deltaTime)
     {
+        // is game loose
         if (this.gameOver) return;
 
-        this.tickTime += deltaTime;
+        // is game win
+        if (this.gameOverSuccess) return;
+
+        // this.tickTime += deltaTime;
 
         // update player
         this.player.update(deltaTime, null);
@@ -301,10 +308,15 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
             // t.setEventHandler(this);
             enemy.setFireEventHandler(this);
 
-
             this.enemies.add(enemy);
         }
 
+    }
+
+    @Override
+    public void mapWin() {
+        // this.gameOver = true;
+        this.gameOverSuccess = true;
     }
 
     @Override

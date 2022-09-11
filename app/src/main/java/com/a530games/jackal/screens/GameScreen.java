@@ -283,6 +283,10 @@ public class GameScreen extends Screen
             this.state = GameState.GameOver;
         }
 
+        if(this.world.gameOverSuccess) {
+            this.state = GameState.GameOver;
+        }
+
 
         // обновление рекорда
         /*if(this.oldScore != this.world.score) {
@@ -724,8 +728,6 @@ public class GameScreen extends Screen
         }
     }
 
-
-
     private void drawReadyUI()
     {
         Graphics g = game.getGraphics();
@@ -746,12 +748,15 @@ public class GameScreen extends Screen
         Graphics g = game.getGraphics();
         g.drawText("Pause", 100, 200, 300, Color.RED);
     }
-    private void drawGameOverUI() {
+    private void drawGameOverUI()
+    {
         Graphics g = game.getGraphics();
         /*g.drawPixmap(Assets.gameOver, 62, 100);
         g.drawPixmap(Assets.buttons, 128, 200, 0, 128, 64, 64);
         g.drawLine(0, 416, 480, 416, Color.BLACK);*/
-        g.drawText("Game over", 100, 200, 300, Color.BLACK);
+        g.drawText("Game over", 150, 200, 100, Color.GREEN);
+        g.drawText("You win!", 150, 300, 100, Color.GREEN);
+        g.drawText("press start to next level", 150, 375, 50, Color.GREEN);
     }
 
     @Override

@@ -424,6 +424,7 @@ public class Map implements CellEventCallbackHandler
 
     public void update(Player player, float deltaTime)
     {
+
         // move map
         this.updateMapPosition(player);
 
@@ -440,6 +441,8 @@ public class Map implements CellEventCallbackHandler
      */
     private void updateCells (float deltaTime)
     {
+        boolean isWin = true;
+
         for (int row = 0; row < this.mapRows; row++)
         {
             for (int col = 0; col <  this.mapCols; col++)
@@ -448,7 +451,15 @@ public class Map implements CellEventCallbackHandler
                 if (c == null) continue;
 
                 c.update(deltaTime, this);
+
+                // check cell win condition
+                if (!c.isWin()) isWin = false;
             }
+        }
+
+        // this is win
+        if (isWin){
+            this.eventsHandler.mapWin();
         }
     }
 

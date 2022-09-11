@@ -11,13 +11,14 @@ import com.a530games.jackal.objects.enemies.Tank;
 
 public class Spown extends MapCell implements EnemyDieEventHandler
 {
-
     private final Sprite sprite;
+
     float spownTimer = 5;
 
     private Tank spawnedTank = null;
 
     int killedTanks = 0;
+    private final int needTanksKill = 1;
 
     public Spown(int row, int col) {
         super(row, col);
@@ -89,5 +90,10 @@ public class Spown extends MapCell implements EnemyDieEventHandler
         this.spownTimer = 5;
         this.spawnedTank = null;
         this.killedTanks++;
+    }
+
+    @Override
+    public boolean isWin() {
+        return (this.killedTanks >= this.needTanksKill);
     }
 }
