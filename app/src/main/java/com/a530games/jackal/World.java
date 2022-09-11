@@ -242,13 +242,13 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
         // check delay
         if (!this.player.fire()) return false;
 
-        Vector2 turretAngle = this.player.getTurretAngle();
+        // Vector2 turretAngle = this.player.getTurretAngle();
 
         // add bullet
         return this.addBullet(
-                this.player.hitBox.getCenterLeft() + turretAngle.x * 20,
-                this.player.hitBox.getCenterTop() + turretAngle.y * 20,
-                turretAngle
+                this.player.hitBox.getCenterLeft() + this.player.turret.x * 20,
+                this.player.hitBox.getCenterTop() + this.player.turret.y * 20,
+                this.player.turret
         );
     }
 

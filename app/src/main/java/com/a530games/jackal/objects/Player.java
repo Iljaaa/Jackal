@@ -92,21 +92,6 @@ public class Player extends RotateVehicle
         }
     }
 
-    @Override
-    public boolean hasTurret() {
-        return false;
-    }
-
-    @Override
-    public Vector2 getTurretAngle() {
-        return this.turret;
-    }
-
-    @Override
-    public Vector2 getTargetAngle() {
-        return null;
-    }
-
     /*private void updateSprite(Vector2 direction)
     {
         float angle = direction.angleInDegrees();

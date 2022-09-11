@@ -55,12 +55,6 @@ public class GameScreen extends Screen
     // paint for the hit box
     Paint otherHitBoxPaint;
 
-    /////////////////
-    Vector2 cannonPos;
-    Vector2 cannonAngle;
-    int cannonRotateSpeed = 3;
-    // float cannonAngle = 0;
-
     //
     Sprite tempBoom;
     float boomTimer;
@@ -84,9 +78,6 @@ public class GameScreen extends Screen
         // Assets.music.setVolume(0.5f);
         // Assets.music.play();
 
-        this.cannonPos = new Vector2(200, 1000);
-        this.cannonAngle = new Vector2(1, 0);
-
         //
 
         this.tempBoom = new Sprite(Assets.boom, 0, 0);
@@ -105,9 +96,6 @@ public class GameScreen extends Screen
         //
         Controller c = this.game.getInput().getController();
 
-        // temporary turret
-        this.updateTurretAngle();
-
 
         /*int keyEventsLength = keyEvents.size();
         if (keyEventsLength > 0) {
@@ -123,21 +111,6 @@ public class GameScreen extends Screen
         if (this.state == GameState.GameOver) this.updateGameOver(touchEvents);
     }
 
-    private void updateTurretAngle ()
-    {
-        //
-        Vector2 vectorToPlayer = new Vector2(
-                this.world.player.hitBox.getCenterLeft() - this.cannonPos.x,
-                this.world.player.hitBox.getCenterTop() - this.cannonPos.y
-        );
-
-        float ca = this.cannonAngle.angleInDegrees();
-        float vp = vectorToPlayer.angleInDegrees();
-        // float t = Math.abs(ca - vp);
-        if (this.cannonRotateSpeed < Math.abs(ca - vp)) {
-            this.cannonAngle.rotate(3);
-        }
-    }
 
     private void updateReady(List<Input.TouchEvent> touchEvents, Controller controller)
     {
@@ -248,9 +221,6 @@ public class GameScreen extends Screen
             this.world.player.moveLeft(deltaTime);
         }*/
 
-        // move player turret
-        // this.world.player.getTargetAngle()
-
         // fire
         if (controller.isA() || controller.isR1() || controller.isR2()) {
             if (this.world.playerFire()){
@@ -305,25 +275,21 @@ public class GameScreen extends Screen
         this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
         this.sidebar.setMapPos((int) Math.floor(this.world.map.x), (int) Math.floor(this.world.map.y));
 
-
-
         // обновление боковой информации
         // this.sidebar.update(deltaTime);
 
         //
         if(this.world.gameOver) {
-            // if(Settings.soundEnabled) Assets.bitten.play(1);
             this.state = GameState.GameOver;
         }
 
 
         // обновление рекорда
-        if(this.oldScore != this.world.score) {
+        /*if(this.oldScore != this.world.score) {
             this.oldScore = this.world.score;
             this.score = "" + this.oldScore;
-            // todo: play sound eat
             // if(Settings.soundEnabled) Assets.eat.play(1);
-        }
+        }*/
     }
 
     private void updatePaused(List<Input.TouchEvent> touchEvents, Controller controller)
@@ -398,8 +364,6 @@ public class GameScreen extends Screen
 
         // draw score
         // this.drawText(g, score, g.getWidth() / 2 - score.length()*20 / 2, g.getHeight() - 42);
-
-        this.drawTempCannon(g);
     }
 
     private void drawWorld(World world)
@@ -541,37 +505,6 @@ public class GameScreen extends Screen
 
         Graphics g = this.game.getGraphics();
         g.drawRect( left, top, Map.SPRITE_WIDTH, Map.SPRITE_HEIGHT, Color.YELLOW);
-    }
-
-    private void drawTempCannon(Graphics g)
-    {
-        // this.game.getGraphics().drawPixmap(Assets.bg, 10, 10);
-        g.drawLine(
-                this.world.map.screenLeftPotion(this.cannonPos.x),
-                this.world.map.screenTopPotion(this.cannonPos.y),
-                this.world.map.screenLeftPotion(this.cannonPos.x + this.cannonAngle.x * 50),
-                this.world.map.screenTopPotion(this.cannonPos.y + this.cannonAngle.y * 50),
-                Color.MAGENTA);
-
-        /*Vector2 vectorToPlayer = this.cannonAngle.cpy();
-        vectorToPlayer.set(
-                this.world.player.hitBox.getCenterLeft() - this.cannonAngle.x,
-                this.world.player.hitBox.getCenterTop() - this.cannonAngle.y
-        );
-
-        float ca = this.cannonAngle.angleInDegrees();
-        float vp = vectorToPlayer.angleInDegrees();
-        int t = (int) Math.ceil(Math.abs(ca - vp));
-        if (t < this.cannonRotateSpeed) {
-            int a = 3;
-        }
-
-        g.drawLine(
-                this.world.map.screenLeftPotion(this.cannonPos.x),
-                this.world.map.screenTopPotion(this.cannonPos.y),
-                this.world.map.screenLeftPotion(vectorToPlayer.x),
-                this.world.map.screenTopPotion(vectorToPlayer.y),
-                Color.MAGENTA);*/
     }
 
     /**

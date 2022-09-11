@@ -27,22 +27,6 @@ public interface Enemy
     Sprite getSprite();
 
     /**
-     * Has enemy turret
-     * @return boolean
-     */
-    boolean hasTurret();
-
-    /**
-     * Normal vector on turret angle
-     */
-    Vector2 getTurretAngle();
-
-    /**
-     * Normal vector to target
-     */
-    Vector2 getTargetAngle();
-
-    /**
      * @return is tank dead
      */
     boolean isDead();

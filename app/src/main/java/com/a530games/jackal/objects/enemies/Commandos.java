@@ -61,23 +61,8 @@ public class Commandos extends Vehicle
     }
 
     @Override
-    public boolean hasTurret() {
-        return false;
-    }
-
-    @Override
     public boolean isDead() {
         return false;
-    }
-
-    @Override
-    public Vector2 getTurretAngle() {
-        return null;
-    }
-
-    @Override
-    public Vector2 getTargetAngle() {
-        return null;
     }
 
     @Override

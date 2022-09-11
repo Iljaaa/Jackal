@@ -100,23 +100,8 @@ public class Tank extends Vehicle
     }
 
     @Override
-    public boolean hasTurret() {
-        return true;
-    }
-
-    @Override
     public boolean isDead() {
         return (this.state == Tank.STATE_DEAD);
-    }
-
-    @Override
-    public Vector2 getTurretAngle() {
-        return this.turretAngle;
-    }
-
-    @Override
-    public Vector2 getTargetAngle() {
-        return this.targetAngle;
     }
 
     @Override
@@ -286,25 +271,22 @@ public class Tank extends Vehicle
         }
 
 
-        // its only for tanks and turrets
-        if (this.hasTurret())
-        {
-            // target
-            this.drawAngle(g,
-                    screenHitBox.centerX(),
-                    screenHitBox.centerY(),
-                    this.getTargetAngle(),
-                    Color.LTGRAY
-            );
+        // target
+        this.drawAngle(g,
+                screenHitBox.centerX(),
+                screenHitBox.centerY(),
+                this.targetAngle,
+                Color.LTGRAY
+        );
 
-            // turret
-            this.drawAngle(g,
-                    screenHitBox.centerX(),
-                    screenHitBox.centerY(),
-                    this.getTurretAngle(),
-                    Color.GREEN
-            );
-        }
+        // turret
+        this.drawAngle(g,
+                screenHitBox.centerX(),
+                screenHitBox.centerY(),
+                this.turretAngle,
+                Color.GREEN
+        );
+
     }
 
     /**
