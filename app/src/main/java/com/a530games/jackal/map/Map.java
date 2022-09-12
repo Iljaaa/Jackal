@@ -334,11 +334,13 @@ public class Map implements CellEventCallbackHandler
         // convex corners
 
         this.fields[20][11] = new LeftTopFuncCorner(20, 11);
+        this.fields[20][12] = new TopFullWall(20, 12);
         this.fields[20][13] = new RightTopFuncCorner(20, 13);
+        this.fields[21][13] = new RightFullWall(21, 13);
         this.fields[22][13] = new RightBottomFuncCorner(22, 13);
-
+        this.fields[22][12] = new BottomFullWall(22, 12);
         this.fields[22][11] = new LeftBottomFuncCorner(22, 11);
-        // this.fields[21][11] = new LeftFullWall(21, 11);
+        this.fields[21][11] = new LeftFullWall(21, 11);
 
         this.fields[13][3] = new BigPillarTopLeft(13, 3);
         this.fields[13][4] = new BigPillarTopRight(13, 4);

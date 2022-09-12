@@ -13,7 +13,7 @@ abstract public class FullWall extends Wall
     {
         super(row, col);
 
-        this.sprite = new Sprite(Assets.bush_sprite2, 2, 1);
+        this.sprite = new Sprite(Assets.mapSprite, 1, 1);
     }
 
     @Override
