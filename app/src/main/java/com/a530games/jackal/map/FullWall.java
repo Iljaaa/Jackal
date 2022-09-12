@@ -5,18 +5,15 @@ import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 
-/**
- * todo: make class abstract and make fullwall
- */
-abstract public class Wall extends MapCellWithHitbox
+
+abstract public class FullWall extends Wall
 {
-    protected Sprite sprite;
 
-    public Wall(int row, int col)
+    public FullWall(int row, int col)
     {
-        super(row, col, 64, 64);
+        super(row, col);
 
-        this.sprite = new Sprite(Assets.bush_sprite1, 2, 1);
+        this.sprite = new Sprite(Assets.bush_sprite2, 2, 1);
     }
 
     @Override
@@ -50,7 +47,7 @@ abstract public class Wall extends MapCellWithHitbox
 
     @Override
     boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
-        return false;
+        return true;
     }
 
     @Override

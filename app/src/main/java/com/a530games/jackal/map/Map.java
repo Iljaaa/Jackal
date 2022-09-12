@@ -313,10 +313,8 @@ public class Map implements CellEventCallbackHandler
         // this.addRock(17, 9, Rock.MOVE_BUSH_1);
         // this.addRock(18, 9, Rock.MOVE_BUSH_1);
 
-        this.fields[16][8] = new Wall(16, 8);
-        this.fields[12][8] = new FuncCorner(12, 8);
 
-
+        //
         this.fields[12][11] = new LeftTopCorner(12, 11);
         this.fields[12][12] = new TopHalfWall(12, 12);
         this.fields[12][13] = new RightTopCorner(12, 13);
@@ -332,6 +330,15 @@ public class Map implements CellEventCallbackHandler
         this.fields[14][10] = new LeftTopCorner(14, 10);
         this.fields[15][10] = new LeftHalfWall(15, 10);
         this.fields[16][10] = new LeftBottomCorner(16, 10);
+
+        // convex corners
+
+        this.fields[20][11] = new LeftTopFuncCorner(20, 11);
+        this.fields[20][13] = new RightTopFuncCorner(20, 13);
+        this.fields[22][13] = new RightBottomFuncCorner(22, 13);
+
+        this.fields[22][11] = new LeftBottomFuncCorner(22, 11);
+        // this.fields[21][11] = new LeftFullWall(21, 11);
 
         this.fields[13][3] = new BigPillarTopLeft(13, 3);
         this.fields[13][4] = new BigPillarTopRight(13, 4);
