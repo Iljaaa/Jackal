@@ -5,6 +5,9 @@ import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 
+/**
+ * todo: make class abstract and make fullwall
+ */
 public class Wall extends MapCellWithHitbox
 {
     protected Sprite sprite;
@@ -13,11 +16,7 @@ public class Wall extends MapCellWithHitbox
     {
         super(row, col, 64, 64);
 
-        // right half wall
-        // this.hitBox.left = (int) Math.ceil( (col + 0.5) * Map.SPRITE_WIDTH);
-        // this.hitBox.right = this.hitBox.left + 32;
-
-        this.sprite = new Sprite(Assets.mapSprite, 2, 1);
+        this.sprite = new Sprite(Assets.bush_sprite1, 2, 1);
     }
 
     @Override

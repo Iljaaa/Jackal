@@ -11,6 +11,7 @@ public class RightBottomCorner extends Corner
     public RightBottomCorner(int row, int col)
     {
         super(row, col);
+        this.sprite.set(2, 2);
     }
 
     @Override

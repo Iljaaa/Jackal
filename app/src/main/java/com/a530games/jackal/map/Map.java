@@ -118,7 +118,8 @@ public class Map implements CellEventCallbackHandler
         // this.playerStartX = 400;
         // this.playerStartY = 1100;
         // move player on start position
-        player.hitBox.moveTo(400, 1100);
+        // player.hitBox.moveTo(400, 1100);
+        player.hitBox.moveTo(400, 1500);
 
         // calculate start map position
         // after move player
@@ -173,11 +174,6 @@ public class Map implements CellEventCallbackHandler
          for (int col = 0; col < this.mapCols; col++) {
              this.addBeach(this.mapRows - 1, col);
          }
-
-         // left line
-        /*for (int row = 1; row < this.mapRows - 1; row++) {
-            this.fields[row][0] = new LeftHalfWall(row, 0);
-        }*/
 
          // right line
         /*for (int row = 1; row < this.mapRows - 1; row++) {
@@ -238,7 +234,7 @@ public class Map implements CellEventCallbackHandler
 
 
         this.fields[9][15] = new Tree1(9, 15);
-        this.fields[14][15] = new Tree2(14, 15);
+        this.fields[9][19] = new Tree2(9, 19);
 
 
         /*this.addRock(19, 0, Rock.MOVE_ROCK_3);
@@ -322,16 +318,20 @@ public class Map implements CellEventCallbackHandler
 
 
         this.fields[12][11] = new LeftTopCorner(12, 11);
-        this.fields[12][12] = new RightTopCorner(12, 12);
+        this.fields[12][12] = new TopHalfWall(12, 12);
+        this.fields[12][13] = new RightTopCorner(12, 13);
 
-        this.fields[14][13] = new RightTopCorner(14, 13);
-        this.fields[15][13] = new RightBottomCorner(15, 13);
+        this.fields[14][14] = new RightTopCorner(14, 14);
+        this.fields[15][14] = new RightHalfWall(15, 14);
+        this.fields[16][14] = new RightBottomCorner(16, 14);
 
-        this.fields[17][11] = new LeftBottomCorner(17, 11);
-        this.fields[17][12] = new RightBottomCorner(17, 12);
+        this.fields[18][11] = new LeftBottomCorner(18, 11);
+        this.fields[18][12] = new BottomHalfWall(18, 12);
+        this.fields[18][13] = new RightBottomCorner(18, 13);
 
         this.fields[14][10] = new LeftTopCorner(14, 10);
-        this.fields[15][10] = new LeftBottomCorner(15, 10);
+        this.fields[15][10] = new LeftHalfWall(15, 10);
+        this.fields[16][10] = new LeftBottomCorner(16, 10);
 
         this.fields[13][3] = new BigPillarTopLeft(13, 3);
         this.fields[13][4] = new BigPillarTopRight(13, 4);

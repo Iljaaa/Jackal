@@ -392,7 +392,7 @@ public class GameScreen extends Screen
         this.drawMapTopLayout();
 
         // map object hitboxes
-        this.drawMapObjectsHitBoxes();
+        // this.drawMapObjectsHitBoxes();
 
         //this.drawSky();
     }

@@ -30,6 +30,8 @@ public class Assets {
     public static Pixmap bigPillar;
     public static Pixmap bush1;
     public static Pixmap bush2;
+    public static Pixmap bush_sprite1;
+    public static Pixmap bush_sprite2;
     public static Pixmap tree1;
     public static Pixmap tree2;
 
@@ -70,6 +72,9 @@ public class Assets {
         Assets.botLine = g.newPixmap("images/bot_line.png", Graphics.PixmapFormat.RGB565);
         Assets.bigPillar = g.newPixmap("images/big_pillar.png", Graphics.PixmapFormat.RGB565);
         Assets.bush1 = g.newPixmap("images/bush1.png", Graphics.PixmapFormat.RGB565);
+        Assets.bush2 = g.newPixmap("images/bush2.png", Graphics.PixmapFormat.RGB565);
+        Assets.bush_sprite1 = g.newPixmap("images/bush_sprite1.png", Graphics.PixmapFormat.RGB565);
+        Assets.bush_sprite2 = g.newPixmap("images/bush_sprite2.png", Graphics.PixmapFormat.RGB565);
         Assets.bush2 = g.newPixmap("images/bush2.png", Graphics.PixmapFormat.RGB565);
         Assets.tree1 = g.newPixmap("images/tree1.png", Graphics.PixmapFormat.RGB565);
         Assets.tree2 = g.newPixmap("images/tree2.png", Graphics.PixmapFormat.RGB565);

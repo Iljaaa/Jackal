@@ -11,7 +11,7 @@ public class LeftTopCorner extends Corner
     public LeftTopCorner(int row, int col)
     {
         super(row, col);
-        this.sprite.set(0, 1);
+        this.sprite.set(0, 0);
     }
 
     @Override

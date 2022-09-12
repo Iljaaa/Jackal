@@ -14,7 +14,7 @@ abstract public class Corner extends MapCellWithHitbox
         // todo: fix magic numbers
         super(row, col, 64, 64);
 
-        this.sprite = new Sprite(Assets.mapSprite, 2, 1);
+        this.sprite = new Sprite(Assets.bush_sprite1, 2, 0);
     }
 
     @Override
