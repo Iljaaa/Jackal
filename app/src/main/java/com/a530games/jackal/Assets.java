@@ -16,6 +16,7 @@ public class Assets {
     public static Pixmap tank;
 
     public static Pixmap man;
+    public static Pixmap man2;
 
     // player items
     public static Pixmap bullet;
@@ -69,6 +70,7 @@ public class Assets {
         Assets.playerFire = g.newPixmap("images/player_fire.png", Graphics.PixmapFormat.RGB565);
         Assets.gun = g.newPixmap("images/gun.png", Graphics.PixmapFormat.RGB565);
         Assets.man = g.newPixmap("images/man.png", Graphics.PixmapFormat.RGB565);
+        Assets.man2 = g.newPixmap("images/man2.png", Graphics.PixmapFormat.RGB565);
 
         Assets.rock = g.newPixmap("images/rock.png", Graphics.PixmapFormat.RGB565);
         Assets.bigStone = g.newPixmap("images/big_stone.png", Graphics.PixmapFormat.RGB565);

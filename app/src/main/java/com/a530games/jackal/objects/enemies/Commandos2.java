@@ -10,7 +10,7 @@ import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.World;
 
-public class Commandos extends Vehicle
+public class Commandos2 extends Vehicle
 {
     private Vector2 velocity;
 
@@ -41,9 +41,9 @@ public class Commandos extends Vehicle
         {0, 20},
     };
 
-    public Commandos(int startX, int startY)
+    public Commandos2(int startX, int startY)
     {
-        super(startX, startY, Assets.man);
+        super(startX, startY, Assets.man2);
 
         // default sprite
         this.sprite.set(0, 1);
@@ -145,10 +145,10 @@ public class Commandos extends Vehicle
         // up|down
         if (velocity.y > 0) {
             if (velocity.x < 0) {
-                this.sprite.set(0, 2);
+                this.sprite.set(0, 1);
             }
             else if (velocity.x > 0) {
-                this.sprite.set(0, 1);
+                this.sprite.set(0, 2);
             }
             else {
                 this.sprite.set(0, 0);
@@ -156,10 +156,10 @@ public class Commandos extends Vehicle
         }
         else {
             if (velocity.x < 0) {
-                this.sprite.set(0, 2);
+                this.sprite.set(0, 1);
             }
             else if (velocity.x > 0) {
-                this.sprite.set(0, 1);
+                this.sprite.set(0, 2);
             }
             else {
                 this.sprite.set(0, 3);

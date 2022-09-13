@@ -7,6 +7,8 @@ import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.map.MapEventsHandler;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemiesCollection;
+import com.a530games.jackal.objects.enemies.Commandos;
+import com.a530games.jackal.objects.enemies.Commandos2;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.EnemyBulletsCollection;
@@ -19,7 +21,7 @@ import java.util.Random;
 public class World implements EnemyFireEventHandler, MapEventsHandler
 {
     // размер мира
-    static final int WORLD_WIDTH = 10;
+    /*static final int WORLD_WIDTH = 10;
     static final int WORLD_HEIGHT = 13;
 
     // max bullets size
@@ -27,13 +29,13 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
 
     static final int SCORE_INCREMENT = 10;
     static final float TICK_INITIAL = 0.5f;
-    static final float TICK_DECREMENT = 0.05f;
+    static final float TICK_DECREMENT = 0.05f;*/
 
     // змея
     public Snake snake;
 
     // приманка
-    public Stain stain;
+    // public Stain stain;
 
     // игрок
     public Player player;
@@ -50,9 +52,9 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
 
     public Map map;
 
-    Random random = new Random();
+    // Random random = new Random();
 
-    private ArrayList<Sound> tankHitSounds;
+    // private ArrayList<Sound> tankHitSounds;
 
     public boolean gameOver = false;
     public boolean gameOverSuccess = false;
@@ -77,17 +79,18 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
         this.enemies = new EnemiesCollection();
 
         // this.enemies.add(new Tank(this,100, 100));
-        // this.enemies.add(new Commandos(this,400, 800));
+        this.enemies.add(new Commandos(400, 800));
+        this.enemies.add(new Commandos2(500, 800));
 
         // инициализируем массиа с пулями
         this.bullets = new PlayerBulletsCollection();
         this.enemyBullets = new EnemyBulletsCollection();
 
         //
-        this.tankHitSounds = new ArrayList<>();
+        /*this.tankHitSounds = new ArrayList<>();
         this.tankHitSounds.add(Assets.tankHit1);
         this.tankHitSounds.add(Assets.tankHit2);
-        this.tankHitSounds.add(Assets.playerBlow);
+        this.tankHitSounds.add(Assets.playerBlow);*/
 
         this.snake = new Snake();
     }
@@ -175,8 +178,8 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
     private void updateEnemies (float deltaTime)
     {
 
-        boolean enemyDeleted = false;
-        int enemiesSize = 0;
+        boolean enemyDeleted;
+        int enemiesSize;
 
         // delete dead enemies
         do
