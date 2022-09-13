@@ -8,6 +8,7 @@ import com.a530games.framework.helpers.FloatPoint;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
+import com.a530games.jackal.Settings;
 import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
 
@@ -343,10 +344,23 @@ public class Tank extends Vehicle
             // set blowup status
             this.state = Tank.STATE_BLOWUP;
             // this.state = Tank.STATE_DEAD;
-
         }
 
-        // todo: call event handler
+        this.playHitSound();
+    }
+
+    private void playHitSound ()
+    {
+        // play hit sound
+        /*if (this.state == Tank.STATE_DEAD || this.state == Tank.STATE_BLOWUP) {
+            return;
+        }*/
+
+        if(Settings.soundEnabled)
+        {
+            if (this.hp > 0) Assets.tankHit3.play(1);
+            else Assets.tankBlow2.play(1);
+        }
     }
 
     private void updateSprite(Vector2 direction)

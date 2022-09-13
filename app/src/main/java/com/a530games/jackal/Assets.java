@@ -46,7 +46,10 @@ public class Assets {
 
     public static Sound tankHit1;
     public static Sound tankHit2;
+    public static Sound tankHit3;
     public static Sound tankFire;
+    public static Sound tankBlow1;
+    public static Sound tankBlow2;
 
     public static Pixmap spown;
 
@@ -99,6 +102,9 @@ public class Assets {
 
         Assets.tankHit1 = a.newSound("sound/tank_hit_1.wav");
         Assets.tankHit2 = a.newSound("sound/tank_hit_2.wav");
+        Assets.tankHit3 = a.newSound("sound/tank_hit_3.mp3");
+        Assets.tankBlow1 = a.newSound("sound/tank_blow_1.mp3");
+        Assets.tankBlow2 = a.newSound("sound/tank_blow_2.mp3");
         Assets.tankFire = a.newSound("sound/tank_fire.wav");
 
         Assets.isPart2Loaded = true;

@@ -221,15 +221,9 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
                         enemy.hit(1);
 
                         b.setIsOutOnHitEnemy(); // disable bullet
-
-                        if(Settings.soundEnabled) {
-                            this.tankHitSounds.get(this.random.nextInt(this.tankHitSounds.size())).play(1);
-                        }
                     }
                 }
             }
-
-
         }
     }
 
