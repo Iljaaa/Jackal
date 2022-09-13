@@ -28,6 +28,7 @@ public class Assets {
     // temp object must move on map sprite
     public static Pixmap rock;
     public static Pixmap bigStone;
+    public static Pixmap house;
     public static Pixmap bigPillar;
     public static Pixmap bush1;
     public static Pixmap bush2;
@@ -74,6 +75,7 @@ public class Assets {
 
         Assets.rock = g.newPixmap("images/rock.png", Graphics.PixmapFormat.RGB565);
         Assets.bigStone = g.newPixmap("images/big_stone.png", Graphics.PixmapFormat.RGB565);
+        Assets.house = g.newPixmap("images/house.png", Graphics.PixmapFormat.RGB565);
         Assets.botLine = g.newPixmap("images/bot_line.png", Graphics.PixmapFormat.RGB565);
         Assets.bigPillar = g.newPixmap("images/big_pillar.png", Graphics.PixmapFormat.RGB565);
         Assets.bush1 = g.newPixmap("images/bush1.png", Graphics.PixmapFormat.RGB565);

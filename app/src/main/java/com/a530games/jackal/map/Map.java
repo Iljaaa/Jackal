@@ -432,6 +432,7 @@ public class Map implements CellEventCallbackHandler
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 3 * Map.SPRITE_HEIGHT, 128, 0, 64, 64);
 
         this.backgroundGraphic.drawPixmap(Assets.bigStone, 4 * Map.SPRITE_WIDTH, 5 * Map.SPRITE_HEIGHT, 0, 0, 192, 255);
+        this.backgroundGraphic.drawPixmap(Assets.house, 12 * Map.SPRITE_WIDTH, 5 * Map.SPRITE_HEIGHT, 0, 0, 150, 100);
 
     }
 
