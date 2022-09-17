@@ -1,11 +1,9 @@
 package com.a530games.framework;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -20,6 +18,11 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable
 
     Bitmap frameBuffer;
 
+    /**
+     * Touch handler
+     */
+    AndroidFastRenderViewTouchHandler touchHandler = null;
+
     volatile boolean running = false;
 
     public int fps = 0;
@@ -29,7 +32,6 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable
         this.game = game;
         this.frameBuffer = frameBuffer;
         this.holder = this.getHolder();
-        // this.setOnTouchListener(this);
     }
 
     public void resume()
@@ -94,18 +96,13 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable
     /**
      * Ну ебаный врот это же одно и тоже что я перехватываю события в Controller
      *
-     * @param keyCode
-     * @param event
-     * @return
 
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         boolean p = super.onKeyDown(keyCode, event);
         Log.d("AndroidFastRenderView", "onKeyDown");
         return p;
     }
 
-    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         boolean p =  super.onKeyUp(keyCode, event);
         Log.d("AndroidFastRenderView", "onKeyUp");
@@ -115,5 +112,14 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable
     public void setFrameBufferSize (int width, int height){
         this.frameBuffer.setWidth(width);
         this.frameBuffer.setHeight(height);
+    }
+
+    public boolean onTouchEvent (MotionEvent event) {
+        this.touchHandler.onTouch(event);
+        return true;
+    }
+
+    public void setTouchHandler(AndroidFastRenderViewTouchHandler touchHandler) {
+        this.touchHandler = touchHandler;
     }
 }

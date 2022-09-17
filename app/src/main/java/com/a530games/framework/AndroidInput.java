@@ -2,18 +2,22 @@ package com.a530games.framework;
 
 import android.content.Context;
 import android.view.InputDevice;
+import android.view.SurfaceView;
 import android.view.View;
 
 import java.util.List;
 
 public class AndroidInput implements Input
 {
-    private KeyboardHandler keyHandler = null;
+    private KeyboardHandler keyHandler;
 
     private TouchHandler touchHandler;
 
     private MotionEventHandler motionEventsHandler;
 
+    /**
+     * Universal abstract
+     */
     private Controller controller;
 
     /**
@@ -23,7 +27,7 @@ public class AndroidInput implements Input
      * @param scaleX Screen scale by X axe
      * @param scaleY Screen scale by Y axe
      */
-    public AndroidInput(Context context, View view, float scaleX, float scaleY)
+    public AndroidInput(Context context, AndroidFastRenderView view, float scaleX, float scaleY)
     {
         this.keyHandler = new KeyboardHandler(view);
 

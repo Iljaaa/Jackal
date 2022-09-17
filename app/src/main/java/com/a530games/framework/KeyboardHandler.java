@@ -2,6 +2,7 @@ package com.a530games.framework;
 
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.SurfaceView;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -11,10 +12,10 @@ public class KeyboardHandler implements View.OnKeyListener
 {
     boolean[] pressedKeys = new boolean[128];
     Pool<Input.KeyEvent> pool;
-    List<Input.KeyEvent> keyEventBuffer = new ArrayList<Input.KeyEvent>();
-    List<Input.KeyEvent> keyEvents = new ArrayList<Input.KeyEvent>();
+    List<Input.KeyEvent> keyEventBuffer = new ArrayList<>();
+    List<Input.KeyEvent> keyEvents = new ArrayList<>();
 
-    public KeyboardHandler(View view)
+    public KeyboardHandler(SurfaceView view)
     {
         PoolObjectFactory<Input.KeyEvent> factory = new PoolObjectFactory() {
             @Override
