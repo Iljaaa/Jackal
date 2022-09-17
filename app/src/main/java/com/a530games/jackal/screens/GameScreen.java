@@ -11,6 +11,7 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.Screen;
+import com.a530games.framework.TouchEventsCollection;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
@@ -89,7 +90,7 @@ public class GameScreen extends Screen
     public void update(float deltaTime)
     {
         // todo: подмать какуюто абстрацию над этим всем делом
-        List<Input.TouchEvent> touchEvents = this.game.getInput().getTouchEvents();
+        TouchEventsCollection touchEvents = this.game.getInput().getTouchEvents();
 
         List<Input.KeyEvent> keyEvents = this.game.getInput().getKeyEvents();
 
@@ -112,21 +113,27 @@ public class GameScreen extends Screen
     }
 
 
-    private void updateReady(List<Input.TouchEvent> touchEvents, Controller controller)
+    private void updateReady(TouchEventsCollection touchEvents, Controller controller)
     {
         // if got fouch go to run
-        if(touchEvents.size() > 0) this.state = GameState.Running;
+        if(touchEvents.hasDown()) this.state = GameState.Running;
+        // if(touchEvents.size() > 0) this.state = GameState.Running;
+
+        // do touch event
         if (controller.isStart()) this.state = GameState.Running;
     }
 
-    private void updateRunning(List<Input.TouchEvent> touchEvents, List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
+    private void updateRunning(TouchEventsCollection touchEvents, List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
     {
         // обработка клика в левый верхний угол для установки паузы
         int len = touchEvents.size();
         for(int i = 0; i < len; i++) {
-            Input.TouchEvent event = touchEvents.get(i);
+            Input.TouchEvent event = touchEvents.get(i); //.get(i);
+            if (event == null) continue;
+
             // обработка паузы
-            if(Input.TouchEvent.TOUCH_UP == event.type) {
+            if(Input.TouchEvent.TOUCH_DOWN == event.type)
+            {
                 int k = 3;
                 /*if(event.x < 64 && event.y < 64) {
                     //if(Settings.soundEnabled)
@@ -135,18 +142,6 @@ public class GameScreen extends Screen
                     this.state = GameState.Paused;
                     return;
                 }*/
-            }
-
-            // определения типа клика и совершаем поворот
-            if(event.type == Input.TouchEvent.TOUCH_DOWN) {
-                if(event.x < 200) {
-                    this.world.snake.turnLeft();
-                    // this.world.player.moveLeft(deltaTime);
-                }
-                if(event.x > 200) {
-                    this.world.snake.turnRight();
-                    // this.world.player.moveRight(deltaTime);
-                }
             }
         }
 
@@ -296,7 +291,7 @@ public class GameScreen extends Screen
         }*/
     }
 
-    private void updatePaused(List<Input.TouchEvent> touchEvents, Controller controller)
+    private void updatePaused(TouchEventsCollection touchEvents, Controller controller)
     {
         /*int len = touchEvents.size();
         for(int i = 0; i < len; i++) {
@@ -323,12 +318,13 @@ public class GameScreen extends Screen
             }
         }*/
         if(touchEvents.size() > 0) this.state = GameState.Running;
+        // if(touchEvents.size() > 0) this.state = GameState.Running;
         /*if (controller.isStart()) {
             this.state = GameState.Running;
         }*/
     }
 
-    private void updateGameOver(List<Input.TouchEvent> touchEvents)
+    private void updateGameOver(TouchEventsCollection touchEvents)
     {
         // определяяем клик для перехода в главное меню
         /*int len = touchEvents.size();
@@ -366,8 +362,27 @@ public class GameScreen extends Screen
         if (state == GameState.Paused) this.drawPausedUI();
         if (state == GameState.GameOver) this.drawGameOverUI();
 
+
+        this.drawTouchPoints();
+
         // draw score
         // this.drawText(g, score, g.getWidth() / 2 - score.length()*20 / 2, g.getHeight() - 42);
+    }
+
+    private void drawTouchPoints ()
+    {
+
+        this.game.getGraphics().drawCircle(100, 100, 50, Color.GREEN);
+
+        TouchEventsCollection touchEvents = this.game.getInput().getTouchEvents();
+        int len = touchEvents.size();
+        for(int i = 0; i < len; i++) {
+            Input.TouchEvent event = touchEvents.get(i); //.get(i);
+            if (event == null) continue;
+            if (event.type != Input.TouchEvent.TOUCH_DOWN) continue;
+            this.game.getGraphics().drawCircle(event.x, event.y, 50, Color.GREEN);
+        }
+
     }
 
     private void drawWorld(World world)

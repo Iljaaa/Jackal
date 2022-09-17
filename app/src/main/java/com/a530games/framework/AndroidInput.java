@@ -108,7 +108,7 @@ public class AndroidInput implements Input
     }
 
     @Override
-    public List<TouchEvent> getTouchEvents() {
+    public TouchEventsCollection getTouchEvents() {
         return this.touchHandler.getTouchEvents();
     }
 }

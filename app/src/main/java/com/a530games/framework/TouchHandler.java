@@ -12,5 +12,5 @@ public interface TouchHandler //  extends View.OnTouchListener
 
     int getTouchY(int pinter);
 
-    List<Input.TouchEvent> getTouchEvents();
+    TouchEventsCollection getTouchEvents();
 }
