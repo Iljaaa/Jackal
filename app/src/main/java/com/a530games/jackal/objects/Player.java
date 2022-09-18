@@ -50,28 +50,19 @@ public class Player extends RotateVehicle
 
     }
 
-    @Override
-    public void move(Vector2 direction, float deltaTime, World world)
+    public void move(float x, float y, float deltaTime, World world)
     {
-        this.velocity.set(
-            direction.x * this.speed,
-            direction.y * this.speed
-        );
+        this.velocity.set(x * this.speed, y * this.speed);
 
         super.move(this.velocity, deltaTime, world);
 
-        // todo: make method
-        switch (direction.getQuater()) {
-            case 7: this.sprite.set(2, 0); break;
-            case 6: this.sprite.set(1, 0); break;
-            case 5: this.sprite.set(0, 0); break;
-            case 4: this.sprite.set(0, 1); break;
-            case 3: this.sprite.set(0, 2); break;
-            case 2: this.sprite.set(1, 2); break;
-            case 1: this.sprite.set(2, 2); break;
-            default: this.sprite.set(2, 1);
-                break;
-        }
+        this.updateSprite();
+    }
+
+    @Override
+    public void move(Vector2 direction, float deltaTime, World world)
+    {
+        this.move(direction.x, direction.y, deltaTime, world);
     }
 
     public void setTurretAngle (Vector2 direction)
@@ -91,6 +82,22 @@ public class Player extends RotateVehicle
                 break;
         }
     }
+
+    private void updateSprite()
+    {
+        switch (this.direction.getQuater()) {
+            case 7: this.sprite.set(2, 0); break;
+            case 6: this.sprite.set(1, 0); break;
+            case 5: this.sprite.set(0, 0); break;
+            case 4: this.sprite.set(0, 1); break;
+            case 3: this.sprite.set(0, 2); break;
+            case 2: this.sprite.set(1, 2); break;
+            case 1: this.sprite.set(2, 2); break;
+            default: this.sprite.set(2, 1);
+                break;
+        }
+    }
+
 
     /*private void updateSprite(Vector2 direction)
     {

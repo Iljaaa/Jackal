@@ -12,6 +12,7 @@ import com.a530games.framework.Input;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.Screen;
 import com.a530games.framework.TouchEventsCollection;
+import com.a530games.framework.math.Circle;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
@@ -60,6 +61,15 @@ public class GameScreen extends Screen
     Sprite tempBoom;
     float boomTimer;
 
+    // display controller
+    Vector2 controllerLeftButtonsPosition;
+    Vector2 controllerRightButtonsPosition;
+
+    // input circles
+    Circle topButton, rightButton, downButton, leftButton;
+
+    Circle rightAButton, rightBButton;
+
     public GameScreen(Game game) {
         super(game);
         this.world = new World();
@@ -81,6 +91,19 @@ public class GameScreen extends Screen
 
         //
 
+        // onscreen controllers
+        this.controllerLeftButtonsPosition = new Vector2(150, 500);
+        this.controllerRightButtonsPosition = new Vector2(650, 500);
+
+        this.topButton = new Circle(this.controllerLeftButtonsPosition.x, this.controllerLeftButtonsPosition.y - 75, 50); // top
+        this.rightButton = new Circle(this.controllerLeftButtonsPosition.x + 75, this.controllerLeftButtonsPosition.y, 50); // right
+        this.downButton =  new Circle(this.controllerLeftButtonsPosition.x, this.controllerLeftButtonsPosition.y + 75, 50); // down
+        this.leftButton =  new Circle(this.controllerLeftButtonsPosition.x - 75, this.controllerLeftButtonsPosition.y, 50); // left
+
+        this.rightAButton =  new Circle(this.controllerRightButtonsPosition.x - 60, this.controllerRightButtonsPosition.y + 10, 50); // A
+        this.rightBButton = new Circle(this.controllerRightButtonsPosition.x + 60, this.controllerRightButtonsPosition.y - 10, 50); // B
+
+        //
         this.tempBoom = new Sprite(Assets.boom, 0, 0);
         this.tempBoom.setSpriteSize(96, 96);
         this.boomTimer = 0.2f;
@@ -132,17 +155,33 @@ public class GameScreen extends Screen
             if (event == null) continue;
 
             // обработка паузы
-            if(Input.TouchEvent.TOUCH_DOWN == event.type)
-            {
-                int k = 3;
-                /*if(event.x < 64 && event.y < 64) {
-                    //if(Settings.soundEnabled)
-                        // todo: play click
-                        // Assets.click.play(1);
-                    this.state = GameState.Paused;
-                    return;
-                }*/
+            if(Input.TouchEvent.TOUCH_DOWN != event.type) continue;
+
+            //
+            if (this.topButton.isPointInside(event.x, event.y)) {
+                this.world.player.move(0, -1, deltaTime, this.world);
             }
+            if (this.rightButton.isPointInside(event.x, event.y)) {
+                this.world.player.move(1, 0, deltaTime, this.world);
+            }
+            if (this.downButton.isPointInside(event.x, event.y)) {
+                this.world.player.move(0, 1, deltaTime, this.world);
+            }
+            if (this.leftButton.isPointInside(event.x, event.y)) {
+                this.world.player.move(-1, 0, deltaTime, this.world);
+            }
+            if (this.rightAButton.isPointInside(event.x, event.y)) {
+                if (this.world.playerFire()){
+                    if(Settings.soundEnabled) Assets.fire.play(1);
+                }
+            }
+            if (this.rightBButton.isPointInside(event.x, event.y)) {
+                if (this.world.playerFire()){
+                    if(Settings.soundEnabled) Assets.fire.play(1);
+                }
+            }
+
+
         }
 
         /*if (controller.isStart()) {
@@ -362,25 +401,25 @@ public class GameScreen extends Screen
         if (state == GameState.Paused) this.drawPausedUI();
         if (state == GameState.GameOver) this.drawGameOverUI();
 
+        this.drawTouchPoints(g);
 
-        this.drawTouchPoints();
-
+        this.drawController(g);
         // draw score
         // this.drawText(g, score, g.getWidth() / 2 - score.length()*20 / 2, g.getHeight() - 42);
     }
 
-    private void drawTouchPoints ()
+    /**
+     * Draw touch points on screen
+     */
+    private void drawTouchPoints (Graphics g)
     {
-
-        this.game.getGraphics().drawCircle(100, 100, 50, Color.GREEN);
-
         TouchEventsCollection touchEvents = this.game.getInput().getTouchEvents();
         int len = touchEvents.size();
         for(int i = 0; i < len; i++) {
             Input.TouchEvent event = touchEvents.get(i); //.get(i);
             if (event == null) continue;
             if (event.type != Input.TouchEvent.TOUCH_DOWN) continue;
-            this.game.getGraphics().drawCircle(event.x, event.y, 50, Color.GREEN);
+            g.drawCircle(event.x, event.y, 50, Color.GREEN);
         }
 
     }
@@ -711,6 +750,24 @@ public class GameScreen extends Screen
         }
     }
 
+    private void drawController (Graphics g)
+    {
+        // left
+        g.drawCircle((int) Math.ceil(this.topButton.center.x), (int) Math.ceil(this.topButton.center.y), (int) Math.ceil(this.topButton.radius), Color.GREEN); // top
+        g.drawCircle((int) Math.ceil(this.rightButton.center.x), (int) Math.ceil(this.rightButton.center.y), (int) Math.ceil(this.rightButton.radius), Color.GREEN); // right
+        g.drawCircle((int) Math.ceil(this.downButton.center.x), (int) Math.ceil(this.downButton.center.y), (int) Math.ceil(this.downButton.radius), Color.GREEN); // down
+        g.drawCircle((int) Math.ceil(this.leftButton.center.x), (int) Math.ceil(this.leftButton.center.y), (int) Math.ceil(this.leftButton.radius), Color.GREEN); // left
+        /*g.drawCircle((int) Math.ceil(this.controllerLeftButtonsPosition.x + 75), (int) Math.ceil(this.controllerLeftButtonsPosition.y), 50, Color.GREEN); // right
+        g.drawCircle((int) Math.ceil(this.controllerLeftButtonsPosition.x), (int) Math.ceil(this.controllerLeftButtonsPosition.y + 75), 50, Color.GREEN); // down
+        g.drawCircle((int) Math.ceil(this.controllerLeftButtonsPosition.x - 75), (int) Math.ceil(this.controllerLeftButtonsPosition.y), 50, Color.GREEN); // left*/
+
+        // right
+        // g.drawCircle((int) Math.ceil(this.controllerRightButtonsPosition.x - 60), (int) Math.ceil(this.controllerRightButtonsPosition.y + 10), 50, Color.GREEN); // A
+        // g.drawCircle((int) Math.ceil(this.controllerRightButtonsPosition.x + 60), (int) Math.ceil(this.controllerRightButtonsPosition.y - 10), 50, Color.GREEN); // B
+        g.drawCircle((int) Math.ceil(this.rightAButton.center.x), (int) Math.ceil(this.rightAButton.center.y), (int) Math.ceil(this.rightAButton.radius), Color.GREEN); // A
+        g.drawCircle((int) Math.ceil(this.rightBButton.center.x), (int) Math.ceil(this.rightBButton.center.y), (int) Math.ceil(this.rightBButton.radius), Color.GREEN); // B
+    }
+
     private void drawBlow()
     {
         Graphics g = this.game.getGraphics();
@@ -752,8 +809,8 @@ public class GameScreen extends Screen
     }
 
     private void drawRunningUI() {
-       // Graphics g = game.getGraphics();
-         /*g.drawPixmap(Assets.buttons, 0, 0, 64, 128, 64, 64);
+        // Graphics g = game.getGraphics();
+        /*g.drawPixmap(Assets.buttons, 0, 0, 64, 128, 64, 64);
         g.drawLine(0, 416, 480, 416, Color.BLACK);
         g.drawPixmap(Assets.buttons, 0, 416, 64, 64, 64, 64);
         g.drawPixmap(Assets.buttons, 256, 416, 0, 64, 64, 64);*/

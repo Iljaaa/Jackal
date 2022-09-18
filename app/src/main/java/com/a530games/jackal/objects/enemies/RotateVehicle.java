@@ -31,17 +31,8 @@ public abstract class RotateVehicle extends Vehicle
     {
         super.move(velocity, deltaTime, world);
 
-        // just set direction
-        // float currentAngle = this.direction.angleInDegrees();
-        //float targetAngle = direction.
         this.direction.set(velocity);
         this.direction.nor();
-
-        /*float directionAngle = direction.angleInDegrees();
-        float currentAngle = this.direction.angleInDegrees();
-        float newAngle = currentAngle - directionAngle;
-        if (newAngle < 180) this.direction.rotate(-5);
-        if (newAngle > 180) this.direction.rotate(5);*/
     }
 
     /*@Override
