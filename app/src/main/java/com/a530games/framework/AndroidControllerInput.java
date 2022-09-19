@@ -7,16 +7,17 @@ import android.view.View;
 import com.a530games.framework.math.Vector2;
 
 /**
- * Абстракцтя вокруг джойпада
+ * Controller input for android
  */
-public class Controller implements View.OnKeyListener, MotionEventHandlerEventsListener
+public class AndroidControllerInput implements View.OnKeyListener, MotionEventHandlerEventsListener, ControllerHandler
 {
     boolean isTop = false;
     boolean isRight = false;
     boolean isDown = false;
     boolean isLeft = false;
 
-    boolean isStart = false;
+    // start, select
+    boolean isStart = false, isSelect = false;
 
     boolean isA = false;
     boolean isB = false;
@@ -39,7 +40,7 @@ public class Controller implements View.OnKeyListener, MotionEventHandlerEventsL
     private int _action = 0;
     private int _keyCode = 0;
 
-    public Controller(MotionEventHandler motionEventHandler)
+    public AndroidControllerInput(MotionEventHandler motionEventHandler)
     {
         this.leftStick = new Vector2();
         this.rightStick = new Vector2();
@@ -48,7 +49,7 @@ public class Controller implements View.OnKeyListener, MotionEventHandlerEventsL
         this.motionEventHandler.setListener(this);
     }
 
-    public boolean isTopButtonDown () {
+    /*public boolean isTopButtonDown () {
         return this.isTop;
     }
 
@@ -62,50 +63,65 @@ public class Controller implements View.OnKeyListener, MotionEventHandlerEventsL
 
     public boolean isLeftButtonDown () {
         return this.isLeft;
-    }
+    }*/
 
+    @Override
     public boolean isStart() {
-        return isStart;
+        return this.isStart;
     }
 
+    @Override
+    public boolean isSelect() {
+        return this.isSelect;
+    }
+
+    @Override
+    public Vector2 getLeftStickDirection() {
+        return this.leftStick;
+    }
+    @Override
+    public Vector2 getRightStickDirection() {
+        return this.rightStick;
+    }
+
+    @Override
     public boolean isA() {
         return isA;
     }
 
+    @Override
     public boolean isB() {
         return isB;
     }
 
+    @Override
     public boolean isX() {
         return isX;
     }
 
+    @Override
     public boolean isY() {
         return isY;
     }
 
+    @Override
     public boolean isR1() {
         return isR1;
     }
 
+    @Override
     public boolean isL1() {
         return isL1;
     }
 
+    @Override
     public boolean isR2() {
         return isR2;
     }
 
+    @Override
     public boolean isL2() {
         return isL2;
-    }
-
-    public Vector2 getLeftStickDirection() {
-        return this.leftStick;
-    }
-
-    public Vector2 getRightStickDirection() {
-        return this.rightStick;
     }
 
     @Override

@@ -2,28 +2,23 @@ package com.a530games.jackal.screens;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.Log;
 
-import com.a530games.framework.Controller;
+import com.a530games.framework.AndroidControllerInput;
 import com.a530games.framework.Game;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
-import com.a530games.framework.Pixmap;
 import com.a530games.framework.Screen;
 import com.a530games.framework.TouchEventsCollection;
-import com.a530games.framework.math.Circle;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.Controller;
+import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.map.MapCell;
-import com.a530games.jackal.map.Wall;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
-import com.a530games.jackal.Snake;
-import com.a530games.jackal.SnakePart;
-import com.a530games.jackal.Stain;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.ControllerPresenter;
@@ -70,6 +65,9 @@ public class GameScreen extends Screen
         this.world = new World();
         this.sidebar = new Sidebar();
 
+        // todo: move to another place
+        Jackal.setController(new Controller());
+
         this.controllerPresenter = new ControllerPresenter();
         this.controllerPresenter.bindController(this.game.getInput().getController());
 
@@ -103,11 +101,11 @@ public class GameScreen extends Screen
 
         List<Input.KeyEvent> keyEvents = this.game.getInput().getKeyEvents();
 
-        //
-        Controller c = this.game.getInput().getController();
+        // universal wrap around controller
+        Controller controller = Jackal.getController();
 
-        // update controller by touch events
-        // c.updateByTouchEventsAndControllerMask();
+        // update by controller input
+        controller.updateByController(this.game.getInput().getController());
 
 
         /*int keyEventsLength = keyEvents.size();
@@ -118,9 +116,9 @@ public class GameScreen extends Screen
             }
         }*/
 
-        if (this.state == GameState.Ready) this.updateReady(touchEvents, c);
-        if (this.state == GameState.Running) this.updateRunning(touchEvents, keyEvents, c, deltaTime);
-        if (this.state == GameState.Paused) this.updatePaused(touchEvents, c);
+        if (this.state == GameState.Ready) this.updateReady(touchEvents, controller);
+        if (this.state == GameState.Running) this.updateRunning(touchEvents, keyEvents, controller, deltaTime);
+        if (this.state == GameState.Paused) this.updatePaused(touchEvents);
         if (this.state == GameState.GameOver) this.updateGameOver(touchEvents);
     }
 
@@ -322,7 +320,7 @@ public class GameScreen extends Screen
         }*/
     }
 
-    private void updatePaused(TouchEventsCollection touchEvents, Controller controller)
+    private void updatePaused(TouchEventsCollection touchEvents)
     {
         /*int len = touchEvents.size();
         for(int i = 0; i < len; i++) {

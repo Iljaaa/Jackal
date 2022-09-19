@@ -197,10 +197,10 @@ public abstract class AndroidGame extends Activity implements Game
         return this.renderView;
     }
 
-    @Override
+    /*@Override
     public int getScreenOrientation() {
         return this.screenOrientation;
-    }
+    }*/
 
     @Override
     public boolean isLandscape() {

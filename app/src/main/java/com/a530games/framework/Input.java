@@ -22,7 +22,6 @@ public interface Input {
     }
 
     boolean isKeyPressed(int keyCode);
-
     boolean isTouchDown(int pointer);
     int getTouchX(int pointer);
     int getTouchY(int pointer);
@@ -31,12 +30,20 @@ public interface Input {
     float getAccelY();
     float getAccelZ();
 
+    /**
+     * List of key codes
+     * @return List
+     */
     List<KeyEvent> getKeyEvents();
+
+    /**
+     * Touch events collection
+     */
     TouchEventsCollection getTouchEvents();
 
     /**
      * Абстрация более высого уровная ала контроллер с кнопками
      * @return Controller
      */
-    Controller getController();
+    AndroidControllerInput getController();
 }

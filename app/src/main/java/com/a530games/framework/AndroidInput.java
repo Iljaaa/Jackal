@@ -2,8 +2,6 @@ package com.a530games.framework;
 
 import android.content.Context;
 import android.view.InputDevice;
-import android.view.SurfaceView;
-import android.view.View;
 
 import java.util.List;
 
@@ -16,9 +14,9 @@ public class AndroidInput implements Input
     private MotionEventHandler motionEventsHandler;
 
     /**
-     * Universal abstract
+     * Controller input handler
      */
-    private Controller controller;
+    private AndroidControllerInput controller;
 
     /**
      *
@@ -36,7 +34,7 @@ public class AndroidInput implements Input
         this.motionEventsHandler = new AndroidMotionEventHandler(view);
 
         // https://developer.android.com/training/game-controllers/controller-input
-        this.controller = new Controller(this.motionEventsHandler);
+        this.controller = new AndroidControllerInput(this.motionEventsHandler);
 
         // bind key listener
         // view.setOnKeyListener(this.controller);
@@ -97,7 +95,7 @@ public class AndroidInput implements Input
     }
 
     @Override
-    public Controller getController() {
+    public AndroidControllerInput getController() {
         return this.controller;
     }
 
