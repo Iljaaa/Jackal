@@ -122,7 +122,12 @@ public class AndroidGraphics implements Graphics
         this.paint.setColor(color);
         this.paint.setStyle(Paint.Style.STROKE);
         this.paint.setStrokeWidth(1);
-        this.canvas.drawCircle(x, y, radius, this.paint);
+        this.drawCircle(x, y, radius, this.paint);
+    }
+
+    @Override
+    public void drawCircle(int x, int y, int radius, Paint paint) {
+        this.canvas.drawCircle(x, y, radius, paint);
     }
 
     @Override

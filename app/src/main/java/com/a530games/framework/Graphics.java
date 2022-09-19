@@ -20,7 +20,9 @@ public interface Graphics {
     void drawRect(int x, int y, int width, int height, Paint paint);
     void drawRect(Rect r, int color);
     void drawRect(Rect r, Paint paint);
+
     void drawCircle(int x, int y, int radius, int color);
+    void drawCircle(int x, int y, int radius, Paint paint);
 
     // todo: remove this methods
     void drawPixmap(Pixmap pixmap, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight);

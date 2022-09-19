@@ -26,6 +26,7 @@ import com.a530games.jackal.SnakePart;
 import com.a530games.jackal.Stain;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
+import com.a530games.jackal.objects.ControllerPresenter;
 import com.a530games.jackal.objects.enemies.Enemy;
 
 import java.util.List;
@@ -48,8 +49,10 @@ public class GameScreen extends Screen
 
     Sidebar sidebar;
 
-    int oldScore = 0;
-    String score = "0";
+    ControllerPresenter controllerPresenter;
+
+    // int oldScore = 0;
+    // String score = "0";
 
     // paint for the hit box
     Paint hitBoxPaint;
@@ -61,19 +64,14 @@ public class GameScreen extends Screen
     Sprite tempBoom;
     float boomTimer;
 
-    // display controller
-    Vector2 controllerLeftButtonsPosition;
-    Vector2 controllerRightButtonsPosition;
-
-    // input circles
-    Circle topButton, rightButton, downButton, leftButton;
-
-    Circle rightAButton, rightBButton;
-
-    public GameScreen(Game game) {
+    public GameScreen(Game game)
+    {
         super(game);
         this.world = new World();
         this.sidebar = new Sidebar();
+
+        this.controllerPresenter = new ControllerPresenter();
+        this.controllerPresenter.bindController(this.game.getInput().getController());
 
         this.hitBoxPaint = new Paint();
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);
@@ -91,18 +89,6 @@ public class GameScreen extends Screen
 
         //
 
-        // onscreen controllers
-        this.controllerLeftButtonsPosition = new Vector2(150, 500);
-        this.controllerRightButtonsPosition = new Vector2(650, 500);
-
-        this.topButton = new Circle(this.controllerLeftButtonsPosition.x, this.controllerLeftButtonsPosition.y - 75, 50); // top
-        this.rightButton = new Circle(this.controllerLeftButtonsPosition.x + 75, this.controllerLeftButtonsPosition.y, 50); // right
-        this.downButton =  new Circle(this.controllerLeftButtonsPosition.x, this.controllerLeftButtonsPosition.y + 75, 50); // down
-        this.leftButton =  new Circle(this.controllerLeftButtonsPosition.x - 75, this.controllerLeftButtonsPosition.y, 50); // left
-
-        this.rightAButton =  new Circle(this.controllerRightButtonsPosition.x - 60, this.controllerRightButtonsPosition.y + 10, 50); // A
-        this.rightBButton = new Circle(this.controllerRightButtonsPosition.x + 60, this.controllerRightButtonsPosition.y - 10, 50); // B
-
         //
         this.tempBoom = new Sprite(Assets.boom, 0, 0);
         this.tempBoom.setSpriteSize(96, 96);
@@ -119,6 +105,9 @@ public class GameScreen extends Screen
 
         //
         Controller c = this.game.getInput().getController();
+
+        // update controller by touch events
+        // c.updateByTouchEventsAndControllerMask();
 
 
         /*int keyEventsLength = keyEvents.size();
@@ -148,7 +137,7 @@ public class GameScreen extends Screen
 
     private void updateRunning(TouchEventsCollection touchEvents, List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
     {
-        // обработка клика в левый верхний угол для установки паузы
+        // move player by touch events
         int len = touchEvents.size();
         for(int i = 0; i < len; i++) {
             Input.TouchEvent event = touchEvents.get(i); //.get(i);
@@ -158,24 +147,24 @@ public class GameScreen extends Screen
             if(Input.TouchEvent.TOUCH_DOWN != event.type) continue;
 
             //
-            if (this.topButton.isPointInside(event.x, event.y)) {
+            if (this.controllerPresenter.topButton.isPointInside(event.x, event.y)) {
                 this.world.player.move(0, -1, deltaTime, this.world);
             }
-            if (this.rightButton.isPointInside(event.x, event.y)) {
+            if (this.controllerPresenter.rightButton.isPointInside(event.x, event.y)) {
                 this.world.player.move(1, 0, deltaTime, this.world);
             }
-            if (this.downButton.isPointInside(event.x, event.y)) {
+            if (this.controllerPresenter.downButton.isPointInside(event.x, event.y)) {
                 this.world.player.move(0, 1, deltaTime, this.world);
             }
-            if (this.leftButton.isPointInside(event.x, event.y)) {
+            if (this.controllerPresenter.leftButton.isPointInside(event.x, event.y)) {
                 this.world.player.move(-1, 0, deltaTime, this.world);
             }
-            if (this.rightAButton.isPointInside(event.x, event.y)) {
+            if (this.controllerPresenter.rightAButton.isPointInside(event.x, event.y)) {
                 if (this.world.playerFire()){
                     if(Settings.soundEnabled) Assets.fire.play(1);
                 }
             }
-            if (this.rightBButton.isPointInside(event.x, event.y)) {
+            if (this.controllerPresenter.rightBButton.isPointInside(event.x, event.y)) {
                 if (this.world.playerFire()){
                     if(Settings.soundEnabled) Assets.fire.play(1);
                 }
@@ -183,6 +172,9 @@ public class GameScreen extends Screen
 
 
         }
+
+        // update controller presenter by touch events
+        this.controllerPresenter.update(touchEvents);
 
         /*if (controller.isStart()) {
             this.state = GameState.Paused;
@@ -403,7 +395,9 @@ public class GameScreen extends Screen
 
         this.drawTouchPoints(g);
 
-        this.drawController(g);
+        // draw controller onscreen controller
+        this.controllerPresenter.draw(g);
+
         // draw score
         // this.drawText(g, score, g.getWidth() / 2 - score.length()*20 / 2, g.getHeight() - 42);
     }
@@ -748,24 +742,6 @@ public class GameScreen extends Screen
                     32
             );
         }
-    }
-
-    private void drawController (Graphics g)
-    {
-        // left
-        g.drawCircle((int) Math.ceil(this.topButton.center.x), (int) Math.ceil(this.topButton.center.y), (int) Math.ceil(this.topButton.radius), Color.GREEN); // top
-        g.drawCircle((int) Math.ceil(this.rightButton.center.x), (int) Math.ceil(this.rightButton.center.y), (int) Math.ceil(this.rightButton.radius), Color.GREEN); // right
-        g.drawCircle((int) Math.ceil(this.downButton.center.x), (int) Math.ceil(this.downButton.center.y), (int) Math.ceil(this.downButton.radius), Color.GREEN); // down
-        g.drawCircle((int) Math.ceil(this.leftButton.center.x), (int) Math.ceil(this.leftButton.center.y), (int) Math.ceil(this.leftButton.radius), Color.GREEN); // left
-        /*g.drawCircle((int) Math.ceil(this.controllerLeftButtonsPosition.x + 75), (int) Math.ceil(this.controllerLeftButtonsPosition.y), 50, Color.GREEN); // right
-        g.drawCircle((int) Math.ceil(this.controllerLeftButtonsPosition.x), (int) Math.ceil(this.controllerLeftButtonsPosition.y + 75), 50, Color.GREEN); // down
-        g.drawCircle((int) Math.ceil(this.controllerLeftButtonsPosition.x - 75), (int) Math.ceil(this.controllerLeftButtonsPosition.y), 50, Color.GREEN); // left*/
-
-        // right
-        // g.drawCircle((int) Math.ceil(this.controllerRightButtonsPosition.x - 60), (int) Math.ceil(this.controllerRightButtonsPosition.y + 10), 50, Color.GREEN); // A
-        // g.drawCircle((int) Math.ceil(this.controllerRightButtonsPosition.x + 60), (int) Math.ceil(this.controllerRightButtonsPosition.y - 10), 50, Color.GREEN); // B
-        g.drawCircle((int) Math.ceil(this.rightAButton.center.x), (int) Math.ceil(this.rightAButton.center.y), (int) Math.ceil(this.rightAButton.radius), Color.GREEN); // A
-        g.drawCircle((int) Math.ceil(this.rightBButton.center.x), (int) Math.ceil(this.rightBButton.center.y), (int) Math.ceil(this.rightBButton.radius), Color.GREEN); // B
     }
 
     private void drawBlow()
