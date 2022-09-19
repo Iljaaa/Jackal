@@ -3,16 +3,16 @@ package com.a530games.jackal.objects;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.a530games.framework.AndroidControllerInput;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.TouchEventsCollection;
 import com.a530games.framework.math.Circle;
 import com.a530games.framework.math.Vector2;
+import com.a530games.jackal.Controller;
 
 public class ControllerPresenter
 {
 
-    AndroidControllerInput controller;
+    Controller controller;
 
     // display controller
     Vector2 controllerLeftButtonsPosition;
@@ -49,7 +49,7 @@ public class ControllerPresenter
         this.activeCircleButtonPaint.setColor(Color.GREEN);
     }
 
-    public void bindController (AndroidControllerInput c) {
+    public void bindController (Controller c) {
         this.controller = c;
     }
     
@@ -95,10 +95,6 @@ public class ControllerPresenter
     {
         this.drawLeftControllerLikeButtons(g);
         this.drawRightControllerLikeButtons(g);
-    }
-
-    public void drawController () {
-
     }
 
     private void drawLeftControllerLikeButtons(Graphics g)

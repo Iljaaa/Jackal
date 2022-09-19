@@ -1,7 +1,10 @@
 package com.a530games.jackal;
 
 import com.a530games.framework.ControllerHandler;
+import com.a530games.framework.Input;
+import com.a530games.framework.TouchEventsCollection;
 import com.a530games.framework.math.Vector2;
+import com.a530games.jackal.objects.ControllerPresenter;
 
 /**
  * Composite of input class
@@ -65,34 +68,75 @@ public class Controller
     }
 
     public boolean isA() {
-        return isA;
+        return this.isA;
     }
 
     public boolean isB() {
-        return isB;
+        return this.isB;
     }
 
     public boolean isX() {
-        return isX;
+        return this.isX;
     }
 
     public boolean isY() {
-        return isY;
+        return this.isY;
     }
 
     public boolean isR1() {
-        return isR1;
+        return this.isR1;
     }
 
     public boolean isL1() {
-        return isL1;
+        return this.isL1;
     }
 
     public boolean isR2() {
-        return isR2;
+        return this.isR2;
     }
 
     public boolean isL2() {
-        return isL2;
+        return this.isL2;
+    }
+
+    /**
+     *
+     * @param touchEvents
+     * @param presenter Controller presenter used like mask to convert touch to buttons position
+     */
+    public void updateByTouchEvents(TouchEventsCollection touchEvents, ControllerPresenter presenter)
+    {
+        // move player by touch events
+        int len = touchEvents.size();
+        for(int i = 0; i < len; i++) {
+            Input.TouchEvent event = touchEvents.get(i); //.get(i);
+            if (event == null) continue;
+
+            // обработка паузы
+            if(Input.TouchEvent.TOUCH_DOWN != event.type) continue;
+
+            //
+            if (presenter.topButton.isPointInside(event.x, event.y)) {
+                this.leftStick.y = -1;
+            }
+            if (presenter.rightButton.isPointInside(event.x, event.y)) {
+                this.leftStick.x = 1;
+            }
+            if (presenter.downButton.isPointInside(event.x, event.y)) {
+                this.leftStick.y = 1;
+            }
+            if (presenter.leftButton.isPointInside(event.x, event.y)) {
+                this.leftStick.x = -1;
+            }
+
+            if (presenter.rightAButton.isPointInside(event.x, event.y)) {
+                this.isA = true;
+            }
+            if (presenter.rightBButton.isPointInside(event.x, event.y)) {
+                this.isB = true;
+            }
+
+
+        }
     }
 }

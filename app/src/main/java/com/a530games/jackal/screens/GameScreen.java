@@ -69,7 +69,7 @@ public class GameScreen extends Screen
         Jackal.setController(new Controller());
 
         this.controllerPresenter = new ControllerPresenter();
-        this.controllerPresenter.bindController(this.game.getInput().getController());
+        this.controllerPresenter.bindController(Jackal.getController());
 
         this.hitBoxPaint = new Paint();
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);
@@ -104,9 +104,11 @@ public class GameScreen extends Screen
         // universal wrap around controller
         Controller controller = Jackal.getController();
 
-        // update by controller input
+        // update by controller by controller input
         controller.updateByController(this.game.getInput().getController());
 
+        // update controller by touch inputs
+        controller.updateByTouchEvents(touchEvents, this.controllerPresenter);
 
         /*int keyEventsLength = keyEvents.size();
         if (keyEventsLength > 0) {
@@ -117,7 +119,7 @@ public class GameScreen extends Screen
         }*/
 
         if (this.state == GameState.Ready) this.updateReady(touchEvents, controller);
-        if (this.state == GameState.Running) this.updateRunning(touchEvents, keyEvents, controller, deltaTime);
+        if (this.state == GameState.Running) this.updateRunning(keyEvents, controller, deltaTime);
         if (this.state == GameState.Paused) this.updatePaused(touchEvents);
         if (this.state == GameState.GameOver) this.updateGameOver(touchEvents);
     }
@@ -133,10 +135,10 @@ public class GameScreen extends Screen
         if (controller.isStart()) this.state = GameState.Running;
     }
 
-    private void updateRunning(TouchEventsCollection touchEvents, List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
+    private void updateRunning(List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
     {
         // move player by touch events
-        int len = touchEvents.size();
+        /*int len = touchEvents.size();
         for(int i = 0; i < len; i++) {
             Input.TouchEvent event = touchEvents.get(i); //.get(i);
             if (event == null) continue;
@@ -167,12 +169,10 @@ public class GameScreen extends Screen
                     if(Settings.soundEnabled) Assets.fire.play(1);
                 }
             }
-
-
-        }
+        }*/
 
         // update controller presenter by touch events
-        this.controllerPresenter.update(touchEvents);
+        // this.controllerPresenter.update(touchEvents);
 
         /*if (controller.isStart()) {
             this.state = GameState.Paused;
@@ -246,7 +246,7 @@ public class GameScreen extends Screen
         }*/
 
         // fire
-        if (controller.isA() || controller.isR1() || controller.isR2()) {
+        if (controller.isA() || controller.isB() || controller.isR1() || controller.isR2()) {
             if (this.world.playerFire()){
                 if(Settings.soundEnabled) Assets.fire.play(1);
             }
