@@ -1,5 +1,9 @@
 package com.a530games.jackal;
 
+import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+
 import com.a530games.framework.AndroidGame;
 import com.a530games.framework.Screen;
 import com.a530games.jackal.screens.LoadingScreen;
@@ -15,6 +19,13 @@ public class Jackal extends AndroidGame
     public static Random getRandom(){
         if (Jackal.random == null) Jackal.random = new Random();
         return Jackal.random;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // calculate sidebar size
     }
 
     @Override

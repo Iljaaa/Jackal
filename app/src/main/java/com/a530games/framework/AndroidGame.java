@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.os.PowerManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -52,19 +53,33 @@ public abstract class AndroidGame extends Activity implements Game
 
         // раскалад такой 640х640 это игровой эеран остальное это менб
         // fixme: get screen size
-        int frameBufferWidth = this.screenOrientation == Configuration.ORIENTATION_LANDSCAPE
+        /*int frameBufferWidth = this.screenOrientation == Configuration.ORIENTATION_LANDSCAPE
                 ? AndroidGame.landscapeScreenWidth
-                : AndroidGame.landscapeScreenHeight;
-        int frameBufferHeight = this.screenOrientation == Configuration.ORIENTATION_LANDSCAPE
+                : AndroidGame.landscapeScreenHeight;*/
+
+        // only landsxape
+        /*int frameBufferHeight = this.screenOrientation == Configuration.ORIENTATION_LANDSCAPE
                 ? AndroidGame.landscapeScreenHeight
-                : AndroidGame.landscapeScreenWidth;
+                : AndroidGame.landscapeScreenWidth;*/
+        int frameBufferHeight = AndroidGame.landscapeScreenHeight;
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int screenWidth = displaymetrics.widthPixels;
+        int screenHeight = displaymetrics.heightPixels;
+
+        // screen ration
+        double screenRatio = (double) screenWidth / screenHeight;
+
+        // расчитываем ширину фрембуфера по отношению сторон
+        int frameBufferWidth = (int) Math.floor(this.landscapeScreenHeight * screenRatio);
 
         // как же как же смне собрайть фрейм буфер
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth, frameBufferHeight, Bitmap.Config.RGB_565);
 
-        // масштаю
-        float scaleX = (float) frameBufferWidth / getWindowManager().getDefaultDisplay().getWidth();
-        float scaleY = (float) frameBufferHeight / getWindowManager().getDefaultDisplay().getHeight();
+        // screen scales
+        float scaleX = (float) frameBufferWidth / screenWidth;
+        float scaleY = (float) frameBufferHeight / screenHeight;
 
         //
         this.renderView = new AndroidFastRenderView(this, frameBuffer);

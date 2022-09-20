@@ -454,6 +454,9 @@ public class GameScreen extends Screen
         Graphics g = this.game.getGraphics();
         //g.drawLine(0, 0, this.game.getGraphics().getWidth(), this.game.getGraphics().getHeight(), Color.YELLOW);
 
+        g.drawRect(640, 200, 100, 200, Color.RED);
+        g.drawRect(640, 200, 400, 200, Color.RED);
+
         // если сайдбар не нуждается в отрисовке
         if (!sidebar.isNeedRedraw()) {
             return;
