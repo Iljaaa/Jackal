@@ -68,7 +68,8 @@ public class GameScreen extends Screen
         // todo: move to another place
         Jackal.setController(new Controller());
 
-        this.controllerPresenter = new ControllerPresenter();
+        Graphics g = this.game.getGraphics();
+        this.controllerPresenter = new ControllerPresenter(g.getWidth(), g.getHeight());
         this.controllerPresenter.bindController(Jackal.getController());
 
         this.hitBoxPaint = new Paint();

@@ -29,10 +29,11 @@ public class ControllerPresenter
 
     Paint circleButtonPaint, activeCircleButtonPaint;
 
-    public ControllerPresenter() 
+    public ControllerPresenter(int screenWidth, int screenHeight)
     {
-        this.controllerLeftButtonsPosition = new Vector2(150, 500);
-        this.controllerRightButtonsPosition = new Vector2(650, 500);
+        // todo calculate screen position
+        this.controllerLeftButtonsPosition = new Vector2(150, screenHeight - 150);
+        this.controllerRightButtonsPosition = new Vector2(screenWidth - 150, screenHeight - 150);
 
         this.topButton = new Circle(this.controllerLeftButtonsPosition.x, this.controllerLeftButtonsPosition.y - 75, 50); // top
         this.rightButton = new Circle(this.controllerLeftButtonsPosition.x + 75, this.controllerLeftButtonsPosition.y, 50); // right
