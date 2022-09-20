@@ -27,6 +27,8 @@ public class ControllerPresenter
     // input sticks
     public Circle leftStickCircle, rightStickCircle;
 
+    public Circle rightStickAdditionalFireButton;
+
     Paint circleButtonPaint, activeCircleButtonPaint;
 
     public ControllerPresenter(int screenWidth, int screenHeight)
@@ -45,6 +47,8 @@ public class ControllerPresenter
 
         this.leftStickCircle = new Circle(this.controllerLeftButtonsPosition.x, this.controllerLeftButtonsPosition.y, 100);
         this.rightStickCircle = new Circle(this.controllerRightButtonsPosition.x, this.controllerRightButtonsPosition.y, 100);
+
+        this.rightStickAdditionalFireButton = new Circle(this.controllerRightButtonsPosition.x + 100, this.controllerRightButtonsPosition.y - 130, 40);
 
         this.circleButtonPaint = new Paint();
         this.circleButtonPaint.setStyle(Paint.Style.STROKE);
@@ -225,5 +229,8 @@ public class ControllerPresenter
                     Color.RED
             );
         }
+
+        // draw addition fire button
+        this.drawCircleButton(g, this.rightStickAdditionalFireButton, this.controller.isB());
     }
 }

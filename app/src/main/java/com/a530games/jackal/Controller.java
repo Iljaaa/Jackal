@@ -172,6 +172,11 @@ public class Controller
             Input.TouchEvent event = touchEvents.get(i); //.get(i);
             if (event == null) continue;
 
+            // additional button
+            if (Input.TouchEvent.TOUCH_DOWN == event.type && presenter.rightStickAdditionalFireButton.isPointInside(event.x, event.y)) {
+                this.isB = true;
+            }
+
             //
             if (Input.TouchEvent.TOUCH_DOWN == event.type && this._rightStickPointer == -1)
             {
