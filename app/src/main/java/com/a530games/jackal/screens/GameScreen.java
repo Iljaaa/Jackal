@@ -191,6 +191,11 @@ public class GameScreen extends Screen
         if (rightStick.x != 0 || rightStick.y != 0) {
             // this.world.player.turret.set(rightStick);
             this.world.player.setTurretAngle(rightStick);
+
+            // это заглущка для другого упралвения
+            if (this.world.playerFire()){
+                if(Settings.soundEnabled) Assets.fire.play(1);
+            }
         }
 
 

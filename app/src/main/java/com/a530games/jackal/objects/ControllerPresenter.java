@@ -18,10 +18,14 @@ public class ControllerPresenter
     Vector2 controllerLeftButtonsPosition;
     Vector2 controllerRightButtonsPosition;
 
-    // input circles
+    // input left buttons
     public Circle topButton, rightButton, downButton, leftButton;
 
+    // input right button
     public Circle rightAButton, rightBButton;
+
+    // input sticks
+    public Circle leftStickCircle, rightStickCircle;
 
     Paint circleButtonPaint, activeCircleButtonPaint;
 
@@ -37,6 +41,9 @@ public class ControllerPresenter
 
         this.rightAButton =  new Circle(this.controllerRightButtonsPosition.x - 60, this.controllerRightButtonsPosition.y + 10, 50); // A
         this.rightBButton = new Circle(this.controllerRightButtonsPosition.x + 60, this.controllerRightButtonsPosition.y - 10, 50); // B
+
+        this.leftStickCircle = new Circle(this.controllerLeftButtonsPosition.x, this.controllerLeftButtonsPosition.y, 100);
+        this.rightStickCircle = new Circle(this.controllerRightButtonsPosition.x, this.controllerRightButtonsPosition.y, 100);
 
         this.circleButtonPaint = new Paint();
         this.circleButtonPaint.setStyle(Paint.Style.STROKE);
@@ -93,8 +100,11 @@ public class ControllerPresenter
 
     public void draw(Graphics g) 
     {
-        this.drawLeftControllerLikeButtons(g);
-        this.drawRightControllerLikeButtons(g);
+        // this.drawLeftControllerLikeButtons(g);
+        this.drawLeftStickAsStick(g);
+
+        // this.drawRightControllerLikeButtons(g);
+        this.drawRightStickAsStick(g);
     }
 
     private void drawLeftControllerLikeButtons(Graphics g)
@@ -145,5 +155,74 @@ public class ControllerPresenter
                     this.circleButtonPaint); //
         }
 
+    }
+
+    private void drawLeftStickAsStick (Graphics g)
+    {
+        g.drawCircle(
+                (int) Math.ceil(this.leftStickCircle.center.x),
+                (int) Math.ceil(this.leftStickCircle.center.y),
+                (int) Math.ceil(this.leftStickCircle.radius),
+                this.circleButtonPaint
+        );
+
+        // line to position
+        Vector2 leftStickDirection = this.controller.getLeftStickDirection();
+
+        g.drawLine(
+                (int) Math.ceil(this.controllerLeftButtonsPosition.x),
+                (int) Math.ceil(this.controllerLeftButtonsPosition.y),
+                (int) Math.ceil(this.controllerLeftButtonsPosition.x + (leftStickDirection.x * this.leftStickCircle.radius)),
+                (int) Math.ceil(this.controllerLeftButtonsPosition.y + (leftStickDirection.y * this.leftStickCircle.radius)),
+                Color.GREEN
+        );
+
+        g.drawCircle(
+                (int) Math.ceil(leftStickDirection.x * this.leftStickCircle.radius + this.leftStickCircle.center.x),
+                (int) Math.ceil(leftStickDirection.y * this.leftStickCircle.radius + this.leftStickCircle.center.y),
+                30,
+                this.activeCircleButtonPaint
+        );
+    }
+
+    private void drawRightStickAsStick (Graphics g)
+    {
+        g.drawCircle(
+                (int) Math.ceil(this.rightStickCircle.center.x),
+                (int) Math.ceil(this.rightStickCircle.center.y),
+                (int) Math.ceil(this.rightStickCircle.radius),
+                this.circleButtonPaint
+        );
+
+        // line to position
+        Vector2 rightStickDirection = this.controller.getRightStickDirection();
+
+        g.drawLine(
+                (int) Math.ceil(this.controllerRightButtonsPosition.x),
+                (int) Math.ceil(this.controllerRightButtonsPosition.y),
+                (int) Math.ceil(this.controllerRightButtonsPosition.x + (rightStickDirection.x * this.rightStickCircle.radius)),
+                (int) Math.ceil(this.controllerRightButtonsPosition.y + (rightStickDirection.y * this.rightStickCircle.radius)),
+                Color.GREEN
+        );
+
+
+        g.drawCircle(
+                (int) Math.ceil(rightStickDirection.x * this.rightStickCircle.radius + this.rightStickCircle.center.x),
+                (int) Math.ceil(rightStickDirection.y * this.rightStickCircle.radius + this.rightStickCircle.center.y),
+                30,
+                this.activeCircleButtonPaint
+        );
+
+        if (rightStickDirection.x != 0 || rightStickDirection.y != 0)
+        {
+            float angle = rightStickDirection.angle();
+            g.drawLine(
+                    (int) Math.ceil(this.controllerRightButtonsPosition.x),
+                    (int) Math.ceil(this.controllerRightButtonsPosition.y),
+                    (int) Math.ceil(this.controllerRightButtonsPosition.x + (Math.cos(angle) * this.rightStickCircle.radius)),
+                    (int) Math.ceil(this.controllerRightButtonsPosition.y + (Math.sin(angle) * this.rightStickCircle.radius)),
+                    Color.RED
+            );
+        }
     }
 }

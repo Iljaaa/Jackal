@@ -76,6 +76,11 @@ public class Vector2
         }
     }
 
+    public float angle()
+    {
+        return (float) Math.atan2(this.y, this.x);
+    }
+
     public float angleInDegrees()
     {
         float angle = (float) Math.atan2(this.y, this.x) * TO_DEGREES;

@@ -31,6 +31,11 @@ public class Controller
     // sticks position
     private final Vector2 leftStick, rightStick;
 
+    /**
+     * Pointer to save touch
+     */
+    private int _leftStickPointer = -1, _rightStickPointer = -1;
+
     public boolean isStart() {
         return this.isStart;
     }
@@ -101,10 +106,109 @@ public class Controller
 
     /**
      *
-     * @param touchEvents
+     * @param touchEvents Collection of touch events
      * @param presenter Controller presenter used like mask to convert touch to buttons position
      */
     public void updateByTouchEvents(TouchEventsCollection touchEvents, ControllerPresenter presenter)
+    {
+        // update is input type button
+        // this.updateTouchEventsByButtons(touchEvents, presenter);
+
+        // update is input type sticks
+
+        this.updateLeftStickPositionByTouch(touchEvents, presenter);
+        this.updateRightStickPositionByTouch(touchEvents, presenter);
+    }
+
+    private void updateLeftStickPositionByTouch(TouchEventsCollection touchEvents, ControllerPresenter presenter)
+    {
+        // move player by touch events
+        int len = touchEvents.size();
+        for(int i = 0; i < len; i++) {
+            Input.TouchEvent event = touchEvents.get(i); //.get(i);
+            if (event == null) continue;
+
+            // обработка паузы
+            // if(Input.TouchEvent.TOUCH_DOWN != event.type) continue;
+
+            if (Input.TouchEvent.TOUCH_DOWN == event.type && this._leftStickPointer == -1)
+            {
+                if (presenter.leftStickCircle.isPointInside(event.x, event.y))
+                {
+                    this._leftStickPointer = event.pointer;
+
+                    this.leftStick.x = (event.x - presenter.leftStickCircle.center.x) / presenter.leftStickCircle.radius;
+                    this.leftStick.y = (event.y - presenter.leftStickCircle.center.y) / presenter.leftStickCircle.radius;
+                    break;
+                }
+            }
+
+            if (event.pointer == this._leftStickPointer)
+            {
+                if (event.type != Input.TouchEvent.TOUCH_DOWN){
+                    this._leftStickPointer = -1;
+                    break;
+                }
+
+                this.leftStick.x = (event.x - presenter.leftStickCircle.center.x) / presenter.leftStickCircle.radius;
+                if (this.leftStick.x > 1) this.leftStick.x = 1;
+                if (this.leftStick.x < -1) this.leftStick.x = -1;
+
+                this.leftStick.y = (event.y - presenter.leftStickCircle.center.y) / presenter.leftStickCircle.radius;
+                if (this.leftStick.y > 1) this.leftStick.y = 1;
+                if (this.leftStick.y < -1) this.leftStick.y = -1;
+
+                break;
+
+            }
+        }
+    }
+
+    private void updateRightStickPositionByTouch(TouchEventsCollection touchEvents, ControllerPresenter presenter)
+    {
+        // move player by touch events
+        int len = touchEvents.size();
+        for(int i = 0; i < len; i++) {
+            Input.TouchEvent event = touchEvents.get(i); //.get(i);
+            if (event == null) continue;
+
+            //
+            if (Input.TouchEvent.TOUCH_DOWN == event.type && this._rightStickPointer == -1)
+            {
+                if (presenter.rightStickCircle.isPointInside(event.x, event.y))
+                {
+                    this._rightStickPointer = event.pointer;
+
+                    this.rightStick.x = (event.x - presenter.rightStickCircle.center.x) / presenter.rightStickCircle.radius;
+                    this.rightStick.y = (event.y - presenter.rightStickCircle.center.y) / presenter.rightStickCircle.radius;
+                    break;
+                }
+            }
+
+            if (event.pointer == this._rightStickPointer)
+            {
+                if (event.type != Input.TouchEvent.TOUCH_DOWN) {
+                    this._rightStickPointer = -1;
+                    break;
+                }
+
+                this.rightStick.x = (event.x - presenter.rightStickCircle.center.x) / presenter.rightStickCircle.radius;
+                if (this.rightStick.x > 1) this.rightStick.x = 1;
+                if (this.rightStick.x < -1) this.rightStick.x = -1;
+
+                this.rightStick.y = (event.y - presenter.rightStickCircle.center.y) / presenter.rightStickCircle.radius;
+                if (this.rightStick.y > 1) this.rightStick.y = 1;
+                if (this.rightStick.y < -1) this.rightStick.y = -1;
+
+                break;
+            }
+        }
+    }
+
+    /**
+     * Use presenter buttons as matrix of touch
+     */
+    private void updateTouchEventsByButtons (TouchEventsCollection touchEvents, ControllerPresenter presenter)
     {
         // move player by touch events
         int len = touchEvents.size();
@@ -135,8 +239,6 @@ public class Controller
             if (presenter.rightBButton.isPointInside(event.x, event.y)) {
                 this.isB = true;
             }
-
-
         }
     }
 }
