@@ -127,10 +127,6 @@ public class AndroidControllerInput implements View.OnKeyListener, MotionEventHa
     @Override
     public boolean onKey(View view, int i, KeyEvent keyEvent)
     {
-        // not use
-
-
-
         this._action = keyEvent.getAction();
         this._keyCode = keyEvent.getKeyCode();
 

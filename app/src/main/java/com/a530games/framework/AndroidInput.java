@@ -16,7 +16,7 @@ public class AndroidInput implements Input
     /**
      * Controller input handler
      */
-    private AndroidControllerInput controller;
+    private ControllerHandler controller;
 
     /**
      *
@@ -95,7 +95,7 @@ public class AndroidInput implements Input
     }
 
     @Override
-    public AndroidControllerInput getController() {
+    public ControllerHandler getController() {
         return this.controller;
     }
 

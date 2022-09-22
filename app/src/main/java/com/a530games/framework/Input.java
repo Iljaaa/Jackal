@@ -45,5 +45,5 @@ public interface Input {
      * Абстрация более высого уровная ала контроллер с кнопками
      * @return Controller
      */
-    AndroidControllerInput getController();
+    ControllerHandler getController();
 }

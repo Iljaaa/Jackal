@@ -2,7 +2,9 @@ package com.a530games.jackal.screens;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.method.Touch;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.a530games.framework.AndroidControllerInput;
 import com.a530games.framework.Game;
@@ -13,6 +15,7 @@ import com.a530games.framework.TouchEventsCollection;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Controller;
+import com.a530games.jackal.ControllerEventHandler;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.map.MapCell;
@@ -29,7 +32,7 @@ import java.util.List;
 /**
  *
  */
-public class GameScreen extends Screen
+public class GameScreen extends Screen implements ControllerEventHandler
 {
     enum GameState {
         Ready,
@@ -43,6 +46,8 @@ public class GameScreen extends Screen
     World world;
 
     Sidebar sidebar;
+
+    Controller controller;
 
     ControllerPresenter controllerPresenter;
 
@@ -66,11 +71,13 @@ public class GameScreen extends Screen
         this.sidebar = new Sidebar();
 
         // todo: move to another place
-        Jackal.setController(new Controller());
+        this.controller = new Controller();
+        this.controller.setEventHandler(this);
+        Jackal.setController(this.controller);
 
         Graphics g = this.game.getGraphics();
         this.controllerPresenter = new ControllerPresenter(g.getWidth(), g.getHeight());
-        this.controllerPresenter.bindController(Jackal.getController());
+        this.controllerPresenter.bindController(this.controller);
 
         this.hitBoxPaint = new Paint();
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);
@@ -133,7 +140,7 @@ public class GameScreen extends Screen
         // if(touchEvents.size() > 0) this.state = GameState.Running;
 
         // do touch event
-        if (controller.isStart()) this.state = GameState.Running;
+        // if (controller.isStart()) this.state = GameState.Running;
     }
 
     private void updateRunning(List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
@@ -352,7 +359,9 @@ public class GameScreen extends Screen
                 }
             }
         }*/
-        if(touchEvents.size() > 0) this.state = GameState.Running;
+        /*if(touchEvents.size() > 0) {
+            this.state = GameState.Running;
+        }*/
         // if(touchEvents.size() > 0) this.state = GameState.Running;
         /*if (controller.isStart()) {
             this.state = GameState.Running;
@@ -812,6 +821,36 @@ public class GameScreen extends Screen
         g.drawText("Game over", 150, 200, 100, Color.GREEN);
         g.drawText("You win!", 150, 300, 100, Color.GREEN);
         g.drawText("press start to next level", 150, 375, 50, Color.GREEN);
+    }
+
+    @Override
+    public void onButtonDown(int keyCode)
+    {
+        Log.d("GameScreen", "onButtonDown");
+    }
+
+    @Override
+    public void onButtonUp(int keyCode)
+    {
+        Log.d("GameScreen", "onButtonUp");
+
+        // any button for start game
+        if (this.state == GameState.Ready) {
+            this.state = GameState.Running;
+            return;
+        }
+
+        // is game paused and pres start
+        if (keyCode == KeyEvent.KEYCODE_BUTTON_START && this.state == GameState.Paused)
+        {
+            this.state = GameState.Running;
+            return;
+        }
+
+        // start for pause
+        if (keyCode == KeyEvent.KEYCODE_BUTTON_START && this.state == GameState.Running) {
+            this.state = GameState.Paused;
+        }
     }
 
     @Override

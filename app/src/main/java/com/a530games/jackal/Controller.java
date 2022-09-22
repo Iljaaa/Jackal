@@ -1,5 +1,7 @@
 package com.a530games.jackal;
 
+import android.view.KeyEvent;
+
 import com.a530games.framework.ControllerHandler;
 import com.a530games.framework.Input;
 import com.a530games.framework.TouchEventsCollection;
@@ -32,9 +34,14 @@ public class Controller
     private final Vector2 leftStick, rightStick;
 
     /**
-     * Pointer to save touch
+     * Touch pointer for youch
      */
     private int _leftStickPointer = -1, _rightStickPointer = -1;
+
+    /**
+     * Event handler
+     */
+    private ControllerEventHandler eventHandler;
 
     public boolean isStart() {
         return this.isStart;
@@ -45,8 +52,19 @@ public class Controller
         this.rightStick = new Vector2();
     }
 
+    public void setEventHandler(ControllerEventHandler eventHandler) {
+        this.eventHandler = eventHandler;
+    }
+
     public void updateByController(ControllerHandler controller)
     {
+        /*boolean newValue = controller.isA();
+        if (newValue != this.isA && this.eventHandler != null) {
+            this.isA = newValue;
+            if (newValue) this.eventHandler.onButtonDown(KeyEvent.KEYCODE_4);
+            else this.eventHandler.onButtonUp(KeyEvent.KEYCODE_4);
+        }*/
+
         this.isA = controller.isA();
         this.isB = controller.isB();
         this.isX = controller.isX();
@@ -57,7 +75,15 @@ public class Controller
         this.isR1 = controller.isR1();
         this.isR2 = controller.isR2();
 
-        this.isStart = controller.isStart();
+        // start button
+        boolean newValue = controller.isStart();
+        if (newValue != this.isStart && this.eventHandler != null) {
+            if (newValue) this.eventHandler.onButtonDown(KeyEvent.KEYCODE_BUTTON_START);
+            else this.eventHandler.onButtonUp(KeyEvent.KEYCODE_BUTTON_START);
+        }
+        this.isStart = newValue;
+
+        // select button
         this.isSelect = controller.isSelect();
 
         this.leftStick.set(controller.getLeftStickDirection());
