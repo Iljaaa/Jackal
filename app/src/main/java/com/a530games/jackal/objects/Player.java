@@ -12,6 +12,21 @@ import com.a530games.jackal.objects.enemies.RotateVehicle;
 
 public class Player extends RotateVehicle
 {
+    enum PlayerState {
+        OnLine,
+        Hit,
+
+        LevelFinish,
+
+        BlowUpBeforeDeath,
+        Dead
+    }
+
+    /**
+     * Player state
+     */
+    public PlayerState state = PlayerState.OnLine;
+
     /**
      * Player hit points
      */
@@ -19,6 +34,16 @@ public class Player extends RotateVehicle
 
     // задержка перед выстрелом
     private float fireDelay = 0;
+
+    /**
+     * Delay on hit
+     */
+    private float hitDelay = 0;
+
+    /**
+     * Delay on blink
+     */
+    private float blinkDelay  = 0;
 
     //
     public Vector2 turret = new Vector2(0, -1);
@@ -32,9 +57,13 @@ public class Player extends RotateVehicle
     //
     private Vector2 velocity;
 
-    public Player(int startX, int startY)
+    private PlayerEventHandler playerEventHandler;
+
+    public Player(int startX, int startY, PlayerEventHandler playerEventHandler)
     {
         super(startX, startY, Assets.player);
+
+        this.playerEventHandler = playerEventHandler;
 
         this.velocity = new Vector2();
 
@@ -51,6 +80,20 @@ public class Player extends RotateVehicle
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;
 
         // this.updateSprite(this.direction);
+        // update hit timmer
+        if (this.hitDelay > 0){
+            this.updateHitTimer(deltaTime);
+        }
+    }
+
+    private void updateHitTimer(float deltaTim)
+    {
+        if (this.hitDelay > 0) this.hitDelay -= deltaTim;
+
+        // delay is over
+        if (this.hitDelay <= 0) {
+            this.state = PlayerState.OnLine;
+        }
     }
 
     @Override
@@ -60,6 +103,8 @@ public class Player extends RotateVehicle
 
     public void move(float x, float y, float deltaTime, World world)
     {
+        // todo: think need her check user state
+
         this.velocity.set(x * this.speed, y * this.speed);
 
         super.move(this.velocity, deltaTime, world);
@@ -158,18 +203,52 @@ public class Player extends RotateVehicle
         // return new Bullet(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1);
     }
 
+    public boolean isOnline(){
+        return (this.state == PlayerState.OnLine);
+    }
+
     @Override
-    public void hit(int damage) {
+    public boolean hit(int damage)
+    {
         Log.d("Player", "hit");
+
+        if (this.hp <= 0) return false;
+        if (this.state == PlayerState.Dead) return false;
+
+        // check hit
+        if (this.state == PlayerState.Hit) return false;
+
+        this.hp--;
+
+        // hit
+        if (this.hp > 0)
+        {
+            this.state = PlayerState.Hit;
+            this.hitDelay = 1;
+
+            return true;
+        }
+
+        // you die
+        Log.d("Player", "Yoy diy");
+
+        this.state = PlayerState.Dead;
+
+        //
+        this.playerEventHandler.onPlayerDie();
+
+        // is diy is not hit?
+        return false;
     }
 
     @Override
     public boolean isDead() {
-        return false;
+        return this.state == PlayerState.Dead;
     }
 
     @Override
     public void setFireEventHandler(EnemyFireEventHandler fireEventHandler) {
 
     }
+
 }

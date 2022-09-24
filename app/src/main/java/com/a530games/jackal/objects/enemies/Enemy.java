@@ -46,7 +46,7 @@ public interface Enemy
     /**
      * Is enemy hit by payer bullet
      */
-    void hit(int damage);
+    boolean hit(int damage);
 
     /**
      * Setting event handler

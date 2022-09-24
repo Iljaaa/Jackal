@@ -2,11 +2,9 @@ package com.a530games.jackal.screens;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.text.method.Touch;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.a530games.framework.AndroidControllerInput;
 import com.a530games.framework.Game;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
@@ -139,7 +137,6 @@ public class GameScreen extends Screen implements ControllerEventHandler
         if (this.state == GameState.Paused) this.updatePaused(touchEvents);
         if (this.state == GameState.GameOver) this.updateGameOver(touchEvents);
 
-
         this.updateSidebar();
     }
 
@@ -155,6 +152,48 @@ public class GameScreen extends Screen implements ControllerEventHandler
 
     private void updateRunning(List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
     {
+
+        this.updatePlayer(controller, deltaTime);
+
+        // обновление мира
+        this.world.update(deltaTime);
+
+        // tmpppp
+        this.boomTimer -= deltaTime;
+        if (this.boomTimer <= 0) {
+            this.tempBoom.set(this.tempBoom.col+1, this.tempBoom.row);
+            if (this.tempBoom.col >= 8) this.tempBoom.col = 0;
+            this.boomTimer = 0.09f;
+        }
+
+        // обновление боковой информации
+        // this.sidebar.update(deltaTime);
+
+        //
+        if(this.world.gameOver) {
+            this.state = GameState.GameOver;
+        }
+
+        if(this.world.gameOverSuccess) {
+            this.state = GameState.GameOver;
+        }
+
+
+        // обновление рекорда
+        /*if(this.oldScore != this.world.score) {
+            this.oldScore = this.world.score;
+            this.score = "" + this.oldScore;
+            // if(Settings.soundEnabled) Assets.eat.play(1);
+        }*/
+    }
+
+    /**
+     * Update player move and fire
+     */
+    private void updatePlayer(Controller controller, float deltaTime)
+    {
+        if (!this.world.player.isOnline()) return;
+
         // move player by touch events
         /*int len = touchEvents.size();
         for(int i = 0; i < len; i++) {
@@ -276,12 +315,9 @@ public class GameScreen extends Screen implements ControllerEventHandler
         }
 
         // обработка поворота
-        int keyEventsLength = keyEvents.size();
+        /*int keyEventsLength = keyEvents.size();
         for(int i = 0; i < keyEventsLength; i++) {
             Input.KeyEvent event = keyEvents.get(i);
-            /*if (event.type == Input.KeyEvent.KEY_UP) {
-                if (event.keyCode == 32) isRight = false;
-            }*/
             if (event.type == Input.KeyEvent.KEY_DOWN) {
                 // fixme:
                 Log.d("key", String.valueOf(event.keyCode));
@@ -303,37 +339,6 @@ public class GameScreen extends Screen implements ControllerEventHandler
                     this.world.player.fire();
                 }
             }
-        }
-
-        // обновление мира
-        this.world.update(deltaTime);
-
-        // tmpppp
-        this.boomTimer -= deltaTime;
-        if (this.boomTimer <= 0) {
-            this.tempBoom.set(this.tempBoom.col+1, this.tempBoom.row);
-            if (this.tempBoom.col >= 8) this.tempBoom.col = 0;
-            this.boomTimer = 0.09f;
-        }
-
-        // обновление боковой информации
-        // this.sidebar.update(deltaTime);
-
-        //
-        if(this.world.gameOver) {
-            this.state = GameState.GameOver;
-        }
-
-        if(this.world.gameOverSuccess) {
-            this.state = GameState.GameOver;
-        }
-
-
-        // обновление рекорда
-        /*if(this.oldScore != this.world.score) {
-            this.oldScore = this.world.score;
-            this.score = "" + this.oldScore;
-            // if(Settings.soundEnabled) Assets.eat.play(1);
         }*/
     }
 
@@ -828,15 +833,24 @@ public class GameScreen extends Screen implements ControllerEventHandler
         Graphics g = game.getGraphics();
         g.drawText("Pause", 100, 200, 300, Color.RED);
     }
+
     private void drawGameOverUI()
     {
         Graphics g = game.getGraphics();
         /*g.drawPixmap(Assets.gameOver, 62, 100);
         g.drawPixmap(Assets.buttons, 128, 200, 0, 128, 64, 64);
         g.drawLine(0, 416, 480, 416, Color.BLACK);*/
-        g.drawText("Game over", 150, 200, 100, Color.GREEN);
-        g.drawText("You win!", 150, 300, 100, Color.GREEN);
-        g.drawText("press start to next level", 150, 375, 50, Color.GREEN);
+        if (this.world.gameOverSuccess) {
+            g.drawText("Game over", 150, 200, 100, Color.GREEN);
+            g.drawText("You win!", 150, 300, 100, Color.GREEN);
+            g.drawText("press start to next level", 150, 375, 50, Color.GREEN);
+        }
+        else {
+            g.drawText("Game over", 150, 200, 100, Color.RED);
+            g.drawText("You you lose!", 150, 300, 100, Color.RED);
+            g.drawText("Go cray, baby, phhh loh", 150, 375, 50, Color.RED);
+        }
+
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.a530games.jackal;
 
+import android.util.Log;
+
 import com.a530games.framework.Sound;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.map.Map;
@@ -7,6 +9,7 @@ import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.map.MapEventsHandler;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.EnemiesCollection;
+import com.a530games.jackal.objects.PlayerEventHandler;
 import com.a530games.jackal.objects.enemies.Commandos;
 import com.a530games.jackal.objects.enemies.Commandos2;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
@@ -18,7 +21,7 @@ import com.a530games.jackal.objects.PlayerBulletsCollection;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class World implements EnemyFireEventHandler, MapEventsHandler
+public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEventsHandler
 {
     // размер мира
     /*static final int WORLD_WIDTH = 10;
@@ -73,7 +76,7 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
         this.map = new Map();
         this.map.setEventHandler(this);
 
-        this.player = new Player(300, 300);
+        this.player = new Player(300, 300, this);
 
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
@@ -354,5 +357,11 @@ public class World implements EnemyFireEventHandler, MapEventsHandler
         if (Settings.soundEnabled) {
             Assets.tankFire.play(0.7f);
         }
+    }
+
+    @Override
+    public void onPlayerDie() {
+        Log.d("World", "Player dit");
+        this.gameOver = true;
     }
 }

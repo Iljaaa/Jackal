@@ -134,7 +134,7 @@ public class Sidebar
     {
         this.graphics.clear(Color.BLACK);
 
-        for (int i = 0; i <= this.data.hp; i++) {
+        for (int i = 0; i < this.data.hp; i++) {
             this.graphics.drawPixmap(Assets.hp, 30 + (i * 45), 30);
         }
 

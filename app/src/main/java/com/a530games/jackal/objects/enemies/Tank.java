@@ -334,9 +334,9 @@ public class Tank extends Vehicle
     }
 
     @Override
-    public void hit(int damage)
+    public boolean hit(int damage)
     {
-        if (this.hp <= 0) return;
+        if (this.hp <= 0) return false;
 
         this.hp--;
         if (this.hp == 0)
@@ -347,6 +347,8 @@ public class Tank extends Vehicle
         }
 
         this.playHitSound();
+
+        return true;
     }
 
     private void playHitSound ()

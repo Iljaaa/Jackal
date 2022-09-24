@@ -124,8 +124,9 @@ public class Commandos2 extends Vehicle
     }
 
     @Override
-    public void hit(int damage) {
+    public boolean hit(int damage) {
         Log.d("Commandos", "hit by damage");
+        return true;
     }
 
     /*private boolean fire()
