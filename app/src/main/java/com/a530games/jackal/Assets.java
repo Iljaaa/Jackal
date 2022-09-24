@@ -13,6 +13,8 @@ public class Assets {
     public static Pixmap player;
     public static Pixmap gun;
 
+    public static Pixmap hp;
+
     public static Pixmap tank;
 
     public static Pixmap man;
@@ -59,17 +61,20 @@ public class Assets {
 
     private static boolean isPart1Loaded = false;
     private static boolean isPart2Loaded = false;
+    private static boolean isPart3Loaded = false;
 
     public static void loadPart1(Graphics g, Audio a)
     {
         if (Assets.isPart1Loaded) return;
 
-        Assets.tank = g.newPixmap("images/tank.png", Graphics.PixmapFormat.RGB565);
         Assets.player = g.newPixmap("images/player.png", Graphics.PixmapFormat.RGB565);
+        Assets.gun = g.newPixmap("images/gun.png", Graphics.PixmapFormat.RGB565);
+        Assets.hp = g.newPixmap("images/hp.png", Graphics.PixmapFormat.RGB565);
+
+        Assets.tank = g.newPixmap("images/tank.png", Graphics.PixmapFormat.RGB565);
         Assets.bullet = g.newPixmap("images/bullet.png", Graphics.PixmapFormat.RGB565);
         Assets.bullet2 = g.newPixmap("images/bullet2.png", Graphics.PixmapFormat.RGB565);
         Assets.playerFire = g.newPixmap("images/player_fire.png", Graphics.PixmapFormat.RGB565);
-        Assets.gun = g.newPixmap("images/gun.png", Graphics.PixmapFormat.RGB565);
         Assets.man = g.newPixmap("images/man.png", Graphics.PixmapFormat.RGB565);
         Assets.man2 = g.newPixmap("images/man2.png", Graphics.PixmapFormat.RGB565);
 
@@ -104,6 +109,14 @@ public class Assets {
     {
         if (Assets.isPart2Loaded) return;
 
+
+        Assets.isPart2Loaded = true;
+    }
+
+    public static void loadPart3(Graphics g, Audio a)
+    {
+        if (Assets.isPart3Loaded) return;
+
         Assets.tankHit1 = a.newSound("sound/tank_hit_1.wav");
         Assets.tankHit2 = a.newSound("sound/tank_hit_2.wav");
         Assets.tankHit3 = a.newSound("sound/tank_hit_3.mp3");
@@ -111,7 +124,7 @@ public class Assets {
         Assets.tankBlow2 = a.newSound("sound/tank_blow_2.mp3");
         Assets.tankFire = a.newSound("sound/tank_fire.wav");
 
-        Assets.isPart2Loaded = true;
+        Assets.isPart3Loaded = true;
     }
 
 }

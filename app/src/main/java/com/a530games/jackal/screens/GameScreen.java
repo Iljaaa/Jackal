@@ -68,7 +68,15 @@ public class GameScreen extends Screen implements ControllerEventHandler
     {
         super(game);
         this.world = new World();
-        this.sidebar = new Sidebar();
+
+        // sidebar object
+        // todo: fix magic numbers
+        this.sidebar = new Sidebar(
+                640,
+                this.game.getGraphics().getWidth() - 640,
+                this.game.getGraphics().getHeight(),
+                this.game.getGraphics().getAssetManager()
+        );
 
         // todo: move to another place
         this.controller = new Controller();
@@ -130,8 +138,10 @@ public class GameScreen extends Screen implements ControllerEventHandler
         if (this.state == GameState.Running) this.updateRunning(keyEvents, controller, deltaTime);
         if (this.state == GameState.Paused) this.updatePaused(touchEvents);
         if (this.state == GameState.GameOver) this.updateGameOver(touchEvents);
-    }
 
+
+        this.updateSidebar();
+    }
 
     private void updateReady(TouchEventsCollection touchEvents, Controller controller)
     {
@@ -306,12 +316,6 @@ public class GameScreen extends Screen implements ControllerEventHandler
             this.boomTimer = 0.09f;
         }
 
-        // fixme: при завершении f[s выводить не будем
-        this.sidebar.setFps(this.game.getRenderView().fps);
-        this.sidebar.setPlayerAngle(this.world.player.direction);
-        this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
-        this.sidebar.setMapPos((int) Math.floor(this.world.map.x), (int) Math.floor(this.world.map.y));
-
         // обновление боковой информации
         // this.sidebar.update(deltaTime);
 
@@ -387,6 +391,17 @@ public class GameScreen extends Screen implements ControllerEventHandler
         }*/
     }
 
+    private void updateSidebar()
+    {
+        this.sidebar.setPlayerHp(this.world.player.hp);
+
+        // fixme: при завершении fps выводить не будем
+        this.sidebar.setFps(this.game.getRenderView().fps);
+        this.sidebar.setPlayerAngle(this.world.player.direction);
+        this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
+        this.sidebar.setMapPos((int) Math.floor(this.world.map.x), (int) Math.floor(this.world.map.y));
+    }
+
     @Override
     public void present(float deltaTime)
     {
@@ -460,32 +475,32 @@ public class GameScreen extends Screen implements ControllerEventHandler
 
     private void drawSidebar(Sidebar sidebar)
     {
-        // todo: make side bar drawwight object
         Graphics g = this.game.getGraphics();
-        //g.drawLine(0, 0, this.game.getGraphics().getWidth(), this.game.getGraphics().getHeight(), Color.YELLOW);
-
-        g.drawRect(640, 200, 100, 200, Color.RED);
-        g.drawRect(640, 200, 400, 200, Color.RED);
 
         // если сайдбар не нуждается в отрисовке
-        if (!sidebar.isNeedRedraw()) {
-            return;
+        if (sidebar.isNeedRedraw()) {
+            sidebar.reDraw();
         }
 
-        this.game.getGraphics().drawText("fps: " + sidebar.fps, 650, 50, 20, Color.MAGENTA);
-        this.game.getGraphics().drawText("player: " + sidebar.playerX+ "x"+sidebar.playerY, 650, 80, 20, Color.MAGENTA);
-        this.game.getGraphics().drawText("angle: " + sidebar.playerAngle.x + "x" + sidebar.playerAngle.y, 650, 110, 20, Color.MAGENTA);
-        this.game.getGraphics().drawText("map: " + sidebar.mapX+ "x"+sidebar.mapY, 650, 140, 20, Color.MAGENTA);
+        // draw sibar image
+        g.drawBitmap(
+                this.sidebar.drawBitmap,
+                this.sidebar.leftPosition,
+                0);
+
+
+        // this.game.getGraphics().drawText("fps: " + sidebar.fps, 650, 50, 20, Color.MAGENTA);
+        // this.game.getGraphics().drawText("player: " + sidebar.playerX+ "x"+sidebar.playerY, 650, 80, 20, Color.MAGENTA);
+        // this.game.getGraphics().drawText("angle: " + sidebar.playerAngle.x + "x" + sidebar.playerAngle.y, 650, 110, 20, Color.MAGENTA);
+        // this.game.getGraphics().drawText("map: " + sidebar.mapX+ "x"+sidebar.mapY, 650, 140, 20, Color.MAGENTA);
 
         // рисуем линю отделяющею сайдбар
-        if (this.game.isLandscape()) {
+        /*if (this.game.isLandscape()) {
             g.drawLine(640, 100, 640, 300, Color.GREEN);
         }
         else {
             g.drawLine(100, 640, 300, 640, Color.GREEN);
-        }
-
-        // this.sidebar.setRedraw();
+        }*/
 
     }
 
@@ -514,6 +529,7 @@ public class GameScreen extends Screen implements ControllerEventHandler
                 640);
 
 
+        // draw on map
         for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
             for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
             {

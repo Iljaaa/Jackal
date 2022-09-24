@@ -22,12 +22,16 @@ public class LoadingScreen extends Screen
     {
         // пропускаем пару секунд для промо видел
 
-        if (this.timer > 2) {
+        if (this.timer > 1) {
             Assets.loadPart1(this.game.getGraphics(), this.game.getAudio());
         }
 
-        if (this.timer > 3) {
+        if (this.timer > 2) {
             Assets.loadPart2(this.game.getGraphics(), this.game.getAudio());
+        }
+
+        if (this.timer > 3) {
+            Assets.loadPart3(this.game.getGraphics(), this.game.getAudio());
         }
 
         if (this.timer > 5) {

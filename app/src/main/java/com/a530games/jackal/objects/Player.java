@@ -1,5 +1,7 @@
 package com.a530games.jackal.objects;
 
+import android.util.Log;
+
 import com.a530games.framework.Graphics;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
@@ -10,18 +12,24 @@ import com.a530games.jackal.objects.enemies.RotateVehicle;
 
 public class Player extends RotateVehicle
 {
+    /**
+     * Player hit points
+     */
+    public int hp = 2;
 
     // задержка перед выстрелом
     private float fireDelay = 0;
 
+    //
     public Vector2 turret = new Vector2(0, -1);
-    // private Vector targetAngle;
 
+    //
     public Sprite gun;
 
     // скорость перемещения
     protected float speed = 100;
 
+    //
     private Vector2 velocity;
 
     public Player(int startX, int startY)
@@ -152,7 +160,7 @@ public class Player extends RotateVehicle
 
     @Override
     public void hit(int damage) {
-
+        Log.d("Player", "hit");
     }
 
     @Override

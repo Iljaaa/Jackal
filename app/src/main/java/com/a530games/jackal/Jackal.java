@@ -24,8 +24,6 @@ public class Jackal extends AndroidGame
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // calculate sidebar size
     }
 
     @Override

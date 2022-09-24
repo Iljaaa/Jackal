@@ -1,14 +1,35 @@
 package com.a530games.jackal;
 
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.util.Log;
 
 import com.a530games.framework.AndroidGraphics;
+import com.a530games.framework.Graphics;
 import com.a530games.framework.math.Vector2;
+import com.a530games.jackal.map.Map;
 
 public class Sidebar
 {
+    /**
+     * Sidebar position on screen
+     */
+    public int leftPosition;
+
+    /**
+     * Sidebar sizze
+     */
+    public int width, height;
+
+    private DataClass data;
+
+    public class DataClass {
+        public int hp;
+    }
 
     private boolean isNeedRedraw = true;
 
@@ -22,8 +43,32 @@ public class Sidebar
     public int mapX = 0;
     public int mapY = 0;
 
-    public Sidebar() {
+    // draw objects
+    Rect drawRect;
+    Canvas canvas;
+    public Bitmap drawBitmap;
+
+    Graphics graphics;
+
+    public Sidebar(int leftPosition, int width, int height, AssetManager assets)
+    {
+        this.leftPosition = leftPosition;
+        this.width = width;
+        this.height = height;
+
+        this.data = new DataClass();
+
         this.playerAngle = new Vector2();
+
+        // big map rect for a drawing
+        this.drawRect = new Rect(0, 0, width, height);
+
+        this.canvas = new Canvas();
+
+        this.drawBitmap = Bitmap.createBitmap(this.drawRect.width(), this.drawRect.height(), Bitmap.Config.ARGB_8888);
+        this.canvas.setBitmap(this.drawBitmap);
+
+        this.graphics = new AndroidGraphics(assets, this.drawBitmap);
     }
 
     /**
@@ -31,6 +76,17 @@ public class Sidebar
      */
     public boolean isNeedRedraw(){
         return this.isNeedRedraw;
+    }
+
+    /**
+     * Set player hp
+     * @param hp player hp
+     */
+    public void setPlayerHp(int hp) {
+        if (this.data.hp != hp) {
+            this.isNeedRedraw = true;
+            this.data.hp = hp;
+        }
     }
 
     public void setFps(int fps){
@@ -72,6 +128,24 @@ public class Sidebar
     public void setRedraw()
     {
         this.isNeedRedraw = false;
+    }
+
+    public void reDraw()
+    {
+        this.graphics.clear(Color.BLACK);
+
+        for (int i = 0; i <= this.data.hp; i++) {
+            this.graphics.drawPixmap(Assets.hp, 30 + (i * 45), 30);
+        }
+
+        this.graphics.drawText("fps: " + this.fps, 30, 100, 20, Color.MAGENTA);
+        this.graphics.drawText("player: " + this.playerX+ "x"+this.playerY, 30, 130, 20, Color.MAGENTA);
+        this.graphics.drawText("angle: " + this.playerAngle.x + "x" + this.playerAngle.y, 30, 160, 20, Color.MAGENTA);
+        this.graphics.drawText("map: " + this.mapX+ "x"+this.mapY, 30, 190, 20, Color.MAGENTA);
+
+        Log.d("Sidebar", "redraw");
+
+        this.setRedraw();
     }
 
     /*public void draw ()

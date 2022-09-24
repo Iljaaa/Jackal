@@ -24,7 +24,7 @@ public class Map implements CellEventCallbackHandler
     public float y = 0;
 
     // min|max map position
-    public int mapMinX = 0,  minMinY = 0;
+    public int mapMinX = 0,  mapMinY = 0;
 
     // object min max position
     private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
@@ -107,7 +107,7 @@ public class Map implements CellEventCallbackHandler
         // fixme: magic numbers
         // 640 its screenSize
         this.mapMinX = -1 * ((collums * Map.SPRITE_WIDTH) - 640);
-        this.minMinY = -1 * ((rows * Map.SPRITE_HEIGHT) - 640);
+        this.mapMinY = -1 * ((rows * Map.SPRITE_HEIGHT) - 640);
 
         // calculate min|max objects position
         this.objectMinX = Map.SPRITE_WIDTH;
@@ -126,7 +126,7 @@ public class Map implements CellEventCallbackHandler
         this.x = -1 * (player.hitBox.left - 320 - 20);
         this.y = -1 * (player.hitBox.top - 320 - 20);
         if (this.x < this.mapMinX) this.x = this.mapMinX;
-        if (this.y < this.minMinY) this.y = this.minMinY;
+        if (this.y < this.mapMinY) this.y = this.mapMinY;
 
         // init fields
         this.fields = new MapCell[this.mapRows][this.mapCols];
@@ -521,7 +521,7 @@ public class Map implements CellEventCallbackHandler
             // move map on left
             this.y = this.y - (bottomScreen - 440);
 
-            if (this.y < this.minMinY) this.y = this.minMinY;
+            if (this.y < this.mapMinY) this.y = this.mapMinY;
         }
 
         // on the left border
@@ -636,7 +636,7 @@ public class Map implements CellEventCallbackHandler
     @Override
     public void spownEnemy(MapCell spownCell, Enemy enemy)
     {
-        if (this.eventsHandler == null) return;;
+        if (this.eventsHandler == null) return;
 
         // retrow to world
         this.eventsHandler.spownEnemyOnCell(spownCell, enemy);
