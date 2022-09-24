@@ -603,37 +603,13 @@ public class GameScreen extends Screen implements ControllerEventHandler
     {
         Graphics g = this.game.getGraphics();
 
-        // int playerScreenX = Math.round(this.world.player.hitBox.left);
-        int playerScreenX = this.world.map.screenLeftPotion(this.world.player.hitBox.left);
-        // int playerSourceY = Math.round(this.world.player.hitBox.top);
-        int playerSourceY = this.world.map.screenTopPotion(this.world.player.hitBox.top);
+        // draw play
+        this.world.player.present(g, this.world);
 
-        // this.drawPlayerHitBox(g, playerScreenX, playerSourceY);
-
-        /*
-         * 12 = 0.5 * 64 (player sprite width) - 40 (player hitbox width)
-         */
-        g.drawPixmap(
-            this.world.player.sprite.image,
-            Math.round(playerScreenX) - 12, //
-            Math.round(playerSourceY) - 12,
-                this.world.player.sprite.getLeft(),
-                this.world.player.sprite.getTop(),
-                this.world.player.sprite.width, // 64,
-            this.world.player.sprite.height); // 64);
-
-        // draw turret
-        g.drawPixmap(
-                this.world.player.gun.image,
-                Math.round(playerScreenX) - 12, //
-                Math.round(playerSourceY) - 12,
-                this.world.player.gun.getLeft(),
-                this.world.player.gun.getTop(),
-                this.world.player.gun.width, // 64,
-                this.world.player.gun.height); // 64);
-
+        // line of player angle
         this.drawPlayerAngle(g);
 
+        // line of player turret angle
         this.drawPlayerTurretAngle(g);
 
         // player hitbox

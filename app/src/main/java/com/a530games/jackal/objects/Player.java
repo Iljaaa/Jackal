@@ -30,7 +30,7 @@ public class Player extends RotateVehicle
     /**
      * Player hit points
      */
-    public int hp = 2;
+    public int hp = 3;
 
     // задержка перед выстрелом
     private float fireDelay = 0;
@@ -44,6 +44,16 @@ public class Player extends RotateVehicle
      * Delay on blink
      */
     private float blinkDelay  = 0;
+
+    /**
+     *
+     */
+    private final float blinkTime = 0.1f;
+
+    /**
+     * Blink on hit
+     */
+    private boolean isBlink = false;
 
     //
     public Vector2 turret = new Vector2(0, -1);
@@ -90,14 +100,52 @@ public class Player extends RotateVehicle
     {
         if (this.hitDelay > 0) this.hitDelay -= deltaTim;
 
+        this.blinkDelay -= deltaTim;
+        if (this.blinkDelay <= 0) {
+            this.isBlink = !this.isBlink;
+            this.blinkDelay = this.blinkTime;
+        }
+
         // delay is over
         if (this.hitDelay <= 0) {
             this.state = PlayerState.OnLine;
+            this.isBlink = false;
         }
     }
 
     @Override
-    public void present(Graphics ge, World world) {
+    public void present(Graphics g, World world)
+    {
+        // int playerScreenX = Math.round(this.world.player.hitBox.left);
+        int playerScreenX = world.map.screenLeftPotion(this.hitBox.left);
+        // int playerSourceY = Math.round(this.world.player.hitBox.top);
+        int playerSourceY = world.map.screenTopPotion(this.hitBox.top);
+
+        // this.drawPlayerHitBox(g, playerScreenX, playerSourceY);
+
+        /*
+         * 12 = 0.5 * 64 (player sprite width) - 40 (player hitbox width)
+         */
+        if (!this.isBlink) {
+            g.drawPixmap(
+                    this.sprite.image,
+                    Math.round(playerScreenX) - 12, //
+                    Math.round(playerSourceY) - 12,
+                    this.sprite.getLeft(),
+                    this.sprite.getTop(),
+                    this.sprite.width, // 64,
+                    this.sprite.height); // 64);
+
+            // draw turret
+            g.drawPixmap(
+                    this.gun.image,
+                    Math.round(playerScreenX) - 12, //
+                    Math.round(playerSourceY) - 12,
+                    this.gun.getLeft(),
+                    this.gun.getTop(),
+                    this.gun.width, // 64,
+                    this.gun.height); // 64);
+        }
 
     }
 
@@ -225,6 +273,8 @@ public class Player extends RotateVehicle
         {
             this.state = PlayerState.Hit;
             this.hitDelay = 1;
+            this.blinkDelay = this.blinkTime;
+            this.isBlink = true;
 
             return true;
         }
