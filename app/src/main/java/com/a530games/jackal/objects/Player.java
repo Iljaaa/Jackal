@@ -12,7 +12,10 @@ import com.a530games.jackal.objects.enemies.RotateVehicle;
 
 public class Player extends RotateVehicle
 {
-    enum PlayerState {
+    enum PlayerState
+    {
+        // Unloading,
+
         OnLine,
         Hit,
 
@@ -30,7 +33,7 @@ public class Player extends RotateVehicle
     /**
      * Player hit points
      */
-    public int hp = 3;
+    public int hp = 1;
 
     // задержка перед выстрелом
     private float fireDelay = 0;
@@ -251,8 +254,8 @@ public class Player extends RotateVehicle
         // return new Bullet(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), 1);
     }
 
-    public boolean isOnline(){
-        return (this.state == PlayerState.OnLine);
+    public boolean isOnline() {
+        return (this.state == PlayerState.OnLine || this.state == PlayerState.Hit);
     }
 
     @Override
