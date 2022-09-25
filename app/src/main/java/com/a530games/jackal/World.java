@@ -71,12 +71,13 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     // static float aTick = TICK_INITIAL;
 
 
-    public World()
+    public World(int playerStartHp)
     {
         this.map = new Map();
         this.map.setEventHandler(this);
 
         this.player = new Player(300, 300, this);
+        this.player.hp = playerStartHp;
 
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();

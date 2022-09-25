@@ -68,10 +68,10 @@ public class GameScreen extends Screen implements ControllerEventHandler
     Sprite tempBoom;
     float boomTimer;
 
-    public GameScreen(Game game)
+    public GameScreen(Game game, int playerStartHp)
     {
         super(game);
-        this.world = new World();
+        this.world = new World(playerStartHp);
 
         // sidebar object
         // todo: fix magic numbers
@@ -875,8 +875,10 @@ public class GameScreen extends Screen implements ControllerEventHandler
         }
 
         if (this.state == GameState.GameOver) {
-            if (keyCode == KeyEvent.KEYCODE_BUTTON_START) {
-                this.game.setScreen(new LoadingLevelScreen(this.game));
+            if (keyCode == KeyEvent.KEYCODE_BUTTON_START)
+            {
+                // go to loading screen with start user hp
+                this.game.setScreen(new LoadingLevelScreen(this.game, Jackal.pickContinue()));
             }
         }
     }

@@ -13,9 +13,16 @@ public class LoadingLevelScreen extends Screen
 
     boolean isAssetsIsLoaded;
 
-    public LoadingLevelScreen(Game game) {
+    /**
+     * Plaey hp on level start
+     */
+    int startPlayerHp;
+
+    public LoadingLevelScreen(Game game, int playerStartHp) {
         super(game);
         this.isAssetsIsLoaded = false;
+
+        this.startPlayerHp = playerStartHp;
     }
 
     @Override
@@ -33,7 +40,7 @@ public class LoadingLevelScreen extends Screen
         if (this.timer > 2)
         {
             // start loading
-            GameScreen gs = new GameScreen(this.game);
+            GameScreen gs = new GameScreen(this.game, this.startPlayerHp);
 
             // test init map
             // gs.world.map.init(100, 100, this.game.getGraphics().getAssetManager(), gs.world.player);

@@ -16,6 +16,8 @@ public class Jackal extends AndroidGame
 
     private static Controller controller;
 
+    private static int continues = 3;
+
     public static Random getRandom(){
         if (Jackal.random == null) Jackal.random = new Random();
         return Jackal.random;
@@ -37,5 +39,16 @@ public class Jackal extends AndroidGame
 
     public static Controller getController() {
         return Jackal.controller;
+    }
+
+    public static int getUerStartHp(){
+        return Jackal.continues;
+    }
+
+    public static int pickContinue()
+    {
+        if (Jackal.continues > 1) Jackal.continues--;
+
+        return Jackal.continues;
     }
 }

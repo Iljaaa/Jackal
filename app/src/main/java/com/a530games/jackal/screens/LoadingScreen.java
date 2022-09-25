@@ -36,7 +36,7 @@ public class LoadingScreen extends Screen
 
         if (this.timer > 5) {
             // start loading
-            this.game.setScreen(new LoadingLevelScreen(this.game));
+            this.game.setScreen(new LoadingLevelScreen(this.game, Jackal.getUerStartHp()));
             return;
         }
 

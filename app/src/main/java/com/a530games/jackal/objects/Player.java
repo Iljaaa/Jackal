@@ -33,7 +33,7 @@ public class Player extends RotateVehicle
     /**
      * Player hit points
      */
-    public int hp = 1;
+    public int hp = 3;
 
     // задержка перед выстрелом
     private float fireDelay = 0;
