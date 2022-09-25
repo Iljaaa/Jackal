@@ -24,7 +24,7 @@ public interface Graphics {
     void drawCircle(int x, int y, int radius, int color);
     void drawCircle(int x, int y, int radius, Paint paint);
 
-    // todo: remove this methods
+
     void drawPixmap(Pixmap pixmap, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight);
     void drawPixmap(Pixmap pixmap, int x, int y);
 
@@ -32,6 +32,7 @@ public interface Graphics {
     void drawBitmap(Bitmap bitmap, int x, int y);
 
     void drawText(String text, int x, int y, int textSize, int color);
+    void drawText(String text, int x, int y, Paint paint);
 
     int getWidth();
     int getHeight();

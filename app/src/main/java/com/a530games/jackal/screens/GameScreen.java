@@ -17,6 +17,8 @@ import com.a530games.jackal.ControllerEventHandler;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.map.MapCell;
+import com.a530games.jackal.menu.GameOverLoseMenu;
+import com.a530games.jackal.menu.Menu;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
@@ -52,11 +54,15 @@ public class GameScreen extends Screen implements ControllerEventHandler
     // int oldScore = 0;
     // String score = "0";
 
-    // paint for the hit box
-    Paint hitBoxPaint;
+    /**
+     * Paint fro player hitbox rect
+     */
+    Paint playerHitBoxPaint;
 
-    // paint for the hit box
-    Paint otherHitBoxPaint;
+    /**
+     * MEnu on lose level
+     */
+    Menu GameOverLoseMenu;
 
     //
     Sprite tempBoom;
@@ -85,15 +91,12 @@ public class GameScreen extends Screen implements ControllerEventHandler
         this.controllerPresenter = new ControllerPresenter(g.getWidth(), g.getHeight());
         this.controllerPresenter.bindController(this.controller);
 
-        this.hitBoxPaint = new Paint();
-        this.hitBoxPaint.setStyle(Paint.Style.STROKE);
-        this.hitBoxPaint.setStrokeWidth(1);
-        this.hitBoxPaint.setColor(Color.YELLOW);
+        this.playerHitBoxPaint = new Paint();
+        this.playerHitBoxPaint.setStyle(Paint.Style.STROKE);
+        this.playerHitBoxPaint.setStrokeWidth(1);
+        this.playerHitBoxPaint.setColor(Color.GREEN);
 
-        this.otherHitBoxPaint = new Paint();
-        this.otherHitBoxPaint.setStyle(Paint.Style.STROKE);
-        this.otherHitBoxPaint.setStrokeWidth(1);
-        this.otherHitBoxPaint.setColor(Color.GREEN);
+        this.GameOverLoseMenu = new GameOverLoseMenu(150, 200);
 
         // Assets.music.setLooping(true);
         // Assets.music.setVolume(0.5f);
@@ -132,7 +135,7 @@ public class GameScreen extends Screen implements ControllerEventHandler
             }
         }*/
 
-        if (this.state == GameState.Ready) this.updateReady(touchEvents, controller);
+        if (this.state == GameState.Ready) this.updateReady(touchEvents, controller, deltaTime);
         if (this.state == GameState.Running) this.updateRunning(keyEvents, controller, deltaTime);
         if (this.state == GameState.Paused) this.updatePaused(touchEvents);
         if (this.state == GameState.GameOver) this.updateGameOver(touchEvents);
@@ -140,10 +143,13 @@ public class GameScreen extends Screen implements ControllerEventHandler
         this.updateSidebar();
     }
 
-    private void updateReady(TouchEventsCollection touchEvents, Controller controller)
+    private void updateReady(TouchEventsCollection touchEvents, Controller controller, float deltaTime)
     {
         // if got fouch go to run
         if(touchEvents.hasDown()) this.state = GameState.Running;
+
+        this.GameOverLoseMenu.update(controller, deltaTime);
+
         // if(touchEvents.size() > 0) this.state = GameState.Running;
 
         // do touch event
@@ -617,7 +623,7 @@ public class GameScreen extends Screen implements ControllerEventHandler
     }
 
     private void drawPlayerHitBox (Graphics g) {
-        g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.otherHitBoxPaint);
+        g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.playerHitBoxPaint);
     }
 
     /**
@@ -794,7 +800,10 @@ public class GameScreen extends Screen implements ControllerEventHandler
         Graphics g = game.getGraphics();
         // g.drawPixmap(Assets.ready, 47, 100);
         g.drawText("Ready", 100, 100, 100, Color.RED);
-        g.drawText("Tab screen no press start to begin you journey", 100, 150, 30, Color.RED);
+        g.drawText("Tab screen or press start to begin you journey", 100, 150, 30, Color.RED);
+
+
+        this.GameOverLoseMenu.present(g);
     }
 
     private void drawRunningUI() {
@@ -813,18 +822,19 @@ public class GameScreen extends Screen implements ControllerEventHandler
     private void drawGameOverUI()
     {
         Graphics g = game.getGraphics();
-        /*g.drawPixmap(Assets.gameOver, 62, 100);
-        g.drawPixmap(Assets.buttons, 128, 200, 0, 128, 64, 64);
-        g.drawLine(0, 416, 480, 416, Color.BLACK);*/
+        int textTopPosition = 150;
         if (this.world.gameOverSuccess) {
-            g.drawText("Game over", 150, 200, 100, Color.GREEN);
-            g.drawText("You win!", 150, 300, 100, Color.GREEN);
-            g.drawText("press start to next level", 150, 375, 50, Color.GREEN);
+            g.drawText("Game over", 150, textTopPosition, 100, Color.GREEN);
+            g.drawText("You win!", 150, 300, textTopPosition + 100, Color.GREEN);
+            g.drawText("press start to next level", 150, textTopPosition + 175, 50, Color.GREEN);
         }
         else {
-            g.drawText("Game over", 150, 200, 100, Color.RED);
-            g.drawText("You you lose!", 150, 300, 100, Color.RED);
-            g.drawText("Go cray, baby, phhh loh", 150, 375, 50, Color.RED);
+            // draw lose menu
+            this.GameOverLoseMenu.present(g);
+
+            g.drawText("Game over", 150, textTopPosition, 100, Color.RED);
+            g.drawText("You you lose!", 150, textTopPosition + 100, 100, Color.RED);
+            g.drawText("Go cray, baby, phhh loh", 150, textTopPosition + 175, 50, Color.RED);
         }
 
     }
@@ -847,16 +857,32 @@ public class GameScreen extends Screen implements ControllerEventHandler
         }
 
         // is game paused and pres start
-        if (keyCode == KeyEvent.KEYCODE_BUTTON_START && this.state == GameState.Paused)
+        if (this.state == GameState.Paused)
         {
-            this.state = GameState.Running;
+            if (keyCode == KeyEvent.KEYCODE_BUTTON_START) {
+                this.state = GameState.Running;
+            }
+
             return;
         }
 
         // start for pause
-        if (keyCode == KeyEvent.KEYCODE_BUTTON_START && this.state == GameState.Running) {
-            this.state = GameState.Paused;
+        if (this.state == GameState.Running)
+        {
+            if (keyCode == KeyEvent.KEYCODE_BUTTON_START) {
+                this.state = GameState.Paused;
+            }
         }
+
+        if (this.state == GameState.GameOver) {
+            if (keyCode == KeyEvent.KEYCODE_BUTTON_START) {
+                this.game.setScreen(new LoadingLevelScreen(this.game));
+            }
+        }
+    }
+
+    private void buttonUpOnReady(int keyCode) {
+
     }
 
     @Override

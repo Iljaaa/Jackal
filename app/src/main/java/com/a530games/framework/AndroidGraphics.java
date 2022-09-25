@@ -183,7 +183,13 @@ public class AndroidGraphics implements Graphics
         this.paint.setTextSize(textSize);
         this.paint.setStyle(Paint.Style.FILL);
         this.paint.setColor(color);
-        this.canvas.drawText(text, x, y, this.paint);
+        // this.canvas.drawText(text, x, y, this.paint);
+        this.drawText(text, x, y, this.paint);
+    }
+
+    @Override
+    public void drawText(String text, int x, int y, Paint paint) {
+        this.canvas.drawText(text, x, y, paint);
     }
 
     @Override
