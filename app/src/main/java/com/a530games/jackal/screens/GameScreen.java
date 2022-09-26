@@ -71,6 +71,7 @@ public class GameScreen extends Screen implements ControllerEventHandler
     public GameScreen(Game game, int playerStartHp)
     {
         super(game);
+
         this.world = new World(playerStartHp);
 
         // sidebar object
@@ -82,10 +83,10 @@ public class GameScreen extends Screen implements ControllerEventHandler
                 this.game.getGraphics().getAssetManager()
         );
 
-        // todo: move to another place
-        this.controller = new Controller();
+        // get controller from jackal
+        this.controller = Jackal.getController();
         this.controller.setEventHandler(this);
-        Jackal.setController(this.controller);
+        // Jackal.setController(this.controller);
 
         Graphics g = this.game.getGraphics();
         this.controllerPresenter = new ControllerPresenter(g.getWidth(), g.getHeight());

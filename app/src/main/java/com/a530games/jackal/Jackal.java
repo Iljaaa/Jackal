@@ -1,6 +1,7 @@
 package com.a530games.jackal;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -16,7 +17,11 @@ public class Jackal extends AndroidGame
 
     private static Controller controller;
 
+    /**
+     * mp comtinues count
+     */
     private static int continues = 3;
+
 
     public static Random getRandom(){
         if (Jackal.random == null) Jackal.random = new Random();
@@ -24,7 +29,11 @@ public class Jackal extends AndroidGame
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        // не подходящее мето для этого кода
+        Jackal.setController(new Controller());
+
         super.onCreate(savedInstanceState);
     }
 
