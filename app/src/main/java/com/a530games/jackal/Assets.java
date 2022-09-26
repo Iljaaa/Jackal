@@ -43,6 +43,7 @@ public class Assets {
 
     public static Pixmap botLine;
 
+    public static Pixmap smallBlow;
 
     public static Sound fire;
     public static Sound playerHit;
@@ -92,6 +93,7 @@ public class Assets {
         Assets.tree2 = g.newPixmap("images/tree2.png", Graphics.PixmapFormat.RGB565);
 
         Assets.boom = g.newPixmap("images/boom.png", Graphics.PixmapFormat.RGB565);
+        Assets.smallBlow = g.newPixmap("images/smallblow.png", Graphics.PixmapFormat.RGB565);
 
         Assets.spown = g.newPixmap("images/spown.png", Graphics.PixmapFormat.RGB565);
 

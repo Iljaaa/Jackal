@@ -5,10 +5,13 @@ import android.util.Log;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.Jackal;
+import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.RotateVehicle;
+import com.a530games.jackal.objects.enemies.Tank;
 
 public class Player extends RotateVehicle
 {
@@ -72,6 +75,23 @@ public class Player extends RotateVehicle
 
     private PlayerEventHandler playerEventHandler;
 
+    // blows data
+
+    /**
+     * Blows after death
+     */
+    private SpriteWithAnimation[] blows;
+
+    /**
+     * One blow timer
+     */
+    private float nextBlowIn = 0.5f;
+
+    /**
+     * Summery blow up timer
+     */
+    private float summeryBlowUpTimer = 5f;
+
     public Player(int startX, int startY, PlayerEventHandler playerEventHandler)
     {
         super(startX, startY, Assets.player);
@@ -84,6 +104,14 @@ public class Player extends RotateVehicle
         this.gun.set(0, 0);
 
         this.sprite.set(1, 0);
+
+
+        this.blows = new SpriteWithAnimation[5];
+        for (int i = 0; i < this.blows.length; i++) {
+            this.blows[i] = new SpriteWithAnimation(Assets.smallBlow);
+            this.blows[i].setSpriteSize(16, 16);
+            this.blows[i].setScreenMargin(16, 16);
+        }
     }
 
     @Override
@@ -97,6 +125,8 @@ public class Player extends RotateVehicle
         if (this.hitDelay > 0){
             this.updateHitTimer(deltaTime);
         }
+
+        this.updateBlow(deltaTime);
     }
 
     private void updateHitTimer(float deltaTim)
@@ -114,6 +144,53 @@ public class Player extends RotateVehicle
             this.state = PlayerState.OnLine;
             this.isBlink = false;
         }
+    }
+
+    private void updateBlow (float deltaTime)
+    {
+        // is blows finish
+        /*this.summeryBlowUpTimer -= deltaTime;
+        if (this.summeryBlowUpTimer <= 0)
+        {
+            this.state = Tank.STATE_DEAD;
+
+            if (this.dieEventHandler != null) {
+                this.dieEventHandler.enemyDie(this);
+            }
+
+            return;
+        }*/
+
+        for (int i = 0; i < this.blows.length; i++)
+        {
+            // SpriteWithAnimation blow = ;
+            if (!this.blows[i].isStart) continue;
+            this.blows[i].update(deltaTime);
+        }
+
+        this.nextBlowIn -= deltaTime;
+        if (nextBlowIn <= 0)
+        {
+            this.nextBlowIn = 0.05f;
+            for (int i = 0; i < this.blows.length; i++)
+            {
+                // SpriteWithAnimation blow = this.blows[i];
+                if (this.blows[i].isStart) continue;
+                // this.blow.start(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop());
+
+                // todo: fix magic numbers
+                this.blows[i].start(
+                        this.hitBox.getCenterLeft() + (Jackal.getRandom().nextFloat() * 17 * (Jackal.getRandom().nextBoolean() ? -1 : 1)) - 20,
+                        this.hitBox.getCenterTop() + (Jackal.getRandom().nextFloat() * 17 * (Jackal.getRandom().nextBoolean() ? -1 : 1)) - 20
+//                        this.hitBox.getCenterLeft() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 8,
+//                        this.hitBox.getCenterTop() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 8
+                );
+
+                break;
+            }
+        }
+
+
     }
 
     @Override
@@ -148,6 +225,12 @@ public class Player extends RotateVehicle
                     this.gun.getTop(),
                     this.gun.width, // 64,
                     this.gun.height); // 64);
+        }
+
+        // draw blow
+        for (int i = 0; i < this.blows.length; i++) {
+            // SpriteWithAnimation blow = this.blows[i];
+            this.blows[i].present(g, world);
         }
 
     }

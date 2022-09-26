@@ -92,8 +92,8 @@ public class Tank extends Vehicle
 
         this.blows = new SpriteWithAnimation[5];
         for (int i = 0; i < this.blows.length; i++) {
-            this.blows[i] = new SpriteWithAnimation(Assets.playerFire);
-            this.blows[i].setSpriteSize(32, 32);
+            this.blows[i] = new SpriteWithAnimation(Assets.smallBlow);
+            this.blows[i].setSpriteSize(16, 16);
             this.blows[i].setScreenMargin(16, 16);
         }
 
@@ -214,17 +214,19 @@ public class Tank extends Vehicle
         this.nextBlowIn -= deltaTime;
         if (nextBlowIn <= 0)
         {
-            this.nextBlowIn = 0.5f * Jackal.getRandom().nextFloat();
+            this.nextBlowIn = 0.1f;
             for (int i = 0; i < this.blows.length; i++)
             {
                 // SpriteWithAnimation blow = this.blows[i];
                 if (this.blows[i].isStart) continue;
                 // this.blow.start(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop());
                 // todo: fix magic numbers
+
                 this.blows[i].start(
                         this.hitBox.getCenterLeft() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 32,
                         this.hitBox.getCenterTop() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 32
                 );
+
             }
         }
 

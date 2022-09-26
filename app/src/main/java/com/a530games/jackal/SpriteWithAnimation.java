@@ -41,7 +41,7 @@ public class SpriteWithAnimation extends Sprite
         if (this.timer <= 0) {
             this.timer = this.animationDelay;
             this.col++;
-            if (this.col >= 2) {
+            if (this.col >= 3) {
                 this.col = 0;
                 this.isStart = false;
             }
