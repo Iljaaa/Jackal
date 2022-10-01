@@ -22,7 +22,7 @@ public class MenuItem
     /**
      * Wrap rect for touch select
      */
-    private Rect wrap;
+    private final Rect wrap;
 
     /**
      * Pinter image
@@ -62,7 +62,7 @@ public class MenuItem
     /**
      * Set image of pointer
      */
-    public void setPointerSprite(Sprite pointerSprite){
+    public void setPointerSprite(Sprite pointerSprite) {
         this.pointerSprite = pointerSprite;
     }
 
@@ -83,29 +83,16 @@ public class MenuItem
     }
 
     /**
-     *
      * @param isActive is this active item in menu
-     * @param isSelected is this item select user
      */
-    public void present(Graphics g, boolean isActive, boolean isSelected)
+    public void present(Graphics g, boolean isActive)
     {
         // draw string
         if (this.blink) {
-            g.drawText(
-                    this.text,
-                    this.wrap.left + 100,
-                    this.wrap.top + 35,
-                    this.blinkFont
-            );
+            this.presentText(g, this.blinkFont);
         }
-        else
-        {
-            g.drawText(
-                    this.text,
-                    this.wrap.left + 100,
-                    this.wrap.top + 35,
-                    this.font
-            );
+        else {
+            this.presentText(g, this.font);
         }
 
 
@@ -134,5 +121,20 @@ public class MenuItem
         }
 
         // draw temp wrap
+        g.drawRect(this.wrap, Color.GREEN);
+    }
+
+    public void presentText (Graphics g, Paint paint)
+    {
+        g.drawText(
+                this.text,
+                this.wrap.left + 100,
+                this.wrap.top + 35,
+                paint
+        );
+    }
+
+    public boolean isPointInside(int x, int y) {
+        return this.wrap.contains(x, y);
     }
 }

@@ -3,6 +3,7 @@ package com.a530games.jackal.menu;
 import android.util.Log;
 
 import com.a530games.framework.Graphics;
+import com.a530games.framework.Input;
 import com.a530games.framework.TouchEventsCollection;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
@@ -13,15 +14,10 @@ import java.util.ArrayList;
 
 public abstract class BasicMenu implements Menu
 {
+
     /**
-     *
+     * Menu items
      */
-    protected final int buttonWidth = 400;
-
-    protected final int buttonHeight = 50;
-
-    protected final int buttonMargin = 10;
-
     protected ArrayList<MenuItem> items;
 
     /**
@@ -32,7 +28,7 @@ public abstract class BasicMenu implements Menu
     /**
      * Pointer image
      */
-    private Sprite pointer;
+    private final Sprite pointer;
 
     /**
      * Current active menu item
@@ -47,7 +43,7 @@ public abstract class BasicMenu implements Menu
     /**
      * Delay before rise select event
      */
-    private float blinkFullTimer = 0;
+    private float beforeSelectCallbackEventTimer = 0;
 
     /**
      * Next item select delay
@@ -78,28 +74,73 @@ public abstract class BasicMenu implements Menu
     public void update(Controller controller, TouchEventsCollection touchEvents, float deltaTime)
     {
         // if user select item and it blink
-        if (this.blinkFullTimer > 0)
+        if (this.beforeSelectCallbackEventTimer > 0)
         {
-            this.blinkFullTimer -= deltaTime;
+            this.beforeSelectCallbackEventTimer -= deltaTime;
 
-            // if summary blink time is finish
-            if (this.blinkFullTimer < 0)
-            {
-                // this.blink = false;
-                Log.d("GameOverLoseMenu", "Item selected " + String.valueOf(this.activeIndex));
-
-                // drop selected ints
-                this.selectedIndex = - 1;
-
+            // if summary blink time ends
+            if (this.beforeSelectCallbackEventTimer < 0) {
+                this.clearSelectAndRiseEvent();
                 return;
             }
         }
 
-        // if controller push button
-        if (controller.isA()) {
-            this.selectItem();
+        // process user input
+        if (this.selectedIndex < 0)
+        {
+            //
+            this.updateControls(controller, touchEvents);
+
+            // update menu select flip by controller
+            this.updateFlip(controller, deltaTime);
         }
 
+        // update items
+        int count = this.items.size();
+        for (int i = 0; i < count; i++) {
+            MenuItem it = this.items.get(i);
+            it.update(deltaTime, (this.selectedIndex == i));
+        }
+
+    }
+
+    /**
+     * update user input
+     */
+    private void updateControls (Controller controller, TouchEventsCollection touchEvents)
+    {
+        // if controller push button
+        if (controller.isA()) {
+            this.selectItem(this.activeIndex);
+        }
+
+        // update select by touch
+        // move player by touch events
+        int len = touchEvents.size();
+        for(int i = 0; i < len; i++) {
+            Input.TouchEvent event = touchEvents.get(i); //.get(i);
+            if (event == null) continue;
+
+            if (Input.TouchEvent.TOUCH_DOWN == event.type)
+            {
+                // draw points
+                int count = this.items.size();
+                for (int menuIndex = 0; menuIndex < count; menuIndex++) {
+                    MenuItem it = this.items.get(menuIndex);
+                    if (it.isPointInside(event.x, event.y)) {
+                        this.selectItem(menuIndex);
+                    }
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Update menu flip by controller axis
+     */
+    private void updateFlip (Controller controller, float deltaTime)
+    {
         // move item
         this.flipDelay -= deltaTime;
         if (flipDelay > 0) return;
@@ -119,14 +160,15 @@ public abstract class BasicMenu implements Menu
                 this.flipDelay = 0.2f;
             }
         }
+    }
 
-        // update items
-        int count = this.items.size();
-        for (int i = 0; i < count; i++) {
-            MenuItem it = this.items.get(i);
-            it.update(deltaTime, (this.selectedIndex == i));
-        }
+    private void clearSelectAndRiseEvent ()
+    {
+        // this.blink = false;
+        Log.d("GameOverLoseMenu", "Item selected " + String.valueOf(this.activeIndex));
 
+        // drop selected ints
+        this.selectedIndex = - 1;
     }
 
     @Override
@@ -140,18 +182,24 @@ public abstract class BasicMenu implements Menu
 
             it.present(
                     g,
-                    (this.activeIndex == i), // is active
-                    false);
+                    (this.activeIndex == i) // , // is active
+                    // (this.activeIndex == this.selectedIndex)
+            );
 
         }
     }
 
 
-    private void selectItem()
+    private void selectItem(int index)
     {
-        this.blinkFullTimer = 2;
+        if (this.selectedIndex > -1) {
+            return;
+        }
 
-        this.selectedIndex = this.activeIndex;
+        this.beforeSelectCallbackEventTimer = 2;
+
+        this.selectedIndex = index;
+        this.activeIndex = index;
 
         // this.blinkDelay = this.blinkDefaultDelay;
         // this.blink = true;

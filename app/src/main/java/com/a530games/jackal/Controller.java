@@ -140,8 +140,7 @@ public class Controller
         // update is input type button
         // this.updateTouchEventsByButtons(touchEvents, presenter);
 
-        // update is input type sticks
-
+        // update sticks stick position by on screen controller
         this.updateLeftStickPositionByTouch(touchEvents, presenter);
         this.updateRightStickPositionByTouch(touchEvents, presenter);
     }

@@ -53,11 +53,4 @@ public class GameOverLoseMenu extends BasicMenu
                 (int) Math.ceil(this.position.y + 250)
         ));
     }
-
-
-
-
-    private void presentString() {
-
-    }
 }
