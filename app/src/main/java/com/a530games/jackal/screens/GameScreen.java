@@ -49,11 +49,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
     Sidebar sidebar;
 
-    /**
-     * todo: canbe deleted
-     */
-    Controller controller;
-
     ControllerPresenter controllerPresenter;
 
     // int oldScore = 0;
@@ -93,14 +88,15 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 this.game.getGraphics().getAssetManager()
         );
 
-        // get controller from jackal
-        this.controller = Jackal.getController();
-        this.controller.setEventHandler(this);
+        // atache events handler to controller
+        Controller controller = Jackal.getController();
+        controller.setEventHandler(this);
+        // Jackal.getController().setEventHandler(this);
         // Jackal.setController(this.controller);
 
         Graphics g = this.game.getGraphics();
         this.controllerPresenter = new ControllerPresenter(g.getWidth(), g.getHeight());
-        this.controllerPresenter.bindController(this.controller);
+        this.controllerPresenter.bindController(controller);
 
         this.playerHitBoxPaint = new Paint();
         this.playerHitBoxPaint.setStyle(Paint.Style.STROKE);
