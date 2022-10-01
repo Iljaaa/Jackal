@@ -18,7 +18,7 @@ import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.menu.GameOverLoseMenu;
-import com.a530games.jackal.menu.Menu;
+import com.a530games.jackal.menu.BasicMenu;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
@@ -62,7 +62,7 @@ public class GameScreen extends Screen implements ControllerEventHandler
     /**
      * MEnu on lose level
      */
-    Menu GameOverLoseMenu;
+    BasicMenu GameOverLoseMenu;
 
     //
     Sprite tempBoom;
@@ -147,9 +147,10 @@ public class GameScreen extends Screen implements ControllerEventHandler
     private void updateReady(TouchEventsCollection touchEvents, Controller controller, float deltaTime)
     {
         // if got fouch go to run
-        if(touchEvents.hasDown()) this.state = GameState.Running;
+        // if(touchEvents.hasDown()) this.state = GameState.Running;
 
-        this.GameOverLoseMenu.update(controller, deltaTime);
+        // update menu
+        this.GameOverLoseMenu.update(controller, touchEvents, deltaTime);
 
         // if(touchEvents.size() > 0) this.state = GameState.Running;
 
@@ -631,7 +632,6 @@ public class GameScreen extends Screen implements ControllerEventHandler
      * Draw line of layer turret angle
      * @param g Graphics object
      */
-    // private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)
     private void drawPlayerAngle (Graphics g) // , int playerScreenX, int playerScreenY)
     {
         int centerX = this.world.map.screenLeftPotion(this.world.player.hitBox.getCenterLeft());
@@ -649,7 +649,6 @@ public class GameScreen extends Screen implements ControllerEventHandler
      * Draw line of layer turret angle
      * @param g Graphics object
      */
-    // private void drawPlayerAngle (Graphics g, int playerScreenX, int playerScreenY)
     private void drawPlayerTurretAngle (Graphics g) // , int playerScreenX, int playerScreenY)
     {
         // int centerX = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
