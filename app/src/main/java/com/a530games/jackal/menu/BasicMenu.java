@@ -46,6 +46,11 @@ public abstract class BasicMenu implements Menu
     private float beforeSelectCallbackEventTimer = 0;
 
     /**
+     * Select event handler
+     */
+    private MenuEventHandler eventHandler = null;
+
+    /**
      * Next item select delay
      */
     float flipDelay = 0;
@@ -59,6 +64,10 @@ public abstract class BasicMenu implements Menu
 
         this.pointer = new Sprite(Assets.player);
         this.pointer.set(2, 1);
+    }
+
+    public void setEventHandler (MenuEventHandler menuEventHandler){
+        this.eventHandler = menuEventHandler;
     }
 
 
@@ -166,6 +175,10 @@ public abstract class BasicMenu implements Menu
     {
         // this.blink = false;
         Log.d("GameOverLoseMenu", "Item selected " + String.valueOf(this.activeIndex));
+
+        if (this.eventHandler != null) {
+            this.eventHandler.onMenuItemSelect(this.items.get(this.selectedIndex).getCode());
+        }
 
         // drop selected ints
         this.selectedIndex = - 1;

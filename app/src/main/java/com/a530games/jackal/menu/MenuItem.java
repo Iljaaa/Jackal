@@ -20,6 +20,11 @@ public class MenuItem
     private final String text;
 
     /**
+     * String code
+     */
+    private final String code;
+
+    /**
      * Wrap rect for touch select
      */
     private final Rect wrap;
@@ -37,9 +42,10 @@ public class MenuItem
     private final Paint blinkFont;
     private final Paint rectPaint;
 
-    public MenuItem(String text, int left, int top, int right, int bottom)
+    public MenuItem(String text, String code, int left, int top, int right, int bottom)
     {
         this.text = text;
+        this.code = code;
 
         this.wrap = new Rect(left, top, right, bottom);
 
@@ -57,6 +63,10 @@ public class MenuItem
         this.rectPaint.setColor(Color.RED);
         this.rectPaint.setStyle(Paint.Style.STROKE);
         this.rectPaint.setStrokeWidth(2);
+    }
+
+    public String getCode () {
+        return this.code;
     }
 
     /**

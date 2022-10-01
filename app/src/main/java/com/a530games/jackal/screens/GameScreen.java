@@ -19,6 +19,8 @@ import com.a530games.jackal.Sprite;
 import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.menu.GameOverLoseMenu;
 import com.a530games.jackal.menu.BasicMenu;
+import com.a530games.jackal.menu.MenuEventHandler;
+import com.a530games.jackal.menu.PauseMenu;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
@@ -32,7 +34,7 @@ import java.util.List;
 /**
  *
  */
-public class GameScreen extends Screen implements ControllerEventHandler
+public class GameScreen extends Screen implements ControllerEventHandler, MenuEventHandler
 {
     enum GameState {
         Ready,
@@ -47,6 +49,9 @@ public class GameScreen extends Screen implements ControllerEventHandler
 
     Sidebar sidebar;
 
+    /**
+     * todo: canbe deleted
+     */
     Controller controller;
 
     ControllerPresenter controllerPresenter;
@@ -60,9 +65,14 @@ public class GameScreen extends Screen implements ControllerEventHandler
     Paint playerHitBoxPaint;
 
     /**
-     * MEnu on lose level
+     * Menu on lose level
      */
-    BasicMenu GameOverLoseMenu;
+    BasicMenu gameOverLoseMenu;
+
+    /**
+     * Menu on pause
+     */
+    BasicMenu pauseMenu;
 
     //
     Sprite tempBoom;
@@ -97,7 +107,11 @@ public class GameScreen extends Screen implements ControllerEventHandler
         this.playerHitBoxPaint.setStrokeWidth(1);
         this.playerHitBoxPaint.setColor(Color.GREEN);
 
-        this.GameOverLoseMenu = new GameOverLoseMenu(150, 200);
+        this.pauseMenu = new PauseMenu(150, 200);
+        this.pauseMenu.setEventHandler(this);
+
+        this.gameOverLoseMenu = new GameOverLoseMenu(150, 200);
+        this.gameOverLoseMenu.setEventHandler(this);
 
         // Assets.music.setLooping(true);
         // Assets.music.setVolume(0.5f);
@@ -138,8 +152,8 @@ public class GameScreen extends Screen implements ControllerEventHandler
 
         if (this.state == GameState.Ready) this.updateReady(touchEvents, controller, deltaTime);
         if (this.state == GameState.Running) this.updateRunning(keyEvents, controller, deltaTime);
-        if (this.state == GameState.Paused) this.updatePaused(touchEvents);
-        if (this.state == GameState.GameOver) this.updateGameOver(touchEvents);
+        if (this.state == GameState.Paused) this.updatePaused(touchEvents, controller, deltaTime);
+        if (this.state == GameState.GameOver) this.updateGameOver(touchEvents, controller, deltaTime);
 
         this.updateSidebar();
     }
@@ -150,7 +164,6 @@ public class GameScreen extends Screen implements ControllerEventHandler
         // if(touchEvents.hasDown()) this.state = GameState.Running;
 
         // update menu
-        this.GameOverLoseMenu.update(controller, touchEvents, deltaTime);
 
         // if(touchEvents.size() > 0) this.state = GameState.Running;
 
@@ -160,7 +173,6 @@ public class GameScreen extends Screen implements ControllerEventHandler
 
     private void updateRunning(List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
     {
-
         this.updatePlayer(controller, deltaTime);
 
         // обновление мира
@@ -350,8 +362,11 @@ public class GameScreen extends Screen implements ControllerEventHandler
         }*/
     }
 
-    private void updatePaused(TouchEventsCollection touchEvents)
+    private void updatePaused(TouchEventsCollection touchEvents, Controller controller, float deltaTime)
     {
+
+        this.pauseMenu.update(controller, touchEvents, deltaTime);
+
         /*int len = touchEvents.size();
         for(int i = 0; i < len; i++) {
             Input.TouchEvent event = touchEvents.get(i);
@@ -385,8 +400,11 @@ public class GameScreen extends Screen implements ControllerEventHandler
         }*/
     }
 
-    private void updateGameOver(TouchEventsCollection touchEvents)
+    private void updateGameOver(TouchEventsCollection touchEvents, Controller controller, float deltaTime)
     {
+
+        this.gameOverLoseMenu.update(controller, touchEvents, deltaTime);
+
         // определяяем клик для перехода в главное меню
         /*int len = touchEvents.size();
         for(int i = 0; i < len; i++) {
@@ -798,12 +816,10 @@ public class GameScreen extends Screen implements ControllerEventHandler
     private void drawReadyUI()
     {
         Graphics g = game.getGraphics();
-        // g.drawPixmap(Assets.ready, 47, 100);
-        g.drawText("Ready", 100, 100, 100, Color.RED);
-        g.drawText("Tab screen or press start to begin you journey", 100, 150, 30, Color.RED);
 
+        this.drawTitle(g, "Ready");
+        this.drawSecondTitle(g, "Tab screen or press start to begin you journey");
 
-        this.GameOverLoseMenu.present(g);
     }
 
     private void drawRunningUI() {
@@ -814,29 +830,41 @@ public class GameScreen extends Screen implements ControllerEventHandler
         g.drawPixmap(Assets.buttons, 256, 416, 0, 64, 64, 64);*/
         // g.drawText("Fire!!!!", 150, 200, 100, Color.RED);
     }
-    private void drawPausedUI() {
-        Graphics g = game.getGraphics();
-        g.drawText("Pause", 100, 200, 300, Color.RED);
+
+    private void drawPausedUI()
+    {
+        Graphics g = this.game.getGraphics();
+        this.drawTitle(g, "Pause");
+
+        this.pauseMenu.present(g);
     }
 
     private void drawGameOverUI()
     {
         Graphics g = game.getGraphics();
-        int textTopPosition = 150;
+        // int textTopPosition = 150;
+
+        this.drawTitle(g, "Game over");
+
         if (this.world.gameOverSuccess) {
-            g.drawText("Game over", 150, textTopPosition, 100, Color.GREEN);
-            g.drawText("You win!", 150, 300, textTopPosition + 100, Color.GREEN);
-            g.drawText("press start to next level", 150, textTopPosition + 175, 50, Color.GREEN);
+            this.drawSecondTitle(g, "You win!");
+            // g.drawText("press start to next level", 150, textTopPosition + 175, 50, Color.GREEN);
         }
         else {
-            // draw lose menu
-            this.GameOverLoseMenu.present(g);
-
-            g.drawText("Game over", 150, textTopPosition, 100, Color.RED);
-            g.drawText("You you lose!", 150, textTopPosition + 100, 100, Color.RED);
-            g.drawText("Go cray, baby, phhh loh", 150, textTopPosition + 175, 50, Color.RED);
+            this.drawSecondTitle(g, "You you lose!");
+            // g.drawText("Go cray, baby, phhh loh", 150, textTopPosition + 175, 50, Color.RED);
         }
 
+        // draw lose menu
+        this.gameOverLoseMenu.present(g);
+    }
+
+    private void drawTitle (Graphics g, String title) {
+        g.drawText(title, 100, 120, 150, Color.RED);
+    }
+
+    private void drawSecondTitle (Graphics g, String title) {
+        g.drawText(title, 100, 170, 30, Color.RED);
     }
 
     @Override
@@ -850,21 +878,21 @@ public class GameScreen extends Screen implements ControllerEventHandler
     {
         Log.d("GameScreen", "onButtonUp");
 
-        // any button for start game
+        // is in state ready to start
         if (this.state == GameState.Ready) {
             this.state = GameState.Running;
             return;
         }
 
         // is game paused and pres start
-        if (this.state == GameState.Paused)
+        /*if (this.state == GameState.Paused)
         {
             if (keyCode == KeyEvent.KEYCODE_BUTTON_START) {
                 this.state = GameState.Running;
             }
 
             return;
-        }
+        }*/
 
         // start for pause
         if (this.state == GameState.Running)
@@ -874,18 +902,38 @@ public class GameScreen extends Screen implements ControllerEventHandler
             }
         }
 
-        if (this.state == GameState.GameOver) {
+        /*if (this.state == GameState.GameOver) {
             if (keyCode == KeyEvent.KEYCODE_BUTTON_START)
             {
                 // go to loading screen with start user hp
-                this.game.setScreen(new LoadingLevelScreen(this.game, Jackal.pickContinue()));
+                this.restartLevel(Jackal.pickContinue());
             }
+        }*/
+    }
+
+    @Override
+    public void onMenuItemSelect(String menuCode)
+    {
+        Log.d("GameScreen", "Menu select: "+menuCode);
+
+        switch (menuCode) {
+            case PauseMenu.PAUSE_MENU_CONTINUE:
+                this.state = GameScreen.GameState.Running;
+                break;
+            case PauseMenu.PAUSE_MENU_RESTART:
+                this.restartLevel(Jackal.getUerStartHp());
+                break;
+            case GameOverLoseMenu.GLM_RESTART:
+                // restart wight use continue
+                this.restartLevel(Jackal.pickContinue());
+                break;
         }
     }
 
-    private void buttonUpOnReady(int keyCode) {
-
+    private void restartLevel(int userHp){
+        this.game.setScreen(new LoadingLevelScreen(this.game, userHp));
     }
+
 
     @Override
     public void pause() {

@@ -1,23 +1,18 @@
 package com.a530games.jackal.menu;
 
-import android.util.Log;
-
-import com.a530games.framework.Graphics;
-import com.a530games.framework.TouchEventsCollection;
-import com.a530games.framework.math.Vector2;
-import com.a530games.jackal.Assets;
-import com.a530games.jackal.Controller;
-import com.a530games.jackal.Sprite;
-
 public class GameOverLoseMenu extends BasicMenu
 {
+    public static final String GLM_RESTART = "GLM_RESTART";
+    public static final String GLM_BACK_TO_MAIN_MENU = "GLM_BACK_TO_MAIN_MENU";
 
     public GameOverLoseMenu(int x, int y)
     {
         super(x, y);
 
+        // todo: move strings to constants
         this.addItem(new MenuItem(
                 "RESTART",
+                GameOverLoseMenu.GLM_RESTART,
                 (int) Math.ceil(this.position.x),
                 (int) Math.ceil(this.position.y),
                 (int) Math.ceil(this.position.x + 400),
@@ -25,13 +20,15 @@ public class GameOverLoseMenu extends BasicMenu
         ));
 
         this.addItem(new MenuItem(
-                "OTHER RESTART",
+                "BACK TO MAIN MENU",
+                GameOverLoseMenu.GLM_BACK_TO_MAIN_MENU,
                 (int) Math.ceil(this.position.x),
                 (int) Math.ceil(this.position.y + 50),
                 (int) Math.ceil(this.position.x + 400),
                 (int) Math.ceil(this.position.y + 100)
         ));
-        this.addItem(new MenuItem(
+
+        /*this.addItem(new MenuItem(
                 "OTHER RESTART 1",
                 (int) Math.ceil(this.position.x),
                 (int) Math.ceil(this.position.y + 100),
@@ -51,6 +48,6 @@ public class GameOverLoseMenu extends BasicMenu
                 (int) Math.ceil(this.position.y + 200),
                 (int) Math.ceil(this.position.x + 400),
                 (int) Math.ceil(this.position.y + 250)
-        ));
+        ));*/
     }
 }
