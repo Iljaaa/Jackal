@@ -131,7 +131,7 @@ public class MenuItem
         }
 
         // draw temp wrap
-        g.drawRect(this.wrap, Color.GREEN);
+        // g.drawRect(this.wrap, Color.GREEN);
     }
 
     public void presentText (Graphics g, Paint paint)

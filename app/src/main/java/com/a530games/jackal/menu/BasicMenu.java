@@ -97,11 +97,11 @@ public abstract class BasicMenu implements Menu
         // process user input
         if (this.selectedIndex < 0)
         {
-            //
-            this.updateControls(controller, touchEvents);
-
             // update menu select flip by controller
             this.updateFlip(controller, deltaTime);
+
+            //
+            this.updateControls(controller, touchEvents);
         }
 
         // update items
@@ -118,10 +118,6 @@ public abstract class BasicMenu implements Menu
      */
     private void updateControls (Controller controller, TouchEventsCollection touchEvents)
     {
-        // if controller push button
-        if (controller.isA()) {
-            this.selectItem(this.activeIndex);
-        }
 
         // update select by touch
         // move player by touch events
@@ -143,6 +139,10 @@ public abstract class BasicMenu implements Menu
             }
         }
 
+        // if controller push button
+        if (controller.isA()) {
+            this.selectItem(this.activeIndex);
+        }
     }
 
     /**
