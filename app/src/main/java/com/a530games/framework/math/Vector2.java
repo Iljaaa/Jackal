@@ -27,6 +27,10 @@ public class Vector2
         return new Vector2( this.x, this.y );
     }
 
+    /**
+     * @param x x position
+     * @param y y position
+     */
     public void set(float x, float y) {
         this.x = x;
         this.y = y;

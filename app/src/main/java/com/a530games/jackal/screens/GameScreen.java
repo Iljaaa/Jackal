@@ -69,6 +69,28 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
      */
     BasicMenu pauseMenu;
 
+    /**
+     * Mep screen width in pixels
+     * used in draw
+     */
+    public int mapScreenWidthInPixels; // = 800
+
+    /**
+     * Mep screen height in pixels
+     */
+    public int mapScreenHeightInPixels; // = 640
+
+    /**
+     * Mep screen width in pixels
+     * used in draw
+     */
+    private final int mapScreenWidthInBlocks; //  = 10;
+
+    /**
+     * Mep screen height in blocks
+     */
+    private final int mapScreenHeightInBlocks; //  = 10;
+
     //
     Sprite tempBoom;
     float boomTimer;
@@ -77,6 +99,18 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     {
         super(game);
 
+        // из размера экрана получаел количество квадратов на поле
+        int screenWidth = this.game.getGraphics().getWidth();
+
+        // count full blocks on screen
+        this.mapScreenWidthInBlocks = (int) Math.floor(screenWidth / (float) Jackal.BLOCK_WIDTH);
+        this.mapScreenHeightInBlocks = (int) Math.floor(this.game.getGraphics().getHeight() / (float) Jackal.BLOCK_HEIGHT);
+
+        // calculate screen size
+        this.mapScreenWidthInPixels = this.mapScreenWidthInBlocks * Jackal.BLOCK_WIDTH;
+        this.mapScreenHeightInPixels = this.mapScreenHeightInBlocks * Jackal.BLOCK_HEIGHT;
+
+        // create world width calculated map size
         this.world = new World(playerStartHp);
 
         // sidebar object
@@ -441,7 +475,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.drawWorld(this.world);
 
         // рисуем сайдбар
-        this.drawSidebar(this.sidebar);
+        // this.drawSidebar(this.sidebar);
 
         if (state == GameState.Running) this.drawRunningUI();
         if (state == GameState.Ready) this.drawReadyUI();
@@ -481,8 +515,10 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // draw player
         this.drawPlayer();
 
+        //
         this.drawEnemies();
 
+        //
         this.drawBullets();
 
         //
@@ -546,13 +582,14 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         Graphics g = this.game.getGraphics();
 
         // draw back part of map
+        // todo: fix magic numbers
         g.drawBitmap(
                 this.world.map.drawBitmap,
                 0,
                 0,
                 -1 * (int) Math.floor(this.world.map.x),
                 -1 * (int )Math.floor(this.world.map.y),
-                640,
+                this.mapScreenWidthInPixels,
                 640);
 
 

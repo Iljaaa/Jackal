@@ -9,22 +9,47 @@ import android.graphics.Rect;
 
 import com.a530games.framework.AndroidGraphics;
 import com.a530games.framework.Graphics;
+import com.a530games.framework.helpers.FloatPoint;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.enemies.Enemy;
 
 public class Map implements CellEventCallbackHandler
 {
+
+    /**
+     * sprite height
+     * @deprecated use Jackal.BLOCK_HEIGHT
+     */
     public static final int SPRITE_HEIGHT = 64;
+
+    /**
+     * sprite width
+     * @deprecated use Jackal.BLOCK_WIDTH
+     */
     public static final int SPRITE_WIDTH = 64;
 
     // map position
     public float x = 0;
     public float y = 0;
 
+    /**
+     * Max map position
+     * calculated on init
+     * checked on move map by player position
+     */
+    private final Vector2 mapMaxPosition;
+
+    /**
+     * Screen rect for calculate map position
+     */
+    private final Rect playerScreenRect;
+
     // min|max map position
-    public int mapMinX = 0,  mapMinY = 0;
+    // public int mapMinX = 0,  mapMinY = 0;
 
     // object min max position
     private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
@@ -59,12 +84,18 @@ public class Map implements CellEventCallbackHandler
     {
         // this.fields = new MapCell[mapRows][mapCols];
         // this.fields[3][2] = new MapCell();
+
+        this.mapMaxPosition = new Vector2();
+        this.playerScreenRect = new Rect();
     }
 
     public void setEventHandler(MapEventsHandler eventHandler) {
         this.eventsHandler = eventHandler;
     }
 
+    /**
+     * todo: move to math helper
+     */
     public static boolean isIntersectsTwoRect(FloatRect r1, FloatRect r2)
     {
         //
@@ -88,26 +119,31 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
-     * Loading map sprite
-     */
-    public void loadMapAssets () {
-
-    }
-
-    /**
      * Prepare map
+     * @param mapScreenWidth map screen size round by blocks count
+     * @param mapScreenHeight map screen size round by blocks count
      */
-    public void init (int collums, int rows, AssetManager assets, Player player)
+    public void init (Level level, Graphics g, Player player, int mapScreenWidth, int mapScreenHeight)
     {
         // map size in cols
-        this.mapCols = collums;
-        this.mapRows = rows;
+        this.mapCols = level.getMapWidth();
+        this.mapRows = level.getMapHeight();
 
         // calculate max map positions`
         // fixme: magic numbers
-        // 640 its screenSize
-        this.mapMinX = -1 * ((collums * Map.SPRITE_WIDTH) - 640);
-        this.mapMinY = -1 * ((rows * Map.SPRITE_HEIGHT) - 640);
+        this.mapMaxPosition.set(
+            // -1 * ((this.mapCols * Map.SPRITE_WIDTH) - 640),
+            -1 * ((this.mapCols * Map.SPRITE_WIDTH) - mapScreenWidth),
+            -1 * ((this.mapRows * Map.SPRITE_HEIGHT) - mapScreenHeight)
+        );
+
+        // calculate screen rect for move map position
+        this.playerScreenRect.set (
+            200,
+            200,
+            g.getWidth() - 200,
+            g.getHeight() - 200
+        );
 
         // calculate min|max objects position
         this.objectMinX = Map.SPRITE_WIDTH;
@@ -115,18 +151,15 @@ public class Map implements CellEventCallbackHandler
         this.objectMinY = Map.SPRITE_HEIGHT;
         this.objectMaxY = (this.mapRows * Map.SPRITE_HEIGHT) - Map.SPRITE_HEIGHT;
 
-        // this.playerStartX = 400;
-        // this.playerStartY = 1100;
-        // move player on start position
-        // player.hitBox.moveTo(400, 1100);
+        // move player on map position
         player.hitBox.moveTo(400, 1500);
 
         // calculate start map position
         // after move player
         this.x = -1 * (player.hitBox.left - 320 - 20);
         this.y = -1 * (player.hitBox.top - 320 - 20);
-        if (this.x < this.mapMinX) this.x = this.mapMinX;
-        if (this.y < this.mapMinY) this.y = this.mapMinY;
+        if (this.x < this.mapMaxPosition.x) this.x = (int) Math.ceil(this.mapMaxPosition.x);
+        if (this.y < this.mapMaxPosition.y) this.y = (int) Math.ceil(this.mapMaxPosition.y);
 
         // init fields
         this.fields = new MapCell[this.mapRows][this.mapCols];
@@ -142,7 +175,12 @@ public class Map implements CellEventCallbackHandler
         c.isRock = true;*/
 
         // big map rect for a drawing
-        this.drawRect = new Rect(0, 0, collums * Map.SPRITE_WIDTH, rows * Map.SPRITE_HEIGHT);
+        this.drawRect = new Rect(
+                0,
+                0,
+                this.mapCols * Map.SPRITE_WIDTH,
+                this.mapRows * Map.SPRITE_HEIGHT
+        );
 
         this.testCanvas = new Canvas();
         this.testPaint = new Paint();
@@ -151,7 +189,7 @@ public class Map implements CellEventCallbackHandler
         this.testCanvas.setBitmap(this.drawBitmap);
         // this.testCanvas.getClipBounds(this.mapRect);
 
-        this.backgroundGraphic = new AndroidGraphics(assets, this.drawBitmap);
+        this.backgroundGraphic = new AndroidGraphics(g.getAssetManager(), this.drawBitmap);
 
         // draw objects
         // this.b = new BitmapFactory();
@@ -372,6 +410,9 @@ public class Map implements CellEventCallbackHandler
         this.fields[row][col] = new Beach(row, col);
     }
 
+    /**
+     * Drawing background image
+     */
     public void draw()
     {
         // this.g.drawRect(100, 100, 200, 200, Color.RED);
@@ -439,7 +480,7 @@ public class Map implements CellEventCallbackHandler
     public void update(Player player, float deltaTime)
     {
         // move map
-        this.updateMapPosition(player);
+        this.updateMapPosition(player.getHitBox().getCenter());
 
         // update draw position
         this.updateMapOptimizatonFields();
@@ -490,47 +531,58 @@ public class Map implements CellEventCallbackHandler
         if (this.drawMaxRow > this.mapRows) this.drawMaxRow = this.mapRows;
     }
 
-    private void updateMapPosition (Player player)
+    /**
+     * Update map position by player
+     */
+    private void updateMapPosition (FloatPoint playerHitboxCenter)
     {
         // todo fix magic numbers
 
         // on top
-        int topOnScreen = this.screenTopPotion(player.hitBox.top);
-        if (topOnScreen < 200)
+        int topOnScreen = this.screenTopPotion(playerHitboxCenter.top);
+        // if (topOnScreen < 200)
+        if (topOnScreen < this.playerScreenRect.top)
         {
             // move map on left
-            this.y = this.y + (200 - topOnScreen);
+            this.y = this.y + (this.playerScreenRect.top - topOnScreen);
+            // this.y = this.y + (200 - topOnScreen);
 
             if (this.y > 0) this.y = 0;
         }
 
+        // on the left border
+        int leftOnScreen = this.screenLeftPotion(playerHitboxCenter.left);
+        if (leftOnScreen < this.playerScreenRect.left)
+        // if (leftOnScreen < 200)
+        {
+            this.x = this.x + (this.playerScreenRect.left - leftOnScreen);
+            // this.x = this.x + (200 - leftOnScreen);
+
+            if (this.x > 0) this.x = 0;
+        }
+
         // on the right border
-        int rightOnScreen = this.screenLeftPotion(player.hitBox.right);
-        if (rightOnScreen > 440)
+        // int rightOnScreen = this.screenLeftPotion(player.hitBox.right);
+        // if (leftOnScreen > 440)
+        if (leftOnScreen > this.playerScreenRect.right)
         {
             // move map on left
-            this.x = this.x - (rightOnScreen - 440);
+            this.x = this.x - (leftOnScreen - this.playerScreenRect.right);
+            // this.x = this.x - (leftOnScreen - 440);
 
-            if (this.x < this.mapMinX) this.x = this.mapMinX;
+            if (this.x < this.mapMaxPosition.x) this.x = (int) Math.ceil(this.mapMaxPosition.x);
         }
 
         // on down
-        int bottomScreen = this.screenTopPotion(player.hitBox.bottom);
-        if (bottomScreen > 440)
+        // int bottomScreen = this.screenTopPotion(player.hitBox.bottom);
+        // if (topOnScreen > 440)
+        if (topOnScreen > this.playerScreenRect.bottom)
         {
             // move map on left
-            this.y = this.y - (bottomScreen - 440);
+            // this.y = this.y - (topOnScreen - 440);
+            this.y = this.y - (topOnScreen - this.playerScreenRect.bottom);
 
-            if (this.y < this.mapMinY) this.y = this.mapMinY;
-        }
-
-        // on the left border
-        int leftOnScreen = this.screenLeftPotion(player.hitBox.left);
-        if (leftOnScreen < 200)
-        {
-            this.x = this.x + (200 - leftOnScreen);
-
-            if (this.x > 0) this.x = 0;
+            if (this.y < this.mapMaxPosition.y) this.y = (int) Math.ceil(this.mapMaxPosition.y);
         }
     }
 

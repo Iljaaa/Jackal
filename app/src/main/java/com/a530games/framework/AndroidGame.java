@@ -51,8 +51,6 @@ public abstract class AndroidGame extends Activity implements Game
         // определяем ориентацию экрана
         this.screenOrientation = this.getResources().getConfiguration().orientation;
 
-        // раскалад такой 640х640 это игровой эеран остальное это менб
-        // fixme: get screen size
         /*int frameBufferWidth = this.screenOrientation == Configuration.ORIENTATION_LANDSCAPE
                 ? AndroidGame.landscapeScreenWidth
                 : AndroidGame.landscapeScreenHeight;*/
@@ -67,12 +65,13 @@ public abstract class AndroidGame extends Activity implements Game
         this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int screenWidth = displaymetrics.widthPixels;
         int screenHeight = displaymetrics.heightPixels;
+        Log.d("AndroidGame", "Screen size: "+String.valueOf(screenWidth)+"x"+String.valueOf(screenHeight));
 
         // screen ration
         double screenRatio = (double) screenWidth / screenHeight;
 
         // расчитываем ширину фрембуфера по отношению сторон
-        int frameBufferWidth = (int) Math.floor(this.landscapeScreenHeight * screenRatio);
+        int frameBufferWidth = (int) Math.floor(AndroidGame.landscapeScreenHeight * screenRatio);
 
         // как же как же смне собрайть фрейм буфер
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth, frameBufferHeight, Bitmap.Config.RGB_565);
@@ -85,6 +84,8 @@ public abstract class AndroidGame extends Activity implements Game
         this.renderView = new AndroidFastRenderView(this, frameBuffer);
 
         this.graphics = new AndroidGraphics(this.getAssets(), frameBuffer);
+
+
         // fileIO = new AndroidFileIO(getAssets());
         this.audio = new AndroidAudio(this);
 
@@ -226,7 +227,7 @@ public abstract class AndroidGame extends Activity implements Game
     public void onConfigurationChanged(Configuration newConfig)
     {
         // todo: fix orientation
-        super.onConfigurationChanged(newConfig);
+        /*super.onConfigurationChanged(newConfig);
         this.screenOrientation = newConfig.orientation;
 
         // устанавливаем новые параметры frameBuffer
@@ -239,6 +240,6 @@ public abstract class AndroidGame extends Activity implements Game
         else {
             this.renderView.frameBuffer.setWidth(AndroidGame.landscapeScreenHeight);
             this.renderView.frameBuffer.setHeight(AndroidGame.landscapeScreenWidth);
-        }
+        }*/
     }
 }

@@ -6,6 +6,7 @@ import com.a530games.framework.Game;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Screen;
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.levels.FirstLevel;
 
 public class LoadingLevelScreen extends Screen
 {
@@ -42,11 +43,13 @@ public class LoadingLevelScreen extends Screen
             // start loading
             GameScreen gs = new GameScreen(this.game, this.startPlayerHp);
 
+
             // test init map
             // gs.world.map.init(100, 100, this.game.getGraphics().getAssetManager(), gs.world.player);
-            gs.world.map.init(30, 30, this.game.getGraphics().getAssetManager(), gs.world.player);
+            // gs.world.map.init(new FirstLevel(), this.game.getGraphics().getAssetManager(), gs.world.player);
+            gs.world.map.init(new FirstLevel(), this.game.getGraphics(), gs.world.player, gs.mapScreenWidthInPixels, gs.mapScreenHeightInPixels);
 
-            // draw map
+            // pre draw map
             gs.world.map.draw();
 
             this.game.setScreen(gs);

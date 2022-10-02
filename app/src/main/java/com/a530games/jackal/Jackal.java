@@ -13,6 +13,13 @@ import java.util.Random;
 
 public class Jackal extends AndroidGame
 {
+    /**
+     * Block size in pixels
+     * also in map sprite size
+     */
+    public static final int BLOCK_HEIGHT = 64;
+    public static final int BLOCK_WIDTH = 64;
+
     private static Random random = null;
 
     private static Controller controller;
