@@ -92,6 +92,9 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     private final int mapScreenHeightInBlocks; //  = 10;
 
     //
+    Paint titlePaint, subTitlePaint;
+
+    //
     Sprite tempBoom;
     float boomTimer;
 
@@ -143,6 +146,16 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.gameOverLoseMenu = new GameOverLoseMenu(150, 200);
         this.gameOverLoseMenu.setEventHandler(this);
 
+        this.titlePaint = new Paint();
+        this.titlePaint.setColor(Color.RED);
+        this.titlePaint.setTextAlign(Paint.Align.CENTER);
+        this.titlePaint.setTextSize(150);
+
+        this.subTitlePaint = new Paint();
+        this.subTitlePaint.setColor(Color.RED);
+        this.subTitlePaint.setTextAlign(Paint.Align.CENTER);
+        this.subTitlePaint.setTextSize(30);
+
         // Assets.music.setLooping(true);
         // Assets.music.setVolume(0.5f);
         // Assets.music.play();
@@ -190,6 +203,12 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
     private void updateReady(TouchEventsCollection touchEvents, Controller controller, float deltaTime)
     {
+        if (controller.isStart()) {
+            this.state = GameState.Running;
+        }
+
+        // start drop
+
         // if got fouch go to run
         // if(touchEvents.hasDown()) this.state = GameState.Running;
 
@@ -203,6 +222,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
     private void updateRunning(List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
     {
+        if (controller.isStart()) {
+            this.state = GameState.Paused;
+            return;
+        }
+
         this.updatePlayer(controller, deltaTime);
 
         // обновление мира
@@ -851,8 +875,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         Graphics g = game.getGraphics();
 
         this.drawTitle(g, "Ready");
-        this.drawSecondTitle(g, "Tab screen or press start to begin you journey");
-
+        this.drawSecondTitle(g, "Press start to begin you journey");
     }
 
     private void drawRunningUI() {
@@ -893,11 +916,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     }
 
     private void drawTitle (Graphics g, String title) {
-        g.drawText(title, 100, 120, 150, Color.RED);
+        g.drawText(title, (int) Math.ceil(this.mapScreenWidthInPixels * 0.5), 120, this.titlePaint);
     }
 
     private void drawSecondTitle (Graphics g, String title) {
-        g.drawText(title, 100, 170, 30, Color.RED);
+        g.drawText(title, (int) Math.ceil(this.mapScreenWidthInPixels * 0.5), 170, this.subTitlePaint);
     }
 
     @Override
@@ -911,11 +934,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     {
         Log.d("GameScreen", "onButtonUp");
 
-        // is in state ready to start
-        if (this.state == GameState.Ready) {
-            this.state = GameState.Running;
-            return;
-        }
 
         // is game paused and pres start
         /*if (this.state == GameState.Paused)
@@ -928,12 +946,19 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         }*/
 
         // start for pause
-        if (this.state == GameState.Running)
+        /*if (this.state == GameState.Running)
         {
             if (keyCode == KeyEvent.KEYCODE_BUTTON_START) {
                 this.state = GameState.Paused;
             }
-        }
+        }*/
+
+
+        // is in state ready to start
+        /*if (this.state == GameState.Ready) {
+            this.state = GameState.Running;
+            return;
+        }*/
 
         /*if (this.state == GameState.GameOver) {
             if (keyCode == KeyEvent.KEYCODE_BUTTON_START)

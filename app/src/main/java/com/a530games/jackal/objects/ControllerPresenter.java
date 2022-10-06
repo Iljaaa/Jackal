@@ -2,6 +2,7 @@ package com.a530games.jackal.objects;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.TouchEventsCollection;
@@ -27,13 +28,18 @@ public class ControllerPresenter
     // input sticks
     public Circle leftStickCircle, rightStickCircle;
 
+    // addition fire button on stick present
     public Circle rightStickAdditionalFireButton;
+
+    // start screen button
+    public Rect startButton;
 
     Paint circleButtonPaint, activeCircleButtonPaint;
 
+    Paint textPaint;
+
     public ControllerPresenter(int screenWidth, int screenHeight)
     {
-        // todo calculate screen position
         this.controllerLeftButtonsPosition = new Vector2(150, screenHeight - 150);
         this.controllerRightButtonsPosition = new Vector2(screenWidth - 150, screenHeight - 150);
 
@@ -50,6 +56,13 @@ public class ControllerPresenter
 
         this.rightStickAdditionalFireButton = new Circle(this.controllerRightButtonsPosition.x + 100, this.controllerRightButtonsPosition.y - 130, 40);
 
+        this.startButton = new Rect(
+                (int) Math.ceil(0.5 * screenWidth - 100),
+                screenHeight - 150,
+                (int) Math.ceil(0.5 * screenWidth + 100),
+                screenHeight - 100
+        );
+
         this.circleButtonPaint = new Paint();
         this.circleButtonPaint.setStyle(Paint.Style.STROKE);
         this.circleButtonPaint.setStrokeWidth(2);
@@ -59,6 +72,11 @@ public class ControllerPresenter
         this.activeCircleButtonPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         this.activeCircleButtonPaint.setStrokeWidth(2);
         this.activeCircleButtonPaint.setColor(Color.GREEN);
+
+        this.textPaint = new Paint();
+        this.textPaint.setTextAlign(Paint.Align.CENTER);
+        this.textPaint.setTextSize(25);
+        this.textPaint.setColor(Color.GREEN);
     }
 
     public void bindController (Controller c) {
@@ -110,6 +128,14 @@ public class ControllerPresenter
 
         // this.drawRightControllerLikeButtons(g);
         this.drawRightStickAsStick(g);
+
+        // drawing start button
+        this.drawStartButton(g);
+    }
+
+    private void drawStartButton(Graphics g) {
+        g.drawRect(this.startButton, this.circleButtonPaint);
+        g.drawText("start", this.startButton.centerX(), this.startButton.bottom - 20, this.textPaint);
     }
 
     private void drawLeftControllerLikeButtons(Graphics g)

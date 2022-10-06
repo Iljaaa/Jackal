@@ -33,7 +33,7 @@ public abstract class BasicMenu implements Menu
     /**
      * Current active menu item
      */
-    protected int activeIndex = 1;
+    protected int activeIndex = 0;
 
     /**
      * User select index
