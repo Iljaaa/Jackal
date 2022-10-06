@@ -1,6 +1,6 @@
 package com.a530games.jackal.levels;
 
-import com.a530games.framework.helpers.Vector;
+import com.a530games.framework.math.Vector2;
 
 public interface Level
 {
@@ -13,4 +13,9 @@ public interface Level
      * Map height in blocks
      */
     int getMapHeight();
+
+    /**
+     * Player start posotion
+     */
+    Vector2 getPlayerStartPosition();
 }

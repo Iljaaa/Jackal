@@ -73,11 +73,14 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
 
     public World(int playerStartHp)
     {
+        this.player = new Player(300, 300, this);
+        this.player.hp = playerStartHp;
+
         this.map = new Map();
         this.map.setEventHandler(this);
 
-        this.player = new Player(300, 300, this);
-        this.player.hp = playerStartHp;
+        // bind map follow for player
+        this.map.setFollowObject(this.player);
 
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
@@ -203,7 +206,8 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
                 }
             }
         }
-        while (enemyDeleted && enemiesSize > 0);
+        while (enemyDeleted);
+        // while (enemyDeleted && enemiesSize > 0);
 
 
         //  update enemies and check intersect with bullets
@@ -266,7 +270,6 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
             }
         }
     }
-
 
     /**
      * Player press fire button
@@ -365,4 +368,5 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         Log.d("World", "Player dit");
         this.gameOver = true;
     }
+
 }

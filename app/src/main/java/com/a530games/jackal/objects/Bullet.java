@@ -1,7 +1,6 @@
 package com.a530games.jackal.objects;
 
 import com.a530games.framework.helpers.FloatPoint;
-import com.a530games.framework.helpers.Vector;
 import com.a530games.framework.math.Vector2;
 
 public class Bullet

@@ -140,7 +140,7 @@ public abstract class BasicMenu implements Menu
         }
 
         // if controller push button
-        if (controller.isA()) {
+        if (controller.isA() || controller.isStart()) {
             this.selectItem(this.activeIndex);
         }
     }

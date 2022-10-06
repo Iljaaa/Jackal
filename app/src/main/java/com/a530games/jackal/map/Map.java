@@ -33,6 +33,7 @@ public class Map implements CellEventCallbackHandler
     public static final int SPRITE_WIDTH = 64;
 
     // map position
+    // todo: refactor to vector
     public float x = 0;
     public float y = 0;
 
@@ -80,6 +81,11 @@ public class Map implements CellEventCallbackHandler
      */
     public MapCell[][] fields; // = new MapCell[1][1];
 
+    /**
+     * Object for follow map
+     */
+    private Enemy follow = null;
+
     public Map()
     {
         // this.fields = new MapCell[mapRows][mapCols];
@@ -89,6 +95,13 @@ public class Map implements CellEventCallbackHandler
         this.playerScreenRect = new Rect();
     }
 
+    public void setFollowObject (Enemy followObject) {
+        this.follow = followObject;
+    }
+
+    /**
+     * @param eventHandler
+     */
     public void setEventHandler(MapEventsHandler eventHandler) {
         this.eventsHandler = eventHandler;
     }
@@ -152,7 +165,8 @@ public class Map implements CellEventCallbackHandler
         this.objectMaxY = (this.mapRows * Map.SPRITE_HEIGHT) - Map.SPRITE_HEIGHT;
 
         // move player on map position
-        player.hitBox.moveTo(400, 1500);
+        // player.hitBox.moveTo(400,1500);
+        player.hitBox.moveTo(level.getPlayerStartPosition());
 
         // calculate start map position
         // after move player
@@ -480,10 +494,15 @@ public class Map implements CellEventCallbackHandler
     public void update(Player player, float deltaTime)
     {
         // move map
-        this.updateMapPosition(player.getHitBox().getCenter());
+        if (this.follow != null)
+        {
+            // update map position by follow object
+            this.updateMapPosition(this.follow.getHitBox().getCenter());
 
-        // update draw position
-        this.updateMapOptimizatonFields();
+            // update draw position
+            this.updateMapOptimizatonFields();
+        }
+
 
         // update map cells
         this.updateCells(deltaTime);

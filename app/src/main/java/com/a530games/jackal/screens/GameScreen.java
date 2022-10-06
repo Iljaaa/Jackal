@@ -208,6 +208,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         }
 
         // start drop
+        // this.world.updateDrawPad();
 
         // if got fouch go to run
         // if(touchEvents.hasDown()) this.state = GameState.Running;
@@ -222,10 +223,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
     private void updateRunning(List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
     {
-        if (controller.isStart()) {
-            this.state = GameState.Paused;
-            return;
-        }
 
         this.updatePlayer(controller, deltaTime);
 
@@ -492,7 +489,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     {
         // clear bg
         Graphics g = game.getGraphics();
-        g.clear(Color.BLACK);
+        // g.clear(Color.BLACK);
+
         // g.drawPixmap(Assets.background, 0, 0);
 
         // рисуем имр
@@ -946,12 +944,12 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         }*/
 
         // start for pause
-        /*if (this.state == GameState.Running)
+        if (this.state == GameState.Running)
         {
             if (keyCode == KeyEvent.KEYCODE_BUTTON_START) {
                 this.state = GameState.Paused;
             }
-        }*/
+        }
 
 
         // is in state ready to start

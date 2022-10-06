@@ -2,6 +2,8 @@ package com.a530games.framework.helpers;
 
 import android.graphics.Rect;
 
+import com.a530games.framework.math.Vector2;
+
 public class FloatRect
 {
     public float left;
@@ -34,12 +36,15 @@ public class FloatRect
 
     public void moveTo (float x, float y)
     {
-        // fixme: вопрос что быстрее пересичтать или условие
         this.right = x + this.getWidth();
         this.left = x;
 
         this.bottom = y + this.getHeight();
         this.top = y;
+    }
+
+    public void moveTo(Vector2 vector) {
+        this.moveTo(vector.x, vector.y);
     }
 
     public float getWidth() {
