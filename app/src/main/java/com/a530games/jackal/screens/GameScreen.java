@@ -481,7 +481,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.sidebar.setFps(this.game.getRenderView().fps);
         this.sidebar.setPlayerAngle(this.world.player.direction);
         this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
-        this.sidebar.setMapPos((int) Math.floor(this.world.map.x), (int) Math.floor(this.world.map.y));
+        this.sidebar.setMapPos((int) Math.floor(this.world.map.position.x), (int) Math.floor(this.world.map.position.y));
     }
 
     @Override
@@ -609,8 +609,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 this.world.map.drawBitmap,
                 0,
                 0,
-                -1 * (int) Math.floor(this.world.map.x),
-                -1 * (int )Math.floor(this.world.map.y),
+                -1 * (int) Math.floor(this.world.map.position.x),
+                -1 * (int )Math.floor(this.world.map.position.y),
                 this.mapScreenWidthInPixels,
                 640);
 

@@ -34,8 +34,9 @@ public class Map implements CellEventCallbackHandler
 
     // map position
     // todo: refactor to vector
-    public float x = 0;
-    public float y = 0;
+    public Vector2 position;
+    // public float x = 0;
+    // public float y = 0;
 
     /**
      * Max map position
@@ -58,10 +59,6 @@ public class Map implements CellEventCallbackHandler
     // map size in blocks
     public int mapRows;
     public int mapCols;
-
-    // player start position
-    public int playerStartX = 0;
-    public int playerStartY = 0;
 
     // map optimization min|max positions for draw
     public int drawMinCol = 0, drawMaxCol = 0, drawMinRow = 0, drawMaxRow = 0;
@@ -91,6 +88,7 @@ public class Map implements CellEventCallbackHandler
         // this.fields = new MapCell[mapRows][mapCols];
         // this.fields[3][2] = new MapCell();
 
+        this.position = new Vector2(0, 0);
         this.mapMaxPosition = new Vector2();
         this.playerScreenRect = new Rect();
     }
@@ -170,10 +168,10 @@ public class Map implements CellEventCallbackHandler
 
         // calculate start map position
         // after move player
-        this.x = -1 * (player.hitBox.left - 320 - 20);
-        this.y = -1 * (player.hitBox.top - 320 - 20);
-        if (this.x < this.mapMaxPosition.x) this.x = (int) Math.ceil(this.mapMaxPosition.x);
-        if (this.y < this.mapMaxPosition.y) this.y = (int) Math.ceil(this.mapMaxPosition.y);
+        this.position.x = -1 * (player.hitBox.left - 320 - 20);
+        this.position.y = -1 * (player.hitBox.top - 320 - 20);
+        if (this.position.x < this.mapMaxPosition.x) this.position.x = (int) Math.ceil(this.mapMaxPosition.x);
+        if (this.position.y < this.mapMaxPosition.y) this.position.y = (int) Math.ceil(this.mapMaxPosition.y);
 
         // init fields
         this.fields = new MapCell[this.mapRows][this.mapCols];
@@ -537,13 +535,13 @@ public class Map implements CellEventCallbackHandler
     private void updateMapOptimizatonFields()
     {
         //
-        this.drawMinCol = this.getColByLeft(Math.abs(this.x)) - 2;
+        this.drawMinCol = this.getColByLeft(Math.abs(this.position.x)) - 2;
         if (this.drawMinCol < 0) this.drawMinCol = 0;
 
         this.drawMaxCol = this.drawMinCol + 13;
         if (this.drawMaxCol > this.mapCols) this.drawMaxCol = this.mapCols;
 
-        this.drawMinRow = this.getRowByTop(Math.abs(this.y)) - 2;
+        this.drawMinRow = this.getRowByTop(Math.abs(this.position.y)) - 2;
         if (this.drawMinRow < 0) this.drawMinRow = 0;
 
         this.drawMaxRow = this.drawMinRow + 15;
@@ -563,10 +561,10 @@ public class Map implements CellEventCallbackHandler
         if (topOnScreen < this.playerScreenRect.top)
         {
             // move map on left
-            this.y = this.y + (this.playerScreenRect.top - topOnScreen);
+            this.position.y = this.position.y + (this.playerScreenRect.top - topOnScreen);
             // this.y = this.y + (200 - topOnScreen);
 
-            if (this.y > 0) this.y = 0;
+            if (this.position.y > 0) this.position.y = 0;
         }
 
         // on the left border
@@ -574,10 +572,10 @@ public class Map implements CellEventCallbackHandler
         if (leftOnScreen < this.playerScreenRect.left)
         // if (leftOnScreen < 200)
         {
-            this.x = this.x + (this.playerScreenRect.left - leftOnScreen);
+            this.position.x = this.position.x + (this.playerScreenRect.left - leftOnScreen);
             // this.x = this.x + (200 - leftOnScreen);
 
-            if (this.x > 0) this.x = 0;
+            if (this.position.x > 0) this.position.x = 0;
         }
 
         // on the right border
@@ -586,10 +584,10 @@ public class Map implements CellEventCallbackHandler
         if (leftOnScreen > this.playerScreenRect.right)
         {
             // move map on left
-            this.x = this.x - (leftOnScreen - this.playerScreenRect.right);
+            this.position.x = this.position.x - (leftOnScreen - this.playerScreenRect.right);
             // this.x = this.x - (leftOnScreen - 440);
 
-            if (this.x < this.mapMaxPosition.x) this.x = (int) Math.ceil(this.mapMaxPosition.x);
+            if (this.position.x < this.mapMaxPosition.x) this.position.x = (int) Math.ceil(this.mapMaxPosition.x);
         }
 
         // on down
@@ -599,9 +597,9 @@ public class Map implements CellEventCallbackHandler
         {
             // move map on left
             // this.y = this.y - (topOnScreen - 440);
-            this.y = this.y - (topOnScreen - this.playerScreenRect.bottom);
+            this.position.y = this.position.y - (topOnScreen - this.playerScreenRect.bottom);
 
-            if (this.y < this.mapMaxPosition.y) this.y = (int) Math.ceil(this.mapMaxPosition.y);
+            if (this.position.y < this.mapMaxPosition.y) this.position.y = (int) Math.ceil(this.mapMaxPosition.y);
         }
     }
 
@@ -697,11 +695,11 @@ public class Map implements CellEventCallbackHandler
     }
 
     public int screenTopPotion (float globalTop){
-        return (int) Math.floor(globalTop + this.y);
+        return (int) Math.floor(globalTop + this.position.y);
     }
 
     public int screenLeftPotion (float globalLeft){
-        return (int) Math.floor(globalLeft + this.x);
+        return (int) Math.floor(globalLeft + this.position.x);
     }
 
     @Override
