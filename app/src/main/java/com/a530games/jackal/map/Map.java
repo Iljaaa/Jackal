@@ -1,6 +1,5 @@
 package com.a530games.jackal.map;
 
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,10 +32,7 @@ public class Map implements CellEventCallbackHandler
     public static final int SPRITE_WIDTH = 64;
 
     // map position
-    // todo: refactor to vector
     public Vector2 position;
-    // public float x = 0;
-    // public float y = 0;
 
     /**
      * Max map position
@@ -49,9 +45,6 @@ public class Map implements CellEventCallbackHandler
      * Screen rect for calculate map position
      */
     private final Rect playerScreenRect;
-
-    // min|max map position
-    // public int mapMinX = 0,  mapMinY = 0;
 
     // object min max position
     private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
@@ -98,7 +91,7 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
-     * @param eventHandler
+     *
      */
     public void setEventHandler(MapEventsHandler eventHandler) {
         this.eventsHandler = eventHandler;
@@ -137,8 +130,8 @@ public class Map implements CellEventCallbackHandler
     public void init (Level level, Graphics g, Player player, int mapScreenWidth, int mapScreenHeight)
     {
         // map size in cols
-        this.mapCols = level.getMapWidth();
-        this.mapRows = level.getMapHeight();
+        this.mapCols = level.getMapWidthInCols();
+        this.mapRows = level.getMapHeightInCols();
 
         // calculate max map positions`
         // fixme: magic numbers
@@ -180,7 +173,8 @@ public class Map implements CellEventCallbackHandler
         this.updateMapOptimizatonFields();
 
         //
-        this.addObjectToMap();
+        // this.addObjectToMap();
+        level.addObjectsOnMap(this);
 
 
         /*MapCell c = this.fields[3][2];
@@ -210,212 +204,19 @@ public class Map implements CellEventCallbackHandler
 
     }
 
-    private void addObjectToMap ()
+    /**
+     * Level add object on map
+     */
+    public void addObjectToMap (MapCell c)
     {
-        // fixme: fix magic constants
-        this.addRock(3, 2, Rock.MOVE_ROCK_1);
-
-        // top line
-//        for (int col = 1; col < this.mapCols - 1; col++) {
-//            this.fields[0][col] = new TopHalfWall(0, col);
-//        }
-
-        // bottom line
-         for (int col = 0; col < this.mapCols; col++) {
-             this.addBeach(this.mapRows - 1, col);
-         }
-
-         // right line
-        /*for (int row = 1; row < this.mapRows - 1; row++) {
-            this.fields[row][this.mapCols - 1] = new RightHalfWall(row, this.mapCols - 1);
-        }*/
-
-        // this.fields[0][0] = new LeftTopCorner(0, 0); // left top corner
-        //this.fields[0][this.mapCols - 1] = new RightTopCorner(0, this.mapCols - 1); // right top corner
-        // this.fields[this.mapRows - 1][0] = new LeftBottomCorner(this.mapRows - 1, 0); // left bottom corner
-        // this.fields[this.mapRows - 1][this.mapCols - 1] = new RightBottomCorner(this.mapRows - 1, this.mapCols - 1);  // right bottom corner
-
-
-        // top line
-        /*this.addRock(0, 0, Rock.MOVE_ROCK_3);
-        this.addRock(0, 1, Rock.MOVE_ROCK_1);
-        this.addRock(0, 2, Rock.MOVE_ROCK_2);
-        this.addRock(0, 3, Rock.MOVE_ROCK_3);
-        this.addRock(0, 4, Rock.MOVE_ROCK_1);
-        this.addRock(0, 5, Rock.MOVE_ROCK_2);
-        this.addRock(0, 6, Rock.MOVE_ROCK_3);
-        this.addRock(0, 7, Rock.MOVE_ROCK_1);
-        this.addRock(0, 8, Rock.MOVE_ROCK_2);
-        this.addRock(0, 9, Rock.MOVE_ROCK_2);
-        this.addRock(0, 10, Rock.MOVE_ROCK_2);
-        this.addRock(0, 11, Rock.MOVE_ROCK_2);
-        this.addRock(0, 12, Rock.MOVE_ROCK_2);
-        this.addRock(0, 13, Rock.MOVE_ROCK_2);
-        this.addRock(0, 14, Rock.MOVE_ROCK_2);
-        this.addRock(0, 15, Rock.MOVE_ROCK_2);
-        this.addRock(0, 16, Rock.MOVE_ROCK_2);
-        this.addRock(0, 17, Rock.MOVE_ROCK_2);
-        this.addRock(0, 18, Rock.MOVE_ROCK_2);
-        this.addRock(0, 19, Rock.MOVE_ROCK_2);*/
-
-        // left line
-        /*this.addRock(1, 0, Rock.MOVE_BUSH_1);
-        this.addRock(2, 0, Rock.MOVE_BUSH_2);
-        this.addRock(3, 0, Rock.MOVE_BUSH_1);
-        this.addRock(4, 0, Rock.MOVE_BUSH_2);
-        this.addRock(5, 0, Rock.MOVE_BUSH_1);
-        this.addRock(6, 0, Rock.MOVE_BUSH_2);
-        this.addRock(7, 0, Rock.MOVE_BUSH_1);
-        this.addRock(8, 0, Rock.MOVE_BUSH_2);
-        this.addRock(9, 0, Rock.MOVE_BUSH_2);
-        this.addRock(10, 0, Rock.MOVE_BUSH_2);
-        this.addRock(11, 0, Rock.MOVE_BUSH_2);
-        this.addRock(12, 0, Rock.MOVE_BUSH_2);
-        this.addRock(13, 0, Rock.MOVE_BUSH_2);
-        this.addRock(14, 0, Rock.MOVE_BUSH_2);
-        this.addRock(15, 0, Rock.MOVE_BUSH_2);
-        this.addRock(16, 0, Rock.MOVE_BUSH_2);
-        this.addRock(17, 0, Rock.MOVE_BUSH_2);
-        this.addRock(18, 0, Rock.MOVE_BUSH_2);*/
-
-
-        this.addRock(9, 3, Rock.MOVE_ROCK_3);
-        this.addRock(9, 4, Rock.MOVE_ROCK_1);
-
-
-        this.fields[9][15] = new Tree1(9, 15);
-        this.fields[9][19] = new Tree2(9, 19);
-
-
-        /*this.addRock(19, 0, Rock.MOVE_ROCK_3);
-        this.addRock(19, 1, Rock.MOVE_ROCK_1);
-        this.addRock(19, 2, Rock.MOVE_ROCK_2);
-        this.addRock(19, 3, Rock.MOVE_ROCK_3);
-        this.addRock(19, 4, Rock.MOVE_ROCK_1);
-        this.addRock(19, 5, Rock.MOVE_ROCK_2);
-        this.addRock(19, 6, Rock.MOVE_ROCK_3);
-        this.addRock(19, 7, Rock.MOVE_ROCK_1);
-        this.addRock(19, 8, Rock.MOVE_ROCK_2);
-        this.addRock(19, 9, Rock.MOVE_ROCK_2);
-        this.addRock(19, 10, Rock.MOVE_ROCK_2);
-        this.addRock(19, 11, Rock.MOVE_ROCK_2);
-        this.addRock(19, 12, Rock.MOVE_ROCK_2);
-        this.addRock(19, 13, Rock.MOVE_ROCK_2);
-        this.addRock(19, 14, Rock.MOVE_ROCK_2);
-        this.addRock(19, 15, Rock.MOVE_ROCK_2);
-        this.addRock(19, 16, Rock.MOVE_ROCK_2);
-        this.addRock(19, 17, Rock.MOVE_ROCK_2);
-        this.addRock(19, 18, Rock.MOVE_ROCK_2);
-        this.addRock(19, 19, Rock.MOVE_ROCK_2);*/
-
-        // bottom linr
-        /*this.addBeach(19, 0);
-        this.addBeach(19, 1);
-        this.addBeach(19, 2);
-        this.addBeach(19, 3);
-        this.addBeach(19, 4);
-        this.addBeach(19, 5);
-        this.addBeach(19, 6);
-        this.addBeach(19, 7);
-        this.addBeach(19, 8);
-        this.addBeach(19, 9);
-        this.addBeach(19, 10);
-        this.addBeach(19, 11);
-        this.addBeach(19, 12);
-        this.addBeach(19, 13);
-        this.addBeach(19, 14);
-        this.addBeach(19, 15);
-        this.addBeach(19, 16);
-        this.addBeach(19, 17);
-        this.addBeach(19, 18);
-        this.addBeach(19, 19);*/
-
-
-        /*this.addRock(1, 19, Rock.MOVE_BUSH_3);
-        this.addRock(2, 19, Rock.MOVE_BUSH_4);
-        this.addRock(3, 19, Rock.MOVE_BUSH_3);
-        this.addRock(4, 19, Rock.MOVE_BUSH_4);
-        this.addRock(5, 19, Rock.MOVE_BUSH_3);
-        this.addRock(6, 19, Rock.MOVE_BUSH_4);
-        this.addRock(7, 19, Rock.MOVE_BUSH_3);
-        this.addRock(8, 19, Rock.MOVE_BUSH_1);
-        //  = new MapCell(9, 19, MapCell.MOVE_BUSH_1);
-        this.addRock(10, 19, Rock.MOVE_BUSH_1);
-        this.addRock(11, 19, Rock.MOVE_BUSH_1);
-        this.addRock(12, 19, Rock.MOVE_BUSH_1);
-        this.addRock(13, 19, Rock.MOVE_BUSH_1);
-        this.addRock(14, 19, Rock.MOVE_BUSH_1);
-        this.addRock(15, 19, Rock.MOVE_BUSH_1);
-        this.addRock(16, 19, Rock.MOVE_BUSH_1);
-        this.addRock(17, 19, Rock.MOVE_BUSH_1);
-        this.addRock(18, 19, Rock.MOVE_BUSH_1);*/
-
-        this.addRock(1, 9, Rock.MOVE_BUSH_3);
-        this.addRock(2, 9, Rock.MOVE_BUSH_4);
-        this.addRock(3, 9, Rock.MOVE_BUSH_3);
-        this.addRock(4, 9, Rock.MOVE_BUSH_4);
-        this.addRock(5, 9, Rock.MOVE_BUSH_3);
-        this.addRock(6, 9, Rock.MOVE_BUSH_4);
-        this.addRock(7, 9, Rock.MOVE_BUSH_3);
-        // this.addRock(14, 9, Rock.MOVE_BUSH_1);
-        // this.addRock(15, 9, Rock.MOVE_BUSH_1);
-        // this.addRock(16, 9, Rock.MOVE_BUSH_1);
-        // this.addRock(17, 9, Rock.MOVE_BUSH_1);
-        // this.addRock(18, 9, Rock.MOVE_BUSH_1);
-
-
-        //
-        this.fields[12][11] = new LeftTopCorner(12, 11);
-        this.fields[12][12] = new TopHalfWall(12, 12);
-        this.fields[12][13] = new RightTopCorner(12, 13);
-
-        this.fields[14][14] = new RightTopCorner(14, 14);
-        this.fields[15][14] = new RightHalfWall(15, 14);
-        this.fields[16][14] = new RightBottomCorner(16, 14);
-
-        this.fields[18][11] = new LeftBottomCorner(18, 11);
-        this.fields[18][12] = new BottomHalfWall(18, 12);
-        this.fields[18][13] = new RightBottomCorner(18, 13);
-
-        this.fields[14][10] = new LeftTopCorner(14, 10);
-        this.fields[15][10] = new LeftHalfWall(15, 10);
-        this.fields[16][10] = new LeftBottomCorner(16, 10);
-
-        // convex corners
-
-        this.fields[20][11] = new LeftTopFuncCorner(20, 11);
-        this.fields[20][12] = new TopFullWall(20, 12);
-        this.fields[20][13] = new RightTopFuncCorner(20, 13);
-        this.fields[21][13] = new RightFullWall(21, 13);
-        this.fields[22][13] = new RightBottomFuncCorner(22, 13);
-        this.fields[22][12] = new BottomFullWall(22, 12);
-        this.fields[22][11] = new LeftBottomFuncCorner(22, 11);
-        this.fields[21][11] = new LeftFullWall(21, 11);
-
-        this.fields[13][3] = new BigPillarTopLeft(13, 3);
-        this.fields[13][4] = new BigPillarTopRight(13, 4);
-        this.fields[14][3] = new BigPillarSecondLeft(14, 3);
-        this.fields[14][4] = new BigPillarSecondRight(14, 4);
-        this.fields[15][3] = new BigPillarThirdLeft(15, 3);
-        this.fields[15][4] = new BigPillarThirdRight(15, 4);
-        this.fields[16][3] = new BigPillarBottomLeft(16, 3);
-        this.fields[16][4] = new BigPillarBottomRight(16, 4);
-
-        this.fields[16][1] = new Bush(16, 1, Assets.bush1);
-        this.fields[16][2] = new Bush(16, 2, Assets.bush2);
-
-
-        this.fields[11][3] = new Spown(11, 3);
-        this.fields[11][4] = new Spown(11, 4);
-        this.fields[11][5] = new Spown(11, 5);
-        this.fields[11][6] = new Spown(11, 6);
-        this.fields[11][7] = new Spown(11, 7);
+        // this.fields[row][col] = new Rock(row, col, type);
+        this.fields[c.row][c.col] = c;
     }
 
-    private void addRock (int row, int col, int type)
+    /*private void addRock (int row, int col, int type)
     {
         this.fields[row][col] = new Rock(row, col, type);
-    }
+    }*/
 
     private void addBeach (int row, int col)
     {
@@ -473,7 +274,7 @@ public class Map implements CellEventCallbackHandler
         }
 
         // draw bush
-
+        // todo: refactor go game objects
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, 5 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 0, 64, 64, 64);
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, 5 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 0, 128, 64, 64);
 
@@ -553,53 +354,34 @@ public class Map implements CellEventCallbackHandler
      */
     private void updateMapPosition (FloatPoint playerHitboxCenter)
     {
-        // todo fix magic numbers
-
         // on top
-        int topOnScreen = this.screenTopPotion(playerHitboxCenter.top);
-        // if (topOnScreen < 200)
-        if (topOnScreen < this.playerScreenRect.top)
+        float playerCenterY = this.screenTopPotionF(playerHitboxCenter.top);
+        if (playerCenterY < this.playerScreenRect.top)
         {
-            // move map on left
-            this.position.y = this.position.y + (this.playerScreenRect.top - topOnScreen);
-            // this.y = this.y + (200 - topOnScreen);
-
+            this.position.y = this.position.y + (this.playerScreenRect.top - playerCenterY);
             if (this.position.y > 0) this.position.y = 0;
         }
 
         // on the left border
-        int leftOnScreen = this.screenLeftPotion(playerHitboxCenter.left);
-        if (leftOnScreen < this.playerScreenRect.left)
-        // if (leftOnScreen < 200)
+        float playerCenterX = this.screenLeftPotionF(playerHitboxCenter.left);
+        if (playerCenterX < this.playerScreenRect.left)
         {
-            this.position.x = this.position.x + (this.playerScreenRect.left - leftOnScreen);
-            // this.x = this.x + (200 - leftOnScreen);
-
+            this.position.x = this.position.x + (this.playerScreenRect.left - playerCenterX);
             if (this.position.x > 0) this.position.x = 0;
         }
 
         // on the right border
-        // int rightOnScreen = this.screenLeftPotion(player.hitBox.right);
-        // if (leftOnScreen > 440)
-        if (leftOnScreen > this.playerScreenRect.right)
+        if (playerCenterX > this.playerScreenRect.right)
         {
-            // move map on left
-            this.position.x = this.position.x - (leftOnScreen - this.playerScreenRect.right);
-            // this.x = this.x - (leftOnScreen - 440);
-
-            if (this.position.x < this.mapMaxPosition.x) this.position.x = (int) Math.ceil(this.mapMaxPosition.x);
+            this.position.x = this.position.x - (playerCenterX - this.playerScreenRect.right);
+            if (this.position.x < this.mapMaxPosition.x) this.position.x = this.mapMaxPosition.x;
         }
 
-        // on down
-        // int bottomScreen = this.screenTopPotion(player.hitBox.bottom);
-        // if (topOnScreen > 440)
-        if (topOnScreen > this.playerScreenRect.bottom)
+        // on down border
+        if (playerCenterY > this.playerScreenRect.bottom)
         {
-            // move map on left
-            // this.y = this.y - (topOnScreen - 440);
-            this.position.y = this.position.y - (topOnScreen - this.playerScreenRect.bottom);
-
-            if (this.position.y < this.mapMaxPosition.y) this.position.y = (int) Math.ceil(this.mapMaxPosition.y);
+            this.position.y = this.position.y - (playerCenterY - this.playerScreenRect.bottom);
+            if (this.position.y < this.mapMaxPosition.y) this.position.y = this.mapMaxPosition.y;
         }
     }
 
@@ -700,6 +482,14 @@ public class Map implements CellEventCallbackHandler
 
     public int screenLeftPotion (float globalLeft){
         return (int) Math.floor(globalLeft + this.position.x);
+    }
+
+    public float screenTopPotionF (float globalTop){
+        return globalTop + this.position.y;
+    }
+
+    public float screenLeftPotionF (float globalLeft){
+        return globalLeft + this.position.x;
     }
 
     @Override
