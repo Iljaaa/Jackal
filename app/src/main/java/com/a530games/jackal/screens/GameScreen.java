@@ -116,14 +116,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // create world width calculated map size
         this.world = new World(playerStartHp);
 
+        Graphics g = this.game.getGraphics();
+
         // sidebar object
         // todo: fix magic numbers
-        this.sidebar = new Sidebar(
-                640,
-                this.game.getGraphics().getWidth() - 640,
-                this.game.getGraphics().getHeight(),
-                this.game.getGraphics().getAssetManager()
-        );
+        this.sidebar = new Sidebar(this.world, g.getWidth(),g.getHeight());
 
         // atache events handler to controller
         Controller controller = Jackal.getController();
@@ -131,7 +128,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // Jackal.getController().setEventHandler(this);
         // Jackal.setController(this.controller);
 
-        Graphics g = this.game.getGraphics();
         this.controllerPresenter = new ControllerPresenter(g.getWidth(), g.getHeight());
         this.controllerPresenter.bindController(controller);
 
@@ -475,13 +471,12 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
     private void updateSidebar()
     {
-        this.sidebar.setPlayerHp(this.world.player.hp);
+        // this.sidebar.setPlayerHp(this.world.player.hp);
 
-        // fixme: при завершении fps выводить не будем
         this.sidebar.setFps(this.game.getRenderView().fps);
-        this.sidebar.setPlayerAngle(this.world.player.direction);
-        this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
-        this.sidebar.setMapPos((int) Math.floor(this.world.map.position.x), (int) Math.floor(this.world.map.position.y));
+        // this.sidebar.setPlayerAngle(this.world.player.direction);
+        // this.sidebar.setPlayerPos(Math.round(this.world.player.hitBox.left), Math.round(this.world.player.hitBox.top));
+        // this.sidebar.setMapPos((int) Math.floor(this.world.map.position.x), (int) Math.floor(this.world.map.position.y));
     }
 
     @Override
@@ -497,7 +492,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.drawWorld(this.world);
 
         // рисуем сайдбар
-        // this.drawSidebar(this.sidebar);
+        this.drawSidebar(this.sidebar);
 
         if (state == GameState.Running) this.drawRunningUI();
         if (state == GameState.Ready) this.drawReadyUI();
@@ -563,16 +558,17 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         Graphics g = this.game.getGraphics();
 
         // если сайдбар не нуждается в отрисовке
-        if (sidebar.isNeedRedraw()) {
+        /*if (sidebar.isNeedRedraw()) {
             sidebar.reDraw();
-        }
+        }*/
 
         // draw sibar image
-        g.drawBitmap(
+        /*g.drawBitmap(
                 this.sidebar.drawBitmap,
-                this.sidebar.leftPosition,
-                0);
+                this.sidebar.position.x,
+                0);*/
 
+        this.sidebar.draw(g);
 
         // this.game.getGraphics().drawText("fps: " + sidebar.fps, 650, 50, 20, Color.MAGENTA);
         // this.game.getGraphics().drawText("player: " + sidebar.playerX+ "x"+sidebar.playerY, 650, 80, 20, Color.MAGENTA);
@@ -670,11 +666,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         int row = this.world.map.getRowByTop(this.world.player.hitBox.top);
         int col = this.world.map.getColByLeft(this.world.player.hitBox.left);
 
-        int top = this.world.map.screenTopPotion(row * Map.SPRITE_HEIGHT);
-        int left = this.world.map.screenLeftPotion(col * Map.SPRITE_WIDTH);
+        int top = this.world.map.screenTopPotion(row * Jackal.BLOCK_WIDTH);
+        int left = this.world.map.screenLeftPotion(col * Jackal.BLOCK_HEIGHT);
 
         Graphics g = this.game.getGraphics();
-        g.drawRect( left, top, Map.SPRITE_WIDTH, Map.SPRITE_HEIGHT, Color.YELLOW);
+        g.drawRect( left, top, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT, Color.YELLOW);
     }
 
     /**

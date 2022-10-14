@@ -34,9 +34,6 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     static final float TICK_INITIAL = 0.5f;
     static final float TICK_DECREMENT = 0.05f;*/
 
-    // змея
-    public Snake snake;
-
     // приманка
     // public Stain stain;
 
@@ -89,6 +86,9 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.enemies.add(new Commandos(400, 800));
         this.enemies.add(new Commandos2(500, 800));
 
+        // add drop padd
+
+
         // инициализируем массиа с пулями
         this.bullets = new PlayerBulletsCollection();
         this.enemyBullets = new EnemyBulletsCollection();
@@ -98,8 +98,6 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.tankHitSounds.add(Assets.tankHit1);
         this.tankHitSounds.add(Assets.tankHit2);
         this.tankHitSounds.add(Assets.playerBlow);*/
-
-        this.snake = new Snake();
     }
 
     public void update(float deltaTime)

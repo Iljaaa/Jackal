@@ -1,74 +1,82 @@
 package com.a530games.jackal;
 
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.Log;
+import android.graphics.Point;
 
-import com.a530games.framework.AndroidGraphics;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.math.Vector2;
-import com.a530games.jackal.map.Map;
 
 public class Sidebar
 {
+    private final World world;
+
     /**
      * Sidebar position on screen
      */
-    public int leftPosition;
+    public Point position;
 
     /**
      * Sidebar sizze
-     */
-    public int width, height;
+     *
+    public int width, height;*/
 
-    private DataClass data;
+    private final Paint font;
 
-    public class DataClass {
-        public int hp;
+    private final DataClass data;
+
+    public static class DataClass {
+        public int fps;
+        public Vector2 playerAngle;
+
+        public DataClass() {
+            this.fps = 0;
+        }
     }
 
     private boolean isNeedRedraw = true;
 
-    public int fps = 0;
+    //public int fps = 0;
 
-    public Vector2 playerAngle;
+    // public Vector2 playerAngle;
 
-    public int playerX = 0;
+    /*public int playerX = 0;
     public int playerY = 0;
 
     public int mapX = 0;
-    public int mapY = 0;
+    public int mapY = 0;*/
 
     // draw objects
-    Rect drawRect;
+    /*Rect drawRect;
     Canvas canvas;
     public Bitmap drawBitmap;
 
-    Graphics graphics;
+    Graphics graphics;*/
 
-    public Sidebar(int leftPosition, int width, int height, AssetManager assets)
+    public Sidebar(World world, int screenWidth, int screenHeight)
     {
-        this.leftPosition = leftPosition;
-        this.width = width;
-        this.height = height;
+        this.world = world;
+        this.position = new Point(screenWidth - 240, 10);
+
+        this.font = new Paint();
+        this.font.setTextSize(20);
+        this.font.setColor(Color.RED);
+        this.font.setStrokeWidth(1);
+        this.font.setStyle(Paint.Style.FILL_AND_STROKE);
 
         this.data = new DataClass();
 
-        this.playerAngle = new Vector2();
+        // this.playerAngle = new Vector2();
 
         // big map rect for a drawing
-        this.drawRect = new Rect(0, 0, width, height);
+        /*this.drawRect = new Rect(0, 0, width, height);
 
         this.canvas = new Canvas();
 
         this.drawBitmap = Bitmap.createBitmap(this.drawRect.width(), this.drawRect.height(), Bitmap.Config.ARGB_8888);
         this.canvas.setBitmap(this.drawBitmap);
 
-        this.graphics = new AndroidGraphics(assets, this.drawBitmap);
+        this.graphics = new AndroidGraphics(assets, this.drawBitmap);*/
     }
 
     /**
@@ -80,23 +88,21 @@ public class Sidebar
 
     /**
      * Set player hp
-     * @param hp player hp
-     */
     public void setPlayerHp(int hp) {
         if (this.data.hp != hp) {
             this.isNeedRedraw = true;
             this.data.hp = hp;
         }
-    }
+    }*/
 
-    public void setFps(int fps){
-        if (this.fps != fps) {
+    public void setFps(int fps) {
+        if (this.data.fps != fps) {
             this.isNeedRedraw = true;
-            this.fps = fps;
+            this.data.fps = fps;
         }
     }
 
-    public void setPlayerPos(int x, int y) {
+    /*public void setPlayerPos(int x, int y) {
         if (this.playerX != x) {
             this.playerX = x;
             this.isNeedRedraw = true;
@@ -123,29 +129,35 @@ public class Sidebar
             this.playerAngle = angle;
             this.isNeedRedraw = true;
         }
-    }
+    }*/
 
     public void setRedraw()
     {
         this.isNeedRedraw = false;
     }
 
+    public void draw(Graphics g) {
+        this.d(g);
+    }
+
     public void reDraw()
     {
-        this.graphics.clear(Color.BLACK);
+        // this.graphics.clear(Color.BLACK);
+        // this.d(this.graphics);
 
-        for (int i = 0; i < this.data.hp; i++) {
-            this.graphics.drawPixmap(Assets.hp, 30 + (i * 45), 30);
+    }
+    
+    private void d(Graphics g)
+    {
+        for (int i = 0; i < this.world.player.hp; i++) {
+            g.drawPixmap(Assets.hp, this.position.x + 120 - (i * 45), this.position.y + 30);
         }
 
-        this.graphics.drawText("fps: " + this.fps, 30, 100, 20, Color.MAGENTA);
-        this.graphics.drawText("player: " + this.playerX+ "x"+this.playerY, 30, 130, 20, Color.MAGENTA);
-        this.graphics.drawText("angle: " + this.playerAngle.x + "x" + this.playerAngle.y, 30, 160, 20, Color.MAGENTA);
-        this.graphics.drawText("map: " + this.mapX+ "x"+this.mapY, 30, 190, 20, Color.MAGENTA);
-
-        Log.d("Sidebar", "redraw");
-
-        this.setRedraw();
+        g.drawText(String.format("fps: %d", this.data.fps), this.position.x, this.position.y + 100, this.font);
+        g.drawText(String.format("player: %.2fx%.2f", this.world.player.hitBox.left, this.world.player.hitBox.top), this.position.x, this.position.y + 130, this.font);
+        g.drawText(String.format("angle: %.2fx%.2f", this.world.player.direction.x, this.world.player.direction.y), this.position.x, this.position.y + 160, this.font);
+        g.drawText(String.format("turret: %.2fx%.2f", this.world.player.turret.x, this.world.player.turret.y), this.position.x, this.position.y + 190, this.font);
+        g.drawText(String.format("map: %.2fx%.2f", this.world.map.position.x, this.world.map.position.y), this.position.x, this.position.y + 220, this.font);
     }
 
     /*public void draw ()
