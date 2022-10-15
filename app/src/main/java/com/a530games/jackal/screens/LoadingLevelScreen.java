@@ -1,5 +1,6 @@
 package com.a530games.jackal.screens;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 
 import com.a530games.framework.Game;
@@ -7,6 +8,13 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.Screen;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.levels.FirstLevel;
+
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 public class LoadingLevelScreen extends Screen
 {
@@ -33,6 +41,7 @@ public class LoadingLevelScreen extends Screen
         // loading map assets
         if (this.timer < 2 && !this.isAssetsIsLoaded)
         {
+            // here load level sprite
             Assets.mapSprite = this.game.getGraphics().newPixmap("images/map.png", Graphics.PixmapFormat.RGB565);
 
             this.isAssetsIsLoaded = true;
@@ -40,23 +49,54 @@ public class LoadingLevelScreen extends Screen
 
         if (this.timer > 2)
         {
-            // start loading
-            GameScreen gs = new GameScreen(this.game, this.startPlayerHp);
-
-
-            // test init map
-            // gs.world.map.init(100, 100, this.game.getGraphics().getAssetManager(), gs.world.player);
-            // gs.world.map.init(new FirstLevel(), this.game.getGraphics().getAssetManager(), gs.world.player);
-            gs.world.map.init(new FirstLevel(), this.game.getGraphics(), gs.world.player, gs.mapScreenWidthInPixels, gs.mapScreenHeightInPixels);
-
-            // pre draw map
-            gs.world.map.draw();
-
-            this.game.setScreen(gs);
+            this.loadLevel();
             return;
         }
 
         this.timer += deltaTime;
+    }
+
+    private void loadLevel()
+    {
+        // start loading
+        GameScreen gs = new GameScreen(this.game, this.startPlayerHp);
+
+
+        // test init map
+        // gs.world.map.init(100, 100, this.game.getGraphics().getAssetManager(), gs.world.player);
+        // gs.world.map.init(new FirstLevel(), this.game.getGraphics().getAssetManager(), gs.world.player);
+        gs.world.map.init(new FirstLevel(), this.game.getGraphics(), gs.world.player, gs.mapScreenWidthInPixels, gs.mapScreenHeightInPixels);
+
+        // pre draw map
+        gs.world.map.draw();
+
+        // save map to file
+        // this.saveMapTofile(gs);
+
+        this.game.setScreen(gs);
+    }
+
+    /**
+     * Save map image to file
+     */
+    private void saveMapTofile(GameScreen gs)
+    {
+        try {
+            OutputStream osw = this.game.getFileIO().writeFile("map22.jpg");
+            // Bitmap pictureBitmap = getImageBitmap(myurl); // obtaining the Bitmap
+            gs.world.map.drawBitmap.compress(Bitmap.CompressFormat.JPEG, 85, osw); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+            osw.flush();
+            osw.close();
+
+            FileOutputStream fs = new FileOutputStream("/storage/emulated/0/Android/data/com.a530games.jackal/files/Pictures/map3.jpg");
+            gs.world.map.drawBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fs); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+            fs.flush(); // Not really required
+            fs.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

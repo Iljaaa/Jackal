@@ -1,9 +1,11 @@
 package com.a530games.framework;
 
 import android.app.Activity;
+import android.app.usage.ExternalStorageStats;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PersistableBundle;
 import android.os.PowerManager;
 import android.util.DisplayMetrics;
@@ -16,6 +18,8 @@ import android.view.WindowManager;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
+
+import java.io.File;
 
 public abstract class AndroidGame extends Activity implements Game
 {
@@ -65,7 +69,7 @@ public abstract class AndroidGame extends Activity implements Game
         this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int screenWidth = displaymetrics.widthPixels;
         int screenHeight = displaymetrics.heightPixels;
-        Log.d("AndroidGame", "Screen size: "+String.valueOf(screenWidth)+"x"+String.valueOf(screenHeight));
+        Log.d("AndroidGame", String.format("Screen size: %d x %d", screenWidth, screenHeight));
 
         // screen ration
         double screenRatio = (double) screenWidth / screenHeight;
@@ -85,8 +89,8 @@ public abstract class AndroidGame extends Activity implements Game
 
         this.graphics = new AndroidGraphics(this.getAssets(), frameBuffer);
 
+        this.fileIO = new AndroidFileIO(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), this.getAssets());
 
-        // fileIO = new AndroidFileIO(getAssets());
         this.audio = new AndroidAudio(this);
 
         this.input = new AndroidInput(this, this.renderView, scaleX, scaleY);

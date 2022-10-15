@@ -29,6 +29,9 @@ import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.ControllerPresenter;
 import com.a530games.jackal.objects.enemies.Enemy;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 /**
@@ -152,6 +155,10 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.subTitlePaint.setTextAlign(Paint.Align.CENTER);
         this.subTitlePaint.setTextSize(30);
 
+
+        // loading config from file
+        // this.loadConfig();
+
         // Assets.music.setLooping(true);
         // Assets.music.setVolume(0.5f);
         // Assets.music.play();
@@ -162,6 +169,29 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.tempBoom = new Sprite(Assets.boom, 0, 0);
         this.tempBoom.setSpriteSize(96, 96);
         this.boomTimer = 0.2f;
+    }
+
+    /**
+     * Loading config from file
+     */
+    private void loadConfig()
+    {
+        BufferedWriter out = null;
+        try {
+            out = new BufferedWriter(new OutputStreamWriter(this.game.getFileIO().writeFile(".mrnom")));
+            out.write(Boolean.toString(true));
+            out.write("\n");
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -671,6 +701,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         Graphics g = this.game.getGraphics();
         g.drawRect( left, top, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT, Color.YELLOW);
+
     }
 
     /**

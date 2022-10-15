@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Environment;
 
 import com.a530games.framework.AndroidGraphics;
 import com.a530games.framework.Graphics;
@@ -15,6 +16,12 @@ import com.a530games.jackal.Assets;
 import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.enemies.Enemy;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Map implements CellEventCallbackHandler
 {
@@ -46,7 +53,7 @@ public class Map implements CellEventCallbackHandler
      */
     private final Rect playerScreenRect;
 
-    // object min max position
+    // object () min max position
     private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
 
     // map size in blocks
@@ -136,7 +143,6 @@ public class Map implements CellEventCallbackHandler
         // calculate max map positions`
         // fixme: magic numbers
         this.mapMaxPosition.set(
-            // -1 * ((this.mapCols * Map.SPRITE_WIDTH) - 640),
             -1 * ((this.mapCols * Map.SPRITE_WIDTH) - mapScreenWidth),
             -1 * ((this.mapRows * Map.SPRITE_HEIGHT) - mapScreenHeight)
         );
@@ -150,9 +156,9 @@ public class Map implements CellEventCallbackHandler
         );
 
         // calculate min|max objects position
-        this.objectMinX = Map.SPRITE_WIDTH;
+        this.objectMinX = Map.SPRITE_WIDTH; // 1 block left
         this.objectMaxX = (this.mapCols * Map.SPRITE_WIDTH) - Map.SPRITE_WIDTH;
-        this.objectMinY = Map.SPRITE_HEIGHT;
+        this.objectMinY = Map.SPRITE_HEIGHT; // 1 block top
         this.objectMaxY = (this.mapRows * Map.SPRITE_HEIGHT) - Map.SPRITE_HEIGHT;
 
         // move player on map position
@@ -176,10 +182,6 @@ public class Map implements CellEventCallbackHandler
         // this.addObjectToMap();
         level.addObjectsOnMap(this);
 
-
-        /*MapCell c = this.fields[3][2];
-        c.isRock = true;*/
-
         // big map rect for a drawing
         this.drawRect = new Rect(
                 0,
@@ -202,6 +204,7 @@ public class Map implements CellEventCallbackHandler
         this.testPaint.setStyle(Paint.Style.FILL);
         this.testPaint.setColor(Color.RED);
 
+
     }
 
     /**
@@ -216,12 +219,12 @@ public class Map implements CellEventCallbackHandler
     /*private void addRock (int row, int col, int type)
     {
         this.fields[row][col] = new Rock(row, col, type);
-    }*/
+    }
 
     private void addBeach (int row, int col)
     {
         this.fields[row][col] = new Beach(row, col);
-    }
+    }*/
 
     /**
      * Drawing background image
@@ -386,7 +389,7 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
-     * Intersect object with map hitboxes elements
+     * Intersect object (enemies and bullets) with map hitboxes elements
      */
     public boolean isIntersect (FloatRect rectOnMap)
     {

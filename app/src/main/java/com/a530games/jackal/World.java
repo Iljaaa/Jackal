@@ -77,7 +77,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.map.setEventHandler(this);
 
         // bind map follow for player
-        this.map.setFollowObject(this.player);
+        // this.map.setFollowObject(this.player);
 
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
@@ -329,14 +329,17 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
             return;
         }
 
+        // is this new enemy
         if (this.enemies.indexOf(enemy) <= 0)
         {
-            // todo: rafactor create enemy insize cell
-            // Tank t = new Tank(spownCell.col * Map.SPRITE_WIDTH, spownCell.row * Map.SPRITE_HEIGHT);
-            // t.setEventHandler(this);
+            // bind fire handlet
             enemy.setFireEventHandler(this);
 
+            // add enemy to list
             this.enemies.add(enemy);
+
+            // set follow from enemy tank
+            this.map.setFollowObject(enemy);
         }
 
     }
