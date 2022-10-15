@@ -25,6 +25,31 @@ public class FloatRect
         this._center = new FloatPoint();
     }
 
+    /**
+     * Check intersect two rect
+     */
+    public static boolean isIntersectsTwoRect(FloatRect r1, FloatRect r2)
+    {
+        //
+        if (r1.bottom < r2.top){
+            return false;
+        }
+
+        if (r1.top > r2.bottom){
+            return false;
+        }
+
+        if (r1.right < r2.left){
+            return false;
+        }
+
+        if (r1.left > r2.right) {
+            return false;
+        }
+
+        return true;
+    }
+
     public void move(float deltaX, float deltaY)
     {
         this.right = (this.left + deltaX) + this.getWidth();
@@ -97,12 +122,12 @@ public class FloatRect
         return true;
     }*/
 
-    public Rect get_drawRect()
+    /*public Rect get_drawRect()
     {
         this._drawRect.left = (int) Math.ceil(this.left);
         this._drawRect.top = (int) Math.round(this.top);
         this._drawRect.right = (int) Math.round(this.right);
         this._drawRect.bottom = (int) Math.round(this.bottom);
         return this._drawRect;
-    }
+    }*/
 }

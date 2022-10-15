@@ -126,7 +126,8 @@ public abstract class BasicMenu implements Menu
             Input.TouchEvent event = touchEvents.get(i); //.get(i);
             if (event == null) continue;
 
-            if (Input.TouchEvent.TOUCH_DOWN == event.type)
+            // if (Input.TouchEvent.TOUCH_DOWN == event.type)
+            if (Input.TouchEvent.TOUCH_UP == event.type)
             {
                 // draw points
                 int count = this.items.size();
@@ -139,7 +140,7 @@ public abstract class BasicMenu implements Menu
             }
         }
 
-        // if controller push button
+        // check controller events
         if (controller.isA() || controller.isStart()) {
             this.selectItem(this.activeIndex);
         }
@@ -201,7 +202,6 @@ public abstract class BasicMenu implements Menu
 
         }
     }
-
 
     private void selectItem(int index)
     {

@@ -229,27 +229,16 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
     private void updateReady(TouchEventsCollection touchEvents, Controller controller, float deltaTime)
     {
-        if (controller.isStart()) {
-            this.state = GameState.Running;
-        }
-
         // start drop
         // this.world.updateDrawPad();
 
         // if got fouch go to run
         // if(touchEvents.hasDown()) this.state = GameState.Running;
-
-        // update menu
-
-        // if(touchEvents.size() > 0) this.state = GameState.Running;
-
-        // do touch event
-        // if (controller.isStart()) this.state = GameState.Running;
     }
 
     private void updateRunning(List<Input.KeyEvent> keyEvents, Controller controller, float deltaTime)
     {
-
+        // [layer controls
         this.updatePlayer(controller, deltaTime);
 
         // обновление мира
@@ -327,11 +316,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         // update controller presenter by touch events
         // this.controllerPresenter.update(touchEvents);
-
-        /*if (controller.isStart()) {
-            this.state = GameState.Paused;
-            return;
-        }*/
 
         // move player
         Vector2 leftStick = controller.getLeftStickDirection();
@@ -443,38 +427,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     {
 
         this.pauseMenu.update(controller, touchEvents, deltaTime);
-
-        /*int len = touchEvents.size();
-        for(int i = 0; i < len; i++) {
-            Input.TouchEvent event = touchEvents.get(i);
-            if(event.type == Input.TouchEvent.TOUCH_UP)
-            {
-                // определяем клик для сниятия м пайзы
-                if(event.x > 80 && event.x <= 240) {
-                    if(event.y > 100 && event.y <= 148) {
-                        // todo: enable sound
-                        // if(Settings.soundEnabled) Assets.click.play(1);
-                        this.state = GameState.Running;
-                        return;
-                    }
-                }
-
-                // опреляем клик по пункту меню возврата к главному экрану
-                // он в левом верхнем углу
-                if(event.y > 148 && event.y < 196) {
-                    // if(Settings.soundEnabled) Assets.click.play(1);
-                    // game.setScreen(new MainMenuScreen(game));
-                    return;
-                }
-            }
-        }*/
-        /*if(touchEvents.size() > 0) {
-            this.state = GameState.Running;
-        }*/
-        // if(touchEvents.size() > 0) this.state = GameState.Running;
-        /*if (controller.isStart()) {
-            this.state = GameState.Running;
-        }*/
     }
 
     private void updateGameOver(TouchEventsCollection touchEvents, Controller controller, float deltaTime)
@@ -959,39 +911,18 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     {
         Log.d("GameScreen", "onButtonUp");
 
-
-        // is game paused and pres start
-        /*if (this.state == GameState.Paused)
+        if (keyCode == KeyEvent.KEYCODE_BUTTON_START)
         {
-            if (keyCode == KeyEvent.KEYCODE_BUTTON_START) {
-                this.state = GameState.Running;
-            }
-
-            return;
-        }*/
-
-        // start for pause
-        if (this.state == GameState.Running)
-        {
-            if (keyCode == KeyEvent.KEYCODE_BUTTON_START) {
+            // pause game
+            if (this.state == GameState.Running) {
                 this.state = GameState.Paused;
             }
-        }
 
-
-        // is in state ready to start
-        /*if (this.state == GameState.Ready) {
-            this.state = GameState.Running;
-            return;
-        }*/
-
-        /*if (this.state == GameState.GameOver) {
-            if (keyCode == KeyEvent.KEYCODE_BUTTON_START)
-            {
-                // go to loading screen with start user hp
-                this.restartLevel(Jackal.pickContinue());
+            // start game
+            if (this.state == GameState.Ready) {
+                this.state = GameState.Running;
             }
-        }*/
+        }
     }
 
     @Override

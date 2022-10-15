@@ -105,31 +105,6 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
-     * todo: move to math helper
-     */
-    public static boolean isIntersectsTwoRect(FloatRect r1, FloatRect r2)
-    {
-        //
-        if (r1.bottom < r2.top){
-            return false;
-        }
-
-        if (r1.top > r2.bottom){
-            return false;
-        }
-
-        if (r1.right < r2.left){
-            return false;
-        }
-
-        if (r1.left > r2.right) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Prepare map
      * @param mapScreenWidth map screen size round by blocks count
      * @param mapScreenHeight map screen size round by blocks count
@@ -203,8 +178,6 @@ public class Map implements CellEventCallbackHandler
         // this.b = new BitmapFactory();
         this.testPaint.setStyle(Paint.Style.FILL);
         this.testPaint.setColor(Color.RED);
-
-
     }
 
     /**
@@ -257,6 +230,7 @@ public class Map implements CellEventCallbackHandler
         // corners
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, 0, 192, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), 0, 320, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+
         // corners before bottom line
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 512, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 384, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
@@ -271,23 +245,11 @@ public class Map implements CellEventCallbackHandler
 
                 // draw block on background
                 c.drawOnBackground(this.backgroundGraphic);
-
-                // this.g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 0, 64, 64);
             }
         }
 
         // draw bush
         // todo: refactor go game objects
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 5 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 0, 64, 64, 64);
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 5 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 0, 128, 64, 64);
-
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 7 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 128, 64, 64, 64);
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 7 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 128, 128, 64, 64);
-
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 1 * Map.SPRITE_HEIGHT, 64, 128, 64, 64);
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 2 * Map.SPRITE_HEIGHT, 64, 0, 64, 64);
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 6 * Map.SPRITE_WIDTH, 3 * Map.SPRITE_HEIGHT, 128, 0, 64, 64);
-
         this.backgroundGraphic.drawPixmap(Assets.bigStone, 4 * Map.SPRITE_WIDTH, 5 * Map.SPRITE_HEIGHT, 0, 0, 192, 255);
         this.backgroundGraphic.drawPixmap(Assets.house, 12 * Map.SPRITE_WIDTH, 5 * Map.SPRITE_HEIGHT, 0, 0, 150, 100);
 

@@ -3,6 +3,7 @@ package com.a530games.jackal;
 import android.util.Log;
 
 import com.a530games.framework.Sound;
+import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
@@ -77,7 +78,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.map.setEventHandler(this);
 
         // bind map follow for player
-        // this.map.setFollowObject(this.player);
+        this.map.setFollowObject(this.player);
 
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
@@ -320,7 +321,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     public void spownEnemyOnCell(MapCell spownCell, Enemy enemy)
     {
         // check intersect by player
-        if (Map.isIntersectsTwoRect(this.player.getHitBox(), enemy.getHitBox())) {
+        if (FloatRect.isIntersectsTwoRect(this.player.getHitBox(), enemy.getHitBox())) {
             return;
         }
 
@@ -339,7 +340,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
             this.enemies.add(enemy);
 
             // set follow from enemy tank
-            this.map.setFollowObject(enemy);
+            // this.map.setFollowObject(enemy);
         }
 
     }

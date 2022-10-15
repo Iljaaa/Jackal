@@ -200,7 +200,7 @@ public abstract class Vehicle extends GameObject implements Enemy
 
         // intersect with player
         if (!world.player.equals(this)) {
-            if (Map.isIntersectsTwoRect(aHitbox, world.player.hitBox)) {
+            if (FloatRect.isIntersectsTwoRect(aHitbox, world.player.hitBox)) {
                 return true;
             }
         }
