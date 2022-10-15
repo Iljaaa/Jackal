@@ -20,7 +20,8 @@ public abstract class MapCellWithHitbox extends MapCell
     }
 
     @Override
-    public void drawHitBox(Graphics g, Map map) {
+    public void drawHitBox(Graphics g, Map map)
+    {
         g.drawRect(
                 map.screenLeftPotion(hitBox.left),
                 map.screenTopPotion(hitBox.top),

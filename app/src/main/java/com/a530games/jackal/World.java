@@ -168,7 +168,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
                 if (b.isOut()) continue;
 
                 // if (this.map.isIntersectPoint(b.x, b.y)) {
-                if (this.map.isIntersectPoint(b.mapPosition.left, b.mapPosition.top)) {
+                if (this.map.isIntersectPoint(b.mapPosition.x, b.mapPosition.y)) {
                     b.setIsOutOnIntersectWithMap();
                 }
 
@@ -242,7 +242,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
                 if (b.isOut()) continue;
 
                 // if (this.map.isIntersectPoint(b.x, b.y)) {
-                if (this.map.isIntersectPoint(b.mapPosition.left, b.mapPosition.top)) {
+                if (this.map.isIntersectPoint(b.mapPosition.x, b.mapPosition.y)) {
                     b.setIsOutOnIntersectWithMap();
                     continue;
                 }

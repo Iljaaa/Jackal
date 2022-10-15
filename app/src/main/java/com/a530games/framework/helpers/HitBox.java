@@ -12,10 +12,10 @@ public class HitBox extends RollbackFloatRect
      * Has hit by bullet
      */
     public boolean isHit(Bullet b) {
-        if (b.mapPosition.left < this.left) return false;
-        if (b.mapPosition.left > this.right) return false;
-        if (b.mapPosition.top < this.top) return false;
-        if (b.mapPosition.top > this.bottom) return false;
+        if (b.mapPosition.x < this.left) return false;
+        if (b.mapPosition.x > this.right) return false;
+        if (b.mapPosition.y < this.top) return false;
+        if (b.mapPosition.y > this.bottom) return false;
         // if (b.x < this.left) return false;
         // if (b.x > this.right) return false;
         // if (b.y < this.top) return false;

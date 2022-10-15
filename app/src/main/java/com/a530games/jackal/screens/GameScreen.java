@@ -782,8 +782,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         if (b.timer <= 0.05f) {
             g.drawPixmap(
                     Assets.playerFire,
-                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 16,
-                    this.world.map.screenTopPotion(b.startMapPosition.top) - 16,
+                    this.world.map.screenLeftPotion(b.startMapPosition.x) - 16,
+                    this.world.map.screenTopPotion(b.startMapPosition.y) - 16,
                     0,
                     0,
                     32,
@@ -793,8 +793,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         else if (0.05f < b.timer && b.timer <= 0.1f) {
             g.drawPixmap(
                     Assets.playerFire,
-                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 16,
-                    this.world.map.screenTopPotion(b.startMapPosition.top) - 16,
+                    this.world.map.screenLeftPotion(b.startMapPosition.x) - 16,
+                    this.world.map.screenTopPotion(b.startMapPosition.y) - 16,
                     32,
                     0,
                     32,
@@ -804,8 +804,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         else if (0.1f < b.timer && b.timer <= 0.15f) {
             g.drawPixmap(
                     Assets.playerFire,
-                    this.world.map.screenLeftPotion(b.startMapPosition.left) - 16,
-                    this.world.map.screenTopPotion(b.startMapPosition.top) - 16,
+                    this.world.map.screenLeftPotion(b.startMapPosition.x) - 16,
+                    this.world.map.screenTopPotion(b.startMapPosition.y) - 16,
                     64,
                     0,
                     32,

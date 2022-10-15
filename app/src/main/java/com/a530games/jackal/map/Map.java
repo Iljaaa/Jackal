@@ -4,11 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.a530games.framework.AndroidGraphics;
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatPoint;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
@@ -310,10 +310,10 @@ public class Map implements CellEventCallbackHandler
     /**
      * Update map position by player
      */
-    private void updateMapPosition (FloatPoint playerHitboxCenter)
+    private void updateMapPosition (PointF playerHitboxCenter)
     {
         // on top
-        float playerCenterY = this.screenTopPotionF(playerHitboxCenter.top);
+        float playerCenterY = this.screenTopPotionF(playerHitboxCenter.y);
         if (playerCenterY < this.playerScreenRect.top)
         {
             this.position.y = this.position.y + (this.playerScreenRect.top - playerCenterY);
@@ -321,7 +321,7 @@ public class Map implements CellEventCallbackHandler
         }
 
         // on the left border
-        float playerCenterX = this.screenLeftPotionF(playerHitboxCenter.left);
+        float playerCenterX = this.screenLeftPotionF(playerHitboxCenter.x);
         if (playerCenterX < this.playerScreenRect.left)
         {
             this.position.x = this.position.x + (this.playerScreenRect.left - playerCenterX);
@@ -423,7 +423,7 @@ public class Map implements CellEventCallbackHandler
         if (cell == null) return false;
         // if (!cell.hasHitBox()) return false; // if object have no hitbox
 
-        return cell.isIntersectPointInsideRect(left, top);
+        return cell.isIntersectPointInsideCell(left, top);
     }
 
     public int getRowByTop(float top) {

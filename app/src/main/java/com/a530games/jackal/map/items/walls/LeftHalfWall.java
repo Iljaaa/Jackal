@@ -18,7 +18,7 @@ public class LeftHalfWall extends Wall
     }
 
     @Override
-    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
+    public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
         return false;
     }
 

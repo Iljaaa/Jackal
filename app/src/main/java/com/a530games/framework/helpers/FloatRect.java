@@ -1,5 +1,6 @@
 package com.a530games.framework.helpers;
 
+import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.a530games.framework.math.Vector2;
@@ -12,7 +13,7 @@ public class FloatRect
     public float bottom;
 
     private final Rect _drawRect;
-    private final FloatPoint _center;
+    private final PointF _center;
 
     public FloatRect(float left, float top, float right, float bottom)
     {
@@ -22,7 +23,7 @@ public class FloatRect
         this.bottom = bottom;
 
         this._drawRect = new Rect();
-        this._center = new FloatPoint();
+        this._center = new PointF();
     }
 
     /**
@@ -88,9 +89,9 @@ public class FloatRect
         return this.top + (this.getHeight() / 2);
     }
 
-    public FloatPoint getCenter () {
-        this._center.left = this.getCenterLeft();
-        this._center.top = this.getCenterTop();
+    public PointF getCenter () {
+        this._center.x = this.getCenterLeft();
+        this._center.y = this.getCenterTop();
         return _center;
     }
 

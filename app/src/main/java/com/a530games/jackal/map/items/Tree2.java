@@ -61,9 +61,7 @@ public class Tree2 extends MapCellWithHitbox
     /**
      * Is intersect point inside rect
      */
-    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop)
-    {
-        // return this.isRock;
+    public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
         return true;
     }
 

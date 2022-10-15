@@ -58,7 +58,7 @@ abstract public class BigPillarThird extends MapCellWithHitbox
     }
 
     @Override
-    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
+    public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
         return true;
     }
 

@@ -1,6 +1,7 @@
 package com.a530games.jackal.objects;
 
-import com.a530games.framework.helpers.FloatPoint;
+import android.graphics.PointF;
+
 import com.a530games.framework.math.Vector2;
 
 public class Bullet
@@ -8,13 +9,11 @@ public class Bullet
     private final float lifeTime  = 1;
 
     // position
-    public FloatPoint mapPosition;
-    // public float x;
-    // public float y;
+    public PointF mapPosition;
 
     // start position
     // for calculate shot blow
-    public FloatPoint startMapPosition;
+    public PointF startMapPosition;
 
     //
     public Vector2 direction;
@@ -30,16 +29,16 @@ public class Bullet
     public Bullet(boolean isOut) {
         this.isOut = isOut;
         this.direction = new Vector2(0 ,1);
-        this.mapPosition = new FloatPoint(0, 0);
-        this.startMapPosition = new FloatPoint(0, 0);
+        this.mapPosition = new PointF(0, 0);
+        this.startMapPosition = new PointF(0, 0);
     }
 
     public Bullet(float x, float y, float angle)
     {
-        this.mapPosition.left = x;
-        this.mapPosition.top = y;
-        this.startMapPosition.left = x;
-        this.startMapPosition.top = y;
+        this.mapPosition.x = x;
+        this.mapPosition.y = y;
+        this.startMapPosition.x = x;
+        this.startMapPosition.y = y;
 //        this.x = x;
 //        this.y = y;
 
@@ -63,13 +62,11 @@ public class Bullet
     }
 
     public float getX() {
-        // return x;
-        return this.mapPosition.left;
+        return this.mapPosition.x;
     }
 
     public float getY() {
-        // return y;
-        return this.mapPosition.top;
+        return this.mapPosition.y;
     }
 
     /**
@@ -103,10 +100,8 @@ public class Bullet
         this.timer += deltaTime;
 
         // move
-        this.mapPosition.left += this.direction.x * this.speed;
-        this.mapPosition.top += this.direction.y * this.speed;
-        // this.y += this.direction.y * this.speed;
-        // this.x += this.direction.x * this.speed;
+        this.mapPosition.x += this.direction.x * this.speed;
+        this.mapPosition.y += this.direction.y * this.speed;
     }
 
     /*
@@ -132,10 +127,10 @@ public class Bullet
      */
     public void reNewByVector (float x, float y, float directionX, float directionY)
     {
-        this.mapPosition.left = x;
-        this.mapPosition.top = y;
-        this.startMapPosition.left = x;
-        this.startMapPosition.top = y;
+        this.mapPosition.x = x;
+        this.mapPosition.y = y;
+        this.startMapPosition.x = x;
+        this.startMapPosition.y = y;
         // this.x = x;
         // this.y = y;
         // this.direction.updateByAngle(angle);
@@ -151,10 +146,10 @@ public class Bullet
      */
     public void reNewByDirectionVector (float x, float y, Vector2 direction)
     {
-        this.mapPosition.left = x;
-        this.mapPosition.top = y;
-        this.startMapPosition.left = x;
-        this.startMapPosition.top = y;
+        this.mapPosition.x = x;
+        this.mapPosition.y = y;
+        this.startMapPosition.x = x;
+        this.startMapPosition.y = y;
         // this.x = x;
         // this.y = y;
         // this.direction.updateByAngle(angle);

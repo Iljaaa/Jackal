@@ -1,10 +1,10 @@
 package com.a530games.jackal.objects.enemies;
 
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatPoint;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
@@ -123,11 +123,11 @@ public class Tank extends Vehicle
 
     private void updateAiming(World world)
     {
-        FloatPoint playerCenter = world.player.getHitBox().getCenter();
-        FloatPoint tankCenter = this.hitBox.getCenter();
+        PointF playerCenter = world.player.getHitBox().getCenter();
+        PointF tankCenter = this.hitBox.getCenter();
 
-        float y = playerCenter.top - tankCenter.top;
-        float x = playerCenter.left - tankCenter.left;
+        float y = playerCenter.y - tankCenter.y;
+        float x = playerCenter.x - tankCenter.x;
 
         // random angle
         // this.targetAngle = Jackal.getRandom().nextFloat() * 2;

@@ -81,7 +81,7 @@ public class Bush extends MapCell
      * Is intersect point inside rect
      */
     @Override
-    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
+    public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
         // return this.isRock;
         return true;
     }

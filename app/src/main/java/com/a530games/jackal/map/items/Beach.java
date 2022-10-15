@@ -44,8 +44,8 @@ public class Beach extends MapCell
     {
         g.drawPixmap(
                 this.sprite.image,
-                map.screenLeftPotion(this.col * Map.SPRITE_WIDTH),
-                map.screenTopPotion(this.row * Map.SPRITE_HEIGHT),
+                map.screenLeftPotion(this.col * this.sprite.width),
+                map.screenTopPotion(this.row * this.sprite.width),
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,
@@ -65,7 +65,7 @@ public class Beach extends MapCell
     /**
      * Is intersect point inside rect
      */
-    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
+    public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
         // return this.isRock;
         return true;
     }

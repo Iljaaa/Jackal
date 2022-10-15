@@ -53,7 +53,7 @@ abstract public class BigPillarTop extends MapCell
     }
 
     @Override
-    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
+    public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
         return false;
     }
 

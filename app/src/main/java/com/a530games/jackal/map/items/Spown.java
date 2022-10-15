@@ -86,7 +86,7 @@ public class Spown extends MapCell implements EnemyDieEventHandler
     }
 
     @Override
-    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
+    public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
         return false;
     }
 

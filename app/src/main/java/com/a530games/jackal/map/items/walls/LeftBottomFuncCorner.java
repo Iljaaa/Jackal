@@ -48,7 +48,7 @@ public class LeftBottomFuncCorner extends FuncCorner
     }
 
     @Override
-    public boolean isIntersectPointInsideRect(float mapLeft, float mapTop) {
+    public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
         return mapTop < (this.getYByX(mapLeft - this.hitBox.left) + this.hitBox.top);
         // float leftInsideRect = mapLeft - this.hitBox.left;
         // float yByLeft = this.getYByX(leftInsideRect);
@@ -60,7 +60,7 @@ public class LeftBottomFuncCorner extends FuncCorner
     {
         // check right top corner for top right corner
         // return (this.hitBox.top + this.getYByX(rectOnMap.right - this.hitBox.left) > rectOnMap.top);
-        return this.isIntersectPointInsideRect(rectOnMap.right, rectOnMap.top);
+        return this.isIntersectPointInsideCell(rectOnMap.right, rectOnMap.top);
     }
 
 }
