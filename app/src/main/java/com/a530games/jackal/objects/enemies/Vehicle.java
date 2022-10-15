@@ -5,7 +5,6 @@ import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.World;
-import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.GameObject;
 
 /**
@@ -200,7 +199,7 @@ public abstract class Vehicle extends GameObject implements Enemy
 
         // intersect with player
         if (!world.player.equals(this)) {
-            if (FloatRect.isIntersectsTwoRect(aHitbox, world.player.hitBox)) {
+            if (FloatRect.isIntersectsTwoRectF(aHitbox, world.player.hitBox)) {
                 return true;
             }
         }

@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import com.a530games.framework.AndroidGraphics;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
@@ -242,10 +243,6 @@ public class Map implements CellEventCallbackHandler
             }
         }
 
-        // draw bush
-        // todo: refactor go game objects
-        this.backgroundGraphic.drawPixmap(Assets.bigStone, 4 * Map.SPRITE_WIDTH, 5 * Map.SPRITE_HEIGHT, 0, 0, 192, 255);
-
     }
 
     public void update(Player player, float deltaTime)
@@ -348,15 +345,17 @@ public class Map implements CellEventCallbackHandler
      */
     public boolean isIntersect (FloatRect rectOnMap)
     {
-        // check min max position
+        // check is out of map, there is bedrock
         if (rectOnMap.left < this.objectMinX) return true;
         if (rectOnMap.top < this.objectMinY) return true;
         if (rectOnMap.right > this.objectMaxX) return true;
         if (rectOnMap.bottom > this.objectMaxY) return true;
 
         // for left top take 3 top
-        int row = (int) Math.floor(rectOnMap.top / Map.SPRITE_HEIGHT);
-        int col = (int) Math.floor(rectOnMap.left / Map.SPRITE_WIDTH);
+        int row = this.getRowByTop(rectOnMap.top);
+        int col = this.getColByLeft(rectOnMap.left);
+//        int row = (int) Math.floor(rectOnMap.top / Map.SPRITE_HEIGHT);
+//        int col = (int) Math.floor(rectOnMap.left / Map.SPRITE_WIDTH);
 
         // take nine sqars
         for (int forCol = col - 1; forCol <= col + 1; forCol++) {
@@ -375,8 +374,13 @@ public class Map implements CellEventCallbackHandler
                 Rect hitbox = cell.getHitBox();
                 if (hitbox == null) continue;
 
+                // check global intersect
+                if (!HitBox.isIntersectsTwoRect(hitbox, rectOnMap)){
+                    return false;
+                }
+
                 // todo: make intersect inside rect
-                if (hitbox.bottom < rectOnMap.top){
+                /*if (hitbox.bottom < rectOnMap.top){
                     continue;
                 }
                 if (hitbox.top > rectOnMap.bottom){
@@ -387,7 +391,7 @@ public class Map implements CellEventCallbackHandler
                 }
                 if (hitbox.left > rectOnMap.right){
                     continue;
-                }
+                }*/
 
                 if (cell.isIntersectRectInsideCell(rectOnMap)){
                     return true;

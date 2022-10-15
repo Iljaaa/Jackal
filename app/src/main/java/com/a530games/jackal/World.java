@@ -317,7 +317,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     public void spownEnemyOnCell(MapCell spownCell, Enemy enemy)
     {
         // check intersect by player
-        if (FloatRect.isIntersectsTwoRect(this.player.getHitBox(), enemy.getHitBox())) {
+        if (FloatRect.isIntersectsTwoRectF(this.player.getHitBox(), enemy.getHitBox())) {
             return;
         }
 

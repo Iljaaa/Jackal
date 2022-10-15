@@ -4,6 +4,7 @@ import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.map.items.Beach;
+import com.a530games.jackal.map.items.bigRock.BigRock;
 import com.a530games.jackal.map.items.house.HouseLeftBottom;
 import com.a530games.jackal.map.items.house.HouseLeftTop;
 import com.a530games.jackal.map.items.house.HouseRightBottom;
@@ -150,5 +151,15 @@ public class FirstLevel implements Level
         map.addObjectToMap(new HouseRightTop(17, 8));
         map.addObjectToMap(new HouseLeftBottom(18, 7));
         map.addObjectToMap(new HouseRightBottom(18, 8));
+
+        map.addObjectToMap(new BigRock(19, 7, BigRock.Part.LeftTop));
+        map.addObjectToMap(new BigRock(19, 8, BigRock.Part.CenterTop));
+        map.addObjectToMap(new BigRock(19, 9, BigRock.Part.RightTop));
+        map.addObjectToMap(new BigRock(20, 7, BigRock.Part.LeftCenter));
+        map.addObjectToMap(new BigRock(20, 8, BigRock.Part.CenterCenter));
+        map.addObjectToMap(new BigRock(20, 9, BigRock.Part.RightCenter));
+        map.addObjectToMap(new BigRock(21, 7, BigRock.Part.LeftBottom));
+        map.addObjectToMap(new BigRock(21, 8, BigRock.Part.CenterBottom));
+        map.addObjectToMap(new BigRock(21, 9, BigRock.Part.RightBottom));
     }
 }

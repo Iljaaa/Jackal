@@ -27,9 +27,34 @@ public class FloatRect
     }
 
     /**
-     * Check intersect two rect
+     * Check intersect two FLOAT rect
      */
-    public static boolean isIntersectsTwoRect(FloatRect r1, FloatRect r2)
+    public static boolean isIntersectsTwoRectF(FloatRect r1, FloatRect r2)
+    {
+        //
+        if (r1.bottom < r2.top){
+            return false;
+        }
+
+        if (r1.top > r2.bottom){
+            return false;
+        }
+
+        if (r1.right < r2.left){
+            return false;
+        }
+
+        if (r1.left > r2.right) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check intersect two NOT rect
+     */
+    public static boolean isIntersectsTwoRect(Rect r1, FloatRect r2)
     {
         //
         if (r1.bottom < r2.top){

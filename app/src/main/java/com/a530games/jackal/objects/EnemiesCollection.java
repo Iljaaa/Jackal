@@ -1,7 +1,6 @@
 package com.a530games.jackal.objects;
 
 import com.a530games.framework.helpers.FloatRect;
-import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.enemies.Enemy;
 
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class EnemiesCollection
             if (e == null) continue;
 
             // check intersect
-            if (FloatRect.isIntersectsTwoRect(vehicle.getHitBox(), e.getHitBox())){
+            if (FloatRect.isIntersectsTwoRectF(vehicle.getHitBox(), e.getHitBox())){
                 return true;
             }
         }
