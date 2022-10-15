@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Environment;
 
 import com.a530games.framework.AndroidGraphics;
 import com.a530games.framework.Graphics;
@@ -16,12 +15,6 @@ import com.a530games.jackal.Assets;
 import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.enemies.Enemy;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Map implements CellEventCallbackHandler
 {

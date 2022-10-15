@@ -2,7 +2,6 @@ package com.a530games.jackal;
 
 import android.util.Log;
 
-import com.a530games.framework.Sound;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.map.Map;
@@ -18,9 +17,6 @@ import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.EnemyBulletsCollection;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.PlayerBulletsCollection;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEventsHandler
 {

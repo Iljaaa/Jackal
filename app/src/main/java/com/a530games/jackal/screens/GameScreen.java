@@ -25,7 +25,6 @@ import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
 import com.a530games.jackal.World;
-import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.ControllerPresenter;
 import com.a530games.jackal.objects.enemies.Enemy;
 

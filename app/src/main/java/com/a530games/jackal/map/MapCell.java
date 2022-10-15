@@ -6,6 +6,8 @@ import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.jackal.map.CellEventCallbackHandler;
+import com.a530games.jackal.map.Map;
 
 public abstract class MapCell
 {
@@ -28,12 +30,12 @@ public abstract class MapCell
      * Draw block on background
      * @param g Graphic object
      */
-    abstract void drawOnBackground(Graphics g);
+    public abstract void drawOnBackground(Graphics g);
 
     /**
      * Update not static block before craw
      */
-    abstract void update(float deltaTime, CellEventCallbackHandler callbackHandler);
+    public abstract void update(float deltaTime, CellEventCallbackHandler callbackHandler);
 
     /**
      * Draw block
@@ -67,14 +69,14 @@ public abstract class MapCell
      * @param mapTop top position on map
      * @return is has intersect pint inside block
      */
-    abstract boolean isIntersectPointInsideRect(float mapLeft, float mapTop);
+    public abstract boolean isIntersectPointInsideRect(float mapLeft, float mapTop);
 
     /**
      * Check intersect inside rect
      * @param rectOnMap Rect in map coordinate system to check
      * @return is intersected
      */
-    abstract boolean isIntersectRectInsideCell (FloatRect rectOnMap);
+    public abstract boolean isIntersectRectInsideCell (FloatRect rectOnMap);
 
     /**
      * Is cell conditions success for win
