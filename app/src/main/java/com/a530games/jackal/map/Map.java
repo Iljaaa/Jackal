@@ -245,7 +245,6 @@ public class Map implements CellEventCallbackHandler
         // draw bush
         // todo: refactor go game objects
         this.backgroundGraphic.drawPixmap(Assets.bigStone, 4 * Map.SPRITE_WIDTH, 5 * Map.SPRITE_HEIGHT, 0, 0, 192, 255);
-        this.backgroundGraphic.drawPixmap(Assets.house, 12 * Map.SPRITE_WIDTH, 5 * Map.SPRITE_HEIGHT, 0, 0, 150, 100);
 
     }
 
