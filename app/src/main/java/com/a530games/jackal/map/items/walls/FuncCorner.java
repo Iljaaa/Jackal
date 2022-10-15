@@ -1,7 +1,6 @@
 package com.a530games.jackal.map.items.walls;
 
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.map.CellEventCallbackHandler;
@@ -21,7 +20,7 @@ abstract public class FuncCorner extends MapCellWithHitbox
     }
 
     @Override
-    public void drawOnBackground(Graphics g)
+    public void drawOnBackground(Graphics g, Map map)
     {
         g.drawPixmap(
                 this.sprite.image,

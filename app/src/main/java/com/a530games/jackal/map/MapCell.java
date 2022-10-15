@@ -2,20 +2,36 @@ package com.a530games.jackal.map;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.jackal.Jackal;
+
 public abstract class MapCell
 {
     public int row, col;
 
+    /**
+     * Left top corner of cell
+     */
+    protected Point leftTopCorner;
+
+    /**
+     * Paint for hit box
+     */
     protected Paint hitBoxPaint;
 
     public MapCell(int row, int col)
     {
         this.row = row;
         this.col = col;
+
+        this.leftTopCorner = new Point(
+            this.col * Jackal.BLOCK_WIDTH,
+            this.row * Jackal.BLOCK_HEIGHT
+        );
 
         this.hitBoxPaint = new Paint();
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);
@@ -26,8 +42,9 @@ public abstract class MapCell
     /**
      * Draw block on background
      * @param g Graphic object
+     * @param map
      */
-    public abstract void drawOnBackground(Graphics g);
+    public abstract void drawOnBackground(Graphics g, Map map);
 
     /**
      * Update not static block before craw

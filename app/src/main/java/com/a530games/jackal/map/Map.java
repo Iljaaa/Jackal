@@ -12,6 +12,7 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.Jackal;
 import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.enemies.Enemy;
@@ -237,7 +238,7 @@ public class Map implements CellEventCallbackHandler
                 if (c == null) continue;
 
                 // draw block on background
-                c.drawOnBackground(this.backgroundGraphic);
+                c.drawOnBackground(this.backgroundGraphic, this);
             }
         }
 
@@ -427,27 +428,63 @@ public class Map implements CellEventCallbackHandler
     }
 
     public int getRowByTop(float top) {
-        return (int) Math.floor(top / Map.SPRITE_HEIGHT);
+        // return (int) Math.floor(top / Map.SPRITE_HEIGHT);
+        return (int) Math.floor(top / Jackal.BLOCK_HEIGHT);
     }
 
     public int getColByLeft(float left) {
-        return (int) Math.floor(left / Map.SPRITE_WIDTH);
+        // return (int) Math.floor(left / Map.SPRITE_WIDTH);
+        return (int) Math.floor(left / Jackal.BLOCK_WIDTH);
     }
 
-    public int screenTopPotion (float globalTop){
-        return (int) Math.floor(globalTop + this.position.y);
+    /**
+     * Get row coords
+     */
+    public int getTopByRow (int row) {
+        return row * Jackal.BLOCK_HEIGHT;
     }
 
-    public int screenLeftPotion (float globalLeft){
-        return (int) Math.floor(globalLeft + this.position.x);
+    /**
+     * Col coords
+     */
+    public int getLeftByCol (int col) {
+        return col * Jackal.BLOCK_WIDTH;
     }
 
-    public float screenTopPotionF (float globalTop){
-        return globalTop + this.position.y;
+    /**
+     * Convert screen position by map position
+     * @param mapTop Map top position
+     * @return Screen top position
+     */
+    public int screenTopPotion (float mapTop) {
+        return (int) Math.floor(mapTop + this.position.y);
     }
 
-    public float screenLeftPotionF (float globalLeft){
-        return globalLeft + this.position.x;
+    /**
+     * Convert screen position by map position in int
+     * @param mapLeft Map left position
+     * @return Screen let position
+     */
+    public int screenLeftPotion (float mapLeft) {
+        return (int) Math.floor(mapLeft + this.position.x);
+    }
+
+    /**
+     * Convert screen position by map position in int
+     * @param mapTop Map top position
+     * @return Screen top position
+     */
+    public float screenTopPotionF (float mapTop){
+        return mapTop + this.position.y;
+    }
+
+    /**
+     * Convert screen position by map position
+     * @param mapLeft Map left position
+     * @return Screen let position
+     */
+    public float screenLeftPotionF (float mapLeft){
+        return mapLeft + this.position.x;
     }
 
     @Override

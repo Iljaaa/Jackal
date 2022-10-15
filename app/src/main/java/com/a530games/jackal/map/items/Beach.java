@@ -23,7 +23,7 @@ public class Beach extends MapCell
     }
 
     @Override
-    public void drawOnBackground(Graphics g)
+    public void drawOnBackground(Graphics g, Map map)
     {
 
     }
@@ -66,7 +66,6 @@ public class Beach extends MapCell
      * Is intersect point inside rect
      */
     public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
-        // return this.isRock;
         return true;
     }
 

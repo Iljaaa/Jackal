@@ -24,7 +24,7 @@ public class Tree1 extends MapCellWithHitbox
     }
 
     @Override
-    public void drawOnBackground(Graphics g) {
+    public void drawOnBackground(Graphics g, Map map) {
 
     }
 
@@ -48,8 +48,8 @@ public class Tree1 extends MapCellWithHitbox
     {
         g.drawPixmap(
                 this.sprite.image,
-                map.screenLeftPotion(this.col * Map.SPRITE_WIDTH),
-                map.screenTopPotion(this.row * Map.SPRITE_HEIGHT - 64),
+                map.screenLeftPotion(this.leftTopCorner.x),
+                map.screenTopPotion(this.leftTopCorner.y - 64),
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,

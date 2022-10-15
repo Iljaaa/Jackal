@@ -19,7 +19,7 @@ abstract public class FullWall extends Wall
     }
 
     @Override
-    public void drawOnBackground(Graphics g)
+    public void drawOnBackground(Graphics g, Map map)
     {
         g.drawPixmap(
                 this.sprite.image,

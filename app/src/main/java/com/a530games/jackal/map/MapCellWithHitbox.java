@@ -6,7 +6,6 @@ import com.a530games.framework.Graphics;
 
 public abstract class MapCellWithHitbox extends MapCell
 {
-
     protected Rect hitBox;
 
     public MapCellWithHitbox(int row, int col, int cellWidth, int cellHeight)

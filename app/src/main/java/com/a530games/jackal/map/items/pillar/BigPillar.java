@@ -59,7 +59,7 @@ public class BigPillar extends MapCellWithHitbox
     }
 
     @Override
-    public void drawOnBackground(Graphics g) {
+    public void drawOnBackground(Graphics g, Map map) {
         g.drawPixmap(
                 this.sprite.image,
                 this.hitBox.left,

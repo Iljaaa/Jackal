@@ -29,7 +29,7 @@ public class Rock extends MapCellWithHitbox
     }
 
     @Override
-    public void drawOnBackground(Graphics g)
+    public void drawOnBackground(Graphics g, Map map)
     {
         switch (this.type) {
             case Rock.MOVE_ROCK_1:
