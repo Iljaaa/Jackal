@@ -9,15 +9,8 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Jackal;
 
-public abstract class MapCell
+public abstract class MapCell extends Cell
 {
-    public int row, col;
-
-    /**
-     * Left top corner of cell
-     */
-    protected Point leftTopCorner;
-
     /**
      * Paint for hit box
      */
@@ -25,13 +18,7 @@ public abstract class MapCell
 
     public MapCell(int row, int col)
     {
-        this.row = row;
-        this.col = col;
-
-        this.leftTopCorner = new Point(
-            this.col * Jackal.BLOCK_WIDTH,
-            this.row * Jackal.BLOCK_HEIGHT
-        );
+        super(row, col, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
 
         this.hitBoxPaint = new Paint();
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);

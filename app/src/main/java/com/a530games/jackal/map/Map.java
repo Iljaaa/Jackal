@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
@@ -20,7 +21,6 @@ import com.a530games.jackal.objects.enemies.Enemy;
 
 public class Map implements CellEventCallbackHandler
 {
-
     /**
      * sprite height
      * @deprecated use Jackal.BLOCK_HEIGHT
@@ -33,8 +33,15 @@ public class Map implements CellEventCallbackHandler
      */
     public static final int SPRITE_WIDTH = 64;
 
-    // map position
+    /**
+     * map position
+     */
     public Vector2 position;
+
+    /**
+     * map start cell
+     */
+    private Cell startCell;
 
     /**
      * Max map position
@@ -52,8 +59,7 @@ public class Map implements CellEventCallbackHandler
     private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
 
     // map size in blocks
-    public int mapRows;
-    public int mapCols;
+    public int mapRows, mapCols;
 
     // map optimization min|max positions for draw
     public int drawMinCol = 0, drawMaxCol = 0, drawMinRow = 0, drawMaxRow = 0;
@@ -84,6 +90,7 @@ public class Map implements CellEventCallbackHandler
         // this.fields[3][2] = new MapCell();
 
         this.position = new Vector2(0, 0);
+        this.startCell = new Cell();
         this.mapMaxPosition = new Vector2();
         this.playerScreenRect = new Rect();
     }
@@ -101,8 +108,8 @@ public class Map implements CellEventCallbackHandler
 
     /**
      * Prepare map
-     * @param mapScreenWidth map screen size round by blocks count
-     * @param mapScreenHeight map screen size round by blocks count
+     * @param mapScreenWidth map screen size in pixels round by blocks count
+     * @param mapScreenHeight map screen size round in pixels by blocks count
      */
     public void init (Level level, Graphics g, Player player, int mapScreenWidth, int mapScreenHeight)
     {
@@ -111,7 +118,6 @@ public class Map implements CellEventCallbackHandler
         this.mapRows = level.getMapHeightInCols();
 
         // calculate max map positions`
-        // fixme: magic numbers
         this.mapMaxPosition.set(
             -1 * ((this.mapCols * Map.SPRITE_WIDTH) - mapScreenWidth),
             -1 * ((this.mapRows * Map.SPRITE_HEIGHT) - mapScreenHeight)
@@ -137,10 +143,12 @@ public class Map implements CellEventCallbackHandler
 
         // calculate start map position
         // after move player
-        this.position.x = -1 * (player.hitBox.left - 320 - 20);
-        this.position.y = -1 * (player.hitBox.top - 320 - 20);
-        if (this.position.x < this.mapMaxPosition.x) this.position.x = (int) Math.ceil(this.mapMaxPosition.x);
-        if (this.position.y < this.mapMaxPosition.y) this.position.y = (int) Math.ceil(this.mapMaxPosition.y);
+        this.startCell = level.getMapStartPosition();
+        this.centerMapOnPoint(this.startCell.center, mapScreenWidth, mapScreenHeight);
+        // this.position.x = -1 * (player.hitBox.left - 320 - 20);
+        // this.position.y = -1 * (player.hitBox.top - 320 - 20);
+        // if (this.position.x < this.mapMaxPosition.x) this.position.x = (int) Math.ceil(this.mapMaxPosition.x);
+        // if (this.position.y < this.mapMaxPosition.y) this.position.y = (int) Math.ceil(this.mapMaxPosition.y);
 
         // init fields
         this.fields = new MapCell[this.mapRows][this.mapCols];
@@ -176,6 +184,18 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
+     * Center map on point
+     */
+    private void centerMapOnPoint(Point point, int mapScreenWidth, int mapScreenHeight)
+    {
+        this.position.x = (float) (-1 * (point.x - 0.5 * mapScreenWidth));
+        this.position.y = (float) (-1 * (point.y - 0.5 * mapScreenHeight));
+
+        if (this.position.x < this.mapMaxPosition.x) this.position.x = this.mapMaxPosition.x;
+        if (this.position.y < this.mapMaxPosition.y) this.position.y = this.mapMaxPosition.y;
+    }
+
+    /**
      * Level add object on map
      */
     public void addObjectToMap (MapCell c)
@@ -197,7 +217,7 @@ public class Map implements CellEventCallbackHandler
     /**
      * Drawing background image
      */
-    public void draw()
+    public void drawBackground()
     {
         // this.g.drawRect(100, 100, 200, 200, Color.RED);
 
@@ -230,6 +250,9 @@ public class Map implements CellEventCallbackHandler
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 512, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 384, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
 
+        // draw map start circle
+        this.backgroundGraphic.drawCircle(this.startCell.center.x, this.startCell.center.y, 25, Color.RED);
+
         // draw objects
         for (int row = 0; row < this.mapRows; row++) {
             for (int col = 0; col < this.mapCols; col++)
@@ -243,6 +266,31 @@ public class Map implements CellEventCallbackHandler
             }
         }
 
+
+        this.drawBackgroundNet(this.backgroundGraphic);
+    }
+
+    /**
+     *
+     */
+    private void drawBackgroundNet(Graphics g)
+    {
+        // draw title backend
+        for (int row = 1; row < this.mapRows; row++) {
+            g.drawLine(
+                    0, row * Jackal.BLOCK_HEIGHT,
+                    g.getWidth(), row * Jackal.BLOCK_HEIGHT,
+                    Color.GREEN
+            );
+        }
+
+        for (int col = 1; col < this.mapCols; col++) {
+            g.drawLine(
+                    col * Jackal.BLOCK_WIDTH, 0,
+                    col * Jackal.BLOCK_WIDTH, g.getHeight(),
+                    Color.GREEN
+            );
+        }
     }
 
     public void update(Player player, float deltaTime)
@@ -430,12 +478,18 @@ public class Map implements CellEventCallbackHandler
         return cell.isIntersectPointInsideCell(left, top);
     }
 
-    public int getRowByTop(float top) {
+    /**
+     * Row by top position
+     */
+    public static int getRowByTop(float top) {
         // return (int) Math.floor(top / Map.SPRITE_HEIGHT);
         return (int) Math.floor(top / Jackal.BLOCK_HEIGHT);
     }
 
-    public int getColByLeft(float left) {
+    /**
+     * Col by left position
+     */
+    public static int getColByLeft(float left) {
         // return (int) Math.floor(left / Map.SPRITE_WIDTH);
         return (int) Math.floor(left / Jackal.BLOCK_WIDTH);
     }
@@ -443,14 +497,14 @@ public class Map implements CellEventCallbackHandler
     /**
      * Get row coords
      */
-    public int getTopByRow (int row) {
+    public static int getTopByRow (int row) {
         return row * Jackal.BLOCK_HEIGHT;
     }
 
     /**
      * Col coords
      */
-    public int getLeftByCol (int col) {
+    public static int getLeftByCol (int col) {
         return col * Jackal.BLOCK_WIDTH;
     }
 

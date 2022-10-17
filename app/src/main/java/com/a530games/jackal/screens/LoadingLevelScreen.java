@@ -9,12 +9,9 @@ import com.a530games.framework.Screen;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.levels.FirstLevel;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 public class LoadingLevelScreen extends Screen
 {
@@ -68,7 +65,7 @@ public class LoadingLevelScreen extends Screen
         gs.world.map.init(new FirstLevel(), this.game.getGraphics(), gs.world.player, gs.mapScreenWidthInPixels, gs.mapScreenHeightInPixels);
 
         // pre draw map
-        gs.world.map.draw();
+        gs.world.map.drawBackground();
 
         // save map to file
         // this.saveMapTofile(gs);

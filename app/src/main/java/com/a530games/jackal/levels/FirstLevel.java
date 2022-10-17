@@ -1,8 +1,12 @@
 package com.a530games.jackal.levels;
 
+import android.graphics.Point;
+import android.graphics.PointF;
+
 import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
+import com.a530games.jackal.map.Cell;
 import com.a530games.jackal.map.items.Beach;
 import com.a530games.jackal.map.items.bigRock.BigRock;
 import com.a530games.jackal.map.items.house.HouseLeftBottom;
@@ -59,6 +63,11 @@ public class FirstLevel implements Level
                 5 * Jackal.BLOCK_WIDTH,
                 25 * Jackal.BLOCK_HEIGHT
         );
+    }
+
+    @Override
+    public Cell getMapStartPosition() {
+        return new Cell(28, 28);
     }
 
     @Override

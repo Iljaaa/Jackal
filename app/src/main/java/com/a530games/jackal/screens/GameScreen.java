@@ -626,7 +626,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         }
     }
 
-    private void drawMapNet (Graphics g)
+    /*private void drawMapNet (Graphics g)
     {
         g.drawLine(640, 0, 640, 640, Color.WHITE);
 
@@ -637,7 +637,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         for (int i = 1; i <= 9; i++) {
             g.drawLine(0, i * 64, 640, i * 64, Color.GRAY);
         }
-    }
+    }*/
 
     /**
      * Draw cell on
