@@ -5,7 +5,7 @@ import android.util.Log;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
 import com.a530games.framework.TouchEventsCollection;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Controller;
 import com.a530games.jackal.Sprite;
@@ -23,7 +23,7 @@ public abstract class BasicMenu implements Menu
     /**
      * Position of menu
      */
-    protected Vector2 position;
+    protected Vector2F position;
 
     /**
      * Pointer image
@@ -58,7 +58,7 @@ public abstract class BasicMenu implements Menu
     public BasicMenu(int x, int y)
     {
         //
-        this.position = new Vector2(x, y);
+        this.position = new Vector2F(x, y);
 
         this.items = new ArrayList<>();
 
@@ -155,7 +155,7 @@ public abstract class BasicMenu implements Menu
         this.flipDelay -= deltaTime;
         if (flipDelay > 0) return;
 
-        Vector2 leftStick = controller.getLeftStickDirection();
+        Vector2F leftStick = controller.getLeftStickDirection();
         if (leftStick.y != 0)
         {
             if (leftStick.y > 0) {

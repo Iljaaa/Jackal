@@ -5,7 +5,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Settings;
@@ -30,15 +30,15 @@ public class Tank extends Vehicle
      */
     private int state;
 
-    private Vector2 velocity;
+    private Vector2F velocity;
 
     //
-    public Vector2 turretAngle = new Vector2(1, 0);
+    public Vector2F turretAngle = new Vector2F(1, 0);
 
     /**
      * Target to player
      */
-    private final Vector2 targetAngle = new Vector2(1, 0);
+    private final Vector2F targetAngle = new Vector2F(1, 0);
 
     /**
      * health points
@@ -88,7 +88,7 @@ public class Tank extends Vehicle
     public Tank(int startX, int startY)
     {
         super(startX, startY, Assets.tank);
-        this.velocity = new Vector2(0 ,1);
+        this.velocity = new Vector2F(0 ,1);
 
         this.blows = new SpriteWithAnimation[5];
         for (int i = 0; i < this.blows.length; i++) {
@@ -296,7 +296,7 @@ public class Tank extends Vehicle
      *
      * @param g graphic object
      */
-    private void drawAngle (Graphics g, int screenCenterLeft, int screenCenterTop, Vector2 angleVector, int color)
+    private void drawAngle (Graphics g, int screenCenterLeft, int screenCenterTop, Vector2F angleVector, int color)
     {
         // int centerTop = Math.round(this.world.player.hitBox.getCenterTop());
 
@@ -367,7 +367,7 @@ public class Tank extends Vehicle
         }
     }
 
-    private void updateSprite(Vector2 direction)
+    private void updateSprite(Vector2F direction)
     {
         // this.sprite.row = 0;
         // this.sprite.col = 0;

@@ -4,7 +4,6 @@ import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
-import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;

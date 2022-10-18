@@ -12,7 +12,7 @@ import com.a530games.framework.AndroidGraphics;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.levels.Level;
@@ -37,7 +37,7 @@ public class Map implements CellEventCallbackHandler
     /**
      * map position
      */
-    public Vector2 position;
+    public Vector2F position;
 
     /**
      * map start cell
@@ -49,7 +49,7 @@ public class Map implements CellEventCallbackHandler
      * calculated on init
      * checked on move map by player position
      */
-    private final Vector2 mapMaxPosition;
+    private final Vector2F mapMaxPosition;
 
     /**
      * Screen rect for calculate map position
@@ -90,9 +90,9 @@ public class Map implements CellEventCallbackHandler
         // this.fields = new MapCell[mapRows][mapCols];
         // this.fields[3][2] = new MapCell();
 
-        this.position = new Vector2(0, 0);
+        this.position = new Vector2F(0, 0);
         this.startCell = new Cell();
-        this.mapMaxPosition = new Vector2();
+        this.mapMaxPosition = new Vector2F();
         this.playerScreenRect = new Rect();
     }
 

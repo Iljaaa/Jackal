@@ -1,9 +1,6 @@
 package com.a530games.jackal.levels;
 
-import android.graphics.Point;
-import android.graphics.PointF;
-
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.map.Cell;
@@ -58,8 +55,8 @@ public class FirstLevel implements Level
     }
 
     @Override
-    public Vector2 getPlayerStartPosition() {
-        return new Vector2(
+    public Vector2F getPlayerStartPosition() {
+        return new Vector2F(
                 5 * Jackal.BLOCK_WIDTH,
                 25 * Jackal.BLOCK_HEIGHT
         );

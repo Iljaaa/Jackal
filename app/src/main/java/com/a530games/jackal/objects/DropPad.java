@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Cell;
@@ -16,15 +16,15 @@ import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 
 public class DropPad implements Enemy
 {
-    private Vector2 position;
+    private Vector2F position;
 
-    private Vector2 dropPosition;
+    private Vector2F dropPosition;
 
     boolean isDead = false;
 
     public DropPad(Player p) {
-        this.position = new Vector2();
-        this.dropPosition = new Vector2();
+        this.position = new Vector2F();
+        this.dropPosition = new Vector2F();
     }
 
     protected void finalize() {
@@ -67,6 +67,7 @@ public class DropPad implements Enemy
             return;
         }
 
+        // we move to end position
         this.position.y = this.dropPosition.y;
         this.isDead = true;
     }

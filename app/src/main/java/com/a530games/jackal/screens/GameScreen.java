@@ -10,7 +10,7 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
 import com.a530games.framework.Screen;
 import com.a530games.framework.TouchEventsCollection;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Controller;
 import com.a530games.jackal.ControllerEventHandler;
@@ -316,14 +316,14 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // this.controllerPresenter.update(touchEvents);
 
         // move player
-        Vector2 leftStick = controller.getLeftStickDirection();
+        Vector2F leftStick = controller.getLeftStickDirection();
         if (leftStick.x != 0 || leftStick.y != 0) {
             this.world.player.move(leftStick, deltaTime, this.world);
         }
 
         // set player turret angle
         // todo: has check config controller
-        Vector2 rightStick = controller.getRightStickDirection();
+        Vector2F rightStick = controller.getRightStickDirection();
         if (rightStick.x != 0 || rightStick.y != 0) {
             // this.world.player.turret.set(rightStick);
             this.world.player.setTurretAngle(rightStick);

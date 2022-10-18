@@ -1,9 +1,6 @@
 package com.a530games.jackal.levels;
 
-import android.graphics.Point;
-import android.graphics.PointF;
-
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.map.Cell;
 import com.a530games.jackal.map.Map;
 
@@ -22,7 +19,7 @@ public interface Level
     /**
      * Player start position
      */
-    Vector2 getPlayerStartPosition();
+    Vector2F getPlayerStartPosition();
 
     /**
      * Map start position

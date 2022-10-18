@@ -1,7 +1,7 @@
 package com.a530games.jackal.objects.enemies;
 
 import com.a530games.framework.Pixmap;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.World;
 
 /**
@@ -13,21 +13,21 @@ public abstract class RotateVehicle extends Vehicle
     /**
      *
      */
-    public Vector2 direction;
+    public Vector2F direction;
 
 
     public RotateVehicle(float startX, float startY, Pixmap image) {
         super(startX, startY, image);
         // show top
-        this.direction = new Vector2(0 , -1);
+        this.direction = new Vector2F(0 , -1);
     }
 
-    public Vector2 getDirection() {
+    public Vector2F getDirection() {
         return this.direction;
     }
 
     @Override
-    public void move(Vector2 velocity, float deltaTime, World world)
+    public void move(Vector2F velocity, float deltaTime, World world)
     {
         super.move(velocity, deltaTime, world);
 

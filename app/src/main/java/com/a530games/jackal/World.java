@@ -3,7 +3,7 @@ package com.a530games.jackal;
 import android.util.Log;
 
 import com.a530games.framework.helpers.FloatRect;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.map.MapEventsHandler;
@@ -296,7 +296,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
      * Add player bullet
      * refactor by get free
      */
-    public boolean addBullet (float playerCenterX, float playerCenterY, Vector2 direction)
+    public boolean addBullet (float playerCenterX, float playerCenterY, Vector2F direction)
     {
         Bullet b = this.bullets.getFreeBullet();
         if (b == null) return false;
@@ -362,7 +362,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     }
 
     @Override
-    public void enemyFire(float mapPositionX, float mapPositionY,Vector2 direction)
+    public void enemyFire(float mapPositionX, float mapPositionY, Vector2F direction)
     {
         Bullet b = this.enemyBullets.getFreeBullet();
         if (b == null) return;

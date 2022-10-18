@@ -4,16 +4,14 @@ import android.graphics.Point;
 import android.util.Log;
 
 import com.a530games.framework.Graphics;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
 import com.a530games.jackal.Sprite;
-import com.a530games.jackal.map.Cell;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.RotateVehicle;
-import com.a530games.jackal.objects.enemies.Tank;
 
 public class Player extends RotateVehicle
 {
@@ -66,7 +64,7 @@ public class Player extends RotateVehicle
     private boolean isBlink = false;
 
     //
-    public Vector2 turret = new Vector2(0, -1);
+    public Vector2F turret = new Vector2F(0, -1);
 
     //
     public Sprite gun;
@@ -75,7 +73,7 @@ public class Player extends RotateVehicle
     protected float speed = 100;
 
     //
-    private Vector2 velocity;
+    private Vector2F velocity;
 
     private PlayerEventHandler playerEventHandler;
 
@@ -102,7 +100,7 @@ public class Player extends RotateVehicle
 
         this.playerEventHandler = playerEventHandler;
 
-        this.velocity = new Vector2();
+        this.velocity = new Vector2F();
 
         this.gun = new Sprite(Assets.gun);
         this.gun.set(0, 0);
@@ -240,7 +238,7 @@ public class Player extends RotateVehicle
     }
 
     @Override
-    public void move(Vector2 direction, float deltaTime, World world)
+    public void move(Vector2F direction, float deltaTime, World world)
     {
         this.move(direction.x, direction.y, deltaTime, world);
     }
@@ -261,7 +259,7 @@ public class Player extends RotateVehicle
         this.updateSprite();
     }
 
-    public void setTurretAngle (Vector2 direction)
+    public void setTurretAngle (Vector2F direction)
     {
         this.turret.set(direction);
 

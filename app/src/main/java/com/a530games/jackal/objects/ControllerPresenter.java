@@ -7,7 +7,7 @@ import android.graphics.Rect;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.TouchEventsCollection;
 import com.a530games.framework.math.Circle;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Controller;
 
 public class ControllerPresenter
@@ -16,8 +16,8 @@ public class ControllerPresenter
     Controller controller;
 
     // display controller
-    Vector2 controllerLeftButtonsPosition;
-    Vector2 controllerRightButtonsPosition;
+    Vector2F controllerLeftButtonsPosition;
+    Vector2F controllerRightButtonsPosition;
 
     // input left buttons
     public Circle topButton, rightButton, downButton, leftButton;
@@ -40,8 +40,8 @@ public class ControllerPresenter
 
     public ControllerPresenter(int screenWidth, int screenHeight)
     {
-        this.controllerLeftButtonsPosition = new Vector2(150, screenHeight - 150);
-        this.controllerRightButtonsPosition = new Vector2(screenWidth - 150, screenHeight - 150);
+        this.controllerLeftButtonsPosition = new Vector2F(150, screenHeight - 150);
+        this.controllerRightButtonsPosition = new Vector2F(screenWidth - 150, screenHeight - 150);
 
         this.topButton = new Circle(this.controllerLeftButtonsPosition.x, this.controllerLeftButtonsPosition.y - 75, 50); // top
         this.rightButton = new Circle(this.controllerLeftButtonsPosition.x + 75, this.controllerLeftButtonsPosition.y, 50); // right
@@ -140,7 +140,7 @@ public class ControllerPresenter
 
     private void drawLeftControllerLikeButtons(Graphics g)
     {
-        Vector2 leftStickDirection = this.controller.getLeftStickDirection();
+        Vector2F leftStickDirection = this.controller.getLeftStickDirection();
 
         this.drawCircleButton(g, this.topButton, (leftStickDirection.y < 0)); // top
         this.drawCircleButton(g, this.rightButton, (leftStickDirection.x > 0)); // right
@@ -198,7 +198,7 @@ public class ControllerPresenter
         );
 
         // line to position
-        Vector2 leftStickDirection = this.controller.getLeftStickDirection();
+        Vector2F leftStickDirection = this.controller.getLeftStickDirection();
 
         g.drawLine(
                 (int) Math.ceil(this.controllerLeftButtonsPosition.x),
@@ -226,7 +226,7 @@ public class ControllerPresenter
         );
 
         // line to position
-        Vector2 rightStickDirection = this.controller.getRightStickDirection();
+        Vector2F rightStickDirection = this.controller.getRightStickDirection();
 
         g.drawLine(
                 (int) Math.ceil(this.controllerRightButtonsPosition.x),

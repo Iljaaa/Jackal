@@ -3,7 +3,7 @@ package com.a530games.jackal.objects.enemies;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.World;
 import com.a530games.jackal.objects.GameObject;
 
@@ -52,7 +52,7 @@ public abstract class Vehicle extends GameObject implements Enemy
      * move vehicle on map
      * world to check intersect for move
      */
-    public void move(Vector2 velocity, float deltaTime, World world)
+    public void move(Vector2F velocity, float deltaTime, World world)
     {
         if (velocity.x != 0) {
             this.moveHorizontal(velocity.x, deltaTime, world);

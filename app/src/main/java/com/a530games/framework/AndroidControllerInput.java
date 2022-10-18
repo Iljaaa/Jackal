@@ -4,7 +4,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 
 /**
  * Controller input for android
@@ -32,18 +32,18 @@ public class AndroidControllerInput implements View.OnKeyListener, MotionEventHa
     MotionEventHandler motionEventHandler;
 
     // left stick potion
-    private final Vector2 leftStick;
+    private final Vector2F leftStick;
 
     // left stick potion
-    private final Vector2 rightStick;
+    private final Vector2F rightStick;
 
     private int _action = 0;
     private int _keyCode = 0;
 
     public AndroidControllerInput(MotionEventHandler motionEventHandler)
     {
-        this.leftStick = new Vector2();
-        this.rightStick = new Vector2();
+        this.leftStick = new Vector2F();
+        this.rightStick = new Vector2F();
 
         this.motionEventHandler = motionEventHandler;
         this.motionEventHandler.setListener(this);
@@ -76,11 +76,11 @@ public class AndroidControllerInput implements View.OnKeyListener, MotionEventHa
     }
 
     @Override
-    public Vector2 getLeftStickDirection() {
+    public Vector2F getLeftStickDirection() {
         return this.leftStick;
     }
     @Override
-    public Vector2 getRightStickDirection() {
+    public Vector2F getRightStickDirection() {
         return this.rightStick;
     }
 

@@ -1,6 +1,6 @@
 package com.a530games.framework.helpers;
 
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 
 public class RollbackFloatRect extends FloatRect
 {
@@ -15,7 +15,7 @@ public class RollbackFloatRect extends FloatRect
     }
 
     @Override
-    public void moveTo(Vector2 vector)
+    public void moveTo(Vector2F vector)
     {
         // save state
         this.saveState();

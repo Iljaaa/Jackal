@@ -1,6 +1,6 @@
 package com.a530games.framework;
 
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 
 /**
  * Interface for input from joypad controller
@@ -62,12 +62,12 @@ public interface ControllerHandler
      *
      * @return Normal vector of left stick position
      */
-    Vector2 getLeftStickDirection();
+    Vector2F getLeftStickDirection();
 
     /**
      * Normal vector of right stick position
      */
-    Vector2 getRightStickDirection();
+    Vector2F getRightStickDirection();
 
 
 }

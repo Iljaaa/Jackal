@@ -2,7 +2,7 @@ package com.a530games.jackal;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Pixmap;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 
 public class SpriteWithAnimation extends Sprite
 {
@@ -12,11 +12,11 @@ public class SpriteWithAnimation extends Sprite
 
     public boolean isStart = false;
 
-    private Vector2 position;
+    private Vector2F position;
 
     public SpriteWithAnimation(Pixmap image) {
         super(image);
-        this.position = new Vector2();
+        this.position = new Vector2F();
     }
 
     /**

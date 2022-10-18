@@ -3,7 +3,7 @@ package com.a530games.framework.helpers;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 
 public class FloatRect
 {
@@ -94,7 +94,7 @@ public class FloatRect
         this.top = y;
     }
 
-    public void moveTo(Vector2 vector) {
+    public void moveTo(Vector2F vector) {
         this.moveTo(vector.x, vector.y);
     }
 

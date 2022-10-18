@@ -5,14 +5,14 @@ import android.util.Log;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.World;
 
 public class Commandos extends Vehicle
 {
-    private Vector2 velocity;
+    private Vector2F velocity;
 
     private float rotateTimer = 0;
     private float spriteTimer = 0;
@@ -53,7 +53,7 @@ public class Commandos extends Vehicle
         this.hitBox = new HitBox(startX, startY, startX + 51, startY + 60);
         this.sprite.setScreenMargin(10, 6);
 
-        this.velocity = new Vector2(20, 0);
+        this.velocity = new Vector2F(20, 0);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class Commandos extends Vehicle
         return true;
     }*/
 
-    private void updateSprite(Vector2 velocity) //int direction)
+    private void updateSprite(Vector2F velocity) //int direction)
     {
         // this.sprite.row = 0;
         // this.sprite.col = 0;

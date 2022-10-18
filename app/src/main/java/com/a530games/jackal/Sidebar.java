@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 
 import com.a530games.framework.Graphics;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 
 public class Sidebar
 {
@@ -27,7 +27,7 @@ public class Sidebar
 
     public static class DataClass {
         public int fps;
-        public Vector2 playerAngle;
+        public Vector2F playerAngle;
 
         public DataClass() {
             this.fps = 0;

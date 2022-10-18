@@ -2,7 +2,7 @@ package com.a530games.jackal.objects;
 
 import android.graphics.PointF;
 
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 
 public class Bullet
 {
@@ -16,7 +16,7 @@ public class Bullet
     public PointF startMapPosition;
 
     //
-    public Vector2 direction;
+    public Vector2F direction;
 
     //
     private int speed = 12;
@@ -28,7 +28,7 @@ public class Bullet
 
     public Bullet(boolean isOut) {
         this.isOut = isOut;
-        this.direction = new Vector2(0 ,1);
+        this.direction = new Vector2F(0 ,1);
         this.mapPosition = new PointF(0, 0);
         this.startMapPosition = new PointF(0, 0);
     }
@@ -53,7 +53,7 @@ public class Bullet
                 screenCenterTop + (int) Math.round(Math.cos(angle * Math.PI) * 50),
                 Color.GREEN);*/
 
-        this.direction = new Vector2(
+        this.direction = new Vector2F(
                 (float) Math.sin(angle * Math.PI),
                 (float) Math.cos(angle * Math.PI)
         );
@@ -144,7 +144,7 @@ public class Bullet
     /**
      * Перезапускаем пульку для повторного использования
      */
-    public void reNewByDirectionVector (float x, float y, Vector2 direction)
+    public void reNewByDirectionVector (float x, float y, Vector2F direction)
     {
         this.mapPosition.x = x;
         this.mapPosition.y = y;

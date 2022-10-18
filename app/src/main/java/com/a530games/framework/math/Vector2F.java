@@ -1,30 +1,28 @@
 package com.a530games.framework.math;
 
-import android.util.FloatMath;
-
-public class Vector2
+public class Vector2F
 {
     public static float TO_RADIANS = (1 / 180.0f) * (float) Math.PI;
     public static float TO_DEGREES = (1 / (float) Math.PI) * 180;
 
     public float x, y;
 
-    public Vector2() {
+    public Vector2F() {
     }
 
-    public Vector2(float x, float y)
+    public Vector2F(float x, float y)
     {
         this.x = x;
         this.y = y;
     }
 
-    public Vector2(Vector2 other) {
+    public Vector2F(Vector2F other) {
         this.x = other.x;
         this.y = other.y;
     }
 
-    public Vector2 cpy() {
-        return new Vector2( this.x, this.y );
+    public Vector2F cpy() {
+        return new Vector2F( this.x, this.y );
     }
 
     /**
@@ -36,7 +34,7 @@ public class Vector2
         this.y = y;
     }
 
-    public void set(Vector2 other) {
+    public void set(Vector2F other) {
         this.x = other.x;
         this.y = other.y;
     }
@@ -46,7 +44,7 @@ public class Vector2
         this.y += y;
     }
 
-    public void add(Vector2 other) {
+    public void add(Vector2F other) {
         this.x += other.x;
         this.y += other.y;
     }
@@ -56,7 +54,7 @@ public class Vector2
         this.y -= y;
     }
 
-    public void sub(Vector2 other) {
+    public void sub(Vector2F other) {
         this.x -= other.x;
         this.y -= other.y;
     }
@@ -135,7 +133,7 @@ public class Vector2
         this.y = newY;
     }*/
 
-    public float dist(Vector2 other) {
+    public float dist(Vector2F other) {
         float distX = this.x - other.x;
         float distY = this.y - other.y;
         // return FloatMath.sqrt(distX * distX + distY * distY);

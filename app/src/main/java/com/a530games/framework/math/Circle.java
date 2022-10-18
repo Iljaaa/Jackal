@@ -2,12 +2,12 @@ package com.a530games.framework.math;
 
 public class Circle {
 
-    public Vector2 center;
+    public Vector2F center;
 
     public float radius;
 
     public Circle(float x, float y, float radius) {
-        this.center = new Vector2(x, y);
+        this.center = new Vector2F(x, y);
         this.radius = radius;
     }
 

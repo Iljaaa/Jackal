@@ -1,6 +1,6 @@
 package com.a530games.jackal.objects.enemies;
 
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 
 public interface EnemyFireEventHandler
 {
@@ -10,5 +10,5 @@ public interface EnemyFireEventHandler
      * @param mapPositionY map start position
      * @param direction normal vector of fly direction
      */
-    void enemyFire(float mapPositionX, float mapPositionY, Vector2 direction);
+    void enemyFire(float mapPositionX, float mapPositionY, Vector2F direction);
 }

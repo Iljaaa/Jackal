@@ -5,7 +5,7 @@ import android.view.KeyEvent;
 import com.a530games.framework.ControllerHandler;
 import com.a530games.framework.Input;
 import com.a530games.framework.TouchEventsCollection;
-import com.a530games.framework.math.Vector2;
+import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.objects.ControllerPresenter;
 
 /**
@@ -31,7 +31,7 @@ public class Controller
     private boolean isSelect = false, isStart = false;
 
     // sticks position
-    private final Vector2 leftStick, rightStick;
+    private final Vector2F leftStick, rightStick;
 
     /**
      * Touch pointer for youch
@@ -48,8 +48,8 @@ public class Controller
     }
 
     public Controller() {
-        this.leftStick = new Vector2();
-        this.rightStick = new Vector2();
+        this.leftStick = new Vector2F();
+        this.rightStick = new Vector2F();
     }
 
     public void setEventHandler(ControllerEventHandler eventHandler) {
@@ -90,11 +90,11 @@ public class Controller
         this.rightStick.set(controller.getRightStickDirection());
     }
 
-    public Vector2 getLeftStickDirection() {
+    public Vector2F getLeftStickDirection() {
         return this.leftStick;
     }
 
-    public Vector2 getRightStickDirection() {
+    public Vector2F getRightStickDirection() {
         return this.rightStick;
     }
 
