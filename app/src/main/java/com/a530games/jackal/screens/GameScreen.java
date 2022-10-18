@@ -121,7 +121,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         Graphics g = this.game.getGraphics();
 
         // sidebar object
-        // todo: fix magic numbers
         this.sidebar = new Sidebar(this.world, g.getWidth(),g.getHeight());
 
         // atache events handler to controller

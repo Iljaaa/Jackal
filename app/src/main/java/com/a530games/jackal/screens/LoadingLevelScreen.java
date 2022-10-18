@@ -62,7 +62,14 @@ public class LoadingLevelScreen extends Screen
         // test init map
         // gs.world.map.init(100, 100, this.game.getGraphics().getAssetManager(), gs.world.player);
         // gs.world.map.init(new FirstLevel(), this.game.getGraphics().getAssetManager(), gs.world.player);
-        gs.world.map.init(new FirstLevel(), this.game.getGraphics(), gs.world.player, gs.mapScreenWidthInPixels, gs.mapScreenHeightInPixels);
+        gs.world.map.init(
+                new FirstLevel(),
+                this.game.getGraphics(),
+                gs.world.player,
+                gs.world.dropPad,
+                gs.mapScreenWidthInPixels,
+                gs.mapScreenHeightInPixels
+        );
 
         // pre draw map
         gs.world.map.drawBackground();

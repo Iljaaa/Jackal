@@ -8,6 +8,7 @@ import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.map.MapEventsHandler;
 import com.a530games.jackal.objects.Bullet;
+import com.a530games.jackal.objects.DropPad;
 import com.a530games.jackal.objects.EnemiesCollection;
 import com.a530games.jackal.objects.PlayerEventHandler;
 import com.a530games.jackal.objects.enemies.Commandos;
@@ -37,6 +38,11 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     // игрок
     public Player player;
 
+    /**
+     * Enemy drop pad
+     */
+    public DropPad dropPad;
+
     // player bullets
     public PlayerBulletsCollection bullets;
 
@@ -47,6 +53,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     //
     public EnemyBulletsCollection enemyBullets;
 
+    // map
     public Map map;
 
     // Random random = new Random();
@@ -74,7 +81,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.map.setEventHandler(this);
 
         // bind map follow for player
-        this.map.setFollowObject(this.player);
+        // this.map.setFollowObject(this.player);
 
         // this.enemies = new ArrayList<>(10);
         this.enemies = new EnemiesCollection();
@@ -84,7 +91,8 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.enemies.add(new Commandos2(500, 800));
 
         // add drop padd
-
+        this.dropPad = new DropPad(this.player);
+        this.enemies.add(this.dropPad);
 
         // инициализируем массиа с пулями
         this.bullets = new PlayerBulletsCollection();
@@ -311,6 +319,12 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
 
         this.bullets.add(bullet);
         return true;*/
+    }
+
+
+    @Override
+    public void mapInitFinish() {
+
     }
 
     @Override

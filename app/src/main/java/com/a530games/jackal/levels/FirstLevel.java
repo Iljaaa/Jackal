@@ -67,7 +67,7 @@ public class FirstLevel implements Level
 
     @Override
     public Cell getMapStartPosition() {
-        return new Cell(28, 28);
+        return new Cell(15, 25);
     }
 
     @Override

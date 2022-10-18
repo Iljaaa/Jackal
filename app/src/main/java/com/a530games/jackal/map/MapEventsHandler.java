@@ -4,6 +4,10 @@ import com.a530games.jackal.objects.enemies.Enemy;
 
 public interface MapEventsHandler
 {
+    /**
+     *
+     */
+    void mapInitFinish();
 
     /**
      * On cell sown enemy

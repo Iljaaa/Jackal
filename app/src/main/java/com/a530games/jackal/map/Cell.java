@@ -16,7 +16,7 @@ public class Cell
     /**
      * Left top corner of cell
      */
-    protected Point center;
+    public Point center;
 
     public Cell() {
         this(0, 0);

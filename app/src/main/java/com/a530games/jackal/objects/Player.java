@@ -1,5 +1,6 @@
 package com.a530games.jackal.objects;
 
+import android.graphics.Point;
 import android.util.Log;
 
 import com.a530games.framework.Graphics;
@@ -9,15 +10,18 @@ import com.a530games.jackal.Jackal;
 import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
 import com.a530games.jackal.Sprite;
+import com.a530games.jackal.map.Cell;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.RotateVehicle;
 import com.a530games.jackal.objects.enemies.Tank;
 
 public class Player extends RotateVehicle
 {
+
+
     enum PlayerState
     {
-        // Unloading,
+        Dropping,
 
         OnLine,
         Hit,
@@ -235,6 +239,17 @@ public class Player extends RotateVehicle
 
     }
 
+    @Override
+    public void move(Vector2 direction, float deltaTime, World world)
+    {
+        this.move(direction.x, direction.y, deltaTime, world);
+    }
+
+    public void setPoint(Point mapPint)
+    {
+        this.hitBox.moveTo(mapPint.x, mapPint.y);
+    }
+
     public void move(float x, float y, float deltaTime, World world)
     {
         // todo: think need her check user state
@@ -244,12 +259,6 @@ public class Player extends RotateVehicle
         super.move(this.velocity, deltaTime, world);
 
         this.updateSprite();
-    }
-
-    @Override
-    public void move(Vector2 direction, float deltaTime, World world)
-    {
-        this.move(direction.x, direction.y, deltaTime, world);
     }
 
     public void setTurretAngle (Vector2 direction)

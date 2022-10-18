@@ -16,6 +16,7 @@ import com.a530games.framework.math.Vector2;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.levels.Level;
+import com.a530games.jackal.objects.DropPad;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.enemies.Enemy;
 
@@ -111,7 +112,7 @@ public class Map implements CellEventCallbackHandler
      * @param mapScreenWidth map screen size in pixels round by blocks count
      * @param mapScreenHeight map screen size round in pixels by blocks count
      */
-    public void init (Level level, Graphics g, Player player, int mapScreenWidth, int mapScreenHeight)
+    public void init (Level level, Graphics g, Player player, DropPad dropPad, int mapScreenWidth, int mapScreenHeight)
     {
         // map size in cols
         this.mapCols = level.getMapWidthInCols();
@@ -139,16 +140,22 @@ public class Map implements CellEventCallbackHandler
 
         // move player on map position
         // player.hitBox.moveTo(400,1500);
-        player.hitBox.moveTo(level.getPlayerStartPosition());
+        // player.hitBox.moveTo(level.getPlayerStartPosition());
 
         // calculate start map position
         // after move player
         this.startCell = level.getMapStartPosition();
         this.centerMapOnPoint(this.startCell.center, mapScreenWidth, mapScreenHeight);
-        // this.position.x = -1 * (player.hitBox.left - 320 - 20);
-        // this.position.y = -1 * (player.hitBox.top - 320 - 20);
-        // if (this.position.x < this.mapMaxPosition.x) this.position.x = (int) Math.ceil(this.mapMaxPosition.x);
-        // if (this.position.y < this.mapMaxPosition.y) this.position.y = (int) Math.ceil(this.mapMaxPosition.y);
+
+        // move drop pad to start
+        dropPad.moveToStart(this.startCell);
+        player.setPoint(this.startCell.center);
+
+        // move player on map position
+        // player.hitBox.moveTo(400,1500);
+        // player.set();
+
+        // player.hitBox.moveTo(level.getPlayerStartPosition());
 
         // init fields
         this.fields = new MapCell[this.mapRows][this.mapCols];
@@ -181,6 +188,7 @@ public class Map implements CellEventCallbackHandler
         // this.b = new BitmapFactory();
         this.testPaint.setStyle(Paint.Style.FILL);
         this.testPaint.setColor(Color.RED);
+
     }
 
     /**
@@ -251,7 +259,7 @@ public class Map implements CellEventCallbackHandler
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 384, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
 
         // draw map start circle
-        this.backgroundGraphic.drawCircle(this.startCell.center.x, this.startCell.center.y, 25, Color.RED);
+        this.backgroundGraphic.drawPixmap(Assets.dropPoint, this.startCell.leftTopCorner.x, this.startCell.leftTopCorner.y);
 
         // draw objects
         for (int row = 0; row < this.mapRows; row++) {
@@ -339,13 +347,13 @@ public class Map implements CellEventCallbackHandler
     private void updateMapOptimizatonFields()
     {
         //
-        this.drawMinCol = this.getColByLeft(Math.abs(this.position.x)) - 2;
+        this.drawMinCol = this.getColByLeft(this.position.x) - 2;
         if (this.drawMinCol < 0) this.drawMinCol = 0;
 
         this.drawMaxCol = this.drawMinCol + 13;
         if (this.drawMaxCol > this.mapCols) this.drawMaxCol = this.mapCols;
 
-        this.drawMinRow = this.getRowByTop(Math.abs(this.position.y)) - 2;
+        this.drawMinRow = this.getRowByTop(this.position.y) - 2;
         if (this.drawMinRow < 0) this.drawMinRow = 0;
 
         this.drawMaxRow = this.drawMinRow + 15;

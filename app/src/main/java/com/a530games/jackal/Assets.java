@@ -57,6 +57,7 @@ public class Assets {
     public static Sound tankBlow2;
 
     public static Pixmap spown;
+    public static Pixmap dropPoint;
 
     public static Music music;
 
@@ -96,6 +97,7 @@ public class Assets {
         Assets.smallBlow = g.newPixmap("images/smallblow.png", Graphics.PixmapFormat.RGB565);
 
         Assets.spown = g.newPixmap("images/spown.png", Graphics.PixmapFormat.RGB565);
+        Assets.dropPoint = g.newPixmap("images/droppoint.png", Graphics.PixmapFormat.RGB565);
 
         Assets.fire = a.newSound("sound/fire.mp3");
         Assets.playerHit = a.newSound("sound/player_hit.wav");
