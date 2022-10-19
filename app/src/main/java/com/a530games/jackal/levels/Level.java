@@ -1,6 +1,5 @@
 package com.a530games.jackal.levels;
 
-import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.map.Cell;
 import com.a530games.jackal.map.Map;
 
@@ -17,14 +16,9 @@ public interface Level
     int getMapHeightInCols();
 
     /**
-     * Player start position
-     */
-    Vector2F getPlayerStartPosition();
-
-    /**
      * Map start position
      */
-    Cell getMapStartPosition();
+    Cell getPlayerDropPointCell();
 
     /**
      * Add objects on map

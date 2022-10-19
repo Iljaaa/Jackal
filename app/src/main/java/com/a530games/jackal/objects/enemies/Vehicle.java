@@ -66,7 +66,7 @@ public abstract class Vehicle implements Enemy
      * Just move to
      */
     public void moveCenter(float x, float y) {
-        this.move(
+        this.moveTo(
                 x - (this.hitBox.getWidth() / 2),
                 y - (this.hitBox.getHeight() / 2)
         );
@@ -74,7 +74,7 @@ public abstract class Vehicle implements Enemy
     /**
      * Just move to
      */
-    private void move(float x, float y) {
+    public void moveTo(float x, float y) {
         this.hitBox.moveTo(x, y);
     }
 

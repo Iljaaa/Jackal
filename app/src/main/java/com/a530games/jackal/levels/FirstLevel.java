@@ -55,15 +55,7 @@ public class FirstLevel implements Level
     }
 
     @Override
-    public Vector2F getPlayerStartPosition() {
-        return new Vector2F(
-                5 * Jackal.BLOCK_WIDTH,
-                25 * Jackal.BLOCK_HEIGHT
-        );
-    }
-
-    @Override
-    public Cell getMapStartPosition() {
+    public Cell getPlayerDropPointCell() {
         return new Cell(15, 25);
     }
 

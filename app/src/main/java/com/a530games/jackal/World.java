@@ -3,6 +3,7 @@ package com.a530games.jackal;
 import android.util.Log;
 
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
@@ -91,7 +92,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.enemies.add(new Commandos2(500, 800));
 
         // add drop padd
-        this.dropPad = new DropPad(this.player);
+        this.dropPad = new DropPad(this);
         this.enemies.add(this.dropPad);
 
         // инициализируем массиа с пулями
@@ -230,7 +231,9 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
                 {
                     Bullet b = this.bullets.get(bulletIndex);
                     if (b.isOut()) continue;
-                    if (enemy.getHitBox().isHit(b))
+
+                    HitBox hitbox = enemy.getHitBox();
+                    if (hitbox != null && hitbox.isHit(b))
                     {
                         enemy.hit(1);
 
@@ -381,4 +384,12 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.gameOver = true;
     }
 
+    /**
+     * On player droppers
+     */
+    public void playerDropped()
+    {
+        this.map.setFollowObject(this.player);
+        this.player.state = Player.PlayerState.OnLine;
+    }
 }

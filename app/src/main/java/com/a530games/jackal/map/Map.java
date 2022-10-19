@@ -144,12 +144,14 @@ public class Map implements CellEventCallbackHandler
 
         // calculate start map position
         // after move player
-        this.startCell = level.getMapStartPosition();
+        this.startCell = level.getPlayerDropPointCell();
         this.centerMapOnPoint(this.startCell.center, mapScreenWidth, mapScreenHeight);
 
         // move drop pad to start
         dropPad.moveToStart(this.startCell);
-        player.setPoint(this.startCell.center);
+
+        // move player out of screen, before his drop from drop pad
+        player.moveTo(-100, -100);
 
         // move player on map position
         // player.hitBox.moveTo(400,1500);

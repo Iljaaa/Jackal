@@ -17,7 +17,7 @@ public class Player extends RotateVehicle
 {
 
 
-    enum PlayerState
+    public enum PlayerState
     {
         Dropping,
 
@@ -238,10 +238,11 @@ public class Player extends RotateVehicle
 
     }
 
-    public void setPoint(Point mapPint)
+
+    /*public void moveTo(float x, float y)
     {
         this.hitBox.moveTo(mapPint.x, mapPint.y);
-    }
+    }*/
 
     @Override
     public void drive(Vector2F direction, float deltaTime, World world)

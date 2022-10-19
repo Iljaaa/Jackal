@@ -17,51 +17,50 @@ import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 
 public class DropPad implements Enemy
 {
-    private Vector2F position;
+    private final Vector2F position;
 
-    private Vector2 dropPosition;
+    private final Vector2 dropPosition;
 
     boolean isDead = false;
 
     Handler flayHandler;
 
-    private Player player;
+    private final World world;
 
-    private class Step1 implements Step
+    private static class Drop implements Step
     {
-        DropPad pad;
-        private Vector2 dropPosition;
+        private final DropPad pad;
 
-        public Step1(DropPad pad, Vector2 dropPosition)
+        boolean isCall = false;
+
+        public Drop(DropPad pad)
         {
             this.pad = pad;
-            this.dropPosition = dropPosition;
         }
 
         @Override
-        public void update(float deltaTime) {
+        public void update(float deltaTime)
+        {
+            if (this.isCall) return;
 
-            if (this.pad.position.y > this.dropPosition.y) {
-                this.pad.position.y -= (deltaTime * 100);
-                return;
-            }
+            this.isCall = true;
 
-            // we move to end position
-            this.pad.position.y = this.dropPosition.y;
+            // call callback nethod
+            this.pad.world.playerDropped();
         }
 
         @Override
         public boolean isOver() {
-            return (this.pad.position.y == this.dropPosition.y);
+            return this.isCall;
         }
     }
 
 
-    protected class FlayStep implements Step
+    private static class FlayStep implements Step
     {
         DropPad pad;
-        private Vector2 movePoint;
-        private Vector2 velocity;
+        private final Vector2 movePoint;
+        private final Vector2 velocity;
 
         public FlayStep(DropPad pad, Vector2 movePoint) {
             this.pad = pad;
@@ -92,7 +91,6 @@ public class DropPad implements Enemy
             {
                 float dY = (this.velocity.y * deltaTime);
                 float remY = this.movePoint.y - this.pad.position.y;
-                Log.d("remY", String.valueOf(remY) + " - " +String.valueOf(dY));
                 if (Math.abs(remY) <= Math.abs(dY)) {
                     this.moveTo(this.pad.position.x, this.movePoint.y);
                     // this.pad.position.y = this.movePoint.y;
@@ -135,7 +133,7 @@ public class DropPad implements Enemy
 
 
     private class PullPlayerStep extends FlayStep
-    {;
+    {
 
         public PullPlayerStep(DropPad pad, Vector2 movePoint) {
             super(pad, movePoint);
@@ -147,13 +145,13 @@ public class DropPad implements Enemy
             super.moveTo(x, y);
 
             // move player
-            this.pad.player.moveCenter(x, y);
+            this.pad.world.player.moveCenter(x, y);
         }
     }
 
-    public DropPad(Player p)
+    public DropPad(World world)
     {
-        this.player = p;
+        this.world = world;
 
         this.position = new Vector2F();
         this.dropPosition = new Vector2();
@@ -162,10 +160,14 @@ public class DropPad implements Enemy
 
         // fly to mid point
         this.flayHandler.add(new PullPlayerStep(this, new Vector2()));
+
         // this.flayHandler.add(new MoveStep(this, new Vector2(this.dropPosition.x - 100, this.dropPosition.y + 150))); // fly to point
 
         // fly to drop point
         this.flayHandler.add(new PullPlayerStep(this, new Vector2()));
+
+        // drop callback
+        this.flayHandler.add(new Drop(this));
 
         // drop
         // this.flayHandler.add(new MoveStep(this, new Vector2()));
@@ -196,8 +198,8 @@ public class DropPad implements Enemy
         // drop point
         ((PullPlayerStep) this.flayHandler.get(1)).setMovePoint(playerDropCell.center.x, playerDropCell.center.y, 50, -50);
 
-        // flay awey
-        ((FlayStep) this.flayHandler.get(2)).setMovePoint(playerDropCell.center.x + 700, playerDropCell.center.y + 500, 50, 50);
+        // set flay Awey Point
+        ((FlayStep) this.flayHandler.get(3)).setMovePoint(playerDropCell.center.x + 700, playerDropCell.center.y + 500, 50, 50);
 
         this.position.x = playerDropCell.center.x - 100;
         this.position.y = playerDropCell.center.y + 500;
