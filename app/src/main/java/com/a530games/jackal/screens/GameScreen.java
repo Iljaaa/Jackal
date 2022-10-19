@@ -318,7 +318,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // move player
         Vector2F leftStick = controller.getLeftStickDirection();
         if (leftStick.x != 0 || leftStick.y != 0) {
-            this.world.player.move(leftStick, deltaTime, this.world);
+            this.world.player.drive(leftStick, deltaTime, this.world);
         }
 
         // set player turret angle

@@ -12,7 +12,7 @@ import com.a530games.jackal.World;
 
 public class Commandos2 extends Vehicle
 {
-    private Vector2F velocity;
+    private final Vector2F velocity;
 
     private float rotateTimer = 0;
     private float spriteTimer = 0;
@@ -30,7 +30,7 @@ public class Commandos2 extends Vehicle
         Vehicle.MOVE_DOWN_LEFT
     };*/
 
-    private int[][] dirs = {
+    private final int[][] dirs = {
         {20, 4},
         {20, -4},
         {20, 0},
@@ -93,7 +93,7 @@ public class Commandos2 extends Vehicle
             this.tickSprite();
         }
 
-        this.move(this.velocity, deltaTime, world);
+        this.drive(this.velocity, deltaTime, world);
 
         /*if (this.doConst == 2) {
             if (this.fire()){

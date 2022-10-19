@@ -181,7 +181,7 @@ public class Tank extends Vehicle
 
     private void updateMove(float deltaTime, World world)
     {
-        this.move(this.velocity, deltaTime, world);
+        this.drive(this.velocity, deltaTime, world);
 
         this.moveTimer -= deltaTime;
         if (this.moveTimer <= 0){

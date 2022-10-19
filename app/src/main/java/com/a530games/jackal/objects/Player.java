@@ -32,8 +32,9 @@ public class Player extends RotateVehicle
 
     /**
      * Player state
+     * start on drop
      */
-    public PlayerState state = PlayerState.OnLine;
+    public PlayerState state = PlayerState.Dropping;
 
     /**
      * Player hit points
@@ -243,21 +244,20 @@ public class Player extends RotateVehicle
     }
 
     @Override
-    public void move(Vector2F direction, float deltaTime, World world)
-    {
-        this.move(direction.x, direction.y, deltaTime, world);
-    }
-
-    public void move(float x, float y, float deltaTime, World world)
+    public void drive(Vector2F direction, float deltaTime, World world)
     {
         // todo: think need her check user state
 
-        this.velocity.set(x * this.speed, y * this.speed);
+        // this.move(direction.x, direction.y, deltaTime, world);
 
-        super.move(this.velocity, deltaTime, world);
+        this.velocity.set(direction.x * this.speed, direction.y * this.speed);
+
+        super.drive(this.velocity, deltaTime, world);
 
         this.updateSprite();
     }
+
+
 
     public void setTurretAngle (Vector2F direction)
     {

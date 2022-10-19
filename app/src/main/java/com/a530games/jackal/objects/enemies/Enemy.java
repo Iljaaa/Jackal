@@ -16,11 +16,6 @@ public interface Enemy
     HitBox getHitBox();
 
     /**
-     * Hitbox rect in map directions
-     */
-    Rect getScreenDrawHitbox(Map map);
-
-    /**
      * Draw sprite
      */
     Sprite getSprite();

@@ -1,7 +1,6 @@
 package com.a530games.jackal.objects;
 
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.util.Log;
 
 import com.a530games.framework.Graphics;
@@ -13,7 +12,6 @@ import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Sprite;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Cell;
-import com.a530games.jackal.map.Map;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 
@@ -26,6 +24,8 @@ public class DropPad implements Enemy
     boolean isDead = false;
 
     Handler flayHandler;
+
+    private Player player;
 
     private class Step1 implements Step
     {
@@ -56,13 +56,14 @@ public class DropPad implements Enemy
         }
     }
 
-    private class MoveStep implements Step
+
+    protected class FlayStep implements Step
     {
         DropPad pad;
         private Vector2 movePoint;
         private Vector2 velocity;
 
-        public MoveStep(DropPad pad, Vector2 movePoint) {
+        public FlayStep(DropPad pad, Vector2 movePoint) {
             this.pad = pad;
             this.movePoint = movePoint;
 
@@ -72,22 +73,18 @@ public class DropPad implements Enemy
         @Override
         public void update(float deltaTime)
         {
-            /*float dist = this.movePoint.(this.pad.position.x, this.pad.position.y);
-            if (dist < this.velocity.len()){
-                // almost on the pint
-                this.pad.move(this.movePoint.x, this.movePoint.y);
-                return;
-            }*/
 
             if (this.pad.position.x != this.movePoint.x)
             {
                 float dX = (this.velocity.x * deltaTime);
                 float remX = this.movePoint.x - this.pad.position.x;
                 if (Math.abs(remX) <= Math.abs(dX)) {
-                    this.pad.position.x = this.movePoint.x;
+                    this.moveTo(this.movePoint.x, this.pad.position.y);
+                    // this.pad.position.x = this.movePoint.x;
                 }
                 else {
-                    this.pad.position.x += dX;
+                    this.moveTo(this.pad.position.x + dX, this.pad.position.y);
+                    // this.pad.position.x += dX;
                 }
             }
 
@@ -97,16 +94,27 @@ public class DropPad implements Enemy
                 float remY = this.movePoint.y - this.pad.position.y;
                 Log.d("remY", String.valueOf(remY) + " - " +String.valueOf(dY));
                 if (Math.abs(remY) <= Math.abs(dY)) {
-                    this.pad.position.y = this.movePoint.y;
+                    this.moveTo(this.pad.position.x, this.movePoint.y);
+                    // this.pad.position.y = this.movePoint.y;
                 }
                 else {
-                    this.pad.position.y += dY;
+                    this.moveTo(this.pad.position.x, this.pad.position.y + dY);
+                    // this.pad.position.y += dY;
                 }
             }
 
             // we move to end position
         }
 
+        protected void moveTo(float x, float y)
+        {
+            // move pad
+            this.pad.move(x, y);
+        }
+
+        /**
+         * Set flay to position and speed
+         */
         public void setMovePoint (int x, int y, int velocityX, int velocityY)
         {
             this.movePoint.set(x, y);
@@ -117,7 +125,6 @@ public class DropPad implements Enemy
                     // (pad.position.y == movePoint.y) ? 0 : (pad.position.y < movePoint.y) ? 50 : -50
                     velocityX, velocityY
             );
-
         }
 
         @Override
@@ -126,25 +133,45 @@ public class DropPad implements Enemy
         }
     }
 
+
+    private class PullPlayerStep extends FlayStep
+    {;
+
+        public PullPlayerStep(DropPad pad, Vector2 movePoint) {
+            super(pad, movePoint);
+        }
+
+        @Override
+        protected void moveTo(float x, float y)
+        {
+            super.moveTo(x, y);
+
+            // move player
+            this.pad.player.moveCenter(x, y);
+        }
+    }
+
     public DropPad(Player p)
     {
+        this.player = p;
+
         this.position = new Vector2F();
         this.dropPosition = new Vector2();
 
         this.flayHandler = new Handler();
 
         // fly to mid point
-        this.flayHandler.add(new MoveStep(this, new Vector2()));
+        this.flayHandler.add(new PullPlayerStep(this, new Vector2()));
         // this.flayHandler.add(new MoveStep(this, new Vector2(this.dropPosition.x - 100, this.dropPosition.y + 150))); // fly to point
 
         // fly to drop point
-        this.flayHandler.add(new MoveStep(this, new Vector2()));
+        this.flayHandler.add(new PullPlayerStep(this, new Vector2()));
 
         // drop
         // this.flayHandler.add(new MoveStep(this, new Vector2()));
 
         // flay away
-        this.flayHandler.add(new MoveStep(this, new Vector2()));
+        this.flayHandler.add(new FlayStep(this, new Vector2()));
 
     }
 
@@ -164,13 +191,13 @@ public class DropPad implements Enemy
 //        s.movePoint.set(new Vector2(this.dropPosition.x - 100, this.dropPosition.y + 150));
 
         // mid point
-        ((MoveStep) this.flayHandler.get(0)).setMovePoint(playerDropCell.center.x - 100, playerDropCell.center.y + 150, 50, -50);
+        ((PullPlayerStep) this.flayHandler.get(0)).setMovePoint(playerDropCell.center.x - 100, playerDropCell.center.y + 150, 50, -50);
 
         // drop point
-        ((MoveStep) this.flayHandler.get(1)).setMovePoint(playerDropCell.center.x, playerDropCell.center.y, 50, -50);
+        ((PullPlayerStep) this.flayHandler.get(1)).setMovePoint(playerDropCell.center.x, playerDropCell.center.y, 50, -50);
 
         // flay awey
-        ((MoveStep) this.flayHandler.get(2)).setMovePoint(playerDropCell.center.x + 700, playerDropCell.center.y + 500, 50, 50);
+        ((FlayStep) this.flayHandler.get(2)).setMovePoint(playerDropCell.center.x + 700, playerDropCell.center.y + 500, 50, 50);
 
         this.position.x = playerDropCell.center.x - 100;
         this.position.y = playerDropCell.center.y + 500;
@@ -182,11 +209,6 @@ public class DropPad implements Enemy
 
     @Override
     public HitBox getHitBox() {
-        return null;
-    }
-
-    @Override
-    public Rect getScreenDrawHitbox(Map map) {
         return null;
     }
 
@@ -209,6 +231,7 @@ public class DropPad implements Enemy
 
         // if handler ends
         if (this.flayHandler.isOver()){
+            Log.d("DropPad", "IsDed");
             this.isDead = true;
         }
 
