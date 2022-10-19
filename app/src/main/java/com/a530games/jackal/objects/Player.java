@@ -73,16 +73,16 @@ public class Player extends RotateVehicle
     protected float speed = 100;
 
     //
-    private Vector2F velocity;
+    private final Vector2F velocity;
 
-    private PlayerEventHandler playerEventHandler;
+    private final PlayerEventHandler playerEventHandler;
 
     // blows data
 
     /**
      * Blows after death
      */
-    private SpriteWithAnimation[] blows;
+    private final SpriteWithAnimation[] blows;
 
     /**
      * One blow timer
@@ -237,15 +237,15 @@ public class Player extends RotateVehicle
 
     }
 
+    public void setPoint(Point mapPint)
+    {
+        this.hitBox.moveTo(mapPint.x, mapPint.y);
+    }
+
     @Override
     public void move(Vector2F direction, float deltaTime, World world)
     {
         this.move(direction.x, direction.y, deltaTime, world);
-    }
-
-    public void setPoint(Point mapPint)
-    {
-        this.hitBox.moveTo(mapPint.x, mapPint.y);
     }
 
     public void move(float x, float y, float deltaTime, World world)
