@@ -5,6 +5,7 @@ import android.util.Log;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
 import com.a530games.framework.TouchEventsCollection;
+import com.a530games.framework.math.Vector2;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Controller;
@@ -23,7 +24,7 @@ public abstract class BasicMenu implements Menu
     /**
      * Position of menu
      */
-    protected Vector2F position;
+    protected Vector2 position;
 
     /**
      * Pointer image
@@ -58,7 +59,7 @@ public abstract class BasicMenu implements Menu
     public BasicMenu(int x, int y)
     {
         //
-        this.position = new Vector2F(x, y);
+        this.position = new Vector2(x, y);
 
         this.items = new ArrayList<>();
 
@@ -74,7 +75,13 @@ public abstract class BasicMenu implements Menu
     @Override
     public void addItem(MenuItem item)
     {
+        // set on menu item pointer sprite
         item.setPointerSprite(this.pointer);
+
+        item.setPosition(
+            this.position.x,
+            this.position.y + this.items.size() * MenuItem.HEIGHT
+        );
 
         this.items.add(item);
     }
@@ -118,7 +125,6 @@ public abstract class BasicMenu implements Menu
      */
     private void updateControls (Controller controller, TouchEventsCollection touchEvents)
     {
-
         // update select by touch
         // move player by touch events
         int len = touchEvents.size();
@@ -134,7 +140,7 @@ public abstract class BasicMenu implements Menu
                 for (int menuIndex = 0; menuIndex < count; menuIndex++) {
                     MenuItem it = this.items.get(menuIndex);
                     if (it.isPointInside(event.x, event.y)) {
-                        this.selectItem(menuIndex);
+                        this.onSelectItem(menuIndex);
                     }
                 }
             }
@@ -142,7 +148,7 @@ public abstract class BasicMenu implements Menu
 
         // check controller events
         if (controller.isA() || controller.isStart()) {
-            this.selectItem(this.activeIndex);
+            this.onSelectItem(this.activeIndex);
         }
     }
 
@@ -172,17 +178,20 @@ public abstract class BasicMenu implements Menu
         }
     }
 
+    /**
+     * On all animated finished
+     */
     private void clearSelectAndRiseEvent ()
     {
         // this.blink = false;
-        Log.d("GameOverLoseMenu", "Item selected " + String.valueOf(this.activeIndex));
+        Log.d("GameOverLoseMenu", String.format("Item selected %d", this.activeIndex));
 
         if (this.eventHandler != null) {
             this.eventHandler.onMenuItemSelect(this.items.get(this.selectedIndex).getCode());
         }
 
         // drop selected ints
-        this.selectedIndex = - 1;
+        this.selectedIndex = -1;
     }
 
     @Override
@@ -203,7 +212,11 @@ public abstract class BasicMenu implements Menu
         }
     }
 
-    private void selectItem(int index)
+    /**
+     * Start select menu item
+     * @param index index of select item
+     */
+    private void onSelectItem(int index)
     {
         if (this.selectedIndex > -1) {
             return;
@@ -212,9 +225,23 @@ public abstract class BasicMenu implements Menu
         this.beforeSelectCallbackEventTimer = 2;
 
         this.selectedIndex = index;
-        this.activeIndex = index;
 
-        // this.blinkDelay = this.blinkDefaultDelay;
-        // this.blink = true;
+        // set as active menu item
+        this.activeIndex = index;
+    }
+
+    /**
+     * Calculated menu height
+     */
+    public int getMenuHeight() {
+        return this.items.size() * MenuItem.HEIGHT;
+    }
+
+    /**
+     * Menu width
+     * is width of item elements
+     */
+    public int getMenuWidth() {
+        return this.items.get(0).getWidth();
     }
 }

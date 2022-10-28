@@ -16,11 +16,13 @@ import com.a530games.jackal.Controller;
 import com.a530games.jackal.ControllerEventHandler;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Sprite;
+import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.menu.GameOverLoseMenu;
 import com.a530games.jackal.menu.BasicMenu;
 import com.a530games.jackal.menu.MenuEventHandler;
 import com.a530games.jackal.menu.PauseMenu;
+import com.a530games.jackal.menu.PauseMenuWrap;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.Sidebar;
@@ -45,7 +47,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         GameOver
     }
 
-    GameState state = GameState.Ready;
+    // start on running
+    GameState state = GameState.Running;
 
     World world;
 
@@ -69,7 +72,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     /**
      * Menu on pause
      */
-    BasicMenu pauseMenu;
+    PauseMenuWrap pauseMenu;
 
     /**
      * Mep screen width in pixels
@@ -137,7 +140,14 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.playerHitBoxPaint.setStrokeWidth(1);
         this.playerHitBoxPaint.setColor(Color.GREEN);
 
-        this.pauseMenu = new PauseMenu(150, 200);
+        //
+        int screenHeight = this.game.getGraphics().getHeight();
+
+        // todo: fix magic numbers
+        this.pauseMenu = new PauseMenuWrap(
+                (int) (screenWidth * 0.5) - 200,
+                (int) (screenHeight * 0.5) - 75 - 50
+        );
         this.pauseMenu.setEventHandler(this);
 
         this.gameOverLoseMenu = new GameOverLoseMenu(150, 200);
@@ -643,8 +653,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
      */
     private void drawActiveCell ()
     {
-        int row = this.world.map.getRowByTop(this.world.player.hitBox.top);
-        int col = this.world.map.getColByLeft(this.world.player.hitBox.left);
+        int row = Map.getRowByTop(this.world.player.hitBox.top);
+        int col = Map.getColByLeft(this.world.player.hitBox.left);
 
         int top = this.world.map.screenTopPotion(row * Jackal.BLOCK_WIDTH);
         int left = this.world.map.screenLeftPotion(col * Jackal.BLOCK_HEIGHT);
@@ -913,7 +923,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         {
             // pause game
             if (this.state == GameState.Running) {
-                this.state = GameState.Paused;
+                this.setGamePaused();
             }
 
             // start game
@@ -921,6 +931,17 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 this.state = GameState.Running;
             }
         }
+    }
+
+    private void setGamePaused() {
+        this.state = GameState.Paused;
+
+        // reset menu animation
+        this.pauseMenu.reset();
+    }
+
+    private void restartLevel(int userHp){
+        this.game.setScreen(new LoadingLevelScreen(this.game, userHp));
     }
 
     @Override
@@ -942,15 +963,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         }
     }
 
-    private void restartLevel(int userHp){
-        this.game.setScreen(new LoadingLevelScreen(this.game, userHp));
-    }
-
-
     @Override
     public void pause() {
         Log.d("GameScree", "pause");
-        if(state == GameState.Running) state = GameState.Paused;
+        this.setGamePaused();
+        // if(state == GameState.Running) state = GameState.Paused;
         /*if(world.gameOver) {
             Settings.addScore(world.score);
             Settings.save(game.getFileIO());

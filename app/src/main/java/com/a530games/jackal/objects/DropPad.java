@@ -23,7 +23,7 @@ public class DropPad implements Enemy
 
     boolean isDead = false;
 
-    Handler flayHandler;
+    Handler<Step> flayHandler;
 
     private final World world;
 
@@ -156,7 +156,7 @@ public class DropPad implements Enemy
         this.position = new Vector2F();
         this.dropPosition = new Vector2();
 
-        this.flayHandler = new Handler();
+        this.flayHandler = new Handler<>();
 
         // fly to mid point
         this.flayHandler.add(new PullPlayerStep(this, new Vector2()));
@@ -227,12 +227,14 @@ public class DropPad implements Enemy
     @Override
     public void update(float deltaTime, World world)
     {
-        Step currentStep = this.flayHandler.getCurrentStep();
+        Step currentStep = this.flayHandler.current();
         currentStep.update(deltaTime);
+
+        // if step is over go to next
         if (currentStep.isOver()) this.flayHandler.next();
 
         // if handler ends
-        if (this.flayHandler.isOver()){
+        if (!this.flayHandler.hasNext()){
             Log.d("DropPad", "IsDed");
             this.isDead = true;
         }

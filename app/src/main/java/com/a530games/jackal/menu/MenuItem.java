@@ -10,6 +10,16 @@ import com.a530games.jackal.Sprite;
 public class MenuItem
 {
     /**
+     * Item height
+     */
+    public static final int HEIGHT = 50;
+
+    /**
+     * Item width
+     */
+    public static final int WIDTH = 400;
+
+    /**
      * Text font size
      */
     private final int fontSize = 30;
@@ -42,12 +52,18 @@ public class MenuItem
     private final Paint blinkFont;
     private final Paint rectPaint;
 
-    public MenuItem(String text, String code, int left, int top, int right, int bottom)
+    //public MenuItem(String text, String code, int left, int top)
+    public MenuItem(String text, String code)
     {
         this.text = text;
         this.code = code;
 
-        this.wrap = new Rect(left, top, right, bottom);
+        // basic menu size in constants
+        this.wrap = new Rect(
+                /*left, top,
+                left + MenuItem.WIDTH,
+                top + MenuItem.HEIGHT*/
+        );
 
         this.font = new Paint();
         // this.font.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -67,6 +83,25 @@ public class MenuItem
 
     public String getCode () {
         return this.code;
+    }
+
+
+    /**
+     * Set position of menu with basic size
+     */
+    public void setPosition(int x, int y)
+    {
+        //
+        this.wrap.set(
+            x,
+            y,
+            x + MenuItem.WIDTH, // x + this.wrap.width(),
+            y + MenuItem.HEIGHT // y + this.wrap.height()
+        );
+    }
+
+    public int getWidth() {
+        return this.wrap.width();
     }
 
     /**
@@ -105,11 +140,10 @@ public class MenuItem
             this.presentText(g, this.font);
         }
 
-
         // draw active point wrap
         if (isActive)
         {
-            // wrap
+            // red rect
             g.drawRect(
                     this.wrap.left + 90,
                     this.wrap.top,
@@ -147,4 +181,5 @@ public class MenuItem
     public boolean isPointInside(int x, int y) {
         return this.wrap.contains(x, y);
     }
+
 }

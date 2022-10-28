@@ -2,41 +2,46 @@ package com.a530games.framework.helpers.cor;
 
 import java.util.ArrayList;
 
-public class Handler {
+public class Handler<T> {
 
     /**
      * Steps of handler
      */
-    private final ArrayList<Step> steps;
+    private final ArrayList<T> steps;
 
-    private int stepIndex;
+    /**
+     * Selected inder
+     */
+    private int index;
 
     public Handler() {
         this.steps = new ArrayList<>();
-        this.stepIndex = 0;
+        this.index = 0;
     }
 
-    public void add(Step step) {
-        // step.setHandler(this);
+    public void add(T step) {
         this.steps.add(step);
     }
 
-    public Step get(int index){
+    public T get(int index){
         return this.steps.get(index);
     }
 
-    public void next() {
-        this.stepIndex++;
-
-        // todo: make circle
+    public boolean hasNext() {
+        return this.index < (this.steps.size() - 1);
     }
 
-    public Step getCurrentStep() {
-        return this.steps.get(this.stepIndex);
+    public T next() {
+        this.index++;
+        return this.steps.get(this.index);
     }
 
-    public boolean isOver(){
-        return this.stepIndex >= this.steps.size();
+    public T current() {
+        return this.steps.get(this.index);
+    }
+
+    public void setStep(int index) {
+        this.index = index;
     }
 
     /*public BasicStep setFirstStep (BasicStep startStep){
