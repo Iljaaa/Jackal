@@ -2,7 +2,7 @@ package com.a530games.jackal.map.items.walls;
 
 import com.a530games.framework.Graphics;
 import com.a530games.jackal.Assets;
-import com.a530games.jackal.Sprite;
+import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.map.CellEventCallbackHandler;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCellWithHitbox;

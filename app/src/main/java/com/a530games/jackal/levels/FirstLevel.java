@@ -1,11 +1,10 @@
 package com.a530games.jackal.levels;
 
-import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
-import com.a530games.jackal.Jackal;
-import com.a530games.jackal.map.Cell;
+import com.a530games.jackal.map.RectCell;
 import com.a530games.jackal.map.items.Beach;
 import com.a530games.jackal.map.items.bigRock.BigRock;
+import com.a530games.jackal.map.items.fence.Fence;
 import com.a530games.jackal.map.items.house.HouseLeftBottom;
 import com.a530games.jackal.map.items.house.HouseLeftTop;
 import com.a530games.jackal.map.items.house.HouseRightBottom;
@@ -55,8 +54,8 @@ public class FirstLevel implements Level
     }
 
     @Override
-    public Cell getPlayerDropPointCell() {
-        return new Cell(15, 25);
+    public RectCell getPlayerDropPointCell() {
+        return new RectCell(15, 25);
     }
 
     @Override
@@ -159,5 +158,7 @@ public class FirstLevel implements Level
         map.addObjectToMap(new BigRock(21, 7, BigRock.Part.LeftBottom));
         map.addObjectToMap(new BigRock(21, 8, BigRock.Part.CenterBottom));
         map.addObjectToMap(new BigRock(21, 9, BigRock.Part.RightBottom));
+
+        map.addObjectToMap(new Fence(10, 20));
     }
 }

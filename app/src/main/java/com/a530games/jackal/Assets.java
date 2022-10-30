@@ -10,6 +10,8 @@ public class Assets {
 
     public static Pixmap bg;
 
+    public static Pixmap fence;
+
     public static Pixmap player;
     public static Pixmap gun;
 
@@ -92,6 +94,7 @@ public class Assets {
         Assets.bush2 = g.newPixmap("images/bush2.png", Graphics.PixmapFormat.RGB565);
         Assets.tree1 = g.newPixmap("images/tree1.png", Graphics.PixmapFormat.RGB565);
         Assets.tree2 = g.newPixmap("images/tree2.png", Graphics.PixmapFormat.RGB565);
+        Assets.fence = g.newPixmap("images/fence.png", Graphics.PixmapFormat.RGB565);
 
         Assets.boom = g.newPixmap("images/boom.png", Graphics.PixmapFormat.RGB565);
         Assets.smallBlow = g.newPixmap("images/smallblow.png", Graphics.PixmapFormat.RGB565);

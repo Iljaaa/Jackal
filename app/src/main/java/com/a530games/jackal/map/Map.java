@@ -35,6 +35,11 @@ public class Map implements CellEventCallbackHandler
     public static final int SPRITE_WIDTH = 64;
 
     /**
+     * Map block size
+     */
+    public int blockWidth, blockHeight;
+
+    /**
      * map position
      */
     public Vector2F position;
@@ -42,12 +47,13 @@ public class Map implements CellEventCallbackHandler
     /**
      * map start cell
      */
-    private Cell startCell;
+    private RectCell startCell;
 
     /**
      * Max map position
      * calculated on init
      * checked on move map by player position
+     * todo: refactor to camera object
      */
     private final Vector2F mapMaxPosition;
 
@@ -64,6 +70,28 @@ public class Map implements CellEventCallbackHandler
 
     // map optimization min|max positions for draw
     public int drawMinCol = 0, drawMaxCol = 0, drawMinRow = 0, drawMaxRow = 0;
+
+    /**
+     * Paint for active cell
+     */
+    public Paint activeCellPaint;
+
+    /**
+     * Min sell struct
+     */
+    public class Cell
+    {
+        public int col, row;
+
+        public Cell() {
+            this(0, 0);
+        }
+
+        public Cell(int col, int row) {
+            this.col = col;
+            this.row = row;
+        }
+    }
 
     Rect drawRect;
     Canvas testCanvas;
@@ -85,15 +113,21 @@ public class Map implements CellEventCallbackHandler
      */
     private Enemy follow = null;
 
-    public Map()
+    public Map(int blockWidth, int blockHeight)
     {
         // this.fields = new MapCell[mapRows][mapCols];
         // this.fields[3][2] = new MapCell();
+        this.blockWidth = blockWidth;
+        this.blockHeight = blockHeight;
 
         this.position = new Vector2F(0, 0);
-        this.startCell = new Cell();
+        this.startCell = new RectCell();
         this.mapMaxPosition = new Vector2F();
         this.playerScreenRect = new Rect();
+
+        this.activeCellPaint = new Paint();
+        this.activeCellPaint.setStyle(Paint.Style.FILL);
+        this.activeCellPaint.setColor(Color.YELLOW);
     }
 
     public void setFollowObject (Enemy followObject) {
@@ -264,6 +298,17 @@ public class Map implements CellEventCallbackHandler
         this.backgroundGraphic.drawPixmap(Assets.dropPoint, this.startCell.leftTopCorner.x, this.startCell.leftTopCorner.y);
 
         // draw objects
+        this.drawBackgroundObjects();
+
+        // drwa background net
+        // this.drawBackgroundNet(this.backgroundGraphic);
+    }
+
+    /**
+     * Draw map cells
+     */
+    private void drawBackgroundObjects()
+    {
         for (int row = 0; row < this.mapRows; row++) {
             for (int col = 0; col < this.mapCols; col++)
             {
@@ -275,13 +320,10 @@ public class Map implements CellEventCallbackHandler
                 c.drawOnBackground(this.backgroundGraphic, this);
             }
         }
-
-
-        this.drawBackgroundNet(this.backgroundGraphic);
     }
 
     /**
-     *
+     * Draw net on background
      */
     private void drawBackgroundNet(Graphics g)
     {
@@ -301,6 +343,24 @@ public class Map implements CellEventCallbackHandler
                     Color.GREEN
             );
         }
+    }
+
+    /**
+     * High lite cell on position
+     */
+    public void highlightCellByPoint(Graphics g, PointF point)
+    {
+        Map.Cell cell = this.getCellByPoint(point);
+        // int top = this.world.map.screenTopPotion(this.world.map.getTopByRow(playerCell.row));
+        // int left = this.world.map.screenLeftPotion(this.world.map.getLeftByCol(playerCell.col));
+
+        g.drawRect(
+                this.getLeftByCol(cell.col), // left, // this.world.map.screenLeftPotion(playerCell.col),  // left,
+                this.getTopByRow(cell.col), // top, // this.world.map.screenTopPotion(playerCell.row), // top,
+                this.blockWidth,
+                this.blockHeight,
+                this.activeCellPaint
+        );
     }
 
     public void update(Player player, float deltaTime)
@@ -489,6 +549,26 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
+     * Get cell by position
+     * @return Cell
+     */
+    public Map.Cell getCellByPoint (PointF point) {
+        return this.getCellByPosition(point.x, point.y);
+    }
+
+    /**
+     * Get cell by position
+     * @return Cell
+     */
+    private Map.Cell getCellByPosition (float left, float top) {
+        return new Map.Cell(
+                this.getColByLeftNotStatic(left),
+                this.getRowByTopNotStatic(top)
+        );
+    }
+
+    /**
+     * @deprecated
      * Row by top position
      */
     public static int getRowByTop(float top) {
@@ -497,6 +577,7 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
+     * @deprecated
      * Col by left position
      */
     public static int getColByLeft(float left) {
@@ -505,17 +586,31 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
+     * Row by top position
+     */
+    public int getRowByTopNotStatic(float top) {
+        return (int) Math.floor(top / this.blockHeight);
+    }
+
+    /**
+     * Col by left position
+     */
+    public int getColByLeftNotStatic(float left) {
+        return (int) Math.floor(left / this.blockWidth);
+    }
+
+    /**
      * Get row coords
      */
-    public static int getTopByRow (int row) {
-        return row * Jackal.BLOCK_HEIGHT;
+    public int getTopByRow (int row) {
+        return row * this.blockHeight; // Jackal.BLOCK_HEIGHT;
     }
 
     /**
      * Col coords
      */
-    public static int getLeftByCol (int col) {
-        return col * Jackal.BLOCK_WIDTH;
+    public int getLeftByCol (int col) {
+        return col * this.blockWidth; // Jackal.BLOCK_WIDTH;
     }
 
     /**

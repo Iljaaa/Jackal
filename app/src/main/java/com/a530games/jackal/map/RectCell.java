@@ -4,9 +4,11 @@ import android.graphics.Point;
 
 import com.a530games.jackal.Jackal;
 
-public class Cell
+public class RectCell
 {
-    public int row, col, width, height;
+    public int row, col;
+
+    public int width, height;
 
     /**
      * Left top corner of cell
@@ -18,15 +20,15 @@ public class Cell
      */
     public Point center;
 
-    public Cell() {
+    public RectCell() {
         this(0, 0);
     }
 
-    public Cell(int row, int col) {
+    public RectCell(int row, int col) {
         this(row, col, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
     }
 
-    public Cell(int row, int col, int width, int height)
+    public RectCell(int row, int col, int width, int height)
     {
         this.row = row;
         this.col = col;

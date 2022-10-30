@@ -2,14 +2,13 @@ package com.a530games.jackal.map;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Jackal;
 
-public abstract class MapCell extends Cell
+public abstract class MapCell extends RectCell
 {
     /**
      * Paint for hit box

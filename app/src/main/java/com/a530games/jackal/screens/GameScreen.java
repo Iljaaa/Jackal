@@ -16,7 +16,7 @@ import com.a530games.jackal.Assets;
 import com.a530games.jackal.Controller;
 import com.a530games.jackal.ControllerEventHandler;
 import com.a530games.jackal.Jackal;
-import com.a530games.jackal.Sprite;
+import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.menu.GameOverLoseMenu;
@@ -603,6 +603,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
 
         // draw on map
+        // todo: move this code inside map
         for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
             for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
             {
@@ -613,9 +614,12 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             }
         }
 
-        // this.drawMapNet(g);
+        // highlight player cell
+        this.world.map.highlightCellByPoint(g, this.world.player.getHitBox().getCenter());
 
-        // this.drawActiveCell();
+        // draw player active cell
+        // Map.Cell playerCell = this.world.map.getCellByPoint(this.world.player.getHitBox().getCenter());
+        // this.drawActiveCell(g, playerCell);
     }
 
     /**
@@ -624,6 +628,9 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     private void drawMapObjectsHitBoxes()
     {
         Graphics g = this.game.getGraphics();
+
+        // get player cell
+
 
         for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
             for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
@@ -652,17 +659,24 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     /**
      * Draw cell on
      */
-    private void drawActiveCell ()
+    private void drawActiveCell (Graphics g, Map.Cell playerCell)
     {
-        int row = Map.getRowByTop(this.world.player.hitBox.top);
-        int col = Map.getColByLeft(this.world.player.hitBox.left);
+        // int row = Map.getRowByTop(this.world.player.hitBox.top);
+        // int col = Map.getColByLeft(this.world.player.hitBox.left);
 
-        int top = this.world.map.screenTopPotion(row * Jackal.BLOCK_WIDTH);
-        int left = this.world.map.screenLeftPotion(col * Jackal.BLOCK_HEIGHT);
+        // active cell
+        // Map.Cell playerCell = this.world.map.getCellByPoint(this.world.player.getHitBox().getCenter());
 
-        Graphics g = this.game.getGraphics();
-        g.drawRect( left, top, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT, Color.YELLOW);
+        int top = this.world.map.screenTopPotion(this.world.map.getTopByRow(playerCell.row));
+        int left = this.world.map.screenLeftPotion(this.world.map.getLeftByCol(playerCell.col));
 
+        g.drawRect(
+                left, // this.world.map.screenLeftPotion(playerCell.col),  // left,
+                top, // this.world.map.screenTopPotion(playerCell.row), // top,
+                this.world.map.blockWidth, // Jackal.BLOCK_HEIGHT,
+                this.world.map.blockHeight, // Jackal.BLOCK_HEIGHT,
+                this.world.map.activeCellPaint
+        );
     }
 
     /**

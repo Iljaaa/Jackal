@@ -6,7 +6,7 @@ import com.a530games.framework.Pixmap;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2F;
-import com.a530games.jackal.Sprite;
+import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.Map;
 

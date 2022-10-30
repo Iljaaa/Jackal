@@ -1,6 +1,5 @@
 package com.a530games.jackal.objects;
 
-import android.graphics.Point;
 import android.util.Log;
 
 import com.a530games.framework.Graphics;
@@ -9,7 +8,7 @@ import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
-import com.a530games.jackal.Sprite;
+import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.RotateVehicle;
 

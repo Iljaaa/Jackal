@@ -1,7 +1,10 @@
-package com.a530games.jackal;
+package com.a530games.framework.helpers;
 
 import com.a530games.framework.Pixmap;
 
+/**
+ * @deprecated use Texture
+ */
 public class Sprite
 {
     // todo: move to another class

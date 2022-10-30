@@ -2,6 +2,7 @@ package com.a530games.jackal;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Pixmap;
+import com.a530games.framework.helpers.Sprite;
 import com.a530games.framework.math.Vector2F;
 
 public class SpriteWithAnimation extends Sprite

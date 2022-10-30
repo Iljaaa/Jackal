@@ -9,7 +9,7 @@ import com.a530games.framework.math.Vector2;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Controller;
-import com.a530games.jackal.Sprite;
+import com.a530games.framework.helpers.Sprite;
 
 import java.util.ArrayList;
 

@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
-import com.a530games.jackal.Sprite;
+import com.a530games.framework.helpers.Sprite;
 
 public class MenuItem
 {

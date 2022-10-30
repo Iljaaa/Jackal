@@ -9,9 +9,9 @@ import com.a530games.framework.helpers.cor.Handler;
 import com.a530games.framework.helpers.cor.Step;
 import com.a530games.framework.math.Vector2;
 import com.a530games.framework.math.Vector2F;
-import com.a530games.jackal.Sprite;
+import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.World;
-import com.a530games.jackal.map.Cell;
+import com.a530games.jackal.map.RectCell;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 
@@ -184,7 +184,7 @@ public class DropPad implements Enemy
     /**
      * Move drop pad to start position
      */
-    public void moveToStart(Cell playerDropCell)
+    public void moveToStart(RectCell playerDropCell)
     {
         this.dropPosition.set(playerDropCell.center.x, playerDropCell.center.y);
 

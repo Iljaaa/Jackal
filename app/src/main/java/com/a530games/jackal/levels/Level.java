@@ -1,6 +1,6 @@
 package com.a530games.jackal.levels;
 
-import com.a530games.jackal.map.Cell;
+import com.a530games.jackal.map.RectCell;
 import com.a530games.jackal.map.Map;
 
 public interface Level
@@ -18,7 +18,7 @@ public interface Level
     /**
      * Map start position
      */
-    Cell getPlayerDropPointCell();
+    RectCell getPlayerDropPointCell();
 
     /**
      * Add objects on map

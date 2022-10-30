@@ -78,7 +78,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.player = new Player(300, 300, this);
         this.player.hp = playerStartHp;
 
-        this.map = new Map();
+        this.map = new Map(Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
         this.map.setEventHandler(this);
 
         // bind map follow for player
