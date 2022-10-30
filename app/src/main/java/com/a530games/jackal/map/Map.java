@@ -153,6 +153,7 @@ public class Map implements CellEventCallbackHandler
         this.mapRows = level.getMapHeightInCols();
 
         // calculate max map positions`
+        // fixme: need move to camera
         this.mapMaxPosition.set(
             -1 * ((this.mapCols * Map.SPRITE_WIDTH) - mapScreenWidth),
             -1 * ((this.mapRows * Map.SPRITE_HEIGHT) - mapScreenHeight)
@@ -162,8 +163,8 @@ public class Map implements CellEventCallbackHandler
         this.playerScreenRect.set (
             200,
             200,
-            g.getWidth() - 200,
-            g.getHeight() - 200
+            g.getFrameBufferWidth() - 200,
+            g.getFrameBufferHeight() - 200
         );
 
         // calculate min|max objects position
@@ -331,7 +332,7 @@ public class Map implements CellEventCallbackHandler
         for (int row = 1; row < this.mapRows; row++) {
             g.drawLine(
                     0, row * Jackal.BLOCK_HEIGHT,
-                    g.getWidth(), row * Jackal.BLOCK_HEIGHT,
+                    g.getFrameBufferWidth(), row * Jackal.BLOCK_HEIGHT,
                     Color.GREEN
             );
         }
@@ -339,7 +340,7 @@ public class Map implements CellEventCallbackHandler
         for (int col = 1; col < this.mapCols; col++) {
             g.drawLine(
                     col * Jackal.BLOCK_WIDTH, 0,
-                    col * Jackal.BLOCK_WIDTH, g.getHeight(),
+                    col * Jackal.BLOCK_WIDTH, g.getFrameBufferHeight(),
                     Color.GREEN
             );
         }
@@ -350,7 +351,7 @@ public class Map implements CellEventCallbackHandler
      */
     public void highlightCellByPoint(Graphics g, PointF point)
     {
-        Map.Cell cell = this.getCellByPoint(point);
+        Map.Cell cell = this.getCellByPointF(point);
         // int top = this.world.map.screenTopPotion(this.world.map.getTopByRow(playerCell.row));
         // int left = this.world.map.screenLeftPotion(this.world.map.getLeftByCol(playerCell.col));
 
@@ -552,7 +553,7 @@ public class Map implements CellEventCallbackHandler
      * Get cell by position
      * @return Cell
      */
-    public Map.Cell getCellByPoint (PointF point) {
+    public Map.Cell getCellByPointF(PointF point) {
         return this.getCellByPosition(point.x, point.y);
     }
 

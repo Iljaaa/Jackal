@@ -2,6 +2,7 @@ package com.a530games.jackal;
 
 import android.util.Log;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2F;
@@ -57,6 +58,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     // map
     public Map map;
 
+
     // Random random = new Random();
 
     // private ArrayList<Sound> tankHitSounds;
@@ -73,12 +75,19 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     // static float aTick = TICK_INITIAL;
 
 
-    public World(int playerStartHp)
+    /**
+     * @param playerStartHp
+     * @param oneMapBlockWidth map block width
+     * @param oneMapBlockHeight map block size
+     */
+    public World(int playerStartHp, int oneMapBlockWidth, int oneMapBlockHeight)
     {
         this.player = new Player(300, 300, this);
         this.player.hp = playerStartHp;
 
-        this.map = new Map(Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
+        // create map
+        // this.map = new Map(Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
+        this.map = new Map(oneMapBlockWidth, oneMapBlockHeight);
         this.map.setEventHandler(this);
 
         // bind map follow for player

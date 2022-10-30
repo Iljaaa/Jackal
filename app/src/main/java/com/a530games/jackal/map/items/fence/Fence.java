@@ -2,10 +2,8 @@ package com.a530games.jackal.map.items.fence;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
-import com.a530games.framework.helpers.Texture;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
-import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.map.CellEventCallbackHandler;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCellWithHitbox;
@@ -18,6 +16,7 @@ public class Fence extends MapCellWithHitbox
     public Fence(int row, int col) {
         super(row, col, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
         this.sprite = new MapTexture(Assets.fence, 0, 0);
+        this.sprite.offsetToFrames(1, 1);
     }
 
     @Override

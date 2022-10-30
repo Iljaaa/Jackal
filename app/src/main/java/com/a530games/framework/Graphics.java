@@ -34,8 +34,8 @@ public interface Graphics {
     void drawText(String text, int x, int y, int textSize, int color);
     void drawText(String text, int x, int y, Paint paint);
 
-    int getWidth();
-    int getHeight();
+    int getFrameBufferWidth();
+    int getFrameBufferHeight();
 
     AssetManager getAssetManager();
 

@@ -2,9 +2,11 @@ package com.a530games.jackal.screens;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Game;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
@@ -52,6 +54,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     GameState state = GameState.Running;
 
     World world;
+
+    /**
+     * Camera object
+     */
+    Camera2D camera;
 
     Sidebar sidebar;
 
@@ -109,23 +116,29 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         super(game);
 
         // из размера экрана получаел количество квадратов на поле
-        int screenWidth = this.game.getGraphics().getWidth();
+        Graphics g = this.game.getGraphics();
 
-        // count full blocks on screen
+        //
+        int screenWidth = g.getFrameBufferWidth();
+
+        // count FULL blocks on screen
         this.mapScreenWidthInBlocks = (int) Math.floor(screenWidth / (float) Jackal.BLOCK_WIDTH);
-        this.mapScreenHeightInBlocks = (int) Math.floor(this.game.getGraphics().getHeight() / (float) Jackal.BLOCK_HEIGHT);
+        this.mapScreenHeightInBlocks = (int) Math.floor(this.game.getGraphics().getFrameBufferHeight() / (float) Jackal.BLOCK_HEIGHT);
 
         // calculate screen size
         this.mapScreenWidthInPixels = this.mapScreenWidthInBlocks * Jackal.BLOCK_WIDTH;
         this.mapScreenHeightInPixels = this.mapScreenHeightInBlocks * Jackal.BLOCK_HEIGHT;
 
         // create world width calculated map size
-        this.world = new World(playerStartHp);
+        this.world = new World(playerStartHp, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
 
-        Graphics g = this.game.getGraphics();
+        int screenHeight = g.getFrameBufferHeight();
+
+        // camera object
+        this.camera = new Camera2D(screenWidth, screenHeight, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
 
         // sidebar object
-        this.sidebar = new Sidebar(this.world, g.getWidth(),g.getHeight());
+        this.sidebar = new Sidebar(this.world, screenWidth, screenHeight);
 
         // atache events handler to controller
         Controller controller = Jackal.getController();
@@ -133,16 +146,13 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // Jackal.getController().setEventHandler(this);
         // Jackal.setController(this.controller);
 
-        this.controllerPresenter = new ControllerPresenter(g.getWidth(), g.getHeight());
+        this.controllerPresenter = new ControllerPresenter(g.getFrameBufferWidth(), g.getFrameBufferHeight());
         this.controllerPresenter.bindController(controller);
 
         this.playerHitBoxPaint = new Paint();
         this.playerHitBoxPaint.setStyle(Paint.Style.STROKE);
         this.playerHitBoxPaint.setStrokeWidth(1);
         this.playerHitBoxPaint.setColor(Color.GREEN);
-
-        //
-        int screenHeight = this.game.getGraphics().getHeight();
 
         // todo: fix magic numbers
         this.pauseMenu = new PauseMenuWrap(
@@ -532,16 +542,14 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         //
         // this.drawMapTop();
 
+        // temp blow
         this.drawBlow();
 
-        // this.drawSky();
         // map top level
         this.drawMapTopLayout();
 
         // map object hitboxes
         this.drawMapObjectsHitBoxes();
-
-        //this.drawSky();
     }
 
     private void drawSidebar(Sidebar sidebar)
@@ -602,7 +610,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 640);
 
 
-        // draw on map
+        // draw object on map
         // todo: move this code inside map
         for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
             for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
@@ -623,6 +631,60 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     }
 
     /**
+     * Draw map objects top layer checkbox
+     */
+    private void drawMapTopLayout()
+    {
+        Graphics g = this.game.getGraphics();
+
+        // get player position
+        Map.Cell playerCell = this.world.map.getCellByPointF(this.world.player.getHitBox().getCenter());
+
+        // Rect viewRect = this.getVisibleRectInBlocks(playerCell);
+
+        // get camera view rect
+        Rect viewRect = this.camera.getViewRectInBlocks(playerCell);
+
+        // for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
+        //  for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
+        for (int row =  Math.max(viewRect.top, 0); row < viewRect.bottom && row < this.world.map.mapRows; row++)
+        {
+            for (int col = Math.max(viewRect.left, 0); col < viewRect.right && col < this.world.map.mapCols; col++)
+            {
+                MapCell c = this.world.map.fields[row][col];
+                if (c == null) continue;
+
+                c.drawTopLayout(g, this.world.map);
+            }
+        }
+    }
+
+    /**
+     * todo: Make static variable
+     * @param center
+     * @return
+     */
+    private Rect getVisibleRectInBlocks(Map.Cell center)
+    {
+        // todo: fix magic numbers
+        Rect r = new Rect(
+                center.col - 3,
+                center.row - 3,
+                center.col + 3,
+                center.row + 3
+        );
+
+        if (r.left < 0) r.left = 0;
+        if (r.top < 0) r.top = 0;
+
+        if (r.right > this.world.map.mapCols) r.left = this.world.map.mapCols;
+        if (r.bottom > this.world.map.mapRows) r.bottom = this.world.map.mapRows;
+
+        return r;
+    }
+
+
+    /**
      * Hit boxes for map objects
      */
     private void drawMapObjectsHitBoxes()
@@ -631,10 +693,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         // get player cell
 
-
-        for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
-            for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
-            {
+        // draw all hitboxes
+        // for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
+            // for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
+        for (int row = 0; row < this.world.map.mapRows; row++) {
+            for (int col = 0; col < this.world.map.mapCols; col++) {
                 MapCell c = this.world.map.fields[row][col];
                 if (c == null) continue;
 
@@ -658,7 +721,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
     /**
      * Draw cell on
-     */
+
     private void drawActiveCell (Graphics g, Map.Cell playerCell)
     {
         // int row = Map.getRowByTop(this.world.player.hitBox.top);
@@ -667,17 +730,17 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // active cell
         // Map.Cell playerCell = this.world.map.getCellByPoint(this.world.player.getHitBox().getCenter());
 
-        int top = this.world.map.screenTopPotion(this.world.map.getTopByRow(playerCell.row));
-        int left = this.world.map.screenLeftPotion(this.world.map.getLeftByCol(playerCell.col));
+        // int top = this.world.map.screenTopPotion(this.world.map.getTopByRow(playerCell.row));
+        // int left = this.world.map.screenLeftPotion(this.world.map.getLeftByCol(playerCell.col));
 
-        g.drawRect(
+        /*g.drawRect(
                 left, // this.world.map.screenLeftPotion(playerCell.col),  // left,
                 top, // this.world.map.screenTopPotion(playerCell.row), // top,
                 this.world.map.blockWidth, // Jackal.BLOCK_HEIGHT,
                 this.world.map.blockHeight, // Jackal.BLOCK_HEIGHT,
                 this.world.map.activeCellPaint
         );
-    }
+    }*/
 
     /**
      *
@@ -850,24 +913,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 this.tempBoom.width,
                 this.tempBoom.height
         );
-    }
-
-    /**
-     * Draw map objects top layer checkbox
-     */
-    private void drawMapTopLayout()
-    {
-        Graphics g = this.game.getGraphics();
-
-        for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
-            for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
-            {
-                MapCell c = this.world.map.fields[row][col];
-                if (c == null) continue;
-
-                c.drawTopLayout(g, this.world.map);
-            }
-        }
     }
 
     private void drawReadyUI()
