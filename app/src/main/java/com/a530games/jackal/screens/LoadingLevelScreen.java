@@ -82,10 +82,13 @@ public class LoadingLevelScreen extends Screen
 
     /**
      * Save map image to file
-     */
+
     private void saveMapTofile(GameScreen gs)
     {
         try {
+            // String.format("", )
+
+
             OutputStream osw = this.game.getFileIO().writeFile("map22.jpg");
             // Bitmap pictureBitmap = getImageBitmap(myurl); // obtaining the Bitmap
             gs.world.map.drawBitmap.compress(Bitmap.CompressFormat.JPEG, 85, osw); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
@@ -101,7 +104,7 @@ public class LoadingLevelScreen extends Screen
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     @Override
     public void present(float deltaTime) {

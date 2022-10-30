@@ -14,6 +14,8 @@ public class LoadingScreen extends Screen
 
     public LoadingScreen(Jackal game) {
         super(game);
+
+        // todo: load only this this map sprite
         Assets.bg = this.game.getGraphics().newPixmap("images/bg.jpg", Graphics.PixmapFormat.RGB565);
     }
 

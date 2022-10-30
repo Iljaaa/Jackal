@@ -10,6 +10,7 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
 import com.a530games.framework.Screen;
 import com.a530games.framework.TouchEventsCollection;
+import com.a530games.framework.helpers.SaveBitmapToFile;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Controller;
@@ -953,9 +954,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             case PauseMenu.PAUSE_MENU_CONTINUE:
                 this.state = GameScreen.GameState.Running;
                 break;
-            case PauseMenu.PAUSE_MENU_RESTART:
-                this.restartLevel(Jackal.getUerStartHp());
+            // save map image to file
+            case PauseMenu.PAUSE_MENU_SAVE_MAP:
+                SaveBitmapToFile.SaveToFile(this.game.getFileIO(), this.world.map.drawBitmap);
                 break;
+            case PauseMenu.PAUSE_MENU_RESTART:
             case GameOverLoseMenu.GLM_RESTART:
                 // restart wight use continue
                 this.restartLevel(Jackal.pickContinue());
