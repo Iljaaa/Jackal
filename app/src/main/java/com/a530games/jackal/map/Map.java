@@ -111,7 +111,7 @@ public class Map implements CellEventCallbackHandler
     /**
      * Object for follow map
      */
-    private Enemy follow = null;
+    private Player follow = null;
 
     public Map(int blockWidth, int blockHeight)
     {
@@ -130,7 +130,7 @@ public class Map implements CellEventCallbackHandler
         this.activeCellPaint.setColor(Color.YELLOW);
     }
 
-    public void setFollowObject (Enemy followObject) {
+    public void setFollowObject (Player followObject) {
         this.follow = followObject;
     }
 
@@ -186,7 +186,7 @@ public class Map implements CellEventCallbackHandler
         dropPad.moveToStart(this.startCell);
 
         // move player out of screen, before his drop from drop pad
-        player.moveTo(-100, -100);
+        player.offsetTo(-100, -100);
 
         // move player on map position
         // player.hitBox.moveTo(400,1500);
@@ -354,28 +354,29 @@ public class Map implements CellEventCallbackHandler
     /**
      * High lite cell on position
      */
-    public void highlightCellByPoint(Graphics g, PointF point)
+    public void highlightCellByPoint(Graphics g, float x, float y)
     {
-        Map.Cell cell = this.getCellByPointF(point);
+        Map.Cell cell = this.getCellByPosition(x, y);
         // int top = this.world.map.screenTopPotion(this.world.map.getTopByRow(playerCell.row));
         // int left = this.world.map.screenLeftPotion(this.world.map.getLeftByCol(playerCell.col));
 
         g.drawRect(
                 this.getLeftByCol(cell.col), // left, // this.world.map.screenLeftPotion(playerCell.col),  // left,
-                this.getTopByRow(cell.col), // top, // this.world.map.screenTopPotion(playerCell.row), // top,
+                this.getTopByRow(cell.row), // top, // this.world.map.screenTopPotion(playerCell.row), // top,
                 this.blockWidth,
                 this.blockHeight,
                 this.activeCellPaint
         );
     }
 
-    public void update(Player player, float deltaTime)
+    public void update(float deltaTime)
     {
         // move map
         if (this.follow != null)
         {
             // update map position by follow object
-            this.updateMapPosition(this.follow.getHitBox().getCenter());
+            HitBox followHitBox = this.follow.hitBox;
+            this.updateMapPosition(followHitBox.getCenterX(), followHitBox.getCenterX());
 
             // update draw position
             this.updateMapOptimizatonFields();
@@ -431,10 +432,10 @@ public class Map implements CellEventCallbackHandler
     /**
      * Update map position by player
      */
-    private void updateMapPosition (PointF playerHitboxCenter)
+    private void updateMapPosition (float left, float top)
     {
         // on top
-        float playerCenterY = this.screenTopPotionF(playerHitboxCenter.y);
+        float playerCenterY = this.screenTopPotionF(top);
         if (playerCenterY < this.playerScreenRect.top)
         {
             this.position.y = this.position.y + (this.playerScreenRect.top - playerCenterY);
@@ -442,7 +443,7 @@ public class Map implements CellEventCallbackHandler
         }
 
         // on the left border
-        float playerCenterX = this.screenLeftPotionF(playerHitboxCenter.x);
+        float playerCenterX = this.screenLeftPotionF(left);
         if (playerCenterX < this.playerScreenRect.left)
         {
             this.position.x = this.position.x + (this.playerScreenRect.left - playerCenterX);
@@ -470,16 +471,16 @@ public class Map implements CellEventCallbackHandler
     public boolean isIntersect (HitBox rectOnMap)
     {
         // check is out of map, there is bedrock
-        if (rectOnMap.left < this.objectMinX) return true;
-        if (rectOnMap.top < this.objectMinY) return true;
-        if (rectOnMap.right > this.objectMaxX) return true;
-        if (rectOnMap.bottom > this.objectMaxY) return true;
+        if (rectOnMap.rect.left < this.objectMinX) return true;
+        if (rectOnMap.rect.top < this.objectMinY) return true;
+        if (rectOnMap.rect.right > this.objectMaxX) return true;
+        if (rectOnMap.rect.bottom > this.objectMaxY) return true;
 
         // todo: check one block
 
         // for left top take 3 top
-        int row = this.getRowByTop(rectOnMap.top);
-        int col = this.getColByLeft(rectOnMap.left);
+        int row = this.getRowByTop(rectOnMap.rect.top);
+        int col = this.getColByLeft(rectOnMap.rect.left);
 //        int row = (int) Math.floor(rectOnMap.top / Map.SPRITE_HEIGHT);
 //        int col = (int) Math.floor(rectOnMap.left / Map.SPRITE_WIDTH);
 
@@ -569,24 +570,12 @@ public class Map implements CellEventCallbackHandler
      * Get cell by position on map
      * @return Cell
      */
-    private Map.Cell getCellByPosition (float left, float top) {
+    public Map.Cell getCellByPosition (float left, float top) {
         return new Map.Cell(
                 this.getColByLeftNotStatic(left),
                 this.getRowByTopNotStatic(top)
         );
     }
-
-    /**
-     * Calculate and get center point of cell
-     */
-    public Vector2F getCenterCell(Map.Cell cell) {
-        return new Vector2F(
-                (cell.col + 0.5f) * this.blockWidth,
-                (cell.row + 0.5f) * this.blockHeight
-        );
-    }
-
-
 
     /**
      * @deprecated

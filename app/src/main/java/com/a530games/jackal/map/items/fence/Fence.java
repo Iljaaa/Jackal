@@ -2,6 +2,7 @@ package com.a530games.jackal.map.items.fence;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.map.CellEventCallbackHandler;
@@ -46,7 +47,7 @@ public class Fence extends MapCellWithHitbox
     }
 
     @Override
-    public boolean isIntersectRectInsideCell(FloatRect rectOnMap) {
+    public boolean isIntersectRectInsideCell(HitBox rectOnMap) {
         return true;
     }
 }

@@ -123,15 +123,16 @@ public class Tank extends Vehicle
 
     private void updateAiming(World world)
     {
-        PointF playerCenter = world.player.getHitBox().getCenter();
-        PointF tankCenter = this.hitBox.getCenter();
+        // PointF playerCenter = world.player.hitBox.getCenter();
+        // PointF tankCenter = this.hitBox.getCenter();
 
-        float y = playerCenter.y - tankCenter.y;
-        float x = playerCenter.x - tankCenter.x;
+        // float y = playerCenter.y - tankCenter.y;
+        // float x = playerCenter.x - tankCenter.x;
+
+        float y = world.player.hitBox.getCenterY() - this.hitBox.getCenterY();
+        float x = world.player.hitBox.getCenterX() - this.hitBox.getCenterX();
 
         // random angle
-        // this.targetAngle = Jackal.getRandom().nextFloat() * 2;
-        // this.targetAngle.set(Jackal.getRandom().nextFloat(), Jackal.getRandom().nextFloat());
         this.targetAngle.set(x, y);
         this.targetAngle.nor();
 
@@ -223,8 +224,8 @@ public class Tank extends Vehicle
                 // todo: fix magic numbers
 
                 this.blows[i].start(
-                        this.hitBox.getCenterLeft() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 32,
-                        this.hitBox.getCenterTop() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 32
+                        this.hitBox.getCenterX() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 32,
+                        this.hitBox.getCenterY() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 32
                 );
 
             }
@@ -331,7 +332,7 @@ public class Tank extends Vehicle
     {
         if (this.fireEventHandler != null) {
             this.turretAngle.nor();
-            this.fireEventHandler.enemyFire(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop(), this.turretAngle);
+            this.fireEventHandler.enemyFire(this.hitBox.getCenterX(), this.hitBox.getCenterY(), this.turretAngle);
         }
     }
 

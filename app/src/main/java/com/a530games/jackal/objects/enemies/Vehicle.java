@@ -60,27 +60,11 @@ public abstract class Vehicle implements Enemy
     }
 
     public float getLeft() {
-        return this.hitBox.left;
+        return this.hitBox.rect.left;
     }
 
     public float getTop() {
-        return this.hitBox.top;
-    }
-
-    /**
-     * Just move to
-     */
-    public void moveCenter(float x, float y) {
-        this.moveTo(
-                x - (this.hitBox.getWidth() / 2),
-                y - (this.hitBox.getHeight() / 2)
-        );
-    }
-    /**
-     * Just move to
-     */
-    public void moveTo(float x, float y) {
-        this.hitBox.moveTo(x, y);
+        return this.hitBox.rect.top;
     }
 
     /**
@@ -100,7 +84,7 @@ public abstract class Vehicle implements Enemy
 
     private void driveHorizontal(float xSpeed, float deltaTime, World world)
     {
-        this.hitBox.moveTo(this.hitBox.left + (deltaTime * xSpeed), this.hitBox.top);
+        this.hitBox.moveTo(this.hitBox.rect.left + (deltaTime * xSpeed), this.hitBox.rect.top);
 
         if (this.checkIntersectForMove(this.hitBox, world)) {
             this.hitBox.rollback();
@@ -109,7 +93,7 @@ public abstract class Vehicle implements Enemy
 
     private void driveVertical(float ySpeed, float deltaTime, World world)
     {
-        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * ySpeed));
+        this.hitBox.moveTo(this.hitBox.rect.left, this.hitBox.rect.top + (deltaTime * ySpeed));
 
         if (this.checkIntersectForMove(this.hitBox, world)) {
             this.hitBox.rollback();
@@ -125,15 +109,15 @@ public abstract class Vehicle implements Enemy
         }
 
         // intersect enemies
-        if (world.enemies.isAnyEnemyIntersectWith(this)) {
+        if (world.enemies.isAnyEnemyIntersectWithOtherEnemy(this)) {
             return true;
         }
 
         // intersect with player
-        if (!world.player.equals(this)) {
-            if (FloatRect.isIntersectsTwoRectF(aHitbox, world.player.hitBox)) {
-                return true;
-            }
+
+        // if (FloatRect.isIntersectsTwoRectF(aHitbox, world.player.hitBox)) {
+        if (world.player.hitBox.isIntersectsWithHitbox(aHitbox)) {
+            return true;
         }
 
         return false;
@@ -143,10 +127,10 @@ public abstract class Vehicle implements Enemy
 
     public Rect getScreenDrawHitbox (Map map)
     {
-        this.hitBoxForDraw.left = map.screenLeftPotion(this.hitBox.left);
-        this.hitBoxForDraw.top = map.screenTopPotion(this.hitBox.top);
-        this.hitBoxForDraw.right =  Math.round(this.hitBoxForDraw.left + this.hitBox.getWidth());
-        this.hitBoxForDraw.bottom = Math.round(this.hitBoxForDraw.top + this.hitBox.getHeight());
+        this.hitBoxForDraw.left = map.screenLeftPotion(this.hitBox.rect.left);
+        this.hitBoxForDraw.top = map.screenTopPotion(this.hitBox.rect.top);
+        this.hitBoxForDraw.right =  Math.round(this.hitBoxForDraw.left + this.hitBox.width());
+        this.hitBoxForDraw.bottom = Math.round(this.hitBoxForDraw.top + this.hitBox.height());
         return this.hitBoxForDraw;
     }
 

@@ -145,7 +145,7 @@ public class DropPad implements Enemy
             super.moveTo(x, y);
 
             // move player
-            this.pad.world.player.moveCenter(x, y);
+            this.pad.world.player.offsetCenterTo(x, y);
         }
     }
 

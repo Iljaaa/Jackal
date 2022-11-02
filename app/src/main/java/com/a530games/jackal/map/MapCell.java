@@ -2,7 +2,7 @@ package com.a530games.jackal.map;
 
 import com.a530games.jackal.Jackal;
 
-public abstract class MapCell extends RectCell implements  MapObject
+public abstract class MapCell extends RectCell implements MapObject
 {
 
     public MapCell(int col, int row)

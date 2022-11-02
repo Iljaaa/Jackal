@@ -1,6 +1,7 @@
 package com.a530games.jackal.map.items.walls;
 
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.HitBox;
 
 /**
  * fixme: need sprite for top bush
@@ -23,7 +24,7 @@ public class TopHalfWall extends Wall
     }
 
     @Override
-    public boolean isIntersectRectInsideCell(FloatRect r) {
+    public boolean isIntersectRectInsideCell(HitBox r) {
         return true;
     }
 }

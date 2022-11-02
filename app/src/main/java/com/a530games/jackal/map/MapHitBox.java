@@ -26,19 +26,19 @@ public class MapHitBox
     public boolean isIntersectsWithHitbox(HitBox otherHitbox)
     {
         //
-        if (this.rect.bottom < otherHitbox.top){
+        if (this.rect.bottom < otherHitbox.rect.top){
             return false;
         }
 
-        if (this.rect.top > otherHitbox.bottom){
+        if (this.rect.top > otherHitbox.rect.bottom){
             return false;
         }
 
-        if (this.rect.right < otherHitbox.left){
+        if (this.rect.right < otherHitbox.rect.left){
             return false;
         }
 
-        if (this.rect.left > otherHitbox.right) {
+        if (this.rect.left > otherHitbox.rect.right) {
             return false;
         }
 

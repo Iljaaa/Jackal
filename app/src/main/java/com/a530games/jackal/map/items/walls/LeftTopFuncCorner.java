@@ -2,6 +2,7 @@ package com.a530games.jackal.map.items.walls;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.map.Map;
 
 public class LeftTopFuncCorner extends FuncCorner
@@ -54,11 +55,11 @@ public class LeftTopFuncCorner extends FuncCorner
     }
 
     @Override
-    public boolean isIntersectRectInsideCell(FloatRect rectOnMap)
+    public boolean isIntersectRectInsideCell(HitBox rectOnMap)
     {
         // check right bottom corner for bottom right corner
         // return (this.hitBox.bottom + this.getYByX(rectOnMap.right - this.hitBox.left) < rectOnMap.bottom);
-        return this.isIntersectPointInsideCell(rectOnMap.right, rectOnMap.bottom);
+        return this.isIntersectPointInsideCell(rectOnMap.rect.right, rectOnMap.rect.bottom);
     }
 
 }

@@ -660,7 +660,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         }
 
         // highlight player cell
-        this.world.map.highlightCellByPoint(g, this.world.player.getHitBox().getCenter());
+        this.world.map.highlightCellByPoint(g, this.world.player.hitBox.getCenterX(), this.world.player.hitBox.getCenterY());
 
         // draw player active cell
         // Map.Cell playerCell = this.world.map.getCellByPoint(this.world.player.getHitBox().getCenter());
@@ -675,7 +675,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         Graphics g = this.game.getGraphics();
 
         // get player position
-        Map.Cell playerCell = this.world.map.getCellByPointF(this.world.player.getHitBox().getCenter());
+        // todo: here need camera
+        Map.Cell playerCell = this.world.map.getCellByPosition(
+                this.world.player.hitBox.getCenterX(),
+                this.world.player.hitBox.getCenterY()
+        );
 
         // Rect viewRect = this.getVisibleRectInBlocks(playerCell);
 
@@ -799,8 +803,16 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.drawPlayerHitBox(g);
     }
 
-    private void drawPlayerHitBox (Graphics g) {
-        g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.playerHitBoxPaint);
+    private void drawPlayerHitBox (Graphics g)
+    {
+        // g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.playerHitBoxPaint);
+        g.drawRect(
+                (int) this.world.map.screenLeftPotion(this.world.player.hitBox.rect.left),
+                (int) this.world.map.screenTopPotion(this.world.player.hitBox.rect.top),
+                (int) this.world.player.hitBox.rect.width(),
+                (int) this.world.player.hitBox.rect.height(),
+                this.playerHitBoxPaint
+        );
     }
 
     /**
@@ -809,8 +821,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
      */
     private void drawPlayerAngle (Graphics g) // , int playerScreenX, int playerScreenY)
     {
-        int centerX = this.world.map.screenLeftPotion(this.world.player.hitBox.getCenterLeft());
-        int centerY = this.world.map.screenTopPotion(this.world.player.hitBox.getCenterTop());
+        int centerX = this.world.map.screenLeftPotion(this.world.player.hitBox.getCenterX());
+        int centerY = this.world.map.screenTopPotion(this.world.player.hitBox.getCenterY());
 
         g.drawLine(
                 centerX,
@@ -828,8 +840,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     {
         // int centerX = (int) Math.round(playerScreenX + (0.5 * this.world.player.hitBox.getWidth()));
         // int centerY = (int) Math.round(playerScreenY  + (0.5 * this.world.player.hitBox.getHeight()));
-        int centerX = this.world.map.screenLeftPotion(this.world.player.hitBox.getCenterLeft());
-        int centerY = this.world.map.screenTopPotion(this.world.player.hitBox.getCenterTop());
+        int centerX = this.world.map.screenLeftPotion(this.world.player.hitBox.getCenterX());
+        int centerY = this.world.map.screenTopPotion(this.world.player.hitBox.getCenterY());
 
         g.drawLine(
                 centerX,

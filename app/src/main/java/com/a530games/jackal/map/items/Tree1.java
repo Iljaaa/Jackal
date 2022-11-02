@@ -2,6 +2,7 @@ package com.a530games.jackal.map.items;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.Assets;
 import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.map.CellEventCallbackHandler;
@@ -66,7 +67,7 @@ public class Tree1 extends MapCellWithHitbox
     }
 
     @Override
-    public boolean isIntersectRectInsideCell(FloatRect rectOnMap) {
+    public boolean isIntersectRectInsideCell(HitBox rectOnMap) {
         return true;
     }
 

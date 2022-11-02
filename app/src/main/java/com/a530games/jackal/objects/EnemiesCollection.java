@@ -1,6 +1,5 @@
 package com.a530games.jackal.objects;
 
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.objects.enemies.Enemy;
 
@@ -41,12 +40,16 @@ public class EnemiesCollection
     }
 
     /**
-     *
+     * Almost isHitboxIdIntersectWithEnemy but exclude him self
      */
-    public boolean isAnyEnemyIntersectWith (Enemy vehicle)
+    public boolean isAnyEnemyIntersectWithOtherEnemy(Enemy enemy)
     {
-        //
-        int inj = this.enemies.indexOf(vehicle);
+        HitBox enemyHitbox = enemy.getHitBox();
+        if (enemyHitbox == null) return false;
+
+        // index of him self
+        int inj = this.enemies.indexOf(enemy);
+
         // int len = EnemiesCollection.MAX_ENEMIES_SIZE;
         int len = this.enemies.size();
 
@@ -60,17 +63,39 @@ public class EnemiesCollection
             Enemy e = this.get(i);
             if (e == null) continue;
 
-            HitBox enemyHitbox = e.getHitBox();
-            if (enemyHitbox == null) continue;
+            HitBox hitBox = e.getHitBox();
+            if (hitBox == null) continue;
 
             // check intersect
-            if (FloatRect.isIntersectsTwoRectF(vehicle.getHitBox(), enemyHitbox)){
+            // if (FloatRect.isIntersectsTwoRectF(vehicle.getHitBox(), enemyHitbox)){
+            if (enemyHitbox.isIntersectsWithHitbox(hitBox)){
                 return true;
             }
         }
 
-        /*this.enemies.forEach(v -> {
-        } );*/
+        return false;
+    }
+
+    /**
+     * Check intersect hotbox and enemies
+     */
+    public boolean isHitboxIdIntersectWithEnemy(HitBox hitbox)
+    {
+        int len = this.enemies.size();
+
+        for (int i = 0; i < len; i++)
+        {
+            Enemy e = this.get(i);
+            if (e == null) continue;
+
+            HitBox enemyHitbox = e.getHitBox();
+            if (enemyHitbox == null) continue;
+
+            // check intersect
+            if (enemyHitbox.isIntersectsWithHitbox(hitbox)){
+                return true;
+            }
+        }
 
         return false;
     }

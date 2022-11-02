@@ -3,18 +3,23 @@ package com.a530games.jackal.objects;
 import android.util.Log;
 
 import com.a530games.framework.Graphics;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
 import com.a530games.framework.helpers.Sprite;
+import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
-import com.a530games.jackal.objects.enemies.RotateVehicle;
 
-public class Player extends RotateVehicle
+public class Player
 {
 
+    /**
+     * Vehicle hitbox frame
+     */
+    public HitBox hitBox;
 
     public enum PlayerState
     {
@@ -39,6 +44,12 @@ public class Player extends RotateVehicle
      * Player hit points
      */
     public int hp = 3;
+
+
+    /**
+     *
+     */
+    public Vector2F direction;
 
     // задержка перед выстрелом
     private float fireDelay = 0;
@@ -94,19 +105,27 @@ public class Player extends RotateVehicle
      */
     private float summeryBlowUpTimer = 5f;
 
-    public Player(int startX, int startY, PlayerEventHandler playerEventHandler)
+    /**
+     *
+     */
+    public Sprite sprite;
+
+    public Player(PlayerEventHandler playerEventHandler)
     {
-        super(startX, startY, 40, 40, Assets.player);
 
         this.playerEventHandler = playerEventHandler;
 
         this.velocity = new Vector2F();
 
+        this.hitBox = new HitBox(0, 0, 40, 40);
+
+        this.direction = new Vector2F(0 , -1);
+
         this.gun = new Sprite(Assets.gun);
         this.gun.set(0, 0);
 
+        this.sprite = new Sprite(Assets.player, 0, 0);
         this.sprite.set(1, 0);
-
 
         this.blows = new SpriteWithAnimation[5];
         for (int i = 0; i < this.blows.length; i++) {
@@ -116,13 +135,11 @@ public class Player extends RotateVehicle
         }
     }
 
-    @Override
-    public void update(float deltaTime, World world)
+    public void update(float deltaTime)
     {
         // уменьшаем задержку выстрела
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;
 
-        // this.updateSprite(this.direction);
         // update hit timmer
         if (this.hitDelay > 0){
             this.updateHitTimer(deltaTime);
@@ -182,8 +199,8 @@ public class Player extends RotateVehicle
 
                 // todo: fix magic numbers
                 this.blows[i].start(
-                        this.hitBox.getCenterLeft() + (Jackal.getRandom().nextFloat() * 17 * (Jackal.getRandom().nextBoolean() ? -1 : 1)) - 20,
-                        this.hitBox.getCenterTop() + (Jackal.getRandom().nextFloat() * 17 * (Jackal.getRandom().nextBoolean() ? -1 : 1)) - 20
+                        this.hitBox.getCenterX() + (Jackal.getRandom().nextFloat() * 17 * (Jackal.getRandom().nextBoolean() ? -1 : 1)) - 20,
+                        this.hitBox.getCenterY() + (Jackal.getRandom().nextFloat() * 17 * (Jackal.getRandom().nextBoolean() ? -1 : 1)) - 20
 //                        this.hitBox.getCenterLeft() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 8,
 //                        this.hitBox.getCenterTop() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 8
                 );
@@ -195,13 +212,12 @@ public class Player extends RotateVehicle
 
     }
 
-    @Override
     public void present(Graphics g, World world)
     {
         // int playerScreenX = Math.round(this.world.player.hitBox.left);
-        int playerScreenX = world.map.screenLeftPotion(this.hitBox.left);
+        int playerScreenX = world.map.screenLeftPotion(this.hitBox.rect.left);
         // int playerSourceY = Math.round(this.world.player.hitBox.top);
-        int playerSourceY = world.map.screenTopPotion(this.hitBox.top);
+        int playerSourceY = world.map.screenTopPotion(this.hitBox.rect.top);
 
         // this.drawPlayerHitBox(g, playerScreenX, playerSourceY);
 
@@ -237,27 +253,68 @@ public class Player extends RotateVehicle
 
     }
 
+    public void offsetCenterTo(float newLeft, float newTop) {
+        this.hitBox.offsetTo(
+                newLeft - this.hitBox.width() * 0.5f,
+                newTop - this.hitBox.height() * 0.5f
+        );
+    }
 
-    /*public void moveTo(float x, float y)
-    {
-        this.hitBox.moveTo(mapPint.x, mapPint.y);
-    }*/
+    public void offsetTo(float newLeft, float newTop) {
+        this.hitBox.offsetTo(newLeft, newTop);
+    }
 
-    @Override
     public void drive(Vector2F direction, float deltaTime, World world)
     {
         // todo: think need her check user state
 
-        // this.move(direction.x, direction.y, deltaTime, world);
-
         this.velocity.set(direction.x * this.speed, direction.y * this.speed);
 
-        super.drive(this.velocity, deltaTime, world);
+        if (velocity.x != 0) {
+            this.driveHorizontal(velocity.x, deltaTime, world);
+        }
+
+        if (velocity.y != 0) {
+            this.driveVertical(velocity.y, deltaTime, world);
+        }
 
         this.updateSprite();
     }
 
+    private void driveHorizontal(float xSpeed, float deltaTime, World world)
+    {
+        this.hitBox.moveTo(this.hitBox.rect.left + (deltaTime * xSpeed), this.hitBox.rect.top);
 
+        if (this.checkIntersectForMove(this.hitBox, world)) {
+            this.hitBox.rollback();
+        }
+    }
+
+    private void driveVertical(float ySpeed, float deltaTime, World world)
+    {
+        this.hitBox.moveTo(this.hitBox.rect.left, this.hitBox.rect.top + (deltaTime * ySpeed));
+
+        if (this.checkIntersectForMove(this.hitBox, world)) {
+            this.hitBox.rollback();
+        }
+    }
+
+    protected boolean checkIntersectForMove(HitBox aHitbox, World world)
+    {
+        // intersect with map
+        if (world.map.isIntersect(aHitbox)) {
+            return true;
+        }
+
+        // intersect enemies
+        if (world.enemies.isHitboxIdIntersectWithEnemy(this.hitBox)) {
+            return true;
+        }
+
+        // intersect with other peoples
+
+        return false;
+    }
 
     public void setTurretAngle (Vector2F direction)
     {
@@ -293,45 +350,6 @@ public class Player extends RotateVehicle
     }
 
 
-    /*private void updateSprite(Vector2 direction)
-    {
-        float angle = direction.angleInDegrees();
-
-        if (22 > angle || angle >= 337) {
-            this.sprite.set(2, 1);
-        }
-
-        if (22 < angle && angle <= 68) {
-            this.sprite.set(2, 2);
-        }
-
-        if (68 < angle && angle <= 112) {
-            this.sprite.set(1, 2);
-        }
-
-        if (112 < angle && angle <= 157) {
-            this.sprite.set(0, 2);
-        }
-
-        if (157 < angle && angle <= 202) {
-            this.sprite.set(0, 1);
-        }
-
-        if (202 < angle && angle <= 248) {
-            this.sprite.set(0, 0);
-        }
-
-        if (248 < angle && angle <= 292) {
-            this.sprite.set(1, 0);
-        }
-
-        if (292 < angle && angle <= 337) {
-            this.sprite.set(2, 0);
-        }
-
-    }*/
-
-
     /**
      * Check can we fire
      */
@@ -348,7 +366,6 @@ public class Player extends RotateVehicle
         return (this.state == PlayerState.OnLine || this.state == PlayerState.Hit);
     }
 
-    @Override
     public boolean hit(int damage)
     {
         Log.d("Player", "hit");
@@ -384,12 +401,11 @@ public class Player extends RotateVehicle
         return false;
     }
 
-    @Override
     public boolean isDead() {
         return this.state == PlayerState.Dead;
     }
 
-    @Override
+
     public void setFireEventHandler(EnemyFireEventHandler fireEventHandler) {
 
     }

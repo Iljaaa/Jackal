@@ -2,6 +2,7 @@ package com.a530games.jackal.map.items.pillar;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.Assets;
 import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.map.CellEventCallbackHandler;
@@ -58,7 +59,7 @@ abstract public class BigPillarTop extends MapCell
     }
 
     @Override
-    public boolean isIntersectRectInsideCell(FloatRect r) {
+    public boolean isIntersectRectInsideCell(HitBox r) {
         return false;
     }
 }

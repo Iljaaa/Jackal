@@ -2,6 +2,7 @@ package com.a530games.jackal.map;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
+import com.a530games.framework.helpers.HitBox;
 
 public interface MapObject
 {
@@ -55,7 +56,7 @@ public interface MapObject
      * @param rectOnMap Rect in map coordinate system to check
      * @return is intersected
      */
-    boolean isIntersectRectInsideCell (FloatRect rectOnMap);
+    boolean isIntersectRectInsideCell (HitBox rectOnMap);
 
     /**
      * Is cell conditions success for win

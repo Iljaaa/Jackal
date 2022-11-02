@@ -6,7 +6,6 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2F;
-import com.a530games.jackal.levels.FirstLevel;
 import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
@@ -15,8 +14,6 @@ import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.DropPad;
 import com.a530games.jackal.objects.EnemiesCollection;
 import com.a530games.jackal.objects.PlayerEventHandler;
-import com.a530games.jackal.objects.enemies.Commandos;
-import com.a530games.jackal.objects.enemies.Commandos2;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.EnemyBulletsCollection;
@@ -84,7 +81,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
      */
     public World(int playerStartHp, int oneMapBlockWidth, int oneMapBlockHeight)
     {
-        this.player = new Player(300, 300, this);
+        this.player = new Player(this);
         this.player.hp = playerStartHp;
 
         // create map
@@ -144,10 +141,10 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         // this.tickTime += deltaTime;
 
         // update player
-        this.player.update(deltaTime, null);
+        this.player.update(deltaTime);
 
         // update map
-        this.map.update(this.player, deltaTime);
+        this.map.update(deltaTime);
 
         // player bullets update
         this.updatePlayerBullets(deltaTime);
@@ -316,8 +313,8 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
 
         // add bullet
         return this.addBullet(
-                this.player.hitBox.getCenterLeft() + this.player.turret.x * 20,
-                this.player.hitBox.getCenterTop() + this.player.turret.y * 20,
+                this.player.hitBox.getCenterX() + this.player.turret.x * 20,
+                this.player.hitBox.getCenterY() + this.player.turret.y * 20,
                 this.player.turret
         );
     }
@@ -361,12 +358,13 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     public void spownEnemyOnCell(MapCell spownCell, Enemy enemy)
     {
         // check intersect by player
-        if (FloatRect.isIntersectsTwoRectF(this.player.getHitBox(), enemy.getHitBox())) {
+        // if (FloatRect.isIntersectsTwoRectF(this.player.getHitBox(), enemy.getHitBox())) {
+        if (this.player.hitBox.isIntersectsWithHitbox(enemy.getHitBox())) {
             return;
         }
 
         // check intersect with enem
-        if (this.enemies.isAnyEnemyIntersectWith(enemy)) {
+        if (this.enemies.isAnyEnemyIntersectWithOtherEnemy(enemy)) {
             return;
         }
 
