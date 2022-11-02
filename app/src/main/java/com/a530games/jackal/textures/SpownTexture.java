@@ -13,7 +13,7 @@ public class SpownTexture extends Texture {
     }
 
     public SpownTexture(SpownType type) {
-        super(Assets.spown, 0, 0, 64, 53);
+        super(Assets.spown, 0, 0, 64, 64);
         switch (type){
             case commandos: this.offsetToFrames(1, 0); break;
             case commandos2: this.offsetToFrames(2, 0); break;
