@@ -1,53 +1,41 @@
-package com.a530games.jackal.map.items;
+package com.a530games.jackal.map.items.spowns;
 
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
-import com.a530games.jackal.Assets;
+import com.a530games.framework.helpers.texture.Texture;
 import com.a530games.jackal.Jackal;
-import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.map.CellEventCallbackHandler;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.enemies.EnemyDieEventHandler;
 import com.a530games.jackal.objects.enemies.Tank;
+import com.a530games.jackal.textures.SpownTexture;
 
-public class Spown extends MapCell implements EnemyDieEventHandler
+public class TankSpown extends MapCell implements EnemyDieEventHandler
 {
-    private final Sprite sprite;
+    private final Texture texture;
 
     float spownTimer;
 
     private Tank spawnedTank = null;
 
     int killedTanks = 0;
+
+    /**
+     * Need tabk kill to win this cell
+     */
     private final int needTanksKill = 5;
 
-    public Spown(int row, int col)
+    public TankSpown(int col, int row)
     {
-        super(row, col);
-        // this.tank = new Tank();
-        this.sprite = new Sprite(Assets.spown, 0, 0);
+        super(col, row);
+
+        this.texture = new SpownTexture(SpownTexture.SpownType.tank);
 
         //
         this.spownTimer = Jackal.getRandom().nextFloat() * 10;
-
-        // this.spawnedTank = new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
-    }
-
-    @Override
-    public void drawOnBackground(Graphics g, Map map)
-    {
-        g.drawPixmap(
-                this.sprite.image,
-                this.rect.left,
-                this.rect.top,
-                this.sprite.getLeft(),
-                this.sprite.getTop(),
-                this.sprite.width,
-                this.sprite.height
-        );
     }
 
     @Override
@@ -70,6 +58,21 @@ public class Spown extends MapCell implements EnemyDieEventHandler
                 callbackHandler.spownEnemy(this, this.spawnedTank);
             }
         }
+    }
+
+    @Override
+    public void drawOnBackground(Graphics g, Map map)
+    {
+        this.texture.draw(g, this.rect.left, this.rect.top);
+        /*g.drawPixmap(
+                this.sprite.image,
+                this.rect.left,
+                this.rect.top,
+                this.sprite.getLeft(),
+                this.sprite.getTop(),
+                this.sprite.width,
+                this.sprite.height
+        );*/
     }
 
     @Override

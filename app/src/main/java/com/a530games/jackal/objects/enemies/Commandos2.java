@@ -41,9 +41,9 @@ public class Commandos2 extends Vehicle
         {0, 20},
     };
 
-    public Commandos2(float startCenterX, float startCenterY)
+    public Commandos2(Vector2F spownPoint)
     {
-        super(startCenterX, startCenterY, 40, 40, Assets.man2);
+        super(spownPoint.x, spownPoint.y, 40, 40, Assets.man2);
 
         // default sprite
         this.sprite.set(0, 1);

@@ -99,8 +99,8 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.enemies = new EnemiesCollection();
 
         // this.enemies.add(new Tank(this,100, 100));
-        this.enemies.add(new Commandos(400, 800));
-        this.enemies.add(new Commandos2(500, 800));
+        // this.enemies.add(new Commandos(400, 800));
+        // this.enemies.add(new Commandos2(500, 800));
 
         // add drop padd
         this.dropPad = new DropPad(this);

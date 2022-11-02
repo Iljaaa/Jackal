@@ -243,7 +243,7 @@ public class Map implements CellEventCallbackHandler
     /**
      * Level add object on map
      */
-    public void addObjectToMap (MapObject c, int row, int col)
+    public void addObjectToMap (MapObject c, int col, int row)
     {
         // this.fields[row][col] = new Rock(row, col, type);
         this.fields[row][col] = c;

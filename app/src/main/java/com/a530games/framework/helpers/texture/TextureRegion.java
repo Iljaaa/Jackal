@@ -26,16 +26,11 @@ public class TextureRegion
         return this.frame.height();
     }
 
+    /**
+     * Draw region
+     */
     public void draw(Graphics g, Pixmap image, int x, int y)
     {
-        g.drawPixmap(
-            image,
-            x,
-            y,
-            this.frame.left,
-            this.frame.top,
-            this.frame.width(),
-            this.frame.height()
-        );
+
     }
 }

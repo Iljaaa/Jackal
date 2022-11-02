@@ -5,7 +5,7 @@ import com.a530games.jackal.Jackal;
 public abstract class MapCell extends RectCell implements  MapObject
 {
 
-    public MapCell(int row, int col)
+    public MapCell(int col, int row)
     {
         super(col, row, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
     }

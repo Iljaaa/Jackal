@@ -33,7 +33,7 @@ import com.a530games.jackal.map.items.walls.RightHalfWall;
 import com.a530games.jackal.map.items.walls.RightTopCorner;
 import com.a530games.jackal.map.items.walls.RightTopFuncCorner;
 import com.a530games.jackal.map.items.Rock;
-import com.a530games.jackal.map.items.Spown;
+import com.a530games.jackal.map.items.spowns.TankSpown;
 import com.a530games.jackal.map.items.walls.TopFullWall;
 import com.a530games.jackal.map.items.walls.TopHalfWall;
 import com.a530games.jackal.map.items.Tree1;
@@ -136,11 +136,11 @@ public class FirstLevel implements Level
         map.addObjectToMap(new Bush(16, 1, Assets.bush1), 16, 1);
         map.addObjectToMap(new Bush(16, 2, Assets.bush2),16,2);
 
-        map.addObjectToMap(new Spown(11, 3), 11,3);
-        map.addObjectToMap(new Spown(11, 4), 11, 4);
-        map.addObjectToMap(new Spown(11, 5), 11, 5);
-        map.addObjectToMap(new Spown(11, 6), 11, 6);
-        map.addObjectToMap(new Spown(11, 7), 11, 7);
+        map.addObjectToMap(new TankSpown(11, 3), 11,3);
+        map.addObjectToMap(new TankSpown(11, 4), 11, 4);
+        map.addObjectToMap(new TankSpown(11, 5), 11, 5);
+        map.addObjectToMap(new TankSpown(11, 6), 11, 6);
+        map.addObjectToMap(new TankSpown(11, 7), 11, 7);
 
         map.addObjectToMap(new HouseLeftTop(17, 7),17, 7);
         map.addObjectToMap(new HouseRightTop(17, 8),17,8);

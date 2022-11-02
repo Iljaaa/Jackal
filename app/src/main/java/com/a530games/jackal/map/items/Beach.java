@@ -14,9 +14,9 @@ public class Beach extends MapCell
 
     float spriteTimer = 0.5f;
 
-    public Beach(int row, int col)
+    public Beach(int col, int row)
     {
-        super(row, col);
+        super(col, row);
         this.sprite = new Sprite(Assets.botLine, 0, 0);
     }
 
