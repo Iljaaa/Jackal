@@ -18,7 +18,7 @@ public interface Level
     /**
      * Map start position
      */
-    RectCell getPlayerDropPointCell();
+    Map.Cell getPlayerDropPointCell();
 
     /**
      * Add objects on map

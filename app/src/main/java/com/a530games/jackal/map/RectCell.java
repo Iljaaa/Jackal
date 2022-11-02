@@ -1,54 +1,100 @@
 package com.a530games.jackal.map;
 
-import android.graphics.Point;
+import android.graphics.PointF;
+import android.graphics.Rect;
 
-import com.a530games.jackal.Jackal;
+import com.a530games.framework.math.Vector2F;
 
-public class RectCell
+/**
+ * Extended cell by size
+ */
+public class RectCell extends Map.Cell
 {
-    public int row, col;
 
-    public int width, height;
+    /*
+     * Cell size
+     */
+    // public int width, height;
 
-    /**
+    /*
      * Left top corner of cell
      */
-    protected Point leftTopCorner;
+    // private Vector2 _leftTopCorner;
+
+    /*
+     * Center of cell
+     */
+    // private Vector2F _center;
 
     /**
-     * Left top corner of cell
+     *
      */
-    public Point center;
+    protected Rect rect;
 
-    public RectCell() {
-        this(0, 0);
-    }
+    /*public RectCell() {
+        this(0, 0, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
+    }*/
 
-    public RectCell(int row, int col) {
-        this(row, col, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
-    }
-
-    public RectCell(int row, int col, int width, int height)
+    protected RectCell(int col, int row, int width, int height)
     {
-        this.row = row;
-        this.col = col;
-        this.width = width;
-        this.height = height;
+        super(col, row);
 
-        this.leftTopCorner = new Point (
-                // this.col * Jackal.BLOCK_WIDTH,
-                this.col * width,
-                // this.row * Jackal.BLOCK_HEIGHT
-                this.row * height
+        this.rect = new Rect(
+            col * width,
+            row * height,
+            col * width + width,
+            row * height + height
         );
 
-        this.center = new Point(
+        // this.width = width;
+        // this.height = height;
+
+        // this._leftTopCorner = new Vector2 (this.col * width, this.row * height);
+
+        /*this._center = new Vector2F(
+                this.col * width + 0.5f * width,
+                this.row * height + 0.5f * width
+        );*/
+
+        /*this.center = new Point(
                 // this.leftTopCorner.x + (int) (Jackal.BLOCK_WIDTH * 0.5),
                 this.leftTopCorner.x + (int) (width * 0.5),
                 //this.leftTopCorner.y + (int) (Jackal.BLOCK_HEIGHT * 0.5
                 this.leftTopCorner.y + (int) (height * 0.5)
+        );*/
+
+    }
+
+    /**
+     * Move cell
+     */
+    public void offsetToCell(Map.Cell cell)
+    {
+        this.offsetToCell(cell.col, cell.row);
+    }
+
+    /**
+     * Move cell
+     */
+    private void offsetToCell(int col, int row)
+    {
+        this.rect.offsetTo(
+            col * this.rect.width(),
+            row * this.rect.height()
         );
 
+        this.col = col;
+        this.row = row;
+    }
+
+    /**
+     * Center of cell
+     */
+    public Vector2F getCenter() {
+        return new Vector2F(
+                (this.col + 0.5f) * this.rect.width(),
+                (this.row + 0.5f) * this.rect.height()
+        );
     }
 
 

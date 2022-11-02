@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
 
@@ -16,6 +15,7 @@ import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.levels.Level;
+import com.a530games.jackal.map.items.DropPadCell;
 import com.a530games.jackal.objects.DropPad;
 import com.a530games.jackal.objects.Player;
 import com.a530games.jackal.objects.enemies.Enemy;
@@ -47,7 +47,7 @@ public class Map implements CellEventCallbackHandler
     /**
      * map start cell
      */
-    private RectCell startCell;
+    public MapCell startCell;
 
     /**
      * Max map position
@@ -79,7 +79,7 @@ public class Map implements CellEventCallbackHandler
     /**
      * Min sell struct
      */
-    public class Cell
+    public static class Cell
     {
         public int col, row;
 
@@ -121,7 +121,7 @@ public class Map implements CellEventCallbackHandler
         this.blockHeight = blockHeight;
 
         this.position = new Vector2F(0, 0);
-        this.startCell = new RectCell();
+        this.startCell = new DropPadCell(0, 0);
         this.mapMaxPosition = new Vector2F();
         this.playerScreenRect = new Rect();
 
@@ -179,8 +179,8 @@ public class Map implements CellEventCallbackHandler
 
         // calculate start map position
         // after move player
-        this.startCell = level.getPlayerDropPointCell();
-        this.centerMapOnPoint(this.startCell.center, mapScreenWidth, mapScreenHeight);
+        this.startCell.offsetToCell(level.getPlayerDropPointCell());
+        this.centerMapOnPoint(this.startCell.getCenter(), mapScreenWidth, mapScreenHeight);
 
         // move drop pad to start
         dropPad.moveToStart(this.startCell);
@@ -231,7 +231,7 @@ public class Map implements CellEventCallbackHandler
     /**
      * Center map on point
      */
-    private void centerMapOnPoint(Point point, int mapScreenWidth, int mapScreenHeight)
+    private void centerMapOnPoint(Vector2F point, int mapScreenWidth, int mapScreenHeight)
     {
         this.position.x = (float) (-1 * (point.x - 0.5 * mapScreenWidth));
         this.position.y = (float) (-1 * (point.y - 0.5 * mapScreenHeight));
@@ -296,7 +296,12 @@ public class Map implements CellEventCallbackHandler
         this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 384, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
 
         // draw map start circle
-        this.backgroundGraphic.drawPixmap(Assets.dropPoint, this.startCell.leftTopCorner.x, this.startCell.leftTopCorner.y);
+        // Vector2 startCellLeftTopCorner = this.startCell.col
+        this.backgroundGraphic.drawPixmap(
+                Assets.dropPoint,
+                this.startCell.col * this.blockWidth, // startCellLeftTopCorner.x,
+                this.startCell.row * this.blockHeight //startCellLeftTopCorner.y
+        );
 
         // draw objects
         this.drawBackgroundObjects();
@@ -550,7 +555,7 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
-     * Get cell by position
+     * Get cell by position on map
      * @return Cell
      */
     public Map.Cell getCellByPointF(PointF point) {
@@ -558,7 +563,7 @@ public class Map implements CellEventCallbackHandler
     }
 
     /**
-     * Get cell by position
+     * Get cell by position on map
      * @return Cell
      */
     private Map.Cell getCellByPosition (float left, float top) {
@@ -567,6 +572,18 @@ public class Map implements CellEventCallbackHandler
                 this.getRowByTopNotStatic(top)
         );
     }
+
+    /**
+     * Calculate and get center point of cell
+     */
+    public Vector2F getCenterCell(Map.Cell cell) {
+        return new Vector2F(
+                (cell.col + 0.5f) * this.blockWidth,
+                (cell.row + 0.5f) * this.blockHeight
+        );
+    }
+
+
 
     /**
      * @deprecated

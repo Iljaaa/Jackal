@@ -17,7 +17,7 @@ public abstract class MapCell extends RectCell
 
     public MapCell(int row, int col)
     {
-        super(row, col, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
+        super(col, row, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
 
         this.hitBoxPaint = new Paint();
         this.hitBoxPaint.setStyle(Paint.Style.STROKE);

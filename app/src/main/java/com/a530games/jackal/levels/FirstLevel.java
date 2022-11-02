@@ -54,8 +54,8 @@ public class FirstLevel implements Level
     }
 
     @Override
-    public RectCell getPlayerDropPointCell() {
-        return new RectCell(15, 25);
+    public Map.Cell getPlayerDropPointCell() {
+        return new Map.Cell(25, 25);
     }
 
     @Override

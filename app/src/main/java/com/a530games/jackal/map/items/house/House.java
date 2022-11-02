@@ -22,7 +22,7 @@ abstract public class House extends MapCellWithHitbox
     @Override
     public void drawOnBackground(Graphics g, Map map)
     {
-        this._draw(g, this.leftTopCorner.x, this.leftTopCorner.y);
+        this._draw(g, this.rect.left, this.rect.top);
     }
 
     @Override
@@ -38,7 +38,7 @@ abstract public class House extends MapCellWithHitbox
     @Override
     public void drawTopLayout(Graphics g, Map map)
     {
-        this._draw(g, map.screenLeftPotion(this.leftTopCorner.x), map.screenTopPotion(this.leftTopCorner.y));
+        this._draw(g, map.screenLeftPotion(this.rect.left), map.screenTopPotion(this.rect.top));
     }
 
     private void _draw(Graphics g, int x, int y) {

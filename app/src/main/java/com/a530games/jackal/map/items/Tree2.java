@@ -50,8 +50,8 @@ public class Tree2 extends MapCellWithHitbox
     {
         g.drawPixmap(
                 this.sprite.image,
-                map.screenLeftPotion(this.leftTopCorner.x - 50),
-                map.screenTopPotion(this.leftTopCorner.y- 118),
+                map.screenLeftPotion(this.rect.left - 50),
+                map.screenTopPotion(this.rect.top- 118),
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,

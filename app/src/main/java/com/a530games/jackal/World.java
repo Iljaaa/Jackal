@@ -2,10 +2,12 @@ package com.a530games.jackal;
 
 import android.util.Log;
 
-import com.a530games.framework.Camera2D;
+import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2F;
+import com.a530games.jackal.levels.FirstLevel;
+import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.map.MapEventsHandler;
@@ -76,7 +78,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
 
 
     /**
-     * @param playerStartHp
+     * @param playerStartHp player start hp
      * @param oneMapBlockWidth map block width
      * @param oneMapBlockHeight map block size
      */
@@ -113,6 +115,22 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.tankHitSounds.add(Assets.tankHit1);
         this.tankHitSounds.add(Assets.tankHit2);
         this.tankHitSounds.add(Assets.playerBlow);*/
+    }
+
+    /**
+     * Init world by level
+     */
+    public void initByLevel(Level level, Graphics g, int mapScreenWidth, int mapScreenHeight)
+    {
+        // init map
+        this.map.init(
+                level,
+                g,
+                this.player,
+                this.dropPad,
+                mapScreenWidth,
+                mapScreenHeight
+        );
     }
 
     public void update(float deltaTime)

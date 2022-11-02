@@ -13,12 +13,14 @@ import com.a530games.framework.Input;
 import com.a530games.framework.Screen;
 import com.a530games.framework.TouchEventsCollection;
 import com.a530games.framework.helpers.SaveBitmapToFile;
+import com.a530games.framework.math.Vector2;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Controller;
 import com.a530games.jackal.ControllerEventHandler;
 import com.a530games.jackal.Jackal;
 import com.a530games.framework.helpers.Sprite;
+import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.menu.GameOverLoseMenu;
@@ -43,6 +45,7 @@ import java.util.List;
  */
 public class GameScreen extends Screen implements ControllerEventHandler, MenuEventHandler
 {
+
     enum GameState {
         Ready,
         Running,
@@ -132,13 +135,17 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // create world width calculated map size
         this.world = new World(playerStartHp, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
 
-        int screenHeight = g.getFrameBufferHeight();
-
         // camera object
-        this.camera = new Camera2D(screenWidth, screenHeight, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
+        this.camera = new Camera2D(
+                this.mapScreenWidthInPixels,
+                this.mapScreenHeightInPixels,
+                Jackal.BLOCK_WIDTH,
+                Jackal.BLOCK_HEIGHT
+        );
 
         // sidebar object
-        this.sidebar = new Sidebar(this.world, screenWidth, screenHeight);
+        int screenHeight = g.getFrameBufferHeight();
+        this.sidebar = new Sidebar(this.world, this.camera, screenWidth, screenHeight);
 
         // atache events handler to controller
         Controller controller = Jackal.getController();
@@ -146,7 +153,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // Jackal.getController().setEventHandler(this);
         // Jackal.setController(this.controller);
 
-        this.controllerPresenter = new ControllerPresenter(g.getFrameBufferWidth(), g.getFrameBufferHeight());
+        this.controllerPresenter = new ControllerPresenter(screenWidth, screenHeight);
         this.controllerPresenter.bindController(controller);
 
         this.playerHitBoxPaint = new Paint();
@@ -188,6 +195,25 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.tempBoom = new Sprite(Assets.boom, 0, 0);
         this.tempBoom.setSpriteSize(96, 96);
         this.boomTimer = 0.2f;
+    }
+
+    /**
+     * On level loaded need update data
+     */
+    public void initByLevel(Level level)
+    {
+        // init world and map
+        this.world.initByLevel(
+                level,
+                this.game.getGraphics(),
+                this.mapScreenWidthInPixels,
+                this.mapScreenHeightInPixels
+        );
+
+        // move camera
+        // Map.Cell dropPadCell = level.getPlayerDropPointCell();
+        // Vector2F centerDropPadCell = this.world.map.startCell(dropPadCell);
+        this.camera.set(this.world.map.startCell.getCenter());
     }
 
     /**
@@ -663,7 +689,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
      * todo: Make static variable
      * @param center
      * @return
-     */
+
     private Rect getVisibleRectInBlocks(Map.Cell center)
     {
         // todo: fix magic numbers
@@ -681,7 +707,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         if (r.bottom > this.world.map.mapRows) r.bottom = this.world.map.mapRows;
 
         return r;
-    }
+    }*/
 
 
     /**

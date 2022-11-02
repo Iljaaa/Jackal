@@ -1,5 +1,6 @@
-package com.a530games.framework.helpers;
+package com.a530games.framework.helpers.texture;
 
+import android.graphics.ColorSpace;
 import android.graphics.Rect;
 
 import com.a530games.framework.Graphics;
@@ -10,7 +11,7 @@ public abstract class Texture
     /**
      * image draw rect
      */
-    Rect frame;
+    TextureRegion region;
 
     /**
      * Image
@@ -20,36 +21,29 @@ public abstract class Texture
     public Texture(Pixmap image, int left, int top, int width, int height)
     {
         this.image = image;
-        this.frame = new Rect(left, top, left + width, top + height);
+        this.region = new TextureRegion(left, top, width, height);
+    }
+
+    private TextureRegion getRegion() {
+        return this.region;
     }
 
     /**
      * Offset to with frame size
      */
     public void offsetToFrames(int newCol, int newRow) {
-        this.offsetTo(
-            newCol * this.frame.width(),
-            newRow * this.frame.height()
+        this.region.offsetTo(
+            newCol * this.region.width(),
+            newRow * this.region.height()
         );
     }
 
-    private void offsetTo(int newLeft, int newTop) {
-        this.frame.offsetTo(newLeft, newTop);
-    }
 
     /**
      * Draw on position
      */
     public void draw(Graphics g, int x, int y)
     {
-        g.drawPixmap(
-                this.image,
-                x,
-                y,
-                this.frame.left,
-                this.frame.top,
-                this.frame.width(),
-                this.frame.height()
-        );
+        this.region.draw(g, this.image, x, y);
     }
 }

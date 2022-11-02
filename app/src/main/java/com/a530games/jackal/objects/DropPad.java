@@ -186,23 +186,30 @@ public class DropPad implements Enemy
      */
     public void moveToStart(RectCell playerDropCell)
     {
-        this.dropPosition.set(playerDropCell.center.x, playerDropCell.center.y);
+        Vector2F centerOfDropPadCell = playerDropCell.getCenter();
+
+        //
+        this.dropPosition.set((int) centerOfDropPadCell.x, (int) centerOfDropPadCell.y);
 
 //        // move flay positions
 //        MoveStep s = (MoveStep) this.flayHandler.get(0);
 //        s.movePoint.set(new Vector2(this.dropPosition.x - 100, this.dropPosition.y + 150));
 
         // mid point
-        ((PullPlayerStep) this.flayHandler.get(0)).setMovePoint(playerDropCell.center.x - 100, playerDropCell.center.y + 150, 50, -50);
+        ((PullPlayerStep) this.flayHandler.get(0)).setMovePoint(
+                (int) (centerOfDropPadCell.x - 100), (int) (centerOfDropPadCell.y + 150), 50, -50);
 
         // drop point
-        ((PullPlayerStep) this.flayHandler.get(1)).setMovePoint(playerDropCell.center.x, playerDropCell.center.y, 50, -50);
+        ((PullPlayerStep) this.flayHandler.get(1)).setMovePoint(
+                (int) (centerOfDropPadCell.x), (int) (centerOfDropPadCell.y), 50, -50);
 
         // set flay Awey Point
-        ((FlayStep) this.flayHandler.get(3)).setMovePoint(playerDropCell.center.x + 700, playerDropCell.center.y + 500, 50, 50);
+        ((FlayStep) this.flayHandler.get(3)).setMovePoint(
+                (int) (centerOfDropPadCell.x) + 700, (int) (centerOfDropPadCell.y) + 500, 50, 50);
 
-        this.position.x = playerDropCell.center.x - 100;
-        this.position.y = playerDropCell.center.y + 500;
+        //
+        this.position.x = centerOfDropPadCell.x - 100;
+        this.position.y = centerOfDropPadCell.y + 500;
     }
 
     public void move(float x, float y) {

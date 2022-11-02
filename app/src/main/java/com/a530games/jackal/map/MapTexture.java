@@ -1,7 +1,7 @@
 package com.a530games.jackal.map;
 
 import com.a530games.framework.Pixmap;
-import com.a530games.framework.helpers.Texture;
+import com.a530games.framework.helpers.texture.Texture;
 import com.a530games.jackal.Jackal;
 
 /**
@@ -9,16 +9,21 @@ import com.a530games.jackal.Jackal;
  */
 public class MapTexture extends Texture
 {
+    public int col, row;
 
-    public MapTexture(Pixmap image, int left, int top)
+    public MapTexture(Pixmap image, Map.Cell cell)
     {
         super(
                 image,
-                left,
-                top,
+                0,
+                0,
                 Jackal.BLOCK_WIDTH,
                 Jackal.BLOCK_HEIGHT
         );
+
+
+        this.row = cell.row;
+        this.col = cell.col;
     }
 
 }

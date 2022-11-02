@@ -76,6 +76,7 @@ public abstract class AndroidGame extends Activity implements Game
 
         // расчитываем ширину фрембуфера по отношению сторон
         int frameBufferWidth = (int) Math.floor(AndroidGame.landscapeScreenHeight * screenRatio);
+        Log.d("AndroidGame", String.format("FrameBuffer size : %d x %d", frameBufferWidth, frameBufferHeight));
 
         // как же как же смне собрайть фрейм буфер
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth, frameBufferHeight, Bitmap.Config.RGB_565);
@@ -83,6 +84,7 @@ public abstract class AndroidGame extends Activity implements Game
         // screen scales
         float scaleX = (float) frameBufferWidth / screenWidth;
         float scaleY = (float) frameBufferHeight / screenHeight;
+        Log.d("AndroidGame", String.format("Screen scales : %.2f x %.2f", scaleX, scaleY));
 
         //
         this.renderView = new AndroidFastRenderView(this, frameBuffer);

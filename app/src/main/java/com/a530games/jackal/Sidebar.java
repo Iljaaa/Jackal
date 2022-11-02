@@ -4,12 +4,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.math.Vector2F;
 
 public class Sidebar
 {
     private final World world;
+    private final Camera2D camera2D;
 
     /**
      * Sidebar position on screen
@@ -53,9 +55,10 @@ public class Sidebar
 
     Graphics graphics;*/
 
-    public Sidebar(World world, int screenWidth, int screenHeight)
+    public Sidebar(World world, Camera2D camera, int screenWidth, int screenHeight)
     {
         this.world = world;
+        this.camera2D = camera;
         this.position = new Point(screenWidth - 240, 10);
 
         this.font = new Paint();
@@ -157,7 +160,8 @@ public class Sidebar
         g.drawText(String.format("player: %.2fx%.2f", this.world.player.hitBox.left, this.world.player.hitBox.top), this.position.x, this.position.y + 130, this.font);
         g.drawText(String.format("angle: %.2fx%.2f", this.world.player.direction.x, this.world.player.direction.y), this.position.x, this.position.y + 160, this.font);
         g.drawText(String.format("turret: %.2fx%.2f", this.world.player.turret.x, this.world.player.turret.y), this.position.x, this.position.y + 190, this.font);
-        g.drawText(String.format("map: %.2fx%.2f", this.world.map.position.x, this.world.map.position.y), this.position.x, this.position.y + 220, this.font);
+        g.drawText(String.format("camera: %.2fx%.2fx0.2f", this.camera2D.position.x, this.camera2D.position.y, this.camera2D.zoom), this.position.x, this.position.y + 220, this.font);
+        g.drawText(String.format("map: %.2fx%.2f", this.world.map.position.x, this.world.map.position.y), this.position.x, this.position.y + 250, this.font);
     }
 
     /*public void draw ()

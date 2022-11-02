@@ -19,8 +19,9 @@ abstract public class HouseRoof extends MapCell
     }
 
     @Override
-    public void drawOnBackground(Graphics g, Map map) {
-        this._draw(g, this.leftTopCorner.x, this.leftTopCorner.y);
+    public void drawOnBackground(Graphics g, Map map)
+    {
+        this._draw(g, this.rect.left, this.rect.top);
     }
 
     @Override
@@ -34,8 +35,9 @@ abstract public class HouseRoof extends MapCell
     }
 
     @Override
-    public void drawTopLayout(Graphics g, Map map) {
-        this._draw(g, map.screenLeftPotion(this.leftTopCorner.x), map.screenTopPotion(this.leftTopCorner.y));
+    public void drawTopLayout(Graphics g, Map map)
+    {
+        this._draw(g, map.screenLeftPotion(this.rect.left), map.screenTopPotion(this.rect.top));
     }
 
     @Override
