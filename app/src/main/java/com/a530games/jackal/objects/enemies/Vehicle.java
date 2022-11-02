@@ -111,7 +111,7 @@ public abstract class Vehicle implements Enemy
         }
     }
 
-    protected boolean checkIntersectForMove(FloatRect aHitbox, World world)
+    protected boolean checkIntersectForMove(HitBox aHitbox, World world)
     {
 
         // intersect with map

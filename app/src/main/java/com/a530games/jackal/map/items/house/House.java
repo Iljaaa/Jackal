@@ -14,7 +14,7 @@ abstract public class House extends MapCellWithHitbox
     Sprite sprite;
 
     public House(int row, int col) {
-        super(row, col, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
+        super(row, col);
 
         this.sprite = new Sprite(Assets.house, 0, 1);
     }

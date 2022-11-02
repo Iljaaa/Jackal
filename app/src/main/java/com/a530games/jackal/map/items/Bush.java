@@ -29,7 +29,7 @@ public class Bush extends MapCell
         /*g.drawPixmap(
                 this.sprite.image,
                 this.hitBox.left,
-                this.hitBox.top,
+                this.hitBox.rect.top,
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,

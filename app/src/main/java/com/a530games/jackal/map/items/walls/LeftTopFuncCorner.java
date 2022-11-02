@@ -47,10 +47,10 @@ public class LeftTopFuncCorner extends FuncCorner
 
     @Override
     public boolean isIntersectPointInsideCell(float mapLeft, float mapTop) {
-        return mapTop > (this.getYByX(mapLeft - this.hitBox.left) + this.hitBox.top);
+        return mapTop > (this.getYByX(mapLeft - this.hitBox.rect.left) + this.hitBox.rect.top);
         // float leftInsideRect = mapLeft - this.hitBox.left;
         // float yByLeft = this.getYByX(leftInsideRect);
-        // return mapTop > (yByLeft + this.hitBox.top);
+        // return mapTop > (yByLeft + this.hitBox.rect.top);
     }
 
     @Override

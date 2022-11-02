@@ -22,8 +22,7 @@ public class Rock extends MapCellWithHitbox
 
     public Rock(int row, int col, int type)
     {
-        // todo: remove magic numbers
-        super(row, col,64, 64);
+        super(row, col);
 
         this.type = type;
     }
@@ -34,31 +33,31 @@ public class Rock extends MapCellWithHitbox
         switch (this.type) {
             case Rock.MOVE_ROCK_1:
                 // g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 64, 0, 64, 64);
-                g.drawPixmap(Assets.mapSprite, this.hitBox.left, this.hitBox.top, 64, 0, 64, 64);
+                g.drawPixmap(Assets.mapSprite, this.hitBox.rect.left, this.hitBox.rect.top, 64, 0, 64, 64);
                 break;
             case Rock.MOVE_ROCK_2:
                 // g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 128, 0, 64, 64);
-                g.drawPixmap(Assets.mapSprite, this.hitBox.left, this.hitBox.top, 128, 0, 64, 64);
+                g.drawPixmap(Assets.mapSprite, this.hitBox.rect.left, this.hitBox.rect.top, 128, 0, 64, 64);
                 break;
             case Rock.MOVE_ROCK_3:
                 // g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 64, 128, 64, 64);
-                g.drawPixmap(Assets.mapSprite, this.hitBox.left, this.hitBox.top, 64, 128, 64, 64);
+                g.drawPixmap(Assets.mapSprite, this.hitBox.rect.left, this.hitBox.rect.top, 64, 128, 64, 64);
                 break;
             case Rock.MOVE_BUSH_1:
                 // g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 64, 64, 64);
-                g.drawPixmap(Assets.mapSprite, this.hitBox.left, this.hitBox.top, 0, 64, 64, 64);
+                g.drawPixmap(Assets.mapSprite, this.hitBox.rect.left, this.hitBox.rect.top, 0, 64, 64, 64);
                 break;
             case Rock.MOVE_BUSH_2:
                 // g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 128, 64, 64);
-                g.drawPixmap(Assets.mapSprite, this.hitBox.left, this.hitBox.top, 0, 128, 64, 64);
+                g.drawPixmap(Assets.mapSprite, this.hitBox.rect.left, this.hitBox.rect.top, 0, 128, 64, 64);
                 break;
             case Rock.MOVE_BUSH_3:
                 // g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 128, 64, 64, 64);
-                g.drawPixmap(Assets.mapSprite, this.hitBox.left, this.hitBox.top, 128, 64, 64, 64);
+                g.drawPixmap(Assets.mapSprite, this.hitBox.rect.left, this.hitBox.rect.top, 128, 64, 64, 64);
                 break;
             case Rock.MOVE_BUSH_4:
                 // g.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 128, 128, 64, 64);
-                g.drawPixmap(Assets.mapSprite, this.hitBox.left, this.hitBox.top, 128, 128, 64, 64);
+                g.drawPixmap(Assets.mapSprite, this.hitBox.rect.left, this.hitBox.rect.top, 128, 128, 64, 64);
                 break;
         }
     }

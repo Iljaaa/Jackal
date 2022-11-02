@@ -51,9 +51,8 @@ public class FloatRect
         return true;
     }
 
-    /**
+    /*
      * Check intersect two NOT rect
-     */
     public static boolean isIntersectsTwoRect(Rect r1, FloatRect r2)
     {
         //
@@ -74,7 +73,7 @@ public class FloatRect
         }
 
         return true;
-    }
+    } */
 
     public void move(float deltaX, float deltaY)
     {
@@ -120,7 +119,15 @@ public class FloatRect
         return _center;
     }
 
-    /**
+    public int width(){
+        return (int) (this.right - this.left);
+    }
+
+    public int height(){
+        return (int) (this.bottom - this.top);
+    }
+
+    /*
      * @return bool
 
     public boolean isIntersect(FloatRect rect)

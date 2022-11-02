@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.a530games.framework.AndroidGame;
 import com.a530games.framework.Screen;
+import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.screens.LoadingScreen;
 
 import java.util.Random;
@@ -45,8 +46,10 @@ public class Jackal extends AndroidGame
     }
 
     @Override
-    public Screen getStartScreen() {
-        return new LoadingScreen(this);
+    public Screen getStartScreen()
+    {
+        // return new LoadingScreen(this, "first");
+        return new LoadingScreen(this, "arena");
     }
 
     public static void setController(Controller controller) {

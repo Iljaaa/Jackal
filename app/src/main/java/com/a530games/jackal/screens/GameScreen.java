@@ -23,6 +23,7 @@ import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
+import com.a530games.jackal.map.MapObject;
 import com.a530games.jackal.menu.GameOverLoseMenu;
 import com.a530games.jackal.menu.BasicMenu;
 import com.a530games.jackal.menu.MenuEventHandler;
@@ -56,6 +57,14 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     // start on running
     GameState state = GameState.Running;
 
+    /**
+     * Current level code
+     */
+    private String levelCode;
+
+    /**
+     * World object
+     */
     World world;
 
     /**
@@ -202,6 +211,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
      */
     public void initByLevel(Level level)
     {
+        this.levelCode = level.getCode();
+
         // init world and map
         this.world.initByLevel(
                 level,
@@ -641,7 +652,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
             for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
             {
-                MapCell c = this.world.map.fields[row][col];
+                MapObject c = this.world.map.fields[row][col];
                 if (c == null) continue;
 
                 c.draw(g, this.world.map);
@@ -677,7 +688,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         {
             for (int col = Math.max(viewRect.left, 0); col < viewRect.right && col < this.world.map.mapCols; col++)
             {
-                MapCell c = this.world.map.fields[row][col];
+                MapObject c = this.world.map.fields[row][col];
                 if (c == null) continue;
 
                 c.drawTopLayout(g, this.world.map);
@@ -724,7 +735,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             // for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
         for (int row = 0; row < this.world.map.mapRows; row++) {
             for (int col = 0; col < this.world.map.mapCols; col++) {
-                MapCell c = this.world.map.fields[row][col];
+                MapObject c = this.world.map.fields[row][col];
                 if (c == null) continue;
 
                 c.drawHitBox(g, this.world.map);
@@ -1027,7 +1038,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     }
 
     private void restartLevel(int userHp){
-        this.game.setScreen(new LoadingLevelScreen(this.game, userHp));
+        this.game.setScreen(new LoadingLevelScreen(this.game, userHp, this.levelCode));
     }
 
     @Override

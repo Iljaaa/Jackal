@@ -6,13 +6,20 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.Screen;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
+import com.a530games.jackal.levels.ArenaLevel;
+import com.a530games.jackal.levels.Level;
 
 public class LoadingScreen extends Screen
 {
     float timer = 0;
 
-    public LoadingScreen(Jackal game) {
+    String loadingLevelCode;
+
+    public LoadingScreen(Jackal game, String levelCode)
+    {
         super(game);
+
+        this.loadingLevelCode = levelCode;
 
         // todo: load only this this map sprite
         Assets.bg = this.game.getGraphics().newPixmap("images/bg.jpg", Graphics.PixmapFormat.RGB565);
@@ -37,7 +44,7 @@ public class LoadingScreen extends Screen
 
         if (this.timer > 5) {
             // start loading
-            this.game.setScreen(new LoadingLevelScreen(this.game, Jackal.getUerStartHp()));
+            this.game.setScreen(new LoadingLevelScreen(this.game, Jackal.getUerStartHp(), this.loadingLevelCode));
             return;
         }
 

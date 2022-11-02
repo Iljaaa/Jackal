@@ -13,7 +13,7 @@ public class BottomHalfWall extends Wall
 
         this.sprite.set(1, 2);
 
-        this.hitBox.top = (int) Math.ceil( this.hitBox.top +  0.5 * this.sprite.height);
+        this.hitBox.rect.top = (int) Math.ceil( this.hitBox.rect.top +  0.5 * this.sprite.height);
     }
 
     @Override

@@ -106,7 +106,7 @@ public class Map implements CellEventCallbackHandler
     /**
      * fiels [row][col]
      */
-    public MapCell[][] fields; // = new MapCell[1][1];
+    public MapObject[][] fields; // = new MapCell[1][1];
 
     /**
      * Object for follow map
@@ -195,7 +195,7 @@ public class Map implements CellEventCallbackHandler
         // player.hitBox.moveTo(level.getPlayerStartPosition());
 
         // init fields
-        this.fields = new MapCell[this.mapRows][this.mapCols];
+        this.fields = new MapObject[this.mapRows][this.mapCols];
 
         // update draw limits
         this.updateMapOptimizatonFields();
@@ -243,10 +243,10 @@ public class Map implements CellEventCallbackHandler
     /**
      * Level add object on map
      */
-    public void addObjectToMap (MapCell c)
+    public void addObjectToMap (MapObject c, int row, int col)
     {
         // this.fields[row][col] = new Rock(row, col, type);
-        this.fields[c.row][c.col] = c;
+        this.fields[row][col] = c;
     }
 
     /*private void addRock (int row, int col, int type)
@@ -319,7 +319,7 @@ public class Map implements CellEventCallbackHandler
             for (int col = 0; col < this.mapCols; col++)
             {
 
-                MapCell c = this.fields[row][col];
+                MapObject c = this.fields[row][col];
                 if (c == null) continue;
 
                 // draw block on background
@@ -398,7 +398,7 @@ public class Map implements CellEventCallbackHandler
         {
             for (int col = 0; col <  this.mapCols; col++)
             {
-                MapCell c = this.fields[row][col];
+                MapObject c = this.fields[row][col];
                 if (c == null) continue;
 
                 c.update(deltaTime, this);
@@ -467,13 +467,15 @@ public class Map implements CellEventCallbackHandler
     /**
      * Intersect object (enemies and bullets) with map hitboxes elements
      */
-    public boolean isIntersect (FloatRect rectOnMap)
+    public boolean isIntersect (HitBox rectOnMap)
     {
         // check is out of map, there is bedrock
         if (rectOnMap.left < this.objectMinX) return true;
         if (rectOnMap.top < this.objectMinY) return true;
         if (rectOnMap.right > this.objectMaxX) return true;
         if (rectOnMap.bottom > this.objectMaxY) return true;
+
+        // todo: check one block
 
         // for left top take 3 top
         int row = this.getRowByTop(rectOnMap.top);
@@ -490,30 +492,31 @@ public class Map implements CellEventCallbackHandler
                 if (forCol >= this.mapCols) continue;
                 if (forRow >= this.mapRows) continue;
 
-                MapCell cell = this.fields[forRow][forCol];
+                MapObject cell = this.fields[forRow][forCol];
                 if (cell == null) continue;
                 // if (!cell.hasHitBox()) continue;
 
-                // check intersect on hitbox
-                Rect hitbox = cell.getHitBox();
-                if (hitbox == null) continue;
+                // check intersect on mapHitbox
+                MapHitBox mapHitbox = cell.getHitBox();
+                if (mapHitbox == null) continue;
 
                 // check global intersect
-                if (!HitBox.isIntersectsTwoRect(hitbox, rectOnMap)){
+                // if (!HitBox.isIntersectsTwoRect(mapHitbox, rectOnMap)){
+                if (!mapHitbox.isIntersectsWithHitbox(rectOnMap)){
                     return false;
                 }
 
                 // todo: make intersect inside rect
-                /*if (hitbox.bottom < rectOnMap.top){
+                /*if (mapHitbox.bottom < rectOnMap.top){
                     continue;
                 }
-                if (hitbox.top > rectOnMap.bottom){
+                if (mapHitbox.top > rectOnMap.bottom){
                     continue;
                 }
-                if (hitbox.right < rectOnMap.left){
+                if (mapHitbox.right < rectOnMap.left){
                     continue;
                 }
-                if (hitbox.left > rectOnMap.right){
+                if (mapHitbox.left > rectOnMap.right){
                     continue;
                 }*/
 
@@ -547,7 +550,7 @@ public class Map implements CellEventCallbackHandler
 
         // take nine sqars
 
-        MapCell cell = this.fields[row][col];
+        MapObject cell = this.fields[row][col];
         if (cell == null) return false;
         // if (!cell.hasHitBox()) return false; // if object have no hitbox
 

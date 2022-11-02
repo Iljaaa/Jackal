@@ -6,6 +6,11 @@ import com.a530games.jackal.map.Map;
 public interface Level
 {
     /**
+     * Code of level
+     */
+    String getCode();
+
+    /**
      * Map width in blocks
      */
     int getMapWidthInCols();

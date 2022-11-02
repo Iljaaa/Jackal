@@ -14,7 +14,7 @@ abstract public class FuncCorner extends MapCellWithHitbox
     public FuncCorner(int row, int col)
     {
         // todo: fix magic numbers
-        super(row, col, 64, 64);
+        super(row, col);
 
         this.sprite = new Sprite(Assets.bush_sprite2, 0, 0);
     }

@@ -14,7 +14,7 @@ abstract public class BigPillarBottom extends MapCellWithHitbox
 
     public BigPillarBottom(int row, int col)
     {
-        super(row, col, Map.SPRITE_WIDTH, Map.SPRITE_HEIGHT);
+        super(row, col);
 
         this.sprite = new Sprite(Assets.bigPillar, 0, 0);
     }
@@ -23,8 +23,8 @@ abstract public class BigPillarBottom extends MapCellWithHitbox
     public void drawOnBackground(Graphics g, Map map) {
         g.drawPixmap(
                 this.sprite.image,
-                this.hitBox.left,
-                this.hitBox.top,
+                this.hitBox.rect.left,
+                this.hitBox.rect.top,
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,

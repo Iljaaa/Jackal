@@ -1,6 +1,5 @@
 package com.a530games.jackal.map;
 
-import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.a530games.framework.math.Vector2F;
@@ -8,7 +7,7 @@ import com.a530games.framework.math.Vector2F;
 /**
  * Extended cell by size
  */
-public class RectCell extends Map.Cell
+public abstract class RectCell extends Map.Cell
 {
 
     /*

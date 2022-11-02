@@ -14,7 +14,7 @@ public class Fence extends MapCellWithHitbox
     MapTexture sprite;
 
     public Fence(int row, int col) {
-        super(row, col, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
+        super(row, col);
 
         this.sprite = new MapTexture(Assets.fence, this);
         this.sprite.offsetToFrames(1, 1);
@@ -27,7 +27,7 @@ public class Fence extends MapCellWithHitbox
 
     @Override
     public void drawOnBackground(Graphics g, Map map) {
-        this.sprite.draw(g, this.hitBox.left, this.hitBox.top);
+        this.sprite.draw(g, this.hitBox.rect.left, this.hitBox.rect.top);
     }
 
     @Override

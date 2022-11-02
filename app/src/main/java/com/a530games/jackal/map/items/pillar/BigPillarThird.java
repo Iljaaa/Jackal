@@ -14,9 +14,9 @@ abstract public class BigPillarThird extends MapCellWithHitbox
 
     public BigPillarThird(int row, int col)
     {
-        super(row, col, Map.SPRITE_WIDTH, Map.SPRITE_HEIGHT);
+        super(row, col);
 
-        this.hitBox.top = row * Map.SPRITE_HEIGHT + 38;
+        this.hitBox.rect.top = row * this.hitBox.rect.top + 38;
 
         this.sprite = new Sprite(Assets.bigPillar, 0, 0);
     }
@@ -26,8 +26,8 @@ abstract public class BigPillarThird extends MapCellWithHitbox
     {
         g.drawPixmap(
                 this.sprite.image,
-                this.hitBox.left,
-                this.hitBox.top,
+                this.hitBox.rect.left,
+                this.hitBox.rect.top,
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,

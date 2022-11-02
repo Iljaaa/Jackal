@@ -6,7 +6,9 @@ import com.a530games.framework.Game;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Screen;
 import com.a530games.jackal.Assets;
+import com.a530games.jackal.levels.ArenaLevel;
 import com.a530games.jackal.levels.FirstLevel;
+import com.a530games.jackal.levels.Level;
 
 public class LoadingLevelScreen extends Screen
 {
@@ -19,11 +21,24 @@ public class LoadingLevelScreen extends Screen
      */
     int startPlayerHp;
 
-    public LoadingLevelScreen(Game game, int playerStartHp) {
+    Level level;
+
+    public LoadingLevelScreen(Game game, int playerStartHp, String level)
+    {
         super(game);
         this.isAssetsIsLoaded = false;
 
         this.startPlayerHp = playerStartHp;
+
+        this.level = this.factory(level);
+    }
+
+    private Level factory(String levelCode) {
+        switch (levelCode) {
+            case "first": return new FirstLevel();
+            case "arena": return new ArenaLevel();
+            default: return  null;
+        }
     }
 
     @Override
@@ -65,7 +80,7 @@ public class LoadingLevelScreen extends Screen
                 gs.mapScreenHeightInPixels
         );*/
 
-        gs.initByLevel(new FirstLevel()); //,
+        gs.initByLevel(this.level); //,
                 // this.game.getGraphics(),
                 // gs.mapScreenWidthInPixels,
                 // gs.mapScreenHeightInPixels

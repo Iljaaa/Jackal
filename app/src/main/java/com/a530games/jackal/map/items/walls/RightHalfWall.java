@@ -14,7 +14,7 @@ public class RightHalfWall extends Wall
         // this.sprite = new Sprite(Assets.mapSprite, 2, 1);
         this.sprite.set(2, 1);
 
-        this.hitBox.left = (int) Math.ceil( this.hitBox.right - 0.5 * this.sprite.height);
+        this.hitBox.rect.left = (int) Math.ceil( this.hitBox.rect.right - 0.5 * this.sprite.height);
     }
 
     @Override

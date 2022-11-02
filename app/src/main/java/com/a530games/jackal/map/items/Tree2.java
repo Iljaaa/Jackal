@@ -18,7 +18,7 @@ public class Tree2 extends MapCellWithHitbox
 
     public Tree2(int row, int col)
     {
-        super(row, col, 64, 64);
+        super(row, col);
 
         this.sprite = new Sprite(Assets.tree2, 0, 0);
         this.sprite.setSpriteSize(192, 192);

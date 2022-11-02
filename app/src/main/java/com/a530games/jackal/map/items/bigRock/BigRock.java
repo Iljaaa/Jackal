@@ -20,7 +20,7 @@ public class BigRock extends MapCellWithHitbox
     }
 
     public BigRock(int row, int col, Part part) {
-        super(row, col, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
+        super(row, col);
 
         this.sprite = new Sprite(Assets.bigStone);
 

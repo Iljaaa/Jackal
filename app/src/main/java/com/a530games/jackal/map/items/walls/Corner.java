@@ -15,7 +15,7 @@ abstract public class Corner extends MapCellWithHitbox
     public Corner(int row, int col)
     {
         // todo: fix magic numbers
-        super(row, col, 64, 64);
+        super(row, col);
 
         this.sprite = new Sprite(Assets.bush_sprite1, 2, 0);
     }
@@ -113,11 +113,11 @@ abstract public class Corner extends MapCellWithHitbox
     {
         // check right top connor
 
-        if (rectOnMap.right > this.hitBox.centerX()) {
+        if (rectOnMap.right > this.hitBox.rect.centerX()) {
             return true;
         }
 
-        if (rectOnMap.top < this.hitBox.centerY()) {
+        if (rectOnMap.top < this.hitBox.rect.centerY()) {
             return true;
         }
 

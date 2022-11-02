@@ -17,7 +17,7 @@ abstract public class Wall extends MapCellWithHitbox
 
     public Wall(int row, int col)
     {
-        super(row, col, 64, 64);
+        super(row, col);
 
         this.sprite = new Sprite(Assets.bush_sprite1, 2, 1);
     }

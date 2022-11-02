@@ -22,4 +22,30 @@ public class HitBox extends RollbackFloatRect
         // if (b.y > this.bottom) return false;
         return true;
     }
+
+    /**
+     * Check intersect with other hitbox
+     */
+    public boolean isIntersectsWithHitbox(HitBox otherHitbox)
+    {
+        //
+        if (this.bottom < otherHitbox.top){
+            return false;
+        }
+
+        if (this.top > otherHitbox.bottom){
+            return false;
+        }
+
+        if (this.right < otherHitbox.left){
+            return false;
+        }
+
+        if (this.left > otherHitbox.right) {
+            return false;
+        }
+
+        return true;
+    }
+
 }

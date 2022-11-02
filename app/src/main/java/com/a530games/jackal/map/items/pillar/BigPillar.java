@@ -25,7 +25,7 @@ public class BigPillar extends MapCellWithHitbox
     public BigPillar(int row, int col, int part)
     {
         // todo: fix magic numbers
-        super(row, col, 64, 64);
+        super(row, col);
 
         if (part == PART_LEFT_TOP) {
             this.sprite = new Sprite(Assets.bigPillar, 0, 0);
@@ -62,8 +62,8 @@ public class BigPillar extends MapCellWithHitbox
     public void drawOnBackground(Graphics g, Map map) {
         g.drawPixmap(
                 this.sprite.image,
-                this.hitBox.left,
-                this.hitBox.top,
+                this.hitBox.rect.left,
+                this.hitBox.rect.top,
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,
