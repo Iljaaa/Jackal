@@ -1,7 +1,5 @@
 package com.a530games.jackal.map.items;
 
-// import android.graphics.Rect;
-
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.FloatRect;
 import com.a530games.jackal.Assets;

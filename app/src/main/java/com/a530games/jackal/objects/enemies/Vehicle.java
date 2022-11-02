@@ -30,7 +30,7 @@ public abstract class Vehicle implements Enemy
      */
     public Sprite sprite;
 
-    public Vehicle(float startX, float startY, Pixmap image)
+    public Vehicle(float startCenterX, float startCenterY, int hitboxWidth, int hitboxHeight, Pixmap image)
     {
 
         this.sprite = new Sprite(image);
@@ -39,7 +39,12 @@ public abstract class Vehicle implements Enemy
         this.sprite.set(0, 1);
         this.sprite.setScreenMargin(-12, -12);
 
-        this.hitBox = new HitBox(startX, startY, startX + 40, startY + 40);
+        this.hitBox = new HitBox(
+            startCenterX - (0.5f * hitboxWidth),
+            startCenterY - (0.5f * hitboxHeight),
+            startCenterX - (0.5f * hitboxWidth) + hitboxWidth,
+            startCenterY - (0.5f * hitboxHeight) + hitboxHeight
+        );
 
         this.hitBoxForDraw = new Rect();
     }

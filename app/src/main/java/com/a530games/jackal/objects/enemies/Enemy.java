@@ -13,6 +13,7 @@ public interface Enemy
     HitBox getHitBox();
 
     /**
+     * todo: remove
      * Draw sprite
      */
     Sprite getSprite();

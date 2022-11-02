@@ -41,17 +41,17 @@ public class Commandos2 extends Vehicle
         {0, 20},
     };
 
-    public Commandos2(int startX, int startY)
+    public Commandos2(float startCenterX, float startCenterY)
     {
-        super(startX, startY, Assets.man2);
+        super(startCenterX, startCenterY, 40, 40, Assets.man2);
 
         // default sprite
         this.sprite.set(0, 1);
         this.sprite.setSpriteSize(31, 49);
         // this.hitBox = new HitBox(startX, startY, startX + 31, startY + 46);
 
-        this.hitBox = new HitBox(startX, startY, startX + 51, startY + 60);
-        this.sprite.setScreenMargin(10, 6);
+        // this.hitBox = new HitBox(startX, startY, startX + 51, startY + 60);
+        // this.sprite.setScreenMargin(10, 6);
 
         this.velocity = new Vector2F(20, 0);
     }

@@ -30,17 +30,19 @@ public class Spown extends MapCell implements EnemyDieEventHandler
         // this.tank = new Tank();
         this.sprite = new Sprite(Assets.spown, 0, 0);
 
+        //
         this.spownTimer = Jackal.getRandom().nextFloat() * 10;
 
         // this.spawnedTank = new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
     }
 
     @Override
-    public void drawOnBackground(Graphics g, Map map) {
+    public void drawOnBackground(Graphics g, Map map)
+    {
         g.drawPixmap(
                 this.sprite.image,
-                this.col * Map.SPRITE_WIDTH,
-                this.row * Map.SPRITE_HEIGHT,
+                this.rect.left,
+                this.rect.top,
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,
@@ -61,7 +63,7 @@ public class Spown extends MapCell implements EnemyDieEventHandler
             this.spownTimer = Jackal.getRandom().nextFloat() * 10;
 
             if (this.spawnedTank == null) {
-                this.spawnedTank = new Tank(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
+                this.spawnedTank = new Tank(this.getCenter());
                 this.spawnedTank.setDieEventHandler(this);
                 // this.spawnedTank.reNew(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
 

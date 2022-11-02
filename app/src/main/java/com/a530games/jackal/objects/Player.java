@@ -96,7 +96,7 @@ public class Player extends RotateVehicle
 
     public Player(int startX, int startY, PlayerEventHandler playerEventHandler)
     {
-        super(startX, startY, Assets.player);
+        super(startX, startY, 40, 40, Assets.player);
 
         this.playerEventHandler = playerEventHandler;
 

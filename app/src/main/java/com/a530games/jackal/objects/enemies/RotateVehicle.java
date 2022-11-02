@@ -14,15 +14,15 @@ public abstract class RotateVehicle extends Vehicle
      */
     public Vector2F direction;
 
-    public RotateVehicle(float startX, float startY, Pixmap image) {
-        super(startX, startY, image);
+    public RotateVehicle(float startCenterX, float startCenterY, int hitboxWidth, int hitboxHeight, Pixmap image) {
+        super(startCenterX, startCenterY, hitboxWidth, hitboxHeight, image);
         // show top
         this.direction = new Vector2F(0 , -1);
     }
 
-    public Vector2F getDirection() {
+    /*public Vector2F getDirection() {
         return this.direction;
-    }
+    }*/
 
     @Override
     public void drive(Vector2F velocity, float deltaTime, World world)

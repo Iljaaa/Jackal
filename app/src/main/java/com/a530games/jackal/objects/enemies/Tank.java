@@ -85,9 +85,9 @@ public class Tank extends Vehicle
     private EnemyFireEventHandler fireEventHandler = null;
     private EnemyDieEventHandler dieEventHandler = null;
 
-    public Tank(int startX, int startY)
+    public Tank(Vector2F spownPoint)
     {
-        super(startX, startY, Assets.tank);
+        super(spownPoint.x, spownPoint.y, 40, 40, Assets.tank);
         this.velocity = new Vector2F(0 ,1);
 
         this.blows = new SpriteWithAnimation[5];
