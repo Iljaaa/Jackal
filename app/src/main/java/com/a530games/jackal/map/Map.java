@@ -353,7 +353,7 @@ public class Map implements CellEventCallbackHandler
 
     /**
      * High lite cell on position
-     */
+
     public void highlightCellByPoint(Graphics g, float x, float y)
     {
         Map.Cell cell = this.getCellByPosition(x, y);
@@ -367,7 +367,7 @@ public class Map implements CellEventCallbackHandler
                 this.blockHeight,
                 this.activeCellPaint
         );
-    }
+    }*/
 
     public void update(float deltaTime)
     {
@@ -375,8 +375,8 @@ public class Map implements CellEventCallbackHandler
         if (this.follow != null)
         {
             // update map position by follow object
-            HitBox followHitBox = this.follow.hitBox;
-            this.updateMapPosition(followHitBox.getCenterX(), followHitBox.getCenterX());
+            // HitBox followHitBox = this.follow.hitBox;
+            // this.updateMapPosition(followHitBox.getCenterX(), followHitBox.getCenterX());
 
             // update draw position
             this.updateMapOptimizatonFields();

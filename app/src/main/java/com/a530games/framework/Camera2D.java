@@ -8,6 +8,11 @@ import com.a530games.jackal.map.Map;
 public class Camera2D
 {
     /**
+     * Screen size
+     */
+    private final int screenWidth, screenHeight;
+
+    /**
      * Main camera position
      */
     public final Vector2F position;
@@ -20,7 +25,7 @@ public class Camera2D
     /**
      * Camera distance to follow object
      */
-    private final int followObjectViewDistance = 200;
+    private final int followObjectViewDistance = 100;
 
     /**
      * half screen in blocks
@@ -34,6 +39,9 @@ public class Camera2D
 
     public Camera2D(int screenWidth, int screenHeight, int mapBlockWith, int mapBlockHeight)
     {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+
         //
         this.halfWidthInBlocks = (int) Math.ceil(screenWidth * 0.5/ mapBlockWith);
         this.halfHeightInBlocks = (int) Math.ceil(screenHeight * 0.5/ mapBlockHeight);
@@ -65,7 +73,7 @@ public class Camera2D
             this.position.y -= deltaY + this.followObjectViewDistance;
         }
 
-        if (deltaY > 200) {
+        if (deltaY > this.followObjectViewDistance) {
             this.position.y -= deltaY - this.followObjectViewDistance;
         }
 
@@ -73,7 +81,7 @@ public class Camera2D
             this.position.x -= deltaX + this.followObjectViewDistance;
         }
 
-        if (deltaX > 200) {
+        if (deltaX > this.followObjectViewDistance) {
             this.position.x -= deltaX - this.followObjectViewDistance;
         }
 
@@ -105,6 +113,16 @@ public class Camera2D
 
         if (r.right > this.world.map.mapCols) r.left = this.world.map.mapCols;
         if (r.bottom > this.world.map.mapRows) r.bottom = this.world.map.mapRows;*/
+    }
+
+    public int screenLeft(float mapLeft)
+    {
+        return (int) (mapLeft - this.position.x + (this.screenWidth * 0.5));
+    }
+
+    public int screenTop(float mapTop)
+    {
+        return (int) (mapTop - this.position.y + (this.screenHeight * 0.5));
     }
 
 

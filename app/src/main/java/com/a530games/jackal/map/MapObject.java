@@ -1,7 +1,7 @@
 package com.a530games.jackal.map;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 
 public interface MapObject
@@ -22,20 +22,23 @@ public interface MapObject
     /**
      * Draw block
      * @param g Graphic object
+     * @param camera2D Camera object
      */
-     void draw(Graphics g, Map map);
+     void draw(Graphics g, Camera2D camera2D);
 
     /**
      * Draw hitbox
      * @param g Graphic object
-     * @param map Map object
+     * @param camera Camera object
      */
-    void drawHitBox(Graphics g, Map map);
+    void drawHitBox(Graphics g, Camera2D camera);
 
     /**
      * Draw objects over plyer
+     * @param g Graphic object
+     * @param camera Camera object
      */
-    void drawTopLayout (Graphics g, Map map);
+    void drawTopLayout (Graphics g, Camera2D camera);
 
     /**
      * Return not exists hitbox map

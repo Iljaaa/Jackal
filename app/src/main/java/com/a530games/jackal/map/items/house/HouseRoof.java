@@ -1,7 +1,7 @@
 package com.a530games.jackal.map.items.house;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.Assets;
 import com.a530games.framework.helpers.Sprite;
@@ -31,18 +31,18 @@ abstract public class HouseRoof extends MapCell
     }
 
     @Override
-    public void draw(Graphics g, Map map) {
+    public void draw(Graphics g, Camera2D camera2D) {
 
     }
 
     @Override
-    public void drawTopLayout(Graphics g, Map map)
+    public void drawTopLayout(Graphics g, Camera2D camera)
     {
-        this._draw(g, map.screenLeftPotion(this.rect.left), map.screenTopPotion(this.rect.top));
+        this._draw(g, camera.screenLeft(this.rect.left), camera.screenTop(this.rect.top));
     }
 
     @Override
-    public void drawHitBox(Graphics g, Map map) {
+    public void drawHitBox(Graphics g, Camera2D camera) {
 
     }
 

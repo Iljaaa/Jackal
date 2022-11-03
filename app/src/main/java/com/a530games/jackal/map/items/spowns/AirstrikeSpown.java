@@ -3,6 +3,7 @@ package com.a530games.jackal.map.items.spowns;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.map.CellEventCallbackHandler;
@@ -47,21 +48,21 @@ public class AirstrikeSpown extends MapCell
     }
 
     @Override
-    public void draw(Graphics g, Map map)
+    public void draw(Graphics g, Camera2D camera2D)
     {
         this.animation.present(g,
-            map.screenLeftPotion(this.rect.left - 16),
-            map.screenTopPotion(this.rect.top - 45)
+            camera2D.screenLeft(this.rect.left - 16),
+            camera2D.screenTop(this.rect.top - 45)
         );
     }
 
     @Override
-    public void drawHitBox(Graphics g, Map map) {
+    public void drawHitBox(Graphics g, Camera2D camera) {
 
     }
 
     @Override
-    public void drawTopLayout(Graphics g, Map map) {
+    public void drawTopLayout(Graphics g, Camera2D camera) {
 
     }
 

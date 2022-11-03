@@ -3,6 +3,7 @@ package com.a530games.jackal.map;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.jackal.Jackal;
 
@@ -44,15 +45,14 @@ public abstract class MapCellWithHitbox extends RectCell implements MapObject
     }
 
     /**
-     *
-     * @param g Graphic object
-     * @param map Map object
+     *  @param g Graphic object
+     * @param camera Map object
      */
-    public void drawHitBox(Graphics g, Map map)
+    public void drawHitBox(Graphics g, Camera2D camera)
     {
         g.drawRect(
-                map.screenLeftPotion(this.hitBox.rect.left),
-                map.screenTopPotion(this.hitBox.rect.top),
+                camera.screenLeft(this.hitBox.rect.left),
+                camera.screenTop(this.hitBox.rect.top),
                 this.hitBox.rect.width(),
                 this.hitBox.rect.height(),
                 this.hitBoxPaint

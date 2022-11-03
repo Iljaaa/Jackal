@@ -33,8 +33,6 @@ public class KeyboardHandler implements View.OnKeyListener
         view.requestFocus();
     }
 
-
-
     @Override
     public boolean onKey(View view, int keyCode, KeyEvent event)
     {

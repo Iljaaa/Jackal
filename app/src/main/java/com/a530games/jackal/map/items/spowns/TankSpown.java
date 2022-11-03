@@ -1,8 +1,8 @@
 package com.a530games.jackal.map.items.spowns;
 
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.helpers.texture.Texture;
 import com.a530games.jackal.Jackal;
@@ -77,17 +77,17 @@ public class TankSpown extends MapCell implements EnemyDieEventHandler
     }
 
     @Override
-    public void draw(Graphics g, Map map) {
+    public void draw(Graphics g, Camera2D camera2D) {
 
     }
 
     @Override
-    public void drawHitBox(Graphics g, Map map) {
+    public void drawHitBox(Graphics g, Camera2D camera) {
 
     }
 
     @Override
-    public void drawTopLayout(Graphics g, Map map) {
+    public void drawTopLayout(Graphics g, Camera2D camera) {
 
     }
 

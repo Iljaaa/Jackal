@@ -146,12 +146,10 @@ public class Player
         }
     }
 
-    public void present(Graphics g, World world)
+    public void present(Graphics g, int playerScreenX, int playerScreenY) // , World world)
     {
-        // int playerScreenX = Math.round(this.world.player.hitBox.left);
-        int playerScreenX = world.map.screenLeftPotion(this.hitBox.rect.left);
-        // int playerSourceY = Math.round(this.world.player.hitBox.top);
-        int playerSourceY = world.map.screenTopPotion(this.hitBox.rect.top);
+        // int playerScreenX = world.map.screenLeftPotion(this.hitBox.rect.left);
+        // int playerScreenY = world.map.screenTopPotion(this.hitBox.rect.top);
 
         // this.drawPlayerHitBox(g, playerScreenX, playerSourceY);
 
@@ -162,7 +160,7 @@ public class Player
             g.drawPixmap(
                     this.sprite.image,
                     playerScreenX - 12, //
-                    playerSourceY - 12,
+                    playerScreenY - 12,
                     this.sprite.getLeft(),
                     this.sprite.getTop(),
                     this.sprite.width, // 64,
@@ -172,7 +170,7 @@ public class Player
             g.drawPixmap(
                     this.gun.image,
                     playerScreenX - 12, //
-                    playerSourceY - 12,
+                    playerScreenY - 12,
                     this.gun.getLeft(),
                     this.gun.getTop(),
                     this.gun.width, // 64,
@@ -180,7 +178,7 @@ public class Player
         }
 
         // update die blows
-        this.dieBlows.present(g, playerScreenX, playerSourceY);
+        this.dieBlows.present(g, playerScreenX, playerScreenY);
     }
 
     public void offsetCenterTo(float newLeft, float newTop) {

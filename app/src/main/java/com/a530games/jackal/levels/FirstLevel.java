@@ -82,7 +82,7 @@ public class FirstLevel implements Level
         // this.fields[this.mapRows - 1][this.mapCols - 1] = new RightBottomCorner(this.mapRows - 1, this.mapCols - 1);  // right bottom corner
 
 
-        map.addObjectToMap(new Rock(9, 3, Rock.MOVE_ROCK_3), 9, 3);
+        /*map.addObjectToMap(new Rock(9, 3, Rock.MOVE_ROCK_3), 9, 3);
         map.addObjectToMap(new Rock(9, 4, Rock.MOVE_ROCK_1), 9,4);
 
         map.addObjectToMap(new Tree1(9, 15), 9, 15);
@@ -157,6 +157,6 @@ public class FirstLevel implements Level
         map.addObjectToMap(new BigRock(21, 8, BigRock.Part.CenterBottom),21,8);
         map.addObjectToMap(new BigRock(21, 9, BigRock.Part.RightBottom),21,9);
 
-        map.addObjectToMap(new Fence(10, 20), 10, 20);
+        map.addObjectToMap(new Fence(10, 20), 10, 20);*/
     }
 }

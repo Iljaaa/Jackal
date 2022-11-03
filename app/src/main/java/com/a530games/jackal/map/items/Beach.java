@@ -1,7 +1,7 @@
 package com.a530games.jackal.map.items;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.Assets;
 import com.a530games.framework.helpers.Sprite;
@@ -39,12 +39,12 @@ public class Beach extends MapCell
     }
 
     @Override
-    public void draw(Graphics g, Map map)
+    public void draw(Graphics g, Camera2D camera2D)
     {
         g.drawPixmap(
                 this.sprite.image,
-                map.screenLeftPotion(this.col * this.sprite.width),
-                map.screenTopPotion(this.row * this.sprite.width),
+                camera2D.screenLeft(this.col * this.sprite.width),
+                camera2D.screenTop(this.row * this.sprite.width),
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,
@@ -52,12 +52,12 @@ public class Beach extends MapCell
     }
 
     @Override
-    public void drawTopLayout(Graphics g, Map map) {
+    public void drawTopLayout(Graphics g, Camera2D camera) {
 
     }
 
     @Override
-    public void drawHitBox(Graphics g, Map map) {
+    public void drawHitBox(Graphics g, Camera2D camera) {
 
     }
 

@@ -1,9 +1,8 @@
 package com.a530games.jackal.map.items.walls;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
-import com.a530games.jackal.map.Map;
 
 public class RightTopCorner extends Corner
 {
@@ -14,58 +13,58 @@ public class RightTopCorner extends Corner
     }
 
     @Override
-    public void drawHitBox(Graphics g, Map map)
+    public void drawHitBox(Graphics g, Camera2D camera)
     {
         // top line
         g.drawLine(
-                map.screenLeftPotion(this.hitBox.rect.left),
-                map.screenTopPotion(this.hitBox.rect.top),
-                map.screenLeftPotion(this.hitBox.rect.right),
-                map.screenTopPotion(this.hitBox.rect.top),
+                camera.screenLeft(this.hitBox.rect.left),
+                camera.screenTop(this.hitBox.rect.top),
+                camera.screenLeft(this.hitBox.rect.right),
+                camera.screenTop(this.hitBox.rect.top),
                 this.hitBoxPaint
                 );
 
         // bottom line
         g.drawLine(
-                map.screenLeftPotion(this.hitBox.rect.centerX()),
-                map.screenTopPotion(this.hitBox.rect.bottom),
-                map.screenLeftPotion(this.hitBox.rect.right),
-                map.screenTopPotion(this.hitBox.rect.bottom),
+                camera.screenLeft(this.hitBox.rect.centerX()),
+                camera.screenTop(this.hitBox.rect.bottom),
+                camera.screenLeft(this.hitBox.rect.right),
+                camera.screenTop(this.hitBox.rect.bottom),
                 this.hitBoxPaint
         );
 
         // left line
         g.drawLine(
-                map.screenLeftPotion(this.hitBox.rect.left),
-                map.screenTopPotion(this.hitBox.rect.top),
-                map.screenLeftPotion(this.hitBox.rect.left),
-                map.screenTopPotion(this.hitBox.rect.centerY()),
+                camera.screenLeft(this.hitBox.rect.left),
+                camera.screenTop(this.hitBox.rect.top),
+                camera.screenLeft(this.hitBox.rect.left),
+                camera.screenTop(this.hitBox.rect.centerY()),
                 this.hitBoxPaint
         );
 
         // right line
         g.drawLine(
-                map.screenLeftPotion(this.hitBox.rect.right),
-                map.screenTopPotion(this.hitBox.rect.top),
-                map.screenLeftPotion(this.hitBox.rect.right),
-                map.screenTopPotion(this.hitBox.rect.bottom),
+                camera.screenLeft(this.hitBox.rect.right),
+                camera.screenTop(this.hitBox.rect.top),
+                camera.screenLeft(this.hitBox.rect.right),
+                camera.screenTop(this.hitBox.rect.bottom),
                 this.hitBoxPaint
                 );
 
 
         g.drawLine(
-                map.screenLeftPotion(this.hitBox.rect.left),
-                map.screenTopPotion(this.hitBox.rect.centerY()),
-                map.screenLeftPotion(this.hitBox.rect.centerX()),
-                map.screenTopPotion(this.hitBox.rect.centerY()),
+                camera.screenLeft(this.hitBox.rect.left),
+                camera.screenTop(this.hitBox.rect.centerY()),
+                camera.screenLeft(this.hitBox.rect.centerX()),
+                camera.screenTop(this.hitBox.rect.centerY()),
                 this.hitBoxPaint
                 );
 
         g.drawLine(
-                map.screenLeftPotion(this.hitBox.rect.centerX()),
-                map.screenTopPotion(this.hitBox.rect.centerY()),
-                map.screenLeftPotion(this.hitBox.rect.centerX()),
-                map.screenTopPotion(this.hitBox.rect.bottom),
+                camera.screenLeft(this.hitBox.rect.centerX()),
+                camera.screenTop(this.hitBox.rect.centerY()),
+                camera.screenLeft(this.hitBox.rect.centerX()),
+                camera.screenTop(this.hitBox.rect.bottom),
                 this.hitBoxPaint
                 );
 

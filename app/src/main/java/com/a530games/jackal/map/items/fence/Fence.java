@@ -1,10 +1,9 @@
 package com.a530games.jackal.map.items.fence;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.Assets;
-import com.a530games.jackal.Jackal;
 import com.a530games.jackal.map.CellEventCallbackHandler;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCellWithHitbox;
@@ -32,12 +31,12 @@ public class Fence extends MapCellWithHitbox
     }
 
     @Override
-    public void draw(Graphics g, Map map) {
+    public void draw(Graphics g, Camera2D camera2D) {
 
     }
 
     @Override
-    public void drawTopLayout(Graphics g, Map map) {
+    public void drawTopLayout(Graphics g, Camera2D camera) {
 
     }
 

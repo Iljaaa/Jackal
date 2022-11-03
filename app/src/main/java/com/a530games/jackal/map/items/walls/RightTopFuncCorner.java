@@ -1,7 +1,7 @@
 package com.a530games.jackal.map.items.walls;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.map.Map;
 
@@ -14,29 +14,29 @@ public class RightTopFuncCorner extends FuncCorner
     }
 
     @Override
-    public void drawHitBox(Graphics g, Map map)
+    public void drawHitBox(Graphics g, Camera2D camera)
     {
         g.drawLine(
-                map.screenLeftPotion(this.col * Map.SPRITE_WIDTH),
-                map.screenTopPotion((this.row + 1) * Map.SPRITE_HEIGHT),
-                map.screenLeftPotion((this.col + 1) * Map.SPRITE_WIDTH),
-                map.screenTopPotion((this.row + 1) * Map.SPRITE_HEIGHT),
+                camera.screenLeft(this.col * Map.SPRITE_WIDTH),
+                camera.screenTop((this.row + 1) * Map.SPRITE_HEIGHT),
+                camera.screenLeft((this.col + 1) * Map.SPRITE_WIDTH),
+                camera.screenTop((this.row + 1) * Map.SPRITE_HEIGHT),
                 this.hitBoxPaint
         );
 
         g.drawLine(
-                map.screenLeftPotion(this.col * Map.SPRITE_WIDTH),
-                map.screenTopPotion(this.row * Map.SPRITE_HEIGHT),
-                map.screenLeftPotion(this.col * Map.SPRITE_WIDTH),
-                map.screenTopPotion((this.row + 1) * Map.SPRITE_HEIGHT),
+                camera.screenLeft(this.col * Map.SPRITE_WIDTH),
+                camera.screenTop(this.row * Map.SPRITE_HEIGHT),
+                camera.screenLeft(this.col * Map.SPRITE_WIDTH),
+                camera.screenTop((this.row + 1) * Map.SPRITE_HEIGHT),
                 this.hitBoxPaint
         );
 
         g.drawLine(
-                map.screenLeftPotion(this.col * Map.SPRITE_WIDTH),
-                map.screenTopPotion(this.row * Map.SPRITE_HEIGHT + this.getYByX(0)),
-                map.screenLeftPotion((this.col + 1) * Map.SPRITE_HEIGHT ),
-                map.screenTopPotion((this.row * Map.SPRITE_HEIGHT) + this.getYByX(Map.SPRITE_WIDTH)),
+                camera.screenLeft(this.col * Map.SPRITE_WIDTH),
+                camera.screenTop(this.row * Map.SPRITE_HEIGHT + this.getYByX(0)),
+                camera.screenLeft((this.col + 1) * Map.SPRITE_HEIGHT ),
+                camera.screenTop((this.row * Map.SPRITE_HEIGHT) + this.getYByX(Map.SPRITE_WIDTH)),
                 this.hitBoxPaint
         );
 

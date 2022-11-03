@@ -1,5 +1,6 @@
 package com.a530games.jackal.map.items.walls;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.jackal.Assets;
 import com.a530games.framework.helpers.Sprite;
@@ -39,12 +40,12 @@ abstract public class FuncCorner extends MapCellWithHitbox
     }
 
     @Override
-    public void draw(Graphics g, Map map) {
+    public void draw(Graphics g, Camera2D camera2D) {
 
     }
 
     @Override
-    public void drawTopLayout(Graphics g, Map map) {
+    public void drawTopLayout(Graphics g, Camera2D camera) {
 
     }
 
