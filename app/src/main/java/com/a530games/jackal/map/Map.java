@@ -42,7 +42,7 @@ public class Map implements CellEventCallbackHandler
     /**
      * map position
      */
-    public Vector2F position;
+    // public Vector2F position;
 
     /**
      * map start cell
@@ -55,17 +55,19 @@ public class Map implements CellEventCallbackHandler
      * checked on move map by player position
      * todo: refactor to camera object
      */
-    private final Vector2F mapMaxPosition;
+    // private final Vector2F mapMaxPosition;
 
     /**
      * Screen rect for calculate map position
      */
-    private final Rect playerScreenRect;
+    // private final Rect playerScreenRect;
 
     // object () min max position
     private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
 
-    // map size in blocks
+    /**
+     * map size in blocks
+     */
     public int mapRows, mapCols;
 
     // map optimization min|max positions for draw
@@ -120,10 +122,10 @@ public class Map implements CellEventCallbackHandler
         this.blockWidth = blockWidth;
         this.blockHeight = blockHeight;
 
-        this.position = new Vector2F(0, 0);
+        // this.position = new Vector2F(0, 0);
         this.startCell = new DropPadCell(0, 0);
-        this.mapMaxPosition = new Vector2F();
-        this.playerScreenRect = new Rect();
+        // this.mapMaxPosition = new Vector2F();
+        // this.playerScreenRect = new Rect();
 
         this.activeCellPaint = new Paint();
         this.activeCellPaint.setStyle(Paint.Style.FILL);
@@ -154,24 +156,24 @@ public class Map implements CellEventCallbackHandler
 
         // calculate max map positions`
         // fixme: need move to camera
-        this.mapMaxPosition.set(
+        /*this.mapMaxPosition.set(
             -1 * ((this.mapCols * Map.SPRITE_WIDTH) - mapScreenWidth),
             -1 * ((this.mapRows * Map.SPRITE_HEIGHT) - mapScreenHeight)
-        );
+        );*/
 
         // calculate screen rect for move map position
-        this.playerScreenRect.set (
+        /*this.playerScreenRect.set (
             200,
             200,
             g.getFrameBufferWidth() - 200,
             g.getFrameBufferHeight() - 200
-        );
+        );*/
 
         // calculate min|max objects position
-        this.objectMinX = Map.SPRITE_WIDTH; // 1 block left
-        this.objectMaxX = (this.mapCols * Map.SPRITE_WIDTH) - Map.SPRITE_WIDTH;
-        this.objectMinY = Map.SPRITE_HEIGHT; // 1 block top
-        this.objectMaxY = (this.mapRows * Map.SPRITE_HEIGHT) - Map.SPRITE_HEIGHT;
+        this.objectMinX = this.blockWidth; // 1 block left
+        this.objectMaxX = (this.mapCols * this.blockWidth) - this.blockWidth;
+        this.objectMinY = this.blockHeight; // 1 block top
+        this.objectMaxY = (this.mapRows * this.blockHeight) - this.blockHeight;
 
         // move player on map position
         // player.hitBox.moveTo(400,1500);
@@ -180,7 +182,7 @@ public class Map implements CellEventCallbackHandler
         // calculate start map position
         // after move player
         this.startCell.offsetToCell(level.getPlayerDropPointCell());
-        this.centerMapOnPoint(this.startCell.getCenter(), mapScreenWidth, mapScreenHeight);
+        //this.centerMapOnPoint(this.startCell.getCenter(), mapScreenWidth, mapScreenHeight);
 
         // move drop pad to start
         dropPad.moveToStart(this.startCell);
@@ -198,7 +200,7 @@ public class Map implements CellEventCallbackHandler
         this.fields = new MapObject[this.mapRows][this.mapCols];
 
         // update draw limits
-        this.updateMapOptimizatonFields();
+        // this.updateMapOptimizatonFields();
 
         //
         // this.addObjectToMap();
@@ -228,9 +230,9 @@ public class Map implements CellEventCallbackHandler
 
     }
 
-    /**
+    /*
      * Center map on point
-     */
+
     private void centerMapOnPoint(Vector2F point, int mapScreenWidth, int mapScreenHeight)
     {
         this.position.x = (float) (-1 * (point.x - 0.5 * mapScreenWidth));
@@ -238,7 +240,7 @@ public class Map implements CellEventCallbackHandler
 
         if (this.position.x < this.mapMaxPosition.x) this.position.x = this.mapMaxPosition.x;
         if (this.position.y < this.mapMaxPosition.y) this.position.y = this.mapMaxPosition.y;
-    }
+    }*/
 
     /**
      * Level add object on map
@@ -379,7 +381,7 @@ public class Map implements CellEventCallbackHandler
             // this.updateMapPosition(followHitBox.getCenterX(), followHitBox.getCenterX());
 
             // update draw position
-            this.updateMapOptimizatonFields();
+            // this.updateMapOptimizatonFields();
         }
 
 
@@ -413,7 +415,7 @@ public class Map implements CellEventCallbackHandler
         if (isWin) this.eventsHandler.mapWin();
     }
 
-    private void updateMapOptimizatonFields()
+    /*private void updateMapOptimizatonFields()
     {
         //
         this.drawMinCol = this.getColByLeft(this.position.x) - 2;
@@ -427,11 +429,11 @@ public class Map implements CellEventCallbackHandler
 
         this.drawMaxRow = this.drawMinRow + 15;
         if (this.drawMaxRow > this.mapRows) this.drawMaxRow = this.mapRows;
-    }
+    }*/
 
-    /**
+    /*
      * Update map position by player
-     */
+
     private void updateMapPosition (float left, float top)
     {
         // on top
@@ -463,7 +465,7 @@ public class Map implements CellEventCallbackHandler
             this.position.y = this.position.y - (playerCenterY - this.playerScreenRect.bottom);
             if (this.position.y < this.mapMaxPosition.y) this.position.y = this.mapMaxPosition.y;
         }
-    }
+    }*/
 
     /**
      * Intersect object (enemies and bullets) with map hitboxes elements
@@ -561,10 +563,10 @@ public class Map implements CellEventCallbackHandler
     /**
      * Get cell by position on map
      * @return Cell
-     */
+
     public Map.Cell getCellByPointF(PointF point) {
         return this.getCellByPosition(point.x, point.y);
-    }
+    }*/
 
     /**
      * Get cell by position on map
@@ -623,41 +625,41 @@ public class Map implements CellEventCallbackHandler
         return col * this.blockWidth; // Jackal.BLOCK_WIDTH;
     }
 
-    /**
+    /*
      * Convert screen position by map position
      * @param mapTop Map top position
      * @return Screen top position
-     */
+     *
     public int screenTopPotion (float mapTop) {
         return (int) Math.floor(mapTop + this.position.y);
-    }
+    }*/
 
-    /**
+    /*
      * Convert screen position by map position in int
      * @param mapLeft Map left position
      * @return Screen let position
-     */
+     *
     public int screenLeftPotion (float mapLeft) {
         return (int) Math.floor(mapLeft + this.position.x);
-    }
+    }*/
 
-    /**
+    /*
      * Convert screen position by map position in int
      * @param mapTop Map top position
      * @return Screen top position
-     */
+     *
     public float screenTopPotionF (float mapTop){
         return mapTop + this.position.y;
-    }
+    }*/
 
-    /**
+    /*
      * Convert screen position by map position
      * @param mapLeft Map left position
      * @return Screen let position
-     */
+     *
     public float screenLeftPotionF (float mapLeft){
         return mapLeft + this.position.x;
-    }
+    }*/
 
     @Override
     public void spownEnemy(MapCell spownCell, Enemy enemy)

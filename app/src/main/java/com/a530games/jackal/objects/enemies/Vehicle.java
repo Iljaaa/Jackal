@@ -20,10 +20,10 @@ public abstract class Vehicle implements Enemy
      */
     public HitBox hitBox;
 
-    /**
+    /*
      * Hitbox mapped to screen coords
      */
-    private final Rect hitBoxForDraw;
+    // private final Rect hitBoxForDraw;
 
     /**
      *
@@ -46,7 +46,7 @@ public abstract class Vehicle implements Enemy
             startCenterY - (0.5f * hitboxHeight) + hitboxHeight
         );
 
-        this.hitBoxForDraw = new Rect();
+        // this.hitBoxForDraw = new Rect();
     }
 
     @Override
@@ -125,13 +125,13 @@ public abstract class Vehicle implements Enemy
 
 
 
-    public Rect getScreenDrawHitbox (Map map)
+    /*public Rect getScreenDrawHitbox (Map map)
     {
         this.hitBoxForDraw.left = map.screenLeftPotion(this.hitBox.rect.left);
         this.hitBoxForDraw.top = map.screenTopPotion(this.hitBox.rect.top);
         this.hitBoxForDraw.right =  Math.round(this.hitBoxForDraw.left + this.hitBox.width());
         this.hitBoxForDraw.bottom = Math.round(this.hitBoxForDraw.top + this.hitBox.height());
         return this.hitBoxForDraw;
-    }
+    }*/
 
 }
