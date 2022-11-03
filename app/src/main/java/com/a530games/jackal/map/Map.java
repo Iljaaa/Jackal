@@ -307,7 +307,7 @@ public class Map implements CellEventCallbackHandler
         this.drawBackgroundObjects();
 
         // drwa background net
-        // this.drawBackgroundNet(this.backgroundGraphic);
+        this.drawBackgroundNet(this.backgroundGraphic);
     }
 
     /**
@@ -361,8 +361,8 @@ public class Map implements CellEventCallbackHandler
         // int left = this.world.map.screenLeftPotion(this.world.map.getLeftByCol(playerCell.col));
 
         g.drawRect(
-                this.getLeftByCol(cell.col), // left, // this.world.map.screenLeftPotion(playerCell.col),  // left,
-                this.getTopByRow(cell.row), // top, // this.world.map.screenTopPotion(playerCell.row), // top,
+                this.screenLeftPotion(this.getLeftByCol(cell.col)), // left, // this.world.map.screenLeftPotion(playerCell.col),  // left,
+                this.screenTopPotion(this.getTopByRow(cell.row)), // top, // this.world.map.screenTopPotion(playerCell.row), // top,
                 this.blockWidth,
                 this.blockHeight,
                 this.activeCellPaint

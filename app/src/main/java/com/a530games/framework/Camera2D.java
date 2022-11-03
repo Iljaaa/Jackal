@@ -18,15 +18,14 @@ public class Camera2D
     public float zoom = 1f;
 
     /**
+     * Camera distance to follow object
+     */
+    private final int followObjectViewDistance = 200;
+
+    /**
      * half screen in blocks
      */
     private final int halfWidthInBlocks, halfHeightInBlocks;
-
-
-    /**
-     * Screen rect for calculate camera position position
-     */
-    private final Rect playerScreenRect;
 
     /**
      * Whiew rect
@@ -40,18 +39,44 @@ public class Camera2D
         this.halfHeightInBlocks = (int) Math.ceil(screenHeight * 0.5/ mapBlockHeight);
 
         this.position = new Vector2F();
-        this.playerScreenRect = new Rect();
+        // this.playerScreenRect = new Rect();
 
         // calculate screen rect for move map position
-        this.playerScreenRect.set (
+        /*this.playerScreenRect.set (
                 200,
                 200,
                 screenWidth - 200,
                 screenHeight - 200
-        );
+        );*/
 
 
         this._viewRect = new Rect();
+    }
+
+    /**
+     * Follow by point
+     */
+    public void followByPoint(float mapX, float mapY)
+    {
+        float deltaX = this.position.x - mapX;
+        float deltaY = this.position.y - mapY;
+
+        if (deltaY < (-1 * this.followObjectViewDistance)) {
+            this.position.y -= deltaY + this.followObjectViewDistance;
+        }
+
+        if (deltaY > 200) {
+            this.position.y -= deltaY - this.followObjectViewDistance;
+        }
+
+        if (deltaX < (-1 * this.followObjectViewDistance)) {
+            this.position.x -= deltaX + this.followObjectViewDistance;
+        }
+
+        if (deltaX > 200) {
+            this.position.x -= deltaX - this.followObjectViewDistance;
+        }
+
     }
 
 
@@ -81,6 +106,8 @@ public class Camera2D
         if (r.right > this.world.map.mapCols) r.left = this.world.map.mapCols;
         if (r.bottom > this.world.map.mapRows) r.bottom = this.world.map.mapRows;*/
     }
+
+
 
     /*
     public void setViewportAndMatrices()

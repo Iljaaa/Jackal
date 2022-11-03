@@ -79,10 +79,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     // int oldScore = 0;
     // String score = "0";
 
-    /**
-     * Paint fro player hitbox rect
-     */
-    Paint playerHitBoxPaint;
 
     /**
      * Menu on lose level
@@ -116,8 +112,21 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
      */
     private final int mapScreenHeightInBlocks; //  = 10;
 
-    //
+
+    /**
+     * Paint fro player hitbox rect
+     */
+    Paint playerHitBoxPaint;
+
+    /**
+     * Screen titles paint
+     */
     Paint titlePaint, subTitlePaint;
+
+    /**
+     * Camera triangle paint
+     */
+    Paint cameraPaint;
 
     public GameScreen(Game game, int playerStartHp)
     {
@@ -161,11 +170,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.controllerPresenter = new ControllerPresenter(screenWidth, screenHeight);
         this.controllerPresenter.bindController(controller);
 
-        this.playerHitBoxPaint = new Paint();
-        this.playerHitBoxPaint.setStyle(Paint.Style.STROKE);
-        this.playerHitBoxPaint.setStrokeWidth(1);
-        this.playerHitBoxPaint.setColor(Color.GREEN);
-
         // todo: fix magic numbers
         this.pauseMenu = new PauseMenuWrap(
                 (int) (screenWidth * 0.5) - 200,
@@ -176,6 +180,13 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.gameOverLoseMenu = new GameOverLoseMenu(150, 200);
         this.gameOverLoseMenu.setEventHandler(this);
 
+        ///////////////////
+
+        this.playerHitBoxPaint = new Paint();
+        this.playerHitBoxPaint.setStyle(Paint.Style.STROKE);
+        this.playerHitBoxPaint.setStrokeWidth(1);
+        this.playerHitBoxPaint.setColor(Color.GREEN);
+
         this.titlePaint = new Paint();
         this.titlePaint.setColor(Color.RED);
         this.titlePaint.setTextAlign(Paint.Align.CENTER);
@@ -185,6 +196,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.subTitlePaint.setColor(Color.RED);
         this.subTitlePaint.setTextAlign(Paint.Align.CENTER);
         this.subTitlePaint.setTextSize(30);
+
+        this.cameraPaint = new Paint();
+        this.cameraPaint.setColor(Color.GREEN);
+        this.cameraPaint.setStyle(Paint.Style.STROKE);
+        this.cameraPaint.setStrokeWidth(2);
     }
 
     /**
@@ -277,6 +293,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     {
         // [layer controls
         this.updatePlayer(controller, deltaTime);
+
+        // update camera position
+        if (this.world.player.isOnline()) {
+            this.camera.followByPoint(this.world.player.hitBox.rect.left, this.world.player.hitBox.rect.top);
+        }
 
         // обновление мира
         this.world.update(deltaTime);
@@ -510,10 +531,14 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         if (state == GameState.Paused) this.drawPausedUI();
         if (state == GameState.GameOver) this.drawGameOverUI();
 
+        // temp item
         this.drawTouchPoints(g);
 
         // draw controller onscreen controller
         this.controllerPresenter.draw(g);
+
+        // draw camera position
+        this.drawCamera(g);
 
         // draw score
         // this.drawText(g, score, g.getWidth() / 2 - score.length()*20 / 2, g.getHeight() - 42);
@@ -533,6 +558,16 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             g.drawCircle(event.x, event.y, 50, Color.GREEN);
         }
 
+    }
+
+    private void drawCamera (Graphics g)
+    {
+        int screenX = this.world.map.screenLeftPotion(this.camera.position.x);
+        int screenY = this.world.map.screenTopPotion(this.camera.position.y);
+
+        g.drawLine(screenX, screenY, screenX - 20, screenY + 20, this.cameraPaint);
+        g.drawLine(screenX, screenY, screenX + 20, screenY + 20, this.cameraPaint);
+        g.drawLine(screenX - 20, screenY + 20, screenX + 20, screenY + 20, this.cameraPaint);
     }
 
     private void drawWorld(World world)
@@ -606,7 +641,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // todo: fix magic numbers
         g.drawBitmap(
                 this.world.map.drawBitmap,
-                0,
+                0, // <- plus delta screen
                 0,
                 -1 * (int) Math.floor(this.world.map.position.x),
                 -1 * (int )Math.floor(this.world.map.position.y),
@@ -690,7 +725,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         return r;
     }*/
-
 
     /**
      * Hit boxes for map objects
@@ -925,7 +959,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.drawSecondTitle(g, "Press start to begin you journey");
     }
 
-    private void drawRunningUI() {
+    private void drawRunningUI()
+    {
         // Graphics g = game.getGraphics();
         /*g.drawPixmap(Assets.buttons, 0, 0, 64, 128, 64, 64);
         g.drawLine(0, 416, 480, 416, Color.BLACK);

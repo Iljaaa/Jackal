@@ -415,6 +415,8 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     public void playerDropped()
     {
         this.map.setFollowObject(this.player);
+
+        //
         this.player.state = Player.PlayerState.OnLine;
     }
 }
