@@ -1,5 +1,6 @@
 package com.a530games.jackal;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.Pixmap;
 import com.a530games.framework.helpers.Sprite;
@@ -49,12 +50,12 @@ public class SpriteWithAnimation extends Sprite
         }
     }
 
-    public void present (Graphics g, World world)
+    public void present (Graphics g, Camera2D camera)
     {
         g.drawPixmap(
                 this.image,
-                world.map.screenLeftPotion(this.position.x) + this.screenMarginLeft,
-                world.map.screenTopPotion(this.position.y) + this.screenMarginTop,
+                camera.screenLeft(this.position.x) + this.screenMarginLeft,
+                camera.screenTop(this.position.y) + this.screenMarginTop,
                 this.getLeft(),
                 this.getTop(),
                 this.width,

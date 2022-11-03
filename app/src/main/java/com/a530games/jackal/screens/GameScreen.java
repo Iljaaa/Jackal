@@ -909,7 +909,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 Enemy enemy = this.world.enemies.get(i);
                 // if (enemy == null) continue;
 
-                enemy.present(g, this.world);
+                // enemy.present(g, this.world);
+                enemy.present(g, this.camera);
             }
         }
     }

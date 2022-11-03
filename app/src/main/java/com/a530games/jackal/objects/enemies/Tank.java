@@ -1,9 +1,9 @@
 package com.a530games.jackal.objects.enemies;
 
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.graphics.Rect;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
@@ -235,13 +235,13 @@ public class Tank extends Vehicle
     }
 
     @Override
-    public void present(Graphics g, World world)
+    public void present(Graphics g, Camera2D camera)
     {
         if (this.state == Tank.STATE_DEAD) {
             return;
         }
 
-        Rect screenHitBox = this.getScreenDrawHitbox(world.map);
+        // Rect screenHitBox = this.getScreenDrawHitbox(camera.map);
 
         // Sprite s = this.getSprite();
 
@@ -249,44 +249,42 @@ public class Tank extends Vehicle
 
         g.drawPixmap(
                 this.sprite.image,
-                screenHitBox.left + this.sprite.screenMarginLeft,
-                screenHitBox.top + this.sprite.screenMarginTop,
+                camera.screenLeft(this.hitBox.rect.left + this.sprite.screenMarginLeft),
+                camera.screenTop(this.hitBox.rect.top + this.sprite.screenMarginTop),
+                // screenHitBox.left + this.sprite.screenMarginLeft,
+                // screenHitBox.top + this.sprite.screenMarginTop,
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,
                 this.sprite.height);
 
-        // draw hitbox
-        g.drawRect(screenHitBox, Color.RED);
-        /*this.drawEnemyHitBox(
-                g,
-                this.world.map.screenLeftPotion(b.hitBox.left),
-                this.world.map.screenTopPotion(b.hitBox.top),
-                Math.round(b.hitBox.getWidth()),
-                Math.round(b.hitBox.getHeight())
-        );*/
-
         // draw blow
         if (this.state == Tank.STATE_BLOWUP) {
             for (int i = 0; i < this.blows.length; i++) {
                 // SpriteWithAnimation blow = this.blows[i];
-                this.blows[i].present(g, world);
+                this.blows[i].present(g, camera);
             }
         }
 
+        int screenCenterX =  camera.screenLeft(this.hitBox.getCenterX());
+        int screenCenterY = camera.screenTop(this.hitBox.getCenterY());
 
         // target
         this.drawAngle(g,
-                screenHitBox.centerX(),
-                screenHitBox.centerY(),
+                // screenHitBox.centerX(),
+                // screenHitBox.centerY(),
+                screenCenterX,
+                screenCenterY,
                 this.targetAngle,
                 Color.LTGRAY
         );
 
         // turret
         this.drawAngle(g,
-                screenHitBox.centerX(),
-                screenHitBox.centerY(),
+                // screenHitBox.centerX(),
+                // screenHitBox.centerY(),
+                screenCenterX,
+                screenCenterY,
                 this.turretAngle,
                 Color.GREEN
         );

@@ -3,6 +3,7 @@ package com.a530games.jackal.objects.enemies;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2F;
@@ -109,14 +110,16 @@ public class Commandos2 extends Vehicle
     }
 
     @Override
-    public void present(Graphics g, World world)
+    public void present(Graphics g, Camera2D camera)
     {
-        Rect screenHitBox = this.getScreenDrawHitbox(world.map);
+        // Rect screenHitBox = this.getScreenDrawHitbox(camera.map);
 
         g.drawPixmap(
                 this.sprite.image,
-                screenHitBox.left + this.sprite.screenMarginLeft,
-                screenHitBox.top + this.sprite.screenMarginTop,
+                camera.screenLeft(this.hitBox.rect.left + this.sprite.screenMarginLeft),
+                camera.screenTop(this.hitBox.rect.top + this.sprite.screenMarginTop),
+                // screenHitBox.left + this.sprite.screenMarginLeft,
+                // screenHitBox.top + this.sprite.screenMarginTop,
                 this.sprite.getLeft(),
                 this.sprite.getTop(),
                 this.sprite.width,

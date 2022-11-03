@@ -1,5 +1,6 @@
 package com.a530games.jackal.objects.enemies;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.helpers.Sprite;
@@ -32,8 +33,10 @@ public interface Enemy
 
     /**
      * Present enemy
+     * @param g Graphic object
+     * @param camera Camera object
      */
-    void present (Graphics g, World world);
+    void present (Graphics g, Camera2D camera);
 
     /**
      * Is enemy hit by payer bullet

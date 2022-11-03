@@ -3,6 +3,7 @@ package com.a530games.jackal.objects;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.helpers.cor.Handler;
@@ -132,7 +133,7 @@ public class DropPad implements Enemy
     }
 
 
-    private class PullPlayerStep extends FlayStep
+    private static class PullPlayerStep extends FlayStep
     {
 
         public PullPlayerStep(DropPad pad, Vector2 movePoint) {
@@ -256,14 +257,12 @@ public class DropPad implements Enemy
     }
 
     @Override
-    public void present(Graphics g, World world)
+    public void present(Graphics g, Camera2D camera)
     {
-
         g.drawCircle(
-                world.map.screenLeftPotion(this.position.x),
-                world.map.screenTopPotion(this.position.y),
+                camera.screenLeft(this.position.x),
+                camera.screenTop(this.position.y),
                 100, Color.RED);
-
     }
 
     @Override
