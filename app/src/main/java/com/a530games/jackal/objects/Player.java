@@ -212,6 +212,10 @@ public class Player
             this.driveVertical(velocity.y, deltaTime, world);
         }
 
+        // update direction
+        this.direction.set(direction);
+        // this.direction.nor();
+
         this.updateSprite();
     }
 
