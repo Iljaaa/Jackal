@@ -2,6 +2,7 @@ package com.a530games.jackal.levels;
 
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.items.Beach;
+import com.a530games.jackal.map.items.spowns.AirstrikeSpown;
 import com.a530games.jackal.map.items.spowns.Commandos2Spown;
 import com.a530games.jackal.map.items.spowns.CommandowSpown;
 import com.a530games.jackal.map.items.spowns.TankSpown;
@@ -44,6 +45,8 @@ public class ArenaLevel implements Level
         // map.addObjectToMap(new TankSpown(15, 13), 15, 13);
         // map.addObjectToMap(new CommandowSpown(13, 13), 13, 13);
         // map.addObjectToMap(new Commandos2Spown(17, 13), 17, 13);
+
+        map.addObjectToMap(new AirstrikeSpown(10, 8), 10, 8);
 
     }
 }

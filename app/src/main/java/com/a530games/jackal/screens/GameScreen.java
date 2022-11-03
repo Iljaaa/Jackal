@@ -119,10 +119,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     //
     Paint titlePaint, subTitlePaint;
 
-    //
-    Sprite tempBoom;
-    float boomTimer;
-
     public GameScreen(Game game, int playerStartHp)
     {
         super(game);
@@ -189,21 +185,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.subTitlePaint.setColor(Color.RED);
         this.subTitlePaint.setTextAlign(Paint.Align.CENTER);
         this.subTitlePaint.setTextSize(30);
-
-
-        // loading config from file
-        // this.loadConfig();
-
-        // Assets.music.setLooping(true);
-        // Assets.music.setVolume(0.5f);
-        // Assets.music.play();
-
-        //
-
-        //
-        this.tempBoom = new Sprite(Assets.boom, 0, 0);
-        this.tempBoom.setSpriteSize(96, 96);
-        this.boomTimer = 0.2f;
     }
 
     /**
@@ -299,14 +280,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         // обновление мира
         this.world.update(deltaTime);
-
-        // tmpppp
-        this.boomTimer -= deltaTime;
-        if (this.boomTimer <= 0) {
-            this.tempBoom.set(this.tempBoom.col+1, this.tempBoom.row);
-            if (this.tempBoom.col >= 8) this.tempBoom.col = 0;
-            this.boomTimer = 0.09f;
-        }
 
         // обновление боковой информации
         // this.sidebar.update(deltaTime);
@@ -576,12 +549,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         //
         this.drawBullets();
 
-        //
-        // this.drawMapTop();
-
-        // temp blow
-        this.drawBlow();
-
         // map top level
         this.drawMapTopLayout();
 
@@ -700,7 +667,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         }
     }
 
-    /**
+    /*
      * todo: Make static variable
      * @param center
      * @return
@@ -760,7 +727,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         }
     }*/
 
-    /**
+    /*
      * Draw cell on
 
     private void drawActiveCell (Graphics g, Map.Cell playerCell)
@@ -807,8 +774,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     {
         // g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.playerHitBoxPaint);
         g.drawRect(
-                (int) this.world.map.screenLeftPotion(this.world.player.hitBox.rect.left),
-                (int) this.world.map.screenTopPotion(this.world.player.hitBox.rect.top),
+                this.world.map.screenLeftPotion(this.world.player.hitBox.rect.left),
+                this.world.map.screenTopPotion(this.world.player.hitBox.rect.top),
                 (int) this.world.player.hitBox.rect.width(),
                 (int) this.world.player.hitBox.rect.height(),
                 this.playerHitBoxPaint
@@ -948,20 +915,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                     32
             );
         }
-    }
-
-    private void drawBlow()
-    {
-        Graphics g = this.game.getGraphics();
-        g.drawPixmap(
-                this.tempBoom.image,
-                this.world.map.screenLeftPotion(400),
-                this.world.map.screenTopPotion(900),
-                this.tempBoom.getLeft(),
-                this.tempBoom.getTop(),
-                this.tempBoom.width,
-                this.tempBoom.height
-        );
     }
 
     private void drawReadyUI()

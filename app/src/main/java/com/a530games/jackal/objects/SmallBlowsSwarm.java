@@ -2,7 +2,7 @@ package com.a530games.jackal.objects;
 
 import com.a530games.framework.Graphics;
 import com.a530games.jackal.Jackal;
-import com.a530games.jackal.textures.BlowAnimation;
+import com.a530games.jackal.textures.SmallBlowAnimation;
 
 public final class SmallBlowsSwarm
 {
@@ -32,12 +32,12 @@ public final class SmallBlowsSwarm
      */
     private static class Blow
     {
-        BlowAnimation animation;
+        SmallBlowAnimation animation;
 
         private int deltaX = 0, deltaY = 0;
 
         public Blow() {
-            this.animation = new BlowAnimation();
+            this.animation = new SmallBlowAnimation();
         }
 
         public boolean isOver(){

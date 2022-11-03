@@ -6,13 +6,9 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
-import com.a530games.jackal.Jackal;
-import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
 import com.a530games.framework.helpers.Sprite;
-import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
-import com.a530games.jackal.textures.BlowAnimation;
 
 public class Player
 {

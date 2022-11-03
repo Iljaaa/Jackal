@@ -66,6 +66,11 @@ abstract public class AnimationTexture
         isCircle = circle;
     }
 
+    public void setFrameTime(float frameTime) {
+        this.frameTime = frameTime;
+        this.timer = frameTime;
+    }
+
     /**
      * Update animation by delta time
      * @param deltaTime time delay

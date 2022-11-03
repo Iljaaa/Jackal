@@ -4,10 +4,10 @@ import com.a530games.framework.helpers.texture.AnimationTexture;
 import com.a530games.framework.helpers.texture.TextureRegion;
 import com.a530games.jackal.Assets;
 
-public class BlowAnimation extends AnimationTexture
+public class SmallBlowAnimation extends AnimationTexture
 {
 
-    public BlowAnimation()
+    public SmallBlowAnimation()
     {
         super(Assets.smallBlow);
 
