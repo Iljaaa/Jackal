@@ -13,16 +13,13 @@ import com.a530games.framework.Input;
 import com.a530games.framework.Screen;
 import com.a530games.framework.TouchEventsCollection;
 import com.a530games.framework.helpers.SaveBitmapToFile;
-import com.a530games.framework.math.Vector2;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Controller;
 import com.a530games.jackal.ControllerEventHandler;
 import com.a530games.jackal.Jackal;
-import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.map.Map;
-import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.map.MapObject;
 import com.a530games.jackal.menu.GameOverLoseMenu;
 import com.a530games.jackal.menu.BasicMenu;
@@ -213,9 +210,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // init world and map
         this.world.initByLevel(
                 level,
-                this.game.getGraphics(),
-                this.mapScreenWidthInPixels,
-                this.mapScreenHeightInPixels
+                this.game.getGraphics()
         );
 
         // move camera

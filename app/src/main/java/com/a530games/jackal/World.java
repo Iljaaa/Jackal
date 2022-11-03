@@ -3,7 +3,6 @@ package com.a530games.jackal;
 import android.util.Log;
 
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.levels.Level;
@@ -65,7 +64,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     public boolean gameOver = false;
     public boolean gameOverSuccess = false;
 
-    public int score = 0;
+    // public int score = 0;
 
     // поле, большой массив
     // boolean[][] fields = new boolean[WORLD_WIDTH][WORLD_HEIGHT];
@@ -117,16 +116,14 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     /**
      * Init world by level
      */
-    public void initByLevel(Level level, Graphics g, int mapScreenWidth, int mapScreenHeight)
+    public void initByLevel(Level level, Graphics g)
     {
         // init map
         this.map.init(
                 level,
                 g,
                 this.player,
-                this.dropPad,
-                mapScreenWidth,
-                mapScreenHeight
+                this.dropPad
         );
     }
 
@@ -414,7 +411,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
      */
     public void playerDropped()
     {
-        this.map.setFollowObject(this.player);
+        // this.map.setFollowObject(this.player);
 
         //
         this.player.state = Player.PlayerState.OnLine;

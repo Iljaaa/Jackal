@@ -4,14 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.a530games.framework.AndroidGraphics;
 import com.a530games.framework.Graphics;
-import com.a530games.framework.helpers.FloatRect;
 import com.a530games.framework.helpers.HitBox;
-import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.levels.Level;
@@ -39,7 +36,7 @@ public class Map implements CellEventCallbackHandler
      */
     public int blockWidth, blockHeight;
 
-    /**
+    /*
      * map position
      */
     // public Vector2F position;
@@ -49,7 +46,7 @@ public class Map implements CellEventCallbackHandler
      */
     public MapCell startCell;
 
-    /**
+    /*
      * Max map position
      * calculated on init
      * checked on move map by player position
@@ -57,7 +54,7 @@ public class Map implements CellEventCallbackHandler
      */
     // private final Vector2F mapMaxPosition;
 
-    /**
+    /*
      * Screen rect for calculate map position
      */
     // private final Rect playerScreenRect;
@@ -85,10 +82,6 @@ public class Map implements CellEventCallbackHandler
     {
         public int col, row;
 
-        public Cell() {
-            this(0, 0);
-        }
-
         public Cell(int col, int row) {
             this.col = col;
             this.row = row;
@@ -106,14 +99,14 @@ public class Map implements CellEventCallbackHandler
     private MapEventsHandler eventsHandler = null;
 
     /**
-     * fiels [row][col]
+     * fields [row][col]
      */
     public MapObject[][] fields; // = new MapCell[1][1];
 
     /**
      * Object for follow map
      */
-    private Player follow = null;
+    // private Player follow = null;
 
     public Map(int blockWidth, int blockHeight)
     {
@@ -132,9 +125,9 @@ public class Map implements CellEventCallbackHandler
         this.activeCellPaint.setColor(Color.YELLOW);
     }
 
-    public void setFollowObject (Player followObject) {
+    /*public void setFollowObject (Player followObject) {
         this.follow = followObject;
-    }
+    }*/
 
     /**
      *
@@ -145,10 +138,8 @@ public class Map implements CellEventCallbackHandler
 
     /**
      * Prepare map
-     * @param mapScreenWidth map screen size in pixels round by blocks count
-     * @param mapScreenHeight map screen size round in pixels by blocks count
      */
-    public void init (Level level, Graphics g, Player player, DropPad dropPad, int mapScreenWidth, int mapScreenHeight)
+    public void init (Level level, Graphics g, Player player, DropPad dropPad)
     {
         // map size in cols
         this.mapCols = level.getMapWidthInCols();
@@ -158,7 +149,7 @@ public class Map implements CellEventCallbackHandler
         // fixme: need move to camera
         /*this.mapMaxPosition.set(
             -1 * ((this.mapCols * Map.SPRITE_WIDTH) - mapScreenWidth),
-            -1 * ((this.mapRows * Map.SPRITE_HEIGHT) - mapScreenHeight)
+            -1 * ((this.mapRows * this.blockHeight) - mapScreenHeight)
         );*/
 
         // calculate screen rect for move map position
@@ -210,8 +201,8 @@ public class Map implements CellEventCallbackHandler
         this.drawRect = new Rect(
                 0,
                 0,
-                this.mapCols * Map.SPRITE_WIDTH,
-                this.mapRows * Map.SPRITE_HEIGHT
+                this.mapCols * this.blockWidth,
+                this.mapRows * this.blockHeight
         );
 
         this.testCanvas = new Canvas();
@@ -271,31 +262,33 @@ public class Map implements CellEventCallbackHandler
         // draw title backend
         for (int row = 0; row < this.mapRows; row++) {
             for (int col = 0; col < this.mapCols; col++) {
-                this.backgroundGraphic.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, row * Map.SPRITE_HEIGHT, 0, 0, 65, 65);
+                this.backgroundGraphic.drawPixmap(Assets.mapSprite, col * this.blockWidth, row * this.blockHeight, 0, 0, 65, 65);
             }
         }
 
         // draw walls
+
         // top wall
         for (int col = 1; col < this.mapCols - 1; col++) {
-            this.backgroundGraphic.drawPixmap(Assets.mapSprite, col * Map.SPRITE_WIDTH, 0, 256, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+            this.backgroundGraphic.drawPixmap(Assets.mapSprite, col * this.blockWidth, 0, 256, 0,  this.blockWidth,  this.blockHeight);
         }
+
         // left wall
         for (int row = 1; row < this.mapRows - 2; row++) {
-            this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, row * Map.SPRITE_HEIGHT, 192, 64,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+            this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, row * this.blockHeight, 192, 64,  this.blockWidth,  this.blockHeight);
         }
         // right wall
         for (int row = 1; row < this.mapRows - 2; row++) {
-            this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), row * Map.SPRITE_HEIGHT, 320, 64,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+            this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * this.blockWidth), row * this.blockHeight, 320, 64,  this.blockWidth,  this.blockHeight);
         }
 
         // corners
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, 0, 192, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), 0, 320, 0,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, 0, 192, 0,  this.blockWidth,  this.blockHeight);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * this.blockWidth), 0, 320, 0,  this.blockWidth,  this.blockHeight);
 
         // corners before bottom line
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 512, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
-        this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * Map.SPRITE_WIDTH), ((this.mapRows - 2) * Map.SPRITE_HEIGHT), 384, 128,  Map.SPRITE_WIDTH,  Map.SPRITE_HEIGHT);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, 0, ((this.mapRows - 2) * this.blockHeight), 512, 128,  this.blockWidth,  this.blockHeight);
+        this.backgroundGraphic.drawPixmap(Assets.mapSprite, ((this.mapCols-1)  * this.blockWidth), ((this.mapRows - 2) * this.blockHeight), 384, 128,  this.blockWidth,  this.blockHeight);
 
         // draw map start circle
         // Vector2 startCellLeftTopCorner = this.startCell.col
@@ -374,7 +367,7 @@ public class Map implements CellEventCallbackHandler
     public void update(float deltaTime)
     {
         // move map
-        if (this.follow != null)
+        /*if (this.follow != null)
         {
             // update map position by follow object
             // HitBox followHitBox = this.follow.hitBox;
@@ -382,7 +375,7 @@ public class Map implements CellEventCallbackHandler
 
             // update draw position
             // this.updateMapOptimizatonFields();
-        }
+        }*/
 
 
         // update map cells
@@ -483,8 +476,8 @@ public class Map implements CellEventCallbackHandler
         // for left top take 3 top
         int row = this.getRowByTop(rectOnMap.rect.top);
         int col = this.getColByLeft(rectOnMap.rect.left);
-//        int row = (int) Math.floor(rectOnMap.top / Map.SPRITE_HEIGHT);
-//        int col = (int) Math.floor(rectOnMap.left / Map.SPRITE_WIDTH);
+//        int row = (int) Math.floor(rectOnMap.top / this.blockHeight);
+//        int col = (int) Math.floor(rectOnMap.left / this.blockWidth);
 
         // take nine sqars
         for (int forCol = col - 1; forCol <= col + 1; forCol++) {
@@ -560,7 +553,7 @@ public class Map implements CellEventCallbackHandler
         return cell.isIntersectPointInsideCell(left, top);
     }
 
-    /**
+    /*
      * Get cell by position on map
      * @return Cell
 
@@ -574,40 +567,39 @@ public class Map implements CellEventCallbackHandler
      */
     public Map.Cell getCellByPosition (float left, float top) {
         return new Map.Cell(
-                this.getColByLeftNotStatic(left),
-                this.getRowByTopNotStatic(top)
+                this.getColByLeft(left),
+                this.getRowByTop(top)
         );
     }
 
-    /**
+    /*
      * @deprecated
      * Row by top position
-     */
+     *
     public static int getRowByTop(float top) {
-        // return (int) Math.floor(top / Map.SPRITE_HEIGHT);
         return (int) Math.floor(top / Jackal.BLOCK_HEIGHT);
     }
 
-    /**
+    /*
      * @deprecated
      * Col by left position
-     */
+     *
     public static int getColByLeft(float left) {
-        // return (int) Math.floor(left / Map.SPRITE_WIDTH);
+        // return (int) Math.floor(left / this.blockWidth);
         return (int) Math.floor(left / Jackal.BLOCK_WIDTH);
-    }
+    }*/
 
     /**
      * Row by top position
      */
-    public int getRowByTopNotStatic(float top) {
+    public int getRowByTop(float top) {
         return (int) Math.floor(top / this.blockHeight);
     }
 
     /**
      * Col by left position
      */
-    public int getColByLeftNotStatic(float left) {
+    public int getColByLeft(float left) {
         return (int) Math.floor(left / this.blockWidth);
     }
 
