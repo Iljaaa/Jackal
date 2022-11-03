@@ -34,7 +34,7 @@ public class HitBox
     }
 
     public float getCenterY() {
-        return this.rect.centerX();
+        return this.rect.centerY();
     }
 
     public float width() {
@@ -55,10 +55,7 @@ public class HitBox
         if (b.mapPosition.x > this.rect.right) return false;
         if (b.mapPosition.y < this.rect.top) return false;
         if (b.mapPosition.y > this.rect.bottom) return false;
-        // if (b.x < this.left) return false;
-        // if (b.x > this.right) return false;
-        // if (b.y < this.top) return false;
-        // if (b.y > this.bottom) return false;
+
         return true;
     }
 

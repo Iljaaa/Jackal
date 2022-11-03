@@ -12,6 +12,7 @@ import com.a530games.jackal.World;
 import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
+import com.a530games.jackal.textures.BlowAnimation;
 
 public class Player
 {
@@ -88,22 +89,10 @@ public class Player
 
     private final PlayerEventHandler playerEventHandler;
 
-    // blows data
-
     /**
-     * Blows after death
+     * Die blows animation
      */
-    private final SpriteWithAnimation[] blows;
-
-    /**
-     * One blow timer
-     */
-    private float nextBlowIn = 0.5f;
-
-    /**
-     * Summery blow up timer
-     */
-    private float summeryBlowUpTimer = 5f;
+    private final SmallBlowsSwarm dieBlows;
 
     /**
      *
@@ -127,12 +116,7 @@ public class Player
         this.sprite = new Sprite(Assets.player, 0, 0);
         this.sprite.set(1, 0);
 
-        this.blows = new SpriteWithAnimation[5];
-        for (int i = 0; i < this.blows.length; i++) {
-            this.blows[i] = new SpriteWithAnimation(Assets.smallBlow);
-            this.blows[i].setSpriteSize(16, 16);
-            this.blows[i].setScreenMargin(16, 16);
-        }
+        this.dieBlows = new SmallBlowsSwarm(5);
     }
 
     public void update(float deltaTime)
@@ -145,7 +129,8 @@ public class Player
             this.updateHitTimer(deltaTime);
         }
 
-        this.updateBlow(deltaTime);
+        // update diw blows
+        this.dieBlows.update(deltaTime);
     }
 
     private void updateHitTimer(float deltaTim)
@@ -165,53 +150,6 @@ public class Player
         }
     }
 
-    private void updateBlow (float deltaTime)
-    {
-        // is blows finish
-        /*this.summeryBlowUpTimer -= deltaTime;
-        if (this.summeryBlowUpTimer <= 0)
-        {
-            this.state = Tank.STATE_DEAD;
-
-            if (this.dieEventHandler != null) {
-                this.dieEventHandler.enemyDie(this);
-            }
-
-            return;
-        }*/
-
-        for (int i = 0; i < this.blows.length; i++)
-        {
-            // SpriteWithAnimation blow = ;
-            if (!this.blows[i].isStart) continue;
-            this.blows[i].update(deltaTime);
-        }
-
-        this.nextBlowIn -= deltaTime;
-        if (nextBlowIn <= 0)
-        {
-            this.nextBlowIn = 0.05f;
-            for (int i = 0; i < this.blows.length; i++)
-            {
-                // SpriteWithAnimation blow = this.blows[i];
-                if (this.blows[i].isStart) continue;
-                // this.blow.start(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop());
-
-                // todo: fix magic numbers
-                this.blows[i].start(
-                        this.hitBox.getCenterX() + (Jackal.getRandom().nextFloat() * 17 * (Jackal.getRandom().nextBoolean() ? -1 : 1)) - 20,
-                        this.hitBox.getCenterY() + (Jackal.getRandom().nextFloat() * 17 * (Jackal.getRandom().nextBoolean() ? -1 : 1)) - 20
-//                        this.hitBox.getCenterLeft() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 8,
-//                        this.hitBox.getCenterTop() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 8
-                );
-
-                break;
-            }
-        }
-
-
-    }
-
     public void present(Graphics g, World world)
     {
         // int playerScreenX = Math.round(this.world.player.hitBox.left);
@@ -227,8 +165,8 @@ public class Player
         if (!this.isBlink) {
             g.drawPixmap(
                     this.sprite.image,
-                    Math.round(playerScreenX) - 12, //
-                    Math.round(playerSourceY) - 12,
+                    playerScreenX - 12, //
+                    playerSourceY - 12,
                     this.sprite.getLeft(),
                     this.sprite.getTop(),
                     this.sprite.width, // 64,
@@ -237,20 +175,16 @@ public class Player
             // draw turret
             g.drawPixmap(
                     this.gun.image,
-                    Math.round(playerScreenX) - 12, //
-                    Math.round(playerSourceY) - 12,
+                    playerScreenX - 12, //
+                    playerSourceY - 12,
                     this.gun.getLeft(),
                     this.gun.getTop(),
                     this.gun.width, // 64,
                     this.gun.height); // 64);
         }
 
-        // draw blow
-        for (int i = 0; i < this.blows.length; i++) {
-            // SpriteWithAnimation blow = this.blows[i];
-            this.blows[i].present(g, world);
-        }
-
+        // update die blows
+        this.dieBlows.present(g, playerScreenX, playerSourceY);
     }
 
     public void offsetCenterTo(float newLeft, float newTop) {
@@ -311,7 +245,7 @@ public class Player
             return true;
         }
 
-        // intersect with other peoples
+        // intersect with other peoples, lol
 
         return false;
     }
