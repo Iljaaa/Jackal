@@ -239,7 +239,7 @@ public class Player
         }
 
         // intersect enemies
-        if (world.enemies.isHitboxIdIntersectWithEnemy(this.hitBox)) {
+        if (world.enemies.isPlayerHitboxIntersectEnemy(this.hitBox)) {
             return true;
         }
 

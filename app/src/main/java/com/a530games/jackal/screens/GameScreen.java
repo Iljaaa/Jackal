@@ -902,9 +902,21 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     private void presentEnemies(Graphics g)
     {
 
+        ListIterator<Enemy> listIterator = this.world.enemies.listIterator();
+        while (listIterator.hasNext())
+        {
+            Enemy enemy = listIterator.next();
+
+            // enemy.present(g, this.world);
+            enemy.present(g, this.camera);
+
+            // draw hitbox
+            HitBox hitbox = enemy.getHitBox();
+            if (hitbox != null) this.drawHitBox(g, hitbox);
+        }
 
         //
-        int enemiesSize = this.world.enemies.size();
+        /*int enemiesSize = this.world.enemies.size();
         if (enemiesSize > 0) {
             for (int i = 0; i < enemiesSize; i++)
             {
@@ -918,7 +930,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 HitBox hitbox = enemy.getHitBox();
                 if (hitbox != null) this.drawHitBox(g, hitbox);
             }
-        }
+        }*/
     }
 
     /**

@@ -15,11 +15,11 @@ public class EnemyBulletsCollectionLinkedList
         this.bullets = new LinkedList<>();
     }
 
-    public int size() {
+    /*public int size() {
         return this.bullets.size();
-    }
+    }*/
 
-    public boolean add(Object item)
+    /*public boolean add(Object item)
     {
         if (this.size() >= MAX_BULLETS_SIZE) {
             return false;
@@ -27,7 +27,7 @@ public class EnemyBulletsCollectionLinkedList
 
         this.bullets.add((Bullet) item);
         return true;
-    }
+    }*/
 
     /*public Bullet get (int index) {
         return this.bullets.get(index);

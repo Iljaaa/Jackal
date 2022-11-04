@@ -15,9 +15,9 @@ public class PlayerBulletsCollectionLinkedList
         this.bullets = new LinkedList<>();
     }
 
-    public int size() {
+    /*public int size() {
         return this.bullets.size();
-    }
+    }*/
 
     /**
      */

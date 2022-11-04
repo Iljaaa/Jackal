@@ -11,13 +11,12 @@ import com.a530games.jackal.map.MapCell;
 import com.a530games.jackal.map.MapEventsHandler;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.DropPad;
-import com.a530games.jackal.objects.EnemiesCollection;
+import com.a530games.jackal.objects.EnemiesCollectionLinkedList;
 import com.a530games.jackal.objects.EnemyBulletsCollectionLinkedList;
 import com.a530games.jackal.objects.PlayerBulletsCollectionLinkedList;
 import com.a530games.jackal.objects.PlayerEventHandler;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.Enemy;
-import com.a530games.jackal.objects.EnemyBulletsCollection;
 import com.a530games.jackal.objects.Player;
 
 import java.util.ListIterator;
@@ -46,12 +45,15 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
      */
     public DropPad dropPad;
 
-    // player bullets
+    /**
+     * player bullets
+     */
     public PlayerBulletsCollectionLinkedList playerBullets;
 
-    // enemies
-    // public ArrayList<Vehicle> enemies;
-    public EnemiesCollection enemies;
+    /**
+     * Enemies
+     */
+    public EnemiesCollectionLinkedList enemies;
 
     /**
      * Enemies bullets
@@ -97,7 +99,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         // this.map.setFollowObject(this.player);
 
         // this.enemies = new ArrayList<>(10);
-        this.enemies = new EnemiesCollection();
+        this.enemies = new EnemiesCollectionLinkedList();
 
         // this.enemies.add(new Tank(this,100, 100));
         // this.enemies.add(new Commandos(400, 800));
@@ -193,6 +195,9 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         }*/
     }
 
+    /**
+     * Update player bullets
+     */
     private void updatePlayerBullets(float deltaTime)
     {
 
@@ -240,10 +245,26 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         bullet.update(deltaTime);
     }
 
+    /**
+     * Update enemies
+     */
     private void updateEnemies (float deltaTime)
     {
         // delete dead enemies
-        this.enemies.clearDeadEnemies();
+        // this.enemies.clearDeadEnemies();
+
+        ListIterator<Enemy> listIterator = this.enemies.listIterator();
+        while (listIterator.hasNext())
+        {
+            Enemy enemy = listIterator.next();
+
+            // delete out bullet
+            if (enemy.isDead()){
+                listIterator.remove();
+            }
+
+            this.updateOneEnemy(enemy, deltaTime);
+        }
 
         /*boolean enemyDeleted;
         int enemiesSize;
@@ -271,8 +292,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
 
 
         //  update enemies and check intersect with bullets
-        // todo: remake to iterator
-        int enemiesSize = this.enemies.size();
+        /*int enemiesSize = this.enemies.size();
         int playerBulletsSize = this.playerBullets.size();
 
         if (enemiesSize > 0)
@@ -306,21 +326,41 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
                     }
                 }
 
-                /*for (int bulletIndex = 0; bulletIndex < playerBulletsSize; bulletIndex++)
+            }
+        }*/
+    }
+
+    /**
+     * Update one enemby
+     */
+    private void updateOneEnemy(Enemy enemy, float deltaTime)
+    {
+        // check intersect with player bullets
+        HitBox hitbox = enemy.getHitBox();
+        if (hitbox != null) {
+            ListIterator<Bullet> listIterator = this.playerBullets.listIterator();
+            while (listIterator.hasNext())
+            {
+                Bullet b = listIterator.next();
+                if (b.isOut()) continue;
+
+                if (hitbox.isHit(b))
                 {
-                    Bullet b = this.bullets.get(bulletIndex);
-                    if (b.isOut()) continue;
+                    // hit enemy here
+                    enemy.hit(1);
 
-                    // HitBox hitbox = enemy.getHitBox();
-                    if (hitbox != null && hitbox.isHit(b))
-                    {
-                        enemy.hit(1);
+                    // disable bullet
+                    b.setIsOutOnHitEnemy();
 
-                        b.setIsOutOnHitEnemy(); // disable bullet
-                    }
-                }*/
+                    // and brake this cicle
+                    break;
+                }
             }
         }
+
+
+        // update enemy
+        enemy.update(deltaTime, this);
     }
 
     /**
@@ -469,7 +509,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         }
 
         // check intersect with enem
-        if (this.enemies.isAnyEnemyIntersectWithOtherEnemy(enemy)) {
+        if (this.enemies.isIntersectWithEnemies(enemy)) {
             return;
         }
 
