@@ -34,7 +34,7 @@ public class ArenaLevel implements Level
     {
         // bottom line
         for (int col = 0; col < map.mapCols; col++) {
-            map.addObjectToMap(new Beach(map.mapRows - 1, col), col, map.mapRows - 1);
+            map.addObjectToMap(new Beach(col, map.mapRows - 1), col, map.mapRows - 1);
         }
 
         map.addObjectToMap(new TankSpown(1, 1), 1, 1);

@@ -57,8 +57,8 @@ public class Camera2D
         this.mapBlockHeight = mapBlockHeight;
 
         //
-        this.halfWidthInBlocks = (int) Math.ceil(screenWidth * 0.5/ mapBlockWith);
-        this.halfHeightInBlocks = (int) Math.ceil(screenHeight * 0.5/ mapBlockHeight);
+        this.halfWidthInBlocks = (int) Math.ceil(screenWidth * 0.5/ mapBlockWith) + 1; // <- 1 is view range
+        this.halfHeightInBlocks = (int) Math.ceil(screenHeight * 0.5/ mapBlockHeight) + 1;
 
         this.position = new Vector2F();
         // this.playerScreenRect = new Rect();
@@ -137,12 +137,10 @@ public class Camera2D
     }
 
     /**
-     *
+     * Calculate and return view rect
      */
     public Rect getViewRectInBlocks(Map.Cell centerCell)
     {
-        // берем полицияю камеры
-
         this._viewRect.set(
                 centerCell.col - this.halfWidthInBlocks,
                 centerCell.row - this.halfHeightInBlocks,

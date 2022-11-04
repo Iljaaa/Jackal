@@ -32,6 +32,11 @@ public class Map implements CellEventCallbackHandler
     public static final int SPRITE_WIDTH = 64;
 
     /**
+     * map size in blocks
+     */
+    public int mapRows, mapCols;
+
+    /**
      * Map block size
      */
     public int blockWidth, blockHeight;
@@ -60,15 +65,11 @@ public class Map implements CellEventCallbackHandler
     // private final Rect playerScreenRect;
 
     // object () min max position
+    // todo: refactor to rect
     private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
 
-    /**
-     * map size in blocks
-     */
-    public int mapRows, mapCols;
-
     // map optimization min|max positions for draw
-    public int drawMinCol = 0, drawMaxCol = 0, drawMinRow = 0, drawMaxRow = 0;
+    // public int drawMinCol = 0, drawMaxCol = 0, drawMinRow = 0, drawMaxRow = 0;
 
     /**
      * Paint for active cell
@@ -218,7 +219,6 @@ public class Map implements CellEventCallbackHandler
         // this.b = new BitmapFactory();
         this.testPaint.setStyle(Paint.Style.FILL);
         this.testPaint.setColor(Color.RED);
-
     }
 
     /*

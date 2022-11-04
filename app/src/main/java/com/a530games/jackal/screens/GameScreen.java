@@ -519,8 +519,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         // g.drawPixmap(Assets.background, 0, 0);
 
+        // draw rect
+        Rect viewRect = this.camera.getViewRectInBlocks(this.world.map.getCellByPosition(this.camera.position.x, this.camera.position.y));
+
         // рисуем имр
-        this.drawWorld(this.world);
+        this.drawWorld(g, viewRect);
 
         // рисуем сайдбар
         this.drawSidebar(this.sidebar);
@@ -584,10 +587,13 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         g.drawLine(0, screenCenterY , this.mapScreenWidthInPixels, screenCenterY, Color.GRAY);
     }
 
-    private void drawWorld(World world)
+    /**
+     * Draw player, map, enemies and bullets
+     */
+    private void drawWorld(Graphics g, Rect drawREct)
     {
         // draw backend
-        this.drawMap();
+        this.drawMap(g, drawREct);
 
         // draw player
         this.drawPlayer();
@@ -647,9 +653,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 this.hitBoxPaint);
     }*/
 
-    protected void drawMap()
+    /**
+     * Draw background and map objects
+     */
+    protected void drawMap(Graphics g, Rect drawREct)
     {
-        Graphics g = this.game.getGraphics();
 
         // draw back part of map
         /*g.drawBitmap(
@@ -673,8 +681,10 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         // draw object on map
         // todo: move this code inside map
-        for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
-            for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
+        // for (int row = this.world.map.drawMinRow; row < this.world.map.drawMaxRow; row++) {
+//            for (int col = this.world.map.drawMinCol; col < this.world.map.drawMaxCol; col++)
+        for (int row = Math.max(drawREct.top, 0); row < Math.min(drawREct.bottom, this.world.map.mapRows); row++) {
+            for (int col = Math.max(drawREct.left, 0); col < Math.min(drawREct.right, this.world.map.mapCols); col++)
             {
                 MapObject c = this.world.map.fields[row][col];
                 if (c == null) continue;
