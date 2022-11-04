@@ -125,8 +125,15 @@ public class Camera2D
     /**
      * Set camera position
      */
-    public void setPosition(Vector2F newPosition){
+    public void setPosition(Vector2F newPosition)
+    {
         this.position.set(newPosition);
+
+        // move camera inside limits
+        if (this.position.y > this.mapLimits.bottom) this.position.y = this.mapLimits.bottom;
+        if (this.position.y < this.mapLimits.top) this.position.y = this.mapLimits.top;
+        if (this.position.x > this.mapLimits.right) this.position.x = this.mapLimits.right;
+        if (this.position.x < this.mapLimits.left) this.position.x = this.mapLimits.left;
     }
 
     /**
