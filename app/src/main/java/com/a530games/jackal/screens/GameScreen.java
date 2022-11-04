@@ -142,8 +142,10 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.mapScreenHeightInBlocks = (int) Math.floor(this.game.getGraphics().getFrameBufferHeight() / (float) Jackal.BLOCK_HEIGHT);
 
         // calculate screen size
-        this.mapScreenWidthInPixels = this.mapScreenWidthInBlocks * Jackal.BLOCK_WIDTH;
-        this.mapScreenHeightInPixels = this.mapScreenHeightInBlocks * Jackal.BLOCK_HEIGHT;
+        this.mapScreenWidthInPixels = g.getFrameBufferWidth();
+        this.mapScreenHeightInPixels = g.getFrameBufferHeight();
+        // this.mapScreenWidthInPixels = this.mapScreenWidthInBlocks * Jackal.BLOCK_WIDTH;
+        // this.mapScreenHeightInPixels = this.mapScreenHeightInBlocks * Jackal.BLOCK_HEIGHT;
 
         // create world width calculated map size
         this.world = new World(playerStartHp, Jackal.BLOCK_WIDTH, Jackal.BLOCK_HEIGHT);
