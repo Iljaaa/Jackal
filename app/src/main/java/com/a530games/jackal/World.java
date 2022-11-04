@@ -209,8 +209,10 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
 
     private void updateEnemies (float deltaTime)
     {
+        // delete dead enemies
+        this.enemies.clearDeadEnemies();
 
-        boolean enemyDeleted;
+        /*boolean enemyDeleted;
         int enemiesSize;
 
         // delete dead enemies
@@ -231,12 +233,13 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
                 }
             }
         }
-        while (enemyDeleted);
+        while (enemyDeleted);*/
         // while (enemyDeleted && enemiesSize > 0);
 
 
         //  update enemies and check intersect with bullets
-        enemiesSize = this.enemies.size();
+        // todo: remake to iterator
+        int enemiesSize = this.enemies.size();
         int playerBulletsSize = this.bullets.size();
 
         if (enemiesSize > 0)
@@ -264,6 +267,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
             }
         }
     }
+
 
     private void updateEnemyBullets (float deltaTime)
     {

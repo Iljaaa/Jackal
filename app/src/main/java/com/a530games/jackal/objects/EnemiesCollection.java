@@ -4,6 +4,7 @@ import com.a530games.framework.helpers.HitBox;
 import com.a530games.jackal.objects.enemies.Enemy;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class EnemiesCollection
 {
@@ -98,5 +99,15 @@ public class EnemiesCollection
         }
 
         return false;
+    }
+
+    public void clearDeadEnemies()
+    {
+        ListIterator<Enemy> listIterator = this.enemies.listIterator();
+        while (listIterator.hasNext()) {
+            Enemy enemy = listIterator.next();
+            if (enemy.isDead()) listIterator.remove();
+        }
+
     }
 }
