@@ -47,6 +47,11 @@ public class FirstLevel implements Level
     }
 
     @Override
+    public String getName() {
+        return "Garbage";
+    }
+
+    @Override
     public int getMapCols() {
         return 30;
     }

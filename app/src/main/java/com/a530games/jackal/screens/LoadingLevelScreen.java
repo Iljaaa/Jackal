@@ -1,6 +1,7 @@
 package com.a530games.jackal.screens;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 
 import com.a530games.framework.Game;
 import com.a530games.framework.Graphics;
@@ -12,7 +13,15 @@ import com.a530games.jackal.levels.Level;
 
 public class LoadingLevelScreen extends Screen
 {
-    float timer = 0;
+    /**
+     * Emulate loading timer
+     */
+    private float timer = 2f;
+
+    /**
+     * Summry loading time
+     */
+    private final float sumLoadTime = 2f;
 
     boolean isAssetsIsLoaded;
 
@@ -21,7 +30,25 @@ public class LoadingLevelScreen extends Screen
      */
     int startPlayerHp;
 
+    /**
+     * Loading level
+     */
     Level level;
+
+    /**
+     * Screen titles paint
+     */
+    Paint titlePaint, subTitlePaint, progressbarPaint, progressbarRectPaint;
+
+    /**
+     * Half of progressbar width
+     */
+    private final int progressbarHalfWidth = 200;
+
+    /**
+     * Current loading progress
+     */
+    private int _currentProgressbarWidth = 0;
 
     public LoadingLevelScreen(Game game, int playerStartHp, String level)
     {
@@ -31,9 +58,29 @@ public class LoadingLevelScreen extends Screen
         this.startPlayerHp = playerStartHp;
 
         this.level = this.factory(level);
+
+        this.titlePaint = new Paint();
+        this.titlePaint.setColor(Color.WHITE);
+        this.titlePaint.setTextAlign(Paint.Align.CENTER);
+        this.titlePaint.setTextSize(150);
+
+        this.subTitlePaint = new Paint();
+        this.subTitlePaint.setColor(Color.WHITE);
+        this.subTitlePaint.setTextAlign(Paint.Align.CENTER);
+        this.subTitlePaint.setTextSize(30);
+
+        this.progressbarRectPaint = new Paint();
+        this.progressbarRectPaint.setColor(Color.WHITE);
+        this.progressbarRectPaint.setStyle(Paint.Style.STROKE);
+        this.progressbarRectPaint.setStrokeWidth(2);
+
+        this.progressbarPaint = new Paint();
+        this.progressbarPaint.setColor(Color.WHITE);
+        this.progressbarPaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
-    private Level factory(String levelCode) {
+    private Level factory(String levelCode)
+    {
         switch (levelCode) {
             case "first": return new FirstLevel();
             case "arena": return new ArenaLevel();
@@ -44,26 +91,27 @@ public class LoadingLevelScreen extends Screen
     @Override
     public void update(float deltaTime)
     {
+        this.timer -= deltaTime;
 
         // loading map assets
-        if (this.timer < 2 && !this.isAssetsIsLoaded)
+        if (this.timer > 0 && !this.isAssetsIsLoaded)
         {
             // here load level sprite
             Assets.mapSprite = this.game.getGraphics().newPixmap("images/map.png", Graphics.PixmapFormat.RGB565);
 
-            this.isAssetsIsLoaded = true;
-        }
+            // this.isAssetsIsLoaded = true;
 
-        if (this.timer > 2)
-        {
-            this.loadLevel();
+            float percent = 1 - (this.timer / this.sumLoadTime);
+            this._currentProgressbarWidth =  (int) (this.progressbarHalfWidth * 2 * percent);
+
             return;
         }
 
-        this.timer += deltaTime;
+        // load finish goto level
+        this.goToLevel();
     }
 
-    private void loadLevel()
+    private void goToLevel()
     {
         // start loading
         GameScreen gs = new GameScreen(this.game, this.startPlayerHp);
@@ -121,10 +169,30 @@ public class LoadingLevelScreen extends Screen
     }*/
 
     @Override
-    public void present(float deltaTime) {
+    public void present(float deltaTime)
+    {
         Graphics g = game.getGraphics();
+        int screenCenterX = (int) Math.ceil(g.getFrameBufferWidth() * 0.5);
+
         g.clear(Color.BLACK);
-        this.game.getGraphics().drawText("loading level 1", 100, 150, 100, Color.MAGENTA);
+        g.drawText(this.level.getName(), screenCenterX, 250, this.titlePaint);
+        g.drawText("loading level", screenCenterX, 100, this.subTitlePaint);
+
+        g.drawRect(
+                screenCenterX - this.progressbarHalfWidth,
+                500,
+                this.progressbarHalfWidth * 2,
+                50,
+                this.progressbarRectPaint
+        );
+
+        g.drawRect(
+                screenCenterX - this.progressbarHalfWidth,
+                500,
+                this._currentProgressbarWidth,
+                50,
+                this.progressbarPaint
+        );
     }
 
     @Override

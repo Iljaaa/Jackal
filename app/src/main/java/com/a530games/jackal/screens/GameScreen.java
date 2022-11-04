@@ -1062,7 +1062,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.gameOverLoseMenu.present(g);
     }
 
-    private void drawTitle (Graphics g, String title) {
+    private void drawTitle (Graphics g, String title)
+    {
         g.drawText(title, (int) Math.ceil(this.mapScreenWidthInPixels * 0.5), 120, this.titlePaint);
     }
 

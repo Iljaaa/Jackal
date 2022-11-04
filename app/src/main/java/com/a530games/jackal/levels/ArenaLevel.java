@@ -15,6 +15,11 @@ public class ArenaLevel implements Level
     }
 
     @Override
+    public String getName() {
+        return "ARENA";
+    }
+
+    @Override
     public int getMapCols() {
         return 20;
     }

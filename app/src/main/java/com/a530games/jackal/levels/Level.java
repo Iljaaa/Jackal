@@ -10,6 +10,11 @@ public interface Level
     String getCode();
 
     /**
+     * Name of level
+     */
+    String getName();
+
+    /**
      * Map width in blocks
      */
     int getMapCols();
