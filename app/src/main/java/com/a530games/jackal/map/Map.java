@@ -142,8 +142,8 @@ public class Map implements CellEventCallbackHandler
     public void init (Level level, Graphics g, Player player, DropPad dropPad)
     {
         // map size in cols
-        this.mapCols = level.getMapWidthInCols();
-        this.mapRows = level.getMapHeightInCols();
+        this.mapCols = level.getMapCols();
+        this.mapRows = level.getMapRows();
 
         // calculate max map positions`
         // fixme: need move to camera

@@ -1,6 +1,5 @@
 package com.a530games.jackal.levels;
 
-import com.a530games.jackal.map.RectCell;
 import com.a530games.jackal.map.Map;
 
 public interface Level
@@ -13,12 +12,12 @@ public interface Level
     /**
      * Map width in blocks
      */
-    int getMapWidthInCols();
+    int getMapCols();
 
     /**
      * Map height in blocks
      */
-    int getMapHeightInCols();
+    int getMapRows();
 
     /**
      * Map start position

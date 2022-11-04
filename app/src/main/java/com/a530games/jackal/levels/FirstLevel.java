@@ -47,12 +47,12 @@ public class FirstLevel implements Level
     }
 
     @Override
-    public int getMapWidthInCols() {
+    public int getMapCols() {
         return 30;
     }
 
     @Override
-    public int getMapHeightInCols() {
+    public int getMapRows() {
         return 30;
     }
 

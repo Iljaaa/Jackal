@@ -15,12 +15,12 @@ public class ArenaLevel implements Level
     }
 
     @Override
-    public int getMapWidthInCols() {
+    public int getMapCols() {
         return 20;
     }
 
     @Override
-    public int getMapHeightInCols() {
+    public int getMapRows() {
         return 20;
     }
 

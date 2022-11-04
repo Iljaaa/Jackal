@@ -216,7 +216,10 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // move camera
         // Map.Cell dropPadCell = level.getPlayerDropPointCell();
         // Vector2F centerDropPadCell = this.world.map.startCell(dropPadCell);
-        this.camera.set(this.world.map.startCell.getCenter());
+        this.camera.setPosition(this.world.map.startCell.getCenter());
+
+        // update camera limits
+        this.camera.updateLimitsByMapSize(level.getMapCols(), level.getMapRows());
     }
 
     /**

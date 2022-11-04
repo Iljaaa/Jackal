@@ -13,6 +13,11 @@ public class Camera2D
     private final int screenWidth, screenHeight;
 
     /**
+     * Map block size
+     */
+    private final int mapBlockWidth, mapBlockHeight;
+
+    /**
      * Main camera position
      */
     public final Vector2F position;
@@ -28,12 +33,18 @@ public class Camera2D
     private final int followObjectViewDistance = 100;
 
     /**
+     * Camera max coords
+     */
+    private final Rect mapLimits;
+
+
+    /**
      * half screen in blocks
      */
     private final int halfWidthInBlocks, halfHeightInBlocks;
 
     /**
-     * Whiew rect
+     * Whiew rect in идщсл
      */
     private final Rect _viewRect;
 
@@ -42,12 +53,17 @@ public class Camera2D
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
+        this.mapBlockWidth = mapBlockWith;
+        this.mapBlockHeight = mapBlockHeight;
+
         //
         this.halfWidthInBlocks = (int) Math.ceil(screenWidth * 0.5/ mapBlockWith);
         this.halfHeightInBlocks = (int) Math.ceil(screenHeight * 0.5/ mapBlockHeight);
 
         this.position = new Vector2F();
         // this.playerScreenRect = new Rect();
+
+        this.mapLimits = new Rect();
 
         // calculate screen rect for move map position
         /*this.playerScreenRect.set (
@@ -62,6 +78,19 @@ public class Camera2D
     }
 
     /**
+     *
+     */
+    public void updateLimitsByMapSize(int mapCols, int mapRows)
+    {
+        this.mapLimits.set(
+                (this.screenWidth / 2),
+                (this.screenHeight / 2),
+                (mapCols * this.mapBlockWidth) - (this.screenWidth / 2),
+                (mapRows * this.mapBlockHeight) - (this.screenHeight / 2)
+        );
+    }
+
+    /**
      * Follow by point
      */
     public void followByPoint(float mapX, float mapY)
@@ -69,26 +98,34 @@ public class Camera2D
         float deltaX = this.position.x - mapX;
         float deltaY = this.position.y - mapY;
 
+        // top
         if (deltaY < (-1 * this.followObjectViewDistance)) {
             this.position.y -= deltaY + this.followObjectViewDistance;
+            if (this.position.y > this.mapLimits.bottom) this.position.y = this.mapLimits.bottom;
         }
 
         if (deltaY > this.followObjectViewDistance) {
             this.position.y -= deltaY - this.followObjectViewDistance;
+            if (this.position.y < this.mapLimits.top) this.position.y = this.mapLimits.top;
         }
 
+        // left
         if (deltaX < (-1 * this.followObjectViewDistance)) {
             this.position.x -= deltaX + this.followObjectViewDistance;
+            if (this.position.x > this.mapLimits.right) this.position.x = this.mapLimits.right;
         }
 
         if (deltaX > this.followObjectViewDistance) {
             this.position.x -= deltaX - this.followObjectViewDistance;
+            if (this.position.x < this.mapLimits.left) this.position.x = this.mapLimits.left;
         }
 
     }
 
-
-    public void set(Vector2F newPosition){
+    /**
+     * Set camera position
+     */
+    public void setPosition(Vector2F newPosition){
         this.position.set(newPosition);
     }
 
