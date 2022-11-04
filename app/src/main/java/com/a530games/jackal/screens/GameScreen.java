@@ -604,10 +604,10 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.presentEnemies(g);
 
         // player bullets
-        this.drawPlayerBullets(g);
+        this.presentPlayerBullets(g);
 
         // enemy bullets
-        this.drawBullets();
+        this.presentEnemyBullets(g);
 
         // map top level
         this.drawMapTopLayout();
@@ -924,7 +924,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     /**
      * Draw player bullets
      */
-    private void drawPlayerBullets (Graphics g)
+    private void presentPlayerBullets(Graphics g)
     {
         ListIterator<Bullet> listIterator = this.world.playerBullets.listIterator();
         while (listIterator.hasNext())
@@ -936,18 +936,9 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             g.drawPixmap(
                     Assets.bullet2,
                     this.camera.screenLeft(b.getX()) - 8,
-                    this.camera.screenTop(b.getY()) - 8, // <- ammmm
-                    0,
-                    0,
-                    16,
-                    16
+                    this.camera.screenTop(b.getY()) - 8 // <- ammmm
             );
         }
-    }
-
-    private void drawBullets()
-    {
-        Graphics g = this.game.getGraphics();
 
         // player bullets
         /*int bulletSize = this.world.bullets.size();
@@ -973,9 +964,30 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 this.drawPlayerShotBlow(g, b);
             }
         }*/
+    }
+
+    /**
+     * Draw enemy bullets
+     */
+    private void presentEnemyBullets(Graphics g)
+    {
+        ListIterator<Bullet> listIterator = this.world.playerBullets.listIterator();
+        while (listIterator.hasNext()) {
+            Bullet b = listIterator.next();
+            // if (b.isOut()) continue;
+
+            g.drawPixmap(
+                    Assets.bullet,
+                    // this.world.map.screenLeftPotion(b.getX()) - 8,
+                    // this.world.map.screenTopPotion(b.getY()) - 8, // <- ammmm
+                    this.camera.screenLeft(b.getX()) - 8,
+                    this.camera.screenTop(b.getY()) - 8
+            );
+        }
+
 
         // enemy bullets
-        int enemyBulletsSize = this.world.enemyBullets.size();
+        /*int enemyBulletsSize = this.world.enemyBullets.size();
         if (enemyBulletsSize > 0) {
             for (int i = 0; i < enemyBulletsSize; i++)
             {
@@ -990,7 +1002,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                         this.camera.screenTop(b.getY()) - 8
                 );
             }
-        }
+        }*/
     }
 
 

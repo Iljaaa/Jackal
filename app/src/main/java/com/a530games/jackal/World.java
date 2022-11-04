@@ -12,6 +12,7 @@ import com.a530games.jackal.map.MapEventsHandler;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.DropPad;
 import com.a530games.jackal.objects.EnemiesCollection;
+import com.a530games.jackal.objects.EnemyBulletsCollectionLinkedList;
 import com.a530games.jackal.objects.PlayerBulletsCollectionLinkedList;
 import com.a530games.jackal.objects.PlayerEventHandler;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
@@ -52,8 +53,10 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     // public ArrayList<Vehicle> enemies;
     public EnemiesCollection enemies;
 
-    //
-    public EnemyBulletsCollection enemyBullets;
+    /**
+     * Enemies bullets
+     */
+    public EnemyBulletsCollectionLinkedList enemyBullets;
 
     // map
     public Map map;
@@ -108,7 +111,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.playerBullets = new PlayerBulletsCollectionLinkedList();
 
         // enemy bullets collection
-        this.enemyBullets = new EnemyBulletsCollection();
+        this.enemyBullets = new EnemyBulletsCollectionLinkedList();
 
         //
         /*this.tankHitSounds = new ArrayList<>();
@@ -320,10 +323,26 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         }
     }
 
-
+    /**
+     * Update enemies bullets
+     */
     private void updateEnemyBullets (float deltaTime)
     {
-        int enemyBulletsSize = this.enemyBullets.size();
+        ListIterator<Bullet> listIterator = this.enemyBullets.listIterator();
+        while (listIterator.hasNext())
+        {
+            Bullet b = listIterator.next();
+
+            // delete out bullet
+            if (b.isOut()){
+                listIterator.remove();
+                continue;
+            }
+
+            this.updateOneEnemyBullet(b, deltaTime);
+        }
+
+        /*int enemyBulletsSize = this.enemyBullets.size();
         if (enemyBulletsSize > 0) {
             for (int i = 0; i < enemyBulletsSize; i++) {
                 Bullet b = this.enemyBullets.get(i);
@@ -351,7 +370,40 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
                     }
                 }
             }
+        }*/
+    }
+
+    /**
+     * Update one enemy bullet
+     */
+    private void updateOneEnemyBullet (Bullet bullet, float deltaTime)
+    {
+        // check intersect bullet with map
+        // if (this.map.isIntersectPoint(b.x, b.y)) {
+        if (this.map.isIntersectPoint(bullet.mapPosition.x, bullet.mapPosition.y))
+        {
+            bullet.setIsOutOnIntersectWithMap();
+            return;
         }
+
+        // check intersect with player
+        if (this.player.hitBox.isHit(bullet))
+        {
+            // player hit
+            this.player.hit(1);
+
+            // mark bullet is out
+            bullet.setIsOutOnHitEnemy();
+
+            if(Settings.soundEnabled) {
+                Assets.playerHit.play(1);
+            }
+
+            return;
+        }
+
+        //
+        bullet.update(deltaTime);
     }
 
     /**
@@ -445,7 +497,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     @Override
     public void enemyFire(float mapPositionX, float mapPositionY, Vector2F direction)
     {
-        Bullet b = this.enemyBullets.getFreeBullet();
+        Bullet b = this.enemyBullets.getFreeElement();
         if (b == null) return;
 
         // b.reNewByVector(mapPositionX, mapPositionY, this.turretAngle.x, this.turretAngle.y);
