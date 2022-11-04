@@ -1,10 +1,11 @@
 package com.a530games.jackal.objects;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class PlayerBulletsCollection
 {
-    private ArrayList<Bullet> bullets;
+    private final ArrayList<Bullet> bullets;
 
     // max bullets size
     static final int MAX_BULLETS_SIZE = 20;
@@ -21,9 +22,9 @@ public class PlayerBulletsCollection
         return this.bullets.size();
     }
 
-    public Bullet get (int index){
+    /*public Bullet get (int index){
         return this.bullets.get(index);
-    }
+    }*/
 
     /*public boolean add(Bullet bullet)
     {
@@ -63,5 +64,9 @@ public class PlayerBulletsCollection
         this.bullets.add(b);
         return b;*/
         return null;
+    }
+
+    public ListIterator<Bullet> listIterator() {
+        return this.bullets.listIterator();
     }
 }

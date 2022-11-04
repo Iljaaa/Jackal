@@ -12,6 +12,7 @@ import com.a530games.framework.Graphics;
 import com.a530games.framework.Input;
 import com.a530games.framework.Screen;
 import com.a530games.framework.TouchEventsCollection;
+import com.a530games.framework.helpers.HitBox;
 import com.a530games.framework.helpers.SaveBitmapToFile;
 import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
@@ -37,6 +38,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  *
@@ -113,7 +115,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     /**
      * Paint fro player hitbox rect
      */
-    Paint playerHitBoxPaint;
+    Paint hitBoxPaint;
 
     /**
      * Screen titles paint
@@ -179,10 +181,10 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         ///////////////////
 
-        this.playerHitBoxPaint = new Paint();
-        this.playerHitBoxPaint.setStyle(Paint.Style.STROKE);
-        this.playerHitBoxPaint.setStrokeWidth(1);
-        this.playerHitBoxPaint.setColor(Color.GREEN);
+        this.hitBoxPaint = new Paint();
+        this.hitBoxPaint.setStyle(Paint.Style.STROKE);
+        this.hitBoxPaint.setStrokeWidth(1);
+        this.hitBoxPaint.setColor(Color.GREEN);
 
         this.titlePaint = new Paint();
         this.titlePaint.setColor(Color.RED);
@@ -599,9 +601,12 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.drawPlayer();
 
         //
-        this.drawEnemies();
+        this.presentEnemies(g);
 
-        //
+        // player bullets
+        this.drawPlayerBullets(g);
+
+        // enemy bullets
         this.drawBullets();
 
         // map top level
@@ -848,22 +853,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.drawPlayerTurretAngle(g);
 
         // player hitbox
-        this.drawPlayerHitBox(g);
-    }
-
-    private void drawPlayerHitBox (Graphics g)
-    {
-        // g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.playerHitBoxPaint);
-
-        g.drawRect(
-                // this.world.map.screenLeftPotion(this.world.player.hitBox.rect.left),
-                // this.world.map.screenTopPotion(this.world.player.hitBox.rect.top),
-                this.camera.screenLeft(this.world.player.hitBox.rect.left),
-                this.camera.screenTop(this.world.player.hitBox.rect.top),
-                (int) this.world.player.hitBox.rect.width(),
-                (int) this.world.player.hitBox.rect.height(),
-                this.playerHitBoxPaint
-        );
+        this.drawHitBox(g, this.world.player.hitBox);
     }
 
     /**
@@ -906,9 +896,12 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 Color.GREEN);
     }
 
-    private void drawEnemies()
+    /**
+     * Present enemies
+     */
+    private void presentEnemies(Graphics g)
     {
-        Graphics g = this.game.getGraphics();
+
 
         //
         int enemiesSize = this.world.enemies.size();
@@ -920,7 +913,35 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
                 // enemy.present(g, this.world);
                 enemy.present(g, this.camera);
+
+                // draw hitbox
+                HitBox hitbox = enemy.getHitBox();
+                if (hitbox != null) this.drawHitBox(g, hitbox);
             }
+        }
+    }
+
+    /**
+     * Draw player bullets
+     */
+    private void drawPlayerBullets (Graphics g)
+    {
+        ListIterator<Bullet> listIterator = this.world.playerBullets.listIterator();
+        while (listIterator.hasNext())
+        {
+            Bullet b = listIterator.next();
+            // if (b.isOut()) continue;
+
+            // todo: make bullet sprite
+            g.drawPixmap(
+                    Assets.bullet2,
+                    this.camera.screenLeft(b.getX()) - 8,
+                    this.camera.screenTop(b.getY()) - 8, // <- ammmm
+                    0,
+                    0,
+                    16,
+                    16
+            );
         }
     }
 
@@ -929,7 +950,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         Graphics g = this.game.getGraphics();
 
         // player bullets
-        int bulletSize = this.world.bullets.size();
+        /*int bulletSize = this.world.bullets.size();
         if (bulletSize > 0) {
             for (int i = 0; i < bulletSize; i++)
             {
@@ -951,7 +972,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
                 this.drawPlayerShotBlow(g, b);
             }
-        }
+        }*/
 
         // enemy bullets
         int enemyBulletsSize = this.world.enemyBullets.size();
@@ -971,6 +992,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             }
         }
     }
+
+
 
     private void drawPlayerShotBlow(Graphics g, Bullet b)
     {
@@ -1015,6 +1038,23 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             );
         }
     }
+
+    private void drawHitBox(Graphics g, HitBox hitBox)
+    {
+        // g.drawRect(this.world.player.getScreenDrawHitbox(this.world.map), this.playerHitBoxPaint);
+
+        g.drawRect(
+                // this.world.map.screenLeftPotion(this.world.player.hitBox.rect.left),
+                // this.world.map.screenTopPotion(this.world.player.hitBox.rect.top),
+                this.camera.screenLeft(hitBox.rect.left),
+                this.camera.screenTop(hitBox.rect.top),
+                (int) hitBox.rect.width(),
+                (int) hitBox.rect.height(),
+                this.hitBoxPaint
+        );
+    }
+
+    ///////////////
 
     private void drawReadyUI()
     {

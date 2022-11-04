@@ -38,8 +38,10 @@ public interface Enemy
      */
     void present (Graphics g, Camera2D camera);
 
+
     /**
      * Is enemy hit by payer bullet
+     * @return is hit success
      */
     boolean hit(int damage);
 

@@ -12,12 +12,14 @@ import com.a530games.jackal.map.MapEventsHandler;
 import com.a530games.jackal.objects.Bullet;
 import com.a530games.jackal.objects.DropPad;
 import com.a530games.jackal.objects.EnemiesCollection;
+import com.a530games.jackal.objects.PlayerBulletsCollectionLinkedList;
 import com.a530games.jackal.objects.PlayerEventHandler;
 import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import com.a530games.jackal.objects.enemies.Enemy;
 import com.a530games.jackal.objects.EnemyBulletsCollection;
 import com.a530games.jackal.objects.Player;
-import com.a530games.jackal.objects.PlayerBulletsCollection;
+
+import java.util.ListIterator;
 
 public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEventsHandler
 {
@@ -44,7 +46,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     public DropPad dropPad;
 
     // player bullets
-    public PlayerBulletsCollection bullets;
+    public PlayerBulletsCollectionLinkedList playerBullets;
 
     // enemies
     // public ArrayList<Vehicle> enemies;
@@ -102,8 +104,10 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         this.dropPad = new DropPad(this);
         this.enemies.add(this.dropPad);
 
-        // инициализируем массиа с пулями
-        this.bullets = new PlayerBulletsCollection();
+        // player bullets collection
+        this.playerBullets = new PlayerBulletsCollectionLinkedList();
+
+        // enemy bullets collection
         this.enemyBullets = new EnemyBulletsCollection();
 
         //
@@ -134,8 +138,6 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
 
         // is game win
         if (this.gameOverSuccess) return;
-
-        // this.tickTime += deltaTime;
 
         // update player
         this.player.update(deltaTime);
@@ -190,21 +192,49 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
 
     private void updatePlayerBullets(float deltaTime)
     {
-        int bulletSize = this.bullets.size();
+
+        ListIterator<Bullet> listIterator = this.playerBullets.listIterator();
+        while (listIterator.hasNext())
+        {
+            Bullet b = listIterator.next();
+
+            // delete out bullet
+            if (b.isOut()){
+                listIterator.remove();
+            }
+
+            this.updateOnePlayerBullet(b, deltaTime);
+        }
+
+        /*int bulletSize = this.bullets.size();
         if (bulletSize > 0) {
             for (int i = 0; i < bulletSize; i++)
             {
                 Bullet b = this.bullets.get(i);
                 if (b.isOut()) continue;
 
-                // if (this.map.isIntersectPoint(b.x, b.y)) {
+                // check bullet is intersect with map objects
                 if (this.map.isIntersectPoint(b.mapPosition.x, b.mapPosition.y)) {
                     b.setIsOutOnIntersectWithMap();
                 }
 
                 b.update(deltaTime);
             }
+        }*/
+    }
+
+    /**
+     * Update one bullet
+     * @param bullet Bullet for update
+     */
+    private void updateOnePlayerBullet(Bullet bullet, float deltaTime)
+    {
+        // check bullet is intersect with map objects
+        if (this.map.isIntersectPoint(bullet.mapPosition.x, bullet.mapPosition.y)) {
+            bullet.setIsOutOnIntersectWithMap();
         }
+
+        bullet.update(deltaTime);
     }
 
     private void updateEnemies (float deltaTime)
@@ -240,7 +270,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         //  update enemies and check intersect with bullets
         // todo: remake to iterator
         int enemiesSize = this.enemies.size();
-        int playerBulletsSize = this.bullets.size();
+        int playerBulletsSize = this.playerBullets.size();
 
         if (enemiesSize > 0)
         {
@@ -251,19 +281,41 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
                 enemy.update(deltaTime, this);
 
                 // check intersect with player bullets
-                for (int bulletIndex = 0; bulletIndex < playerBulletsSize; bulletIndex++)
+                HitBox hitbox = enemy.getHitBox();
+                if (hitbox != null) {
+                    ListIterator<Bullet> listIterator = this.playerBullets.listIterator();
+                    while (listIterator.hasNext())
+                    {
+                        Bullet b = listIterator.next();
+                        if (b.isOut()) continue;
+
+                        if (hitbox.isHit(b))
+                        {
+                            // hit enemy here
+                            enemy.hit(1);
+
+                            // disable bullet
+                            b.setIsOutOnHitEnemy();
+
+                            // and brake this cicle
+                            break;
+                        }
+                    }
+                }
+
+                /*for (int bulletIndex = 0; bulletIndex < playerBulletsSize; bulletIndex++)
                 {
                     Bullet b = this.bullets.get(bulletIndex);
                     if (b.isOut()) continue;
 
-                    HitBox hitbox = enemy.getHitBox();
+                    // HitBox hitbox = enemy.getHitBox();
                     if (hitbox != null && hitbox.isHit(b))
                     {
                         enemy.hit(1);
 
                         b.setIsOutOnHitEnemy(); // disable bullet
                     }
-                }
+                }*/
             }
         }
     }
@@ -326,7 +378,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
      */
     public boolean addBullet (float playerCenterX, float playerCenterY, Vector2F direction)
     {
-        Bullet b = this.bullets.getFreeBullet();
+        Bullet b = this.playerBullets.getFreeBullet();
         if (b == null) return false;
 
         b.reNewByDirectionVector(playerCenterX, playerCenterY, direction);

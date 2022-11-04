@@ -6,7 +6,10 @@ import com.a530games.framework.math.Vector2F;
 
 public class Bullet
 {
-    private final float lifeTime  = 1;
+    /**
+     * Bullet life time
+     */
+    private final float lifeTime = 1;
 
     // position
     public PointF mapPosition;
@@ -18,8 +21,10 @@ public class Bullet
     //
     public Vector2F direction;
 
-    //
-    private int speed = 12;
+    /**
+     * Bullet speed
+     */
+    private final int speed = 12;
 
     private boolean isOut = false;
 
@@ -35,12 +40,8 @@ public class Bullet
 
     public Bullet(float x, float y, float angle)
     {
-        this.mapPosition.x = x;
-        this.mapPosition.y = y;
-        this.startMapPosition.x = x;
-        this.startMapPosition.y = y;
-//        this.x = x;
-//        this.y = y;
+        this.mapPosition = new PointF(x, y);
+        this.startMapPosition = new PointF(x, y);
 
         // отрисовываем вектор направления
         // double x = Math.sin(this.world.player.getAngle() * Math.PI);

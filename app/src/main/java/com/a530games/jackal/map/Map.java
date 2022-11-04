@@ -66,7 +66,12 @@ public class Map implements CellEventCallbackHandler
 
     // object () min max position
     // todo: refactor to rect
-    private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
+    // private int objectMinX = 0, objectMaxX = 0, objectMinY = 0, objectMaxY = 0;
+
+    /**
+     * Min and max for all objects
+     */
+    public Rect objectsFrame;
 
     // map optimization min|max positions for draw
     // public int drawMinCol = 0, drawMaxCol = 0, drawMinRow = 0, drawMaxRow = 0;
@@ -121,6 +126,8 @@ public class Map implements CellEventCallbackHandler
         // this.mapMaxPosition = new Vector2F();
         // this.playerScreenRect = new Rect();
 
+        this.objectsFrame = new Rect();
+
         this.activeCellPaint = new Paint();
         this.activeCellPaint.setStyle(Paint.Style.FILL);
         this.activeCellPaint.setColor(Color.YELLOW);
@@ -162,10 +169,17 @@ public class Map implements CellEventCallbackHandler
         );*/
 
         // calculate min|max objects position
-        this.objectMinX = this.blockWidth; // 1 block left
-        this.objectMaxX = (this.mapCols * this.blockWidth) - this.blockWidth;
-        this.objectMinY = this.blockHeight; // 1 block top
-        this.objectMaxY = (this.mapRows * this.blockHeight) - this.blockHeight;
+        // this.objectMinX = this.blockWidth; // 1 block left
+        // this.objectMaxX = (this.mapCols * this.blockWidth) - this.blockWidth;
+        // this.objectMinY = this.blockHeight; // 1 block top
+        // this.objectMaxY = (this.mapRows * this.blockHeight) - this.blockHeight;
+
+        this.objectsFrame.set(
+            this.blockWidth, // 1 block left
+            this.blockHeight, // 1 block top
+            (this.mapCols * this.blockWidth) - this.blockWidth,
+            (this.mapRows * this.blockHeight) - this.blockHeight
+        );
 
         // move player on map position
         // player.hitBox.moveTo(400,1500);
@@ -466,12 +480,15 @@ public class Map implements CellEventCallbackHandler
     public boolean isIntersect (HitBox rectOnMap)
     {
         // check is out of map, there is bedrock
-        if (rectOnMap.rect.left < this.objectMinX) return true;
-        if (rectOnMap.rect.top < this.objectMinY) return true;
-        if (rectOnMap.rect.right > this.objectMaxX) return true;
-        if (rectOnMap.rect.bottom > this.objectMaxY) return true;
+        if (rectOnMap.rect.left < this.objectsFrame.left) return true;
+        if (rectOnMap.rect.top < this.objectsFrame.top) return true;
+        if (rectOnMap.rect.right > this.objectsFrame.right) return true;
+        if (rectOnMap.rect.bottom > this.objectsFrame.bottom) return true;
+        // if (rectOnMap.rect.left < this.objectMinX) return true;
+        // if (rectOnMap.rect.top < this.objectMinY) return true;
+        // if (rectOnMap.rect.right > this.objectMaxX) return true;
+        // if (rectOnMap.rect.bottom > this.objectMaxY) return true;
 
-        // todo: check one block
 
         // for left top take 3 top
         int row = this.getRowByTop(rectOnMap.rect.top);
@@ -530,6 +547,12 @@ public class Map implements CellEventCallbackHandler
      */
     public boolean isIntersectPoint (float left, float top)
     {
+        // check min value
+        if (left < this.objectsFrame.left) return true;
+        if (top < this.objectsFrame.top) return true;
+        if (top > this.objectsFrame.bottom) return true;
+        if (left > this.objectsFrame.right) return true;
+
         int row = this.getRowByTop(top);
         int col = this.getColByLeft(left);
 
