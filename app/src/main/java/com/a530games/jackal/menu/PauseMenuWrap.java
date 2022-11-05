@@ -11,11 +11,14 @@ import com.a530games.framework.helpers.cor.Handler;
 import com.a530games.framework.helpers.cor.Step;
 import com.a530games.jackal.Controller;
 
+/**
+ * Wrap around paused menu
+ */
 public class PauseMenuWrap {
 
-    PauseMenu pausedMenu;
+    PauseMenu menu;
 
-    Rect frame;
+    Rect grayFrame;
 
     private final Handler<PresentStep> liveCircle;
 
@@ -169,24 +172,24 @@ public class PauseMenuWrap {
 
     public PauseMenuWrap(int menuX, int menuY)
     {
-        this.pausedMenu = new PauseMenu(menuX, menuY);
+        this.menu = new PauseMenu(menuX, menuY);
 
         // this.frame = new Rect(menuX, menuY, menuX + pausedMenu.getMenuWidth(), menuY+pausedMenu.getMenuHeight());
         // frame with padding
-        this.frame = new Rect(
+        this.grayFrame = new Rect(
                 menuX - 10,
                 menuY - 10,
-                menuX + pausedMenu.getMenuWidth() + 10,
-                menuY+pausedMenu.getMenuHeight() + 10
+                menuX + menu.getMenuWidth() + 10,
+                menuY+ menu.getMenuHeight() + 10
         );
 
         this.liveCircle = new Handler<>();
-        this.liveCircle.add(new ShowStep(this.frame));
-        this.liveCircle.add(new MenuStep(this.pausedMenu,this.frame));
+        this.liveCircle.add(new ShowStep(this.grayFrame));
+        this.liveCircle.add(new MenuStep(this.menu,this.grayFrame));
     }
 
     public void setEventHandler(MenuEventHandler gameScreen) {
-        this.pausedMenu.setEventHandler(gameScreen);
+        this.menu.setEventHandler(gameScreen);
     }
 
     public void update (Controller controller, TouchEventsCollection touchEvents, float deltaTime)

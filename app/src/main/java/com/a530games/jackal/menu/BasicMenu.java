@@ -71,6 +71,11 @@ public abstract class BasicMenu implements Menu
         this.eventHandler = menuEventHandler;
     }
 
+    @Override
+    public void reset() {
+        this.activeIndex = 0;
+        this.selectedIndex = -1;
+    }
 
     @Override
     public void addItem(MenuItem item)
@@ -244,4 +249,5 @@ public abstract class BasicMenu implements Menu
     public int getMenuWidth() {
         return this.items.get(0).getWidth();
     }
+
 }

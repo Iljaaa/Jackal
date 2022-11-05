@@ -6,12 +6,23 @@ import com.a530games.jackal.Controller;
 
 public interface Menu {
 
+    /**
+     *
+     */
     void update(Controller controller, TouchEventsCollection touchEvents, float deltaTime);
 
+    /**
+     *
+     */
     void present(Graphics graphics);
 
     /**
      * Append menu item
      */
     void addItem(MenuItem item);
+
+    /**
+     * Reset menu
+     */
+    void reset();
 }

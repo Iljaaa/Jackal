@@ -23,7 +23,7 @@ import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapObject;
 import com.a530games.jackal.menu.GameOverLoseMenu;
-import com.a530games.jackal.menu.BasicMenu;
+import com.a530games.jackal.menu.GameOverLoseMenuWrap;
 import com.a530games.jackal.menu.MenuEventHandler;
 import com.a530games.jackal.menu.PauseMenu;
 import com.a530games.jackal.menu.PauseMenuWrap;
@@ -34,9 +34,6 @@ import com.a530games.jackal.World;
 import com.a530games.jackal.objects.ControllerPresenter;
 import com.a530games.jackal.objects.enemies.Enemy;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -82,7 +79,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     /**
      * Menu on lose level
      */
-    BasicMenu gameOverLoseMenu;
+    GameOverLoseMenuWrap gameOverLoseMenu;
 
     /**
      * Menu on pause
@@ -171,14 +168,16 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.controllerPresenter = new ControllerPresenter(screenWidth, screenHeight);
         this.controllerPresenter.bindController(controller);
 
-        // todo: fix magic numbers
         this.pauseMenu = new PauseMenuWrap(
-                (int) (screenWidth * 0.5) - 200,
-                (int) (screenHeight * 0.5) - 75 - 50
+                (int) (screenWidth * 0.5) - 200, // 200 its half of menu wisth
+                200
         );
         this.pauseMenu.setEventHandler(this);
 
-        this.gameOverLoseMenu = new GameOverLoseMenu(150, 200);
+        this.gameOverLoseMenu = new GameOverLoseMenuWrap(
+                (int) (screenWidth * 0.5) - 200, // 200 its half of menu wisth
+                200
+        );
         this.gameOverLoseMenu.setEventHandler(this);
 
         ///////////////////
@@ -225,29 +224,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // Vector2F centerDropPadCell = this.world.map.startCell(dropPadCell);
         this.camera.setPosition(this.world.map.startCell.getCenter());
 
-    }
-
-    /**
-     * Loading config from file
-     */
-    private void loadConfig()
-    {
-        BufferedWriter out = null;
-        try {
-            out = new BufferedWriter(new OutputStreamWriter(this.game.getFileIO().writeFile(".mrnom")));
-            out.write(Boolean.toString(true));
-            out.write("\n");
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null)
-                    out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
@@ -309,14 +285,9 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // this.sidebar.update(deltaTime);
 
         //
-        if(this.world.gameOver) {
-            this.state = GameState.GameOver;
+        if(this.world.gameOver || this.world.gameOverSuccess) {
+            this.setGameOver();
         }
-
-        if(this.world.gameOverSuccess) {
-            this.state = GameState.GameOver;
-        }
-
 
         // обновление рекорда
         /*if(this.oldScore != this.world.score) {
@@ -478,13 +449,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
     private void updatePaused(TouchEventsCollection touchEvents, Controller controller, float deltaTime)
     {
-
         this.pauseMenu.update(controller, touchEvents, deltaTime);
     }
 
     private void updateGameOver(TouchEventsCollection touchEvents, Controller controller, float deltaTime)
     {
-
         this.gameOverLoseMenu.update(controller, touchEvents, deltaTime);
 
         // определяяем клик для перехода в главное меню
@@ -495,7 +464,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             {
                 // по клику перезапускаем игру
                 if(event.x >= 128 && event.x <= 192 && event.y >= 200 && event.y <= 264) {
-                    // todo: enable sound
                     // if(Settings.soundEnabled) Assets.click.play(1);
                     // game.setScreen(new MainMenuScreen(game));
                     return;
@@ -721,7 +689,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         Graphics g = this.game.getGraphics();
 
         // get player position
-        // todo: here need camera
         Map.Cell playerCell = this.world.map.getCellByPosition(
                 this.world.player.hitBox.getCenterX(),
                 this.world.player.hitBox.getCenterY()
@@ -748,13 +715,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     }
 
     /*
-     * todo: Make static variable
      * @param center
      * @return
 
     private Rect getVisibleRectInBlocks(Map.Cell center)
     {
-        // todo: fix magic numbers
         Rect r = new Rect(
                 center.col - 3,
                 center.row - 3,
@@ -1115,11 +1080,9 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         if (this.world.gameOverSuccess) {
             this.drawSecondTitle(g, "You win!");
-            // g.drawText("press start to next level", 150, textTopPosition + 175, 50, Color.GREEN);
         }
         else {
             this.drawSecondTitle(g, "You you lose!");
-            // g.drawText("Go cray, baby, phhh loh", 150, textTopPosition + 175, 50, Color.RED);
         }
 
         // draw lose menu
@@ -1165,6 +1128,13 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
 
         // reset menu animation
         this.pauseMenu.reset();
+    }
+
+    private void setGameOver () {
+        this.state = GameState.GameOver;
+
+        // reset game over menu
+        this.gameOverLoseMenu.reset();
     }
 
     private void restartLevel(int userHp){

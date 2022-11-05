@@ -15,10 +15,10 @@ public class GameOverLoseMenu extends BasicMenu
                 GameOverLoseMenu.GLM_RESTART
         ));
 
-        this.addItem(new MenuItem(
+        /*this.addItem(new MenuItem(
                 "BACK TO MAIN MENU",
                 GameOverLoseMenu.GLM_BACK_TO_MAIN_MENU
-        ));
+        ));*/
 
     }
 }
