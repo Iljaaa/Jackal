@@ -104,12 +104,12 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
      * Mep screen width in pixels
      * used in draw
      */
-    private final int mapScreenWidthInBlocks; //  = 10;
+    // private final int mapScreenWidthInBlocks; //  = 10;
 
     /**
      * Mep screen height in blocks
      */
-    private final int mapScreenHeightInBlocks; //  = 10;
+    // private final int mapScreenHeightInBlocks; //  = 10;
 
 
     /**
@@ -138,11 +138,11 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         int screenWidth = g.getFrameBufferWidth();
 
         // count FULL blocks on screen
-        this.mapScreenWidthInBlocks = (int) Math.floor(screenWidth / (float) Jackal.BLOCK_WIDTH);
-        this.mapScreenHeightInBlocks = (int) Math.floor(this.game.getGraphics().getFrameBufferHeight() / (float) Jackal.BLOCK_HEIGHT);
+        // this.mapScreenWidthInBlocks = (int) Math.floor(screenWidth / (float) Jackal.BLOCK_WIDTH);
+        // this.mapScreenHeightInBlocks = (int) Math.floor(this.game.getGraphics().getFrameBufferHeight() / (float) Jackal.BLOCK_HEIGHT);
 
         // calculate screen size
-        this.mapScreenWidthInPixels = g.getFrameBufferWidth();
+        this.mapScreenWidthInPixels = screenWidth;
         this.mapScreenHeightInPixels = g.getFrameBufferHeight();
         // this.mapScreenWidthInPixels = this.mapScreenWidthInBlocks * Jackal.BLOCK_WIDTH;
         // this.mapScreenHeightInPixels = this.mapScreenHeightInBlocks * Jackal.BLOCK_HEIGHT;
@@ -544,7 +544,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.controllerPresenter.draw(g);
 
         // draw camera position
-        this.drawCamera(g);
+        this.presentCamera(g);
 
         // draw score
         // this.drawText(g, score, g.getWidth() / 2 - score.length()*20 / 2, g.getHeight() - 42);
@@ -569,7 +569,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     /**
      * Draw camera
      */
-    private void drawCamera (Graphics g)
+    private void presentCamera(Graphics g)
     {
         // its alveys in center screen
 
@@ -985,7 +985,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
      */
     private void presentEnemyBullets(Graphics g)
     {
-        ListIterator<Bullet> listIterator = this.world.playerBullets.listIterator();
+        ListIterator<Bullet> listIterator = this.world.enemyBullets.listIterator();
         while (listIterator.hasNext()) {
             Bullet b = listIterator.next();
             // if (b.isOut()) continue;
@@ -994,8 +994,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                     Assets.bullet,
                     // this.world.map.screenLeftPotion(b.getX()) - 8,
                     // this.world.map.screenTopPotion(b.getY()) - 8, // <- ammmm
-                    this.camera.screenLeft(b.getX()) - 8,
-                    this.camera.screenTop(b.getY()) - 8
+                    this.camera.screenLeft(b.getX()) - 3,
+                    this.camera.screenTop(b.getY()) - 3
             );
         }
 
@@ -1018,8 +1018,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             }
         }*/
     }
-
-
 
     private void drawPlayerShotBlow(Graphics g, Bullet b)
     {

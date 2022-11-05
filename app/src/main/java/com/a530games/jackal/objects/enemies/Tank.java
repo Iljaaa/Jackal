@@ -1,7 +1,8 @@
 package com.a530games.jackal.objects.enemies;
 
 import android.graphics.Color;
-import android.graphics.Rect;
+import android.graphics.Paint;
+import android.util.Log;
 
 import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
@@ -11,6 +12,9 @@ import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Settings;
 import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
+
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * todo: сделать прицеливание не ограниченым по времени
@@ -30,9 +34,19 @@ public class Tank extends Vehicle
      */
     private int state;
 
+    /**
+     * health points
+     */
+    private int hp = 2;
+
+    /**
+     * Velocity
+     */
     private Vector2F velocity;
 
-    //
+    /**
+     * Current turret angle
+     */
     public Vector2F turretAngle = new Vector2F(1, 0);
 
     /**
@@ -41,17 +55,14 @@ public class Tank extends Vehicle
     private final Vector2F targetAngle = new Vector2F(1, 0);
 
     /**
-     * health points
+     * Rotate turret angle
      */
-    private int hp = 2;
+    public float rotateTurretTimer = 0;
 
     /**
-     *
+     * Move tank timer
      */
-    private float rotateTimer = 0;
-
-    private float moveTimer = 0;
-
+    public float moveTimer = 0;
 
     /**
      * Blows after death
@@ -85,10 +96,198 @@ public class Tank extends Vehicle
     private EnemyFireEventHandler fireEventHandler = null;
     private EnemyDieEventHandler dieEventHandler = null;
 
+    /**
+     * Paints for lines
+     */
+    private Paint velocityLinePaint, turretLinePaint, targetLinePaint;
+
+    public abstract class Behavior{
+
+        public abstract boolean isFinish();
+
+        public abstract void update(float deltaTime, World world);
+
+    }
+
+    private class Aiming extends Behavior
+    {
+        Tank tank;
+
+        public Aiming(Tank tank) {
+            this.tank = tank;
+        }
+
+        @Override
+        public void update(float deltaTime, World world)
+        {
+            //
+            float y = world.player.hitBox.getCenterY() - this.tank.hitBox.getCenterY();
+            float x = world.player.hitBox.getCenterX() - this.tank.hitBox.getCenterX();
+
+            // random angle
+            this.tank.targetAngle.set(x, y);
+            this.tank.targetAngle.nor();
+
+            // goto turret
+            this.tank.rotateTurretTimer = 5;
+            this.tank.state = Tank.STATE_ROTATE_TURRET;
+        }
+
+        @Override
+        public boolean isFinish() {
+            return true;
+        }
+    }
+
+    private class RotateTurret extends Behavior
+    {
+        Tank tank;
+
+        public RotateTurret(Tank tank) {
+            this.tank = tank;
+        }
+
+        @Override
+        public void update(float deltaTime, World world)
+        {
+            float turretAngleInDegrees = this.tank.turretAngle.angleInDegrees();
+            float targetAngleInDegrees = this.tank.targetAngle.angleInDegrees();
+
+            float deltaDegrees = targetAngleInDegrees - turretAngleInDegrees;
+
+            if (Math.abs(deltaDegrees) > 0)
+            {
+
+                if (Math.abs(deltaDegrees) > 3)
+                {
+                    float rotateSpeed = 30 * deltaTime;
+                    if (deltaDegrees < 0) rotateSpeed *= -1;
+
+                    this.tank.turretAngle.rotate(rotateSpeed);
+                }
+                else {
+                    // deltaDegrees *= -1;
+                    this.tank.turretAngle.set(this.tank.targetAngle);
+                }
+
+
+            }
+            else {
+                // we are aim
+                this.tank.rotateTurretTimer = 0;
+            }
+
+            this.tank.rotateTurretTimer -= deltaTime;
+        }
+
+        @Override
+        public boolean isFinish() {
+            return this.tank.rotateTurretTimer <= 0;
+        }
+    }
+
+
+    /**
+     * Fire
+     */
+    private class Fire extends Behavior
+    {
+        Tank tank;
+
+        public Fire(Tank tank) {
+            this.tank = tank;
+        }
+
+        @Override
+        public void update(float deltaTime, World world) {
+            this.tank.fire();
+        }
+
+        @Override
+        public boolean isFinish() {
+            return true;
+        }
+    }
+
+
+
+    private class ChangeDirection extends Behavior
+    {
+        Tank tank;
+
+        public ChangeDirection(Tank tank) {
+            this.tank = tank;
+        }
+
+        @Override
+        public void update(float deltaTime, World world)
+        {
+            int[] a = this.tank.dirs[Jackal.getRandom().nextInt(this.tank.dirs.length)];
+            this.tank.velocity.set(a[0], a[1]);
+            this.tank.updateSprite(this.tank.velocity);
+
+            // 2 secs drive
+            this.tank.moveTimer = 2f;
+            this.tank.state = Tank.STATE_MOVE;
+        }
+
+        @Override
+        public boolean isFinish() {
+            return true;
+        }
+    }
+
+    private class Drive extends Behavior
+    {
+        Tank tank;
+
+        public Drive(Tank tank) {
+            this.tank = tank;
+        }
+
+        @Override
+        public void update(float deltaTime, World world)
+        {
+
+            if (this.tank.moveTimer <= 0) {
+                this.tank.state = Tank.STATE_AIMING;
+                return;
+            }
+
+            this.tank.moveTimer -= deltaTime;
+
+            this.tank.drive(this.tank.velocity, deltaTime, world);
+        }
+
+        @Override
+        public boolean isFinish() {
+            return this.tank.moveTimer <= 0;
+        }
+    }
+
+    LinkedList<Behavior> behaviors;
+
+    ListIterator<Behavior> currentIterator;
+
+    Behavior currentBehaviorStep;
+
     public Tank(Vector2F spownPoint)
     {
         super(spownPoint.x, spownPoint.y, 40, 40, Assets.tank);
         this.velocity = new Vector2F(0 ,1);
+
+        //
+        this.behaviors =  new LinkedList<>();
+        this.behaviors.push(new Fire(this));
+        this.behaviors.push(new RotateTurret(this));
+        this.behaviors.push(new Aiming(this));
+        this.behaviors.push(new Drive(this));
+        this.behaviors.push(new ChangeDirection(this));
+
+        this.currentIterator = this.behaviors.listIterator();
+
+        // take first step
+        this.currentBehaviorStep = this.currentIterator.next();
 
         this.blows = new SpriteWithAnimation[5];
         for (int i = 0; i < this.blows.length; i++) {
@@ -97,7 +296,23 @@ public class Tank extends Vehicle
             this.blows[i].setScreenMargin(16, 16);
         }
 
-        this.setMoved(2);
+        this.velocityLinePaint = new Paint();
+        this.velocityLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        this.velocityLinePaint.setStrokeWidth(3);
+        this.velocityLinePaint.setColor(Color.WHITE);
+
+        this.turretLinePaint = new Paint();
+        this.turretLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        this.turretLinePaint.setStrokeWidth(3);
+        this.turretLinePaint.setColor(Color.YELLOW);
+
+        this.targetLinePaint = new Paint();
+        this.targetLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        this.targetLinePaint.setStrokeWidth(2);
+        this.targetLinePaint.setColor(Color.GREEN);
+
+        // start on move
+        // this.setMoved(2);
     }
 
     @Override
@@ -113,15 +328,39 @@ public class Tank extends Vehicle
             return;
         }
 
+        // is tank is blow up
         // blow up before dead
-        if (this.state == Tank.STATE_BLOWUP) this.updateBlow(deltaTime);
+        if (this.state == Tank.STATE_BLOWUP) {
+            this.updateBlow(deltaTime);
+            return;
+        }
 
-        if (this.state == Tank.STATE_AIMING) this.updateAiming(world);
+        // update current step
+        this.currentBehaviorStep.update(deltaTime, world);
+
+        // if current step of behavior is finish get next
+        if (this.currentBehaviorStep.isFinish())
+        {
+            // if has no steps create ne list iterator
+            if (!this.currentIterator.hasNext())
+            {
+                // here is over of iteration
+                this.currentIterator = this.behaviors.listIterator();
+                Log.d("Tank", "New iterator");
+            }
+
+            this.currentBehaviorStep = this.currentIterator.next();
+            Log.d("Tank", this.currentBehaviorStep.toString());
+        }
+
+
+        //
+        /*if (this.state == Tank.STATE_AIMING) this.updateAiming(world);
         if (this.state == Tank.STATE_ROTATE_TURRET) this.updateRotateTurret(deltaTime);
-        if (this.state == Tank.STATE_MOVE) this.updateMove(deltaTime, world);
+        if (this.state == Tank.STATE_MOVE) this.updateMove(deltaTime, world);*/
     }
 
-    private void updateAiming(World world)
+    /*private void updateAiming(World world)
     {
         // PointF playerCenter = world.player.hitBox.getCenter();
         // PointF tankCenter = this.hitBox.getCenter();
@@ -139,11 +378,10 @@ public class Tank extends Vehicle
         // goto turret
         this.rotateTimer = 1;
         this.state = Tank.STATE_ROTATE_TURRET;
-    }
+    }*/
 
-    private void updateRotateTurret(float deltaTime)
+    /*private void updateRotateTurret(float deltaTime)
     {
-        // todo: rotate on speed
         float turretAngleInDegrees = this.turretAngle.angleInDegrees();
         float targetAngleInDegrees = this.targetAngle.angleInDegrees();
         float rotate = (turretAngleInDegrees < targetAngleInDegrees) ? 5 : -5;
@@ -153,8 +391,6 @@ public class Tank extends Vehicle
 
         this.turretAngle.rotate(rotate);
 
-        // todo: if you aim
-
         this.rotateTimer -= deltaTime;
         if (this.rotateTimer <= 0)
         {
@@ -162,14 +398,14 @@ public class Tank extends Vehicle
 
             this.setMoved();
         }
-    }
+    }*/
 
-    private void setMoved()
+    /*private void setMoved()
     {
         this.setMoved(1);
-    }
+    }*/
 
-    private void setMoved(int moveTimer)
+    /*private void setMoved(int moveTimer)
     {
         // generate new move angle
         int[] a = this.dirs[Jackal.getRandom().nextInt(this.dirs.length)];
@@ -178,9 +414,9 @@ public class Tank extends Vehicle
 
         this.moveTimer = moveTimer;
         this.state = Tank.STATE_MOVE;
-    }
+    }*/
 
-    private void updateMove(float deltaTime, World world)
+    /*private void updateMove(float deltaTime, World world)
     {
         this.drive(this.velocity, deltaTime, world);
 
@@ -188,7 +424,7 @@ public class Tank extends Vehicle
         if (this.moveTimer <= 0){
             this.state = Tank.STATE_AIMING;
         }
-    }
+    }*/
 
     private void updateBlow (float deltaTime)
     {
@@ -241,12 +477,7 @@ public class Tank extends Vehicle
             return;
         }
 
-        // Rect screenHitBox = this.getScreenDrawHitbox(camera.map);
-
-        // Sprite s = this.getSprite();
-
-        // todo: not draw enemie if if is not in screem
-
+        // draw tank
         g.drawPixmap(
                 this.sprite.image,
                 camera.screenLeft(this.hitBox.rect.left + this.sprite.screenMarginLeft),
@@ -266,28 +497,23 @@ public class Tank extends Vehicle
             }
         }
 
+        //
         int screenCenterX =  camera.screenLeft(this.hitBox.getCenterX());
         int screenCenterY = camera.screenTop(this.hitBox.getCenterY());
 
         // target
-        this.drawAngle(g,
-                // screenHitBox.centerX(),
-                // screenHitBox.centerY(),
-                screenCenterX,
-                screenCenterY,
-                this.targetAngle,
-                Color.LTGRAY
-        );
+        this.drawAngle(g, screenCenterX, screenCenterY, this.targetAngle, this.targetLinePaint);
 
         // turret
-        this.drawAngle(g,
-                // screenHitBox.centerX(),
-                // screenHitBox.centerY(),
+        this.drawAngle(g, screenCenterX, screenCenterY, this.turretAngle, this.turretLinePaint);
+
+        // velocity
+        g.drawLine(
                 screenCenterX,
                 screenCenterY,
-                this.turretAngle,
-                Color.GREEN
-        );
+                (int) (screenCenterX + this.velocity.x),
+                (int) (screenCenterY + this.velocity.y),
+                this.velocityLinePaint);
 
     }
 
@@ -295,27 +521,14 @@ public class Tank extends Vehicle
      *
      * @param g graphic object
      */
-    private void drawAngle (Graphics g, int screenCenterLeft, int screenCenterTop, Vector2F angleVector, int color)
+    private void drawAngle (Graphics g, int screenCenterX, int screenCenterY, Vector2F angleVector, Paint paint)
     {
-        // int centerTop = Math.round(this.world.player.hitBox.getCenterTop());
-
-        // отрисовываем вектор направления
-        // double s = Math.sin(this.world.player.getAngle() * Math.PI);
-        // double c = Math.cos(this.world.player.getAngle() * Math.PI);
-
-        /*g.drawLine(
-                screenCenterLeft,
-                screenCenterTop,
-                screenCenterLeft + (int) Math.round(Math.sin(angle * Math.PI) * 50),
-                screenCenterTop + (int) Math.round(Math.cos(angle * Math.PI) * 50),
-                Color.GREEN);*/
-
         g.drawLine(
-                screenCenterLeft,
-                screenCenterTop,
-                Math.round(screenCenterLeft + (angleVector.x * 50)),
-                Math.round(screenCenterTop + (angleVector.y * 50)),
-                color);
+                screenCenterX,
+                screenCenterY,
+                Math.round(screenCenterX + (angleVector.x * 50)),
+                Math.round(screenCenterY + (angleVector.y * 50)),
+                paint);
     }
 
     public void setFireEventHandler(EnemyFireEventHandler fireEventHandler) {
@@ -368,9 +581,21 @@ public class Tank extends Vehicle
 
     private void updateSprite(Vector2F direction)
     {
+        switch (direction.getQuater()) {
+            case 7: this.sprite.set(2, 0); break;
+            case 6: this.sprite.set(1, 0); break;
+            case 5: this.sprite.set(0, 0); break;
+            case 4: this.sprite.set(0, 1); break;
+            case 3: this.sprite.set(0, 2); break;
+            case 2: this.sprite.set(1, 2); break;
+            case 1: this.sprite.set(2, 2); break;
+            default: this.sprite.set(2, 1);
+                break;
+        }
+
         // this.sprite.row = 0;
         // this.sprite.col = 0;
-        float angle = direction.angleInDegrees();
+        /*float angle = direction.angleInDegrees();
 
         if (22 > angle || angle >= 337) {
             this.sprite.set(2, 1);
@@ -403,89 +628,6 @@ public class Tank extends Vehicle
         if (292 < angle && angle <= 337) {
             this.sprite.set(0, 2);
         }
-
-        // down
-        /*if (direction == Vehicle.MOVE_DOWN) {
-            this.sprite.set(1, 2);
-        }
-
-        // down right
-        if (direction == Vehicle.MOVE_DOWN_RIGHT) {
-            this.sprite.set(2, 2);
-        }
-
-        // to the right
-        if (direction == Vehicle.MOVE_RIGHT) {
-            this.sprite.set(2, 1);
-        }
-
-        // top right
-        if (direction == Vehicle.MOVE_TOP_RIGHT) {
-            this.sprite.set(2, 0);
-        }
-
-        // to the top
-        if (direction == Vehicle.MOVE_TOP) {
-            this.sprite.set(1, 0);
-        }
-
-        // left top
-        if (direction == Vehicle.MOVE_TOP_LEFT) {
-            this.sprite.set(0, 0);
-        }
-
-        // to the left
-        if (direction == Vehicle.MOVE_LEFT) {
-            this.sprite.set(0, 1);
-        }
-
-        // left down
-        if (direction == Vehicle.MOVE_DOWN_LEFT) {
-            this.sprite.set(0, 2);
-        }*/
-
+        */
     }
-
-    public void reNew(float mapX, float mapY)
-    {
-        this.state = Tank.STATE_MOVE;
-        this.moveTimer = 2;
-        this.hp = 2;
-
-        this.hitBox.moveTo(mapX, mapY);
-    }
-
-    /*
-     *
-     */
-    /*public void move2(Vector2 velocity, float deltaTime, World world)
-    {
-
-
-        if (velocity.x != 0) {
-            this.moveHorizontal(velocity, deltaTime);
-        }
-
-        if (velocity.y != 0) {
-            this.moveVertical(velocity, deltaTime);
-        }
-    }
-
-    private void moveHorizontal(Vector2 velocity, float deltaTime, World world)
-    {
-        this.hitBox.moveTo(this.hitBox.left + (deltaTime * velocity.x), this.hitBox.top);
-
-        if (this.checkIntersectForMove(this.hitBox, world)) {
-            this.hitBox.rollback();
-        }
-    }
-
-    private void moveVertical(Vector2 velocity, float deltaTime, World world)
-    {
-        this.hitBox.moveTo(this.hitBox.left, this.hitBox.top + (deltaTime * velocity.y));
-
-        if (this.checkIntersectForMove(this.hitBox, world)) {
-            this.hitBox.rollback();
-        }
-    }*/
 }
