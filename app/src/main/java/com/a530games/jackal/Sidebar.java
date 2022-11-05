@@ -139,7 +139,7 @@ public class Sidebar
         this.isNeedRedraw = false;
     }
 
-    public void draw(Graphics g) {
+    public void present(Graphics g) {
         this.d(g);
     }
 
@@ -161,6 +161,7 @@ public class Sidebar
         g.drawText(String.format("angle: %.2fx%.2f", this.world.player.direction.x, this.world.player.direction.y), this.position.x, this.position.y + 160, this.font);
         g.drawText(String.format("turret: %.2fx%.2f", this.world.player.turret.x, this.world.player.turret.y), this.position.x, this.position.y + 190, this.font);
         g.drawText(String.format("cam: %.2fx%.2fx%.2f", this.camera2D.position.x, this.camera2D.position.y, this.camera2D.zoom), this.position.x, this.position.y + 220, this.font);
+        g.drawText(String.format("enemies: %d", this.world.enemies.size()), this.position.x, this.position.y + 250, this.font);
         // g.drawText(String.format("map: %.2fx%.2f", this.world.map.position.x, this.world.map.position.y), this.position.x, this.position.y + 250, this.font);
     }
 

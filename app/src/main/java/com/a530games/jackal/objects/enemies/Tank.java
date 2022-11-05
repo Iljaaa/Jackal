@@ -283,7 +283,7 @@ public class Tank extends Vehicle
         this.velocity = new Vector2F(0 ,1);
 
         //
-        this.behaviors =  new LinkedList<>();
+        this.behaviors = new LinkedList<>();
         this.behaviors.push(new Fire(this));
         this.behaviors.push(new RotateTurret(this));
         this.behaviors.push(new Aiming(this));
@@ -321,6 +321,10 @@ public class Tank extends Vehicle
         // this.setMoved(2);
     }
 
+    protected void finalize() {
+        Log.d("Tank", "finalizew");
+    }
+
     @Override
     public boolean isDead() {
         return (this.state == Tank.STATE_DEAD);
@@ -352,11 +356,9 @@ public class Tank extends Vehicle
             {
                 // here is over of iteration
                 this.currentIterator = this.behaviors.listIterator();
-                Log.d("Tank", "New iterator");
             }
 
             this.currentBehaviorStep = this.currentIterator.next();
-            Log.d("Tank", this.currentBehaviorStep.toString());
         }
 
 

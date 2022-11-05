@@ -194,7 +194,7 @@ public class Map implements CellEventCallbackHandler
         dropPad.moveToStart(this.startCell);
 
         // move player out of screen, before his drop from drop pad
-        player.offsetTo(-100, -100);
+        player.offsetCenterTo(-100, -100);
 
         // move player on map position
         // player.hitBox.moveTo(400,1500);

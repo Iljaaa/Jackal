@@ -530,7 +530,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.drawWorld(g, viewRect);
 
         // рисуем сайдбар
-        this.drawSidebar(this.sidebar);
+        this.presentSidebar(this.sidebar);
 
         if (state == GameState.Running) this.drawRunningUI();
         if (state == GameState.Ready) this.drawReadyUI();
@@ -618,7 +618,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.drawMapObjectsHitBoxes();
     }
 
-    private void drawSidebar(Sidebar sidebar)
+    private void presentSidebar(Sidebar sidebar)
     {
         Graphics g = this.game.getGraphics();
 
@@ -633,7 +633,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                 this.sidebar.position.x,
                 0);*/
 
-        this.sidebar.draw(g);
+        this.sidebar.present(g);
 
         // this.game.getGraphics().drawText("fps: " + sidebar.fps, 650, 50, 20, Color.MAGENTA);
         // this.game.getGraphics().drawText("player: " + sidebar.playerX+ "x"+sidebar.playerY, 650, 80, 20, Color.MAGENTA);

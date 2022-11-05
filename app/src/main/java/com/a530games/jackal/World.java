@@ -494,7 +494,6 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         return true;*/
     }
 
-
     @Override
     public void mapInitFinish() {
 

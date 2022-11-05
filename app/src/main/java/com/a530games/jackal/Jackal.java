@@ -1,13 +1,12 @@
 package com.a530games.jackal;
 
+import android.app.ActivityManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.a530games.framework.AndroidGame;
 import com.a530games.framework.Screen;
-import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.screens.LoadingScreen;
 
 import java.util.Random;
@@ -29,7 +28,6 @@ public class Jackal extends AndroidGame
      * mp comtinues count
      */
     private static int continues = 3;
-
 
     public static Random getRandom(){
         if (Jackal.random == null) Jackal.random = new Random();

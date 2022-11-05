@@ -1,5 +1,7 @@
 package com.a530games.jackal.objects;
 
+import android.util.Log;
+
 import com.a530games.framework.math.Vector2F;
 
 public class Bullet
@@ -56,6 +58,11 @@ public class Bullet
 
         this.velocity = new Vector2F(velocityX, velocityY);
     }
+
+    protected void finalize() {
+        Log.d("Bullet", "finalizew");
+    }
+
 
     public float getX() {
         return this.position.x;
