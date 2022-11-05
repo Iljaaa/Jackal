@@ -100,13 +100,13 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
      */
     public int mapScreenHeightInPixels; // = 640
 
-    /**
+    /*
      * Mep screen width in pixels
      * used in draw
      */
     // private final int mapScreenWidthInBlocks; //  = 10;
 
-    /**
+    /*
      * Mep screen height in blocks
      */
     // private final int mapScreenHeightInBlocks; //  = 10;
@@ -1022,7 +1022,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     private void drawPlayerShotBlow(Graphics g, Bullet b)
     {
         // drww blow
-        if (b.timer <= 0.05f) {
+        if (b.liveTime <= 0.05f) {
             g.drawPixmap(
                     Assets.playerFire,
                     // this.world.map.screenLeftPotion(b.startMapPosition.x) - 16,
@@ -1035,7 +1035,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                     32
             );
         }
-        else if (0.05f < b.timer && b.timer <= 0.1f) {
+        else if (0.05f < b.liveTime && b.liveTime <= 0.1f) {
             g.drawPixmap(
                     Assets.playerFire,
                     // this.world.map.screenLeftPotion(b.startMapPosition.x) - 16,
@@ -1048,7 +1048,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
                     32
             );
         }
-        else if (0.1f < b.timer && b.timer <= 0.15f) {
+        else if (0.1f < b.liveTime && b.liveTime <= 0.15f) {
             g.drawPixmap(
                     Assets.playerFire,
                     // this.world.map.screenLeftPotion(b.startMapPosition.x) - 16,

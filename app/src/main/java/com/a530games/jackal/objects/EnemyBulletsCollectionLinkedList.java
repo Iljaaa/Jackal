@@ -39,7 +39,7 @@ public class EnemyBulletsCollectionLinkedList
             return null;
         }
 
-        Bullet b = new Bullet(0, 0, 0);
+        Bullet b = new Bullet(0, 0, 0, 0);
         this.bullets.add(b);
 
         return b;

@@ -14,6 +14,12 @@ public class Player
 {
 
     /**
+     * Bullet speed
+     */
+    public static final int BULLET_SPEED = 200;
+
+
+    /**
      * Vehicle hitbox frame
      */
     public HitBox hitBox;
@@ -77,7 +83,9 @@ public class Player
     //
     public Sprite gun;
 
-    // скорость перемещения
+    /**
+     * Current speed
+     */
     protected float speed = 100;
 
     //
@@ -248,9 +256,13 @@ public class Player
         return false;
     }
 
+    /**
+     * Set player turret angle
+     */
     public void setTurretAngle (Vector2F direction)
     {
         this.turret.set(direction);
+        this.turret.nor();
 
         // todo: make method
         switch (direction.getQuater()) {
@@ -335,11 +347,6 @@ public class Player
 
     public boolean isDead() {
         return this.state == PlayerState.Dead;
-    }
-
-
-    public void setFireEventHandler(EnemyFireEventHandler fireEventHandler) {
-
     }
 
 }

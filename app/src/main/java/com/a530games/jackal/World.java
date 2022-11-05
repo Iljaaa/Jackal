@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
-import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.levels.Level;
 import com.a530games.jackal.map.Map;
 import com.a530games.jackal.map.MapCell;
@@ -238,7 +237,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     private void updateOnePlayerBullet(Bullet bullet, float deltaTime)
     {
         // check bullet is intersect with map objects
-        if (this.map.isIntersectPoint(bullet.mapPosition.x, bullet.mapPosition.y)) {
+        if (this.map.isIntersectPoint(bullet.position.x, bullet.position.y)) {
             bullet.setIsOutOnIntersectWithMap();
         }
 
@@ -420,7 +419,7 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     {
         // check intersect bullet with map
         // if (this.map.isIntersectPoint(b.x, b.y)) {
-        if (this.map.isIntersectPoint(bullet.mapPosition.x, bullet.mapPosition.y))
+        if (this.map.isIntersectPoint(bullet.position.x, bullet.position.y))
         {
             bullet.setIsOutOnIntersectWithMap();
             return;
@@ -460,7 +459,9 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
         return this.addBullet(
                 this.player.hitBox.getCenterX() + this.player.turret.x * 20,
                 this.player.hitBox.getCenterY() + this.player.turret.y * 20,
-                this.player.turret
+                this.player.turret.x * Player.BULLET_SPEED,
+                this.player.turret.y * Player.BULLET_SPEED,
+                1f
         );
     }
 
@@ -468,12 +469,12 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
      * Add player bullet
      * refactor by get free
      */
-    public boolean addBullet (float playerCenterX, float playerCenterY, Vector2F direction)
+    public boolean addBullet (float playerCenterX, float playerCenterY, float velocityX, float velocityY, float lifeTime)
     {
         Bullet b = this.playerBullets.getFreeBullet();
         if (b == null) return false;
 
-        b.reNewByDirectionVector(playerCenterX, playerCenterY, direction);
+        b.reNew(playerCenterX, playerCenterY, velocityX, velocityY, lifeTime);
         // if(Settings.soundEnabled) Assets.fire.play(1);
         return true;
 
@@ -535,13 +536,13 @@ public class World implements PlayerEventHandler, EnemyFireEventHandler, MapEven
     }
 
     @Override
-    public void enemyFire(float mapPositionX, float mapPositionY, Vector2F direction)
+    public void enemyFire(float mapPositionX, float mapPositionY, float velocityX, float velocityY, float lifeTime)
     {
         Bullet b = this.enemyBullets.getFreeElement();
         if (b == null) return;
 
         // b.reNewByVector(mapPositionX, mapPositionY, this.turretAngle.x, this.turretAngle.y);
-        b.reNewByDirectionVector(mapPositionX, mapPositionY, direction);
+        b.reNew(mapPositionX, mapPositionY, velocityX, velocityY, lifeTime);
 
         if (Settings.soundEnabled) {
             Assets.tankFire.play(0.7f);

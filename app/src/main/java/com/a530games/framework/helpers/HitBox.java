@@ -51,10 +51,10 @@ public class HitBox
      */
     public boolean isHit(Bullet b)
     {
-        if (b.mapPosition.x < this.rect.left) return false;
-        if (b.mapPosition.x > this.rect.right) return false;
-        if (b.mapPosition.y < this.rect.top) return false;
-        if (b.mapPosition.y > this.rect.bottom) return false;
+        if (b.position.x < this.rect.left) return false;
+        if (b.position.x > this.rect.right) return false;
+        if (b.position.y < this.rect.top) return false;
+        if (b.position.y > this.rect.bottom) return false;
 
         return true;
     }

@@ -17,8 +17,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 /**
- * todo: сделать прицеливание не ограниченым по времени
- * todo: сделать прицеливание по оптимальной траектории
+ *
  */
 public class Tank extends Vehicle
 {
@@ -28,6 +27,11 @@ public class Tank extends Vehicle
     public static final int STATE_MOVE = 6; //
     public static final int STATE_BLOWUP = 95;
     public static final int STATE_DEAD = 100;
+
+    /**
+     * Bullet speed
+     */
+    public static final int BULLET_SPEED = 140;
 
     /**
      * Tank state
@@ -42,7 +46,7 @@ public class Tank extends Vehicle
     /**
      * Velocity
      */
-    private Vector2F velocity;
+    private final Vector2F velocity;
 
     /**
      * Current turret angle
@@ -83,25 +87,29 @@ public class Tank extends Vehicle
      * Directions on random move
      */
     private final int[][] dirs = {
-            {40, 0},
-            {40, 40},
-            {0, 40},
-            {-40, 40},
-            {-40, 0},
-            {-40, -40},
-            {0, -40},
-            {40, -40},
+            {50, 0},
+            {50, 50},
+            {0, 50},
+            {-50, 50},
+            {-50, 0},
+            {-50, -50},
+            {0, -50},
+            {40, -50},
     };
 
+    /**
+     * Handler on enemy fire, check in word on add bullet
+     */
     private EnemyFireEventHandler fireEventHandler = null;
+
     private EnemyDieEventHandler dieEventHandler = null;
 
     /**
      * Paints for lines
      */
-    private Paint velocityLinePaint, turretLinePaint, targetLinePaint;
+    private final Paint velocityLinePaint, turretLinePaint, targetLinePaint;
 
-    public abstract class Behavior{
+    public abstract static class Behavior{
 
         public abstract boolean isFinish();
 
@@ -109,7 +117,7 @@ public class Tank extends Vehicle
 
     }
 
-    private class Aiming extends Behavior
+    private static class Aiming extends Behavior
     {
         Tank tank;
 
@@ -139,7 +147,7 @@ public class Tank extends Vehicle
         }
     }
 
-    private class RotateTurret extends Behavior
+    private static class RotateTurret extends Behavior
     {
         Tank tank;
 
@@ -190,7 +198,7 @@ public class Tank extends Vehicle
     /**
      * Fire
      */
-    private class Fire extends Behavior
+    private static class Fire extends Behavior
     {
         Tank tank;
 
@@ -209,9 +217,7 @@ public class Tank extends Vehicle
         }
     }
 
-
-
-    private class ChangeDirection extends Behavior
+    private static class ChangeDirection extends Behavior
     {
         Tank tank;
 
@@ -237,7 +243,7 @@ public class Tank extends Vehicle
         }
     }
 
-    private class Drive extends Behavior
+    private static class Drive extends Behavior
     {
         Tank tank;
 
@@ -541,9 +547,16 @@ public class Tank extends Vehicle
 
     private void fire()
     {
-        if (this.fireEventHandler != null) {
+        if (this.fireEventHandler != null)
+        {
             this.turretAngle.nor();
-            this.fireEventHandler.enemyFire(this.hitBox.getCenterX(), this.hitBox.getCenterY(), this.turretAngle);
+            this.fireEventHandler.enemyFire(
+                    this.hitBox.getCenterX(),
+                    this.hitBox.getCenterY(),
+                    this.turretAngle.x * BULLET_SPEED,
+                    this.turretAngle.y * BULLET_SPEED,
+                    2f
+            );
         }
     }
 

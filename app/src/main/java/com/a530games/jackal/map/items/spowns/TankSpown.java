@@ -53,6 +53,8 @@ public class TankSpown extends MapCell implements EnemyDieEventHandler
 
             if (this.spawnedTank == null) {
                 this.spawnedTank = new Tank(this.getCenter());
+
+                // todo: remove event handler and check his state
                 this.spawnedTank.setDieEventHandler(this);
                 // this.spawnedTank.reNew(this.col * Map.SPRITE_WIDTH, this.row * Map.SPRITE_HEIGHT);
 

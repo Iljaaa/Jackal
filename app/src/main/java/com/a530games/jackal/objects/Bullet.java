@@ -1,47 +1,47 @@
 package com.a530games.jackal.objects;
 
-import android.graphics.PointF;
-
 import com.a530games.framework.math.Vector2F;
 
 public class Bullet
 {
     /**
-     * Bullet life time
+     * Position
      */
-    private final float lifeTime = 1;
-
-    // position
-    public PointF mapPosition;
-
-    // start position
-    // for calculate shot blow
-    public PointF startMapPosition;
-
-    //
-    public Vector2F direction;
+    public Vector2F position;
 
     /**
-     * Bullet speed
+     * start position
+     *     // for calculate shot blow
      */
-    private final int speed = 12;
+    public Vector2F startMapPosition;
 
+    /**
+     * Bullet velocity
+     */
+    public Vector2F velocity;
+
+    /**
+     * Is out dead flag
+     */
     private boolean isOut = false;
 
-    // timer to death
-    public float timer = 0;
+    /**
+     * Live timer
+     */
+    public float liveTime = 1;
 
-    public Bullet(boolean isOut) {
+    public Bullet(boolean isOut)
+    {
+        this(0, 0, 0, 0);
+
         this.isOut = isOut;
-        this.direction = new Vector2F(0 ,1);
-        this.mapPosition = new PointF(0, 0);
-        this.startMapPosition = new PointF(0, 0);
     }
 
-    public Bullet(float x, float y, float angle)
+    public Bullet(float x, float y, float velocityX, float velocityY)
     {
-        this.mapPosition = new PointF(x, y);
-        this.startMapPosition = new PointF(x, y);
+        this.position = new Vector2F(x, y);
+
+        this.startMapPosition = new Vector2F(x, y);
 
         // отрисовываем вектор направления
         // double x = Math.sin(this.world.player.getAngle() * Math.PI);
@@ -54,20 +54,15 @@ public class Bullet
                 screenCenterTop + (int) Math.round(Math.cos(angle * Math.PI) * 50),
                 Color.GREEN);*/
 
-        this.direction = new Vector2F(
-                (float) Math.sin(angle * Math.PI),
-                (float) Math.cos(angle * Math.PI)
-        );
-
-        this.timer = 0;
+        this.velocity = new Vector2F(velocityX, velocityY);
     }
 
     public float getX() {
-        return this.mapPosition.x;
+        return this.position.x;
     }
 
     public float getY() {
-        return this.mapPosition.y;
+        return this.position.y;
     }
 
     /**
@@ -93,16 +88,21 @@ public class Bullet
     {
         if (this.isOut) return;
 
-        if (this.timer >= this.lifeTime) {
+        //
+        this.liveTime -= deltaTime;
+
+        // check life time
+        if (this.liveTime < 0) {
             this.isOut = true;
             return;
         }
 
-        this.timer += deltaTime;
-
         // move
-        this.mapPosition.x += this.direction.x * this.speed;
-        this.mapPosition.y += this.direction.y * this.speed;
+        this.position.x += this.velocity.x * deltaTime;
+        this.position.y += this.velocity.y * deltaTime;
+
+        // this.position.x += this.velocity.x * this.speed;
+        // this.position.y += this.velocity.y * this.speed;
     }
 
     /*
@@ -122,45 +122,43 @@ public class Bullet
         this.timer = 0;
     } */
 
-    /**
+    /*
      * @deprecated use new method
      * Перезапускаем пульку для повторного использования
-     */
+
     public void reNewByVector (float x, float y, float directionX, float directionY)
     {
-        this.mapPosition.x = x;
-        this.mapPosition.y = y;
+        this.position.x = x;
+        this.position.y = y;
+
         this.startMapPosition.x = x;
         this.startMapPosition.y = y;
-        // this.x = x;
-        // this.y = y;
-        // this.direction.updateByAngle(angle);
+
         this.direction.x = directionX;
         this.direction.y = directionY;
 
         this.isOut = false;
         this.timer = 0;
-    }
+    }*/
 
     /**
-     * Перезапускаем пульку для повторного использования
+     * Renew bullet
      */
-    public void reNewByDirectionVector (float x, float y, Vector2F direction)
+    public void reNew(float x, float y, float velocityX, float velocityY, float liveTime)
     {
-        this.mapPosition.x = x;
-        this.mapPosition.y = y;
+        this.position.x = x;
+        this.position.y = y;
+
         this.startMapPosition.x = x;
         this.startMapPosition.y = y;
-        // this.x = x;
-        // this.y = y;
-        // this.direction.updateByAngle(angle);
-        this.direction.x = direction.x;
-        this.direction.y = direction.y;
+
+        this.velocity.x = velocityX;
+        this.velocity.y = velocityY;
 
         // normarize vector
-        this.direction.nor();
+        // this.direction.nor();
 
         this.isOut = false;
-        this.timer = 0;
+        this.liveTime = liveTime;
     }
 }
