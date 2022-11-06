@@ -878,8 +878,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             enemy.present(g, this.camera);
 
             // draw hitbox
-            HitBox hitbox = enemy.getHitBox();
-            if (hitbox != null) this.drawHitBox(g, hitbox);
+            // HitBox hitbox = enemy.getHitBox();
+            // if (hitbox != null) this.drawHitBox(g, hitbox);
         }
 
         //

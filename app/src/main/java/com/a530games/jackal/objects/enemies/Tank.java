@@ -10,8 +10,8 @@ import com.a530games.framework.math.Vector2F;
 import com.a530games.jackal.Assets;
 import com.a530games.jackal.Jackal;
 import com.a530games.jackal.Settings;
-import com.a530games.jackal.SpriteWithAnimation;
 import com.a530games.jackal.World;
+import com.a530games.jackal.objects.SmallBlowsSwarm;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -71,12 +71,7 @@ public class Tank extends Vehicle
     /**
      * Blows after death
      */
-    private SpriteWithAnimation[] blows;
-
-    /**
-     * One blow timer
-     */
-    private float nextBlowIn = 0.5f;
+    private final SmallBlowsSwarm dieBlows;
 
     /**
      * Summery blow up timer
@@ -295,12 +290,8 @@ public class Tank extends Vehicle
         // take first step
         this.currentBehaviorStep = this.currentIterator.next();
 
-        this.blows = new SpriteWithAnimation[5];
-        for (int i = 0; i < this.blows.length; i++) {
-            this.blows[i] = new SpriteWithAnimation(Assets.smallBlow);
-            this.blows[i].setSpriteSize(16, 16);
-            this.blows[i].setScreenMargin(16, 16);
-        }
+
+        this.dieBlows = new SmallBlowsSwarm(5);
 
         this.velocityLinePaint = new Paint();
         this.velocityLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -436,6 +427,8 @@ public class Tank extends Vehicle
 
     private void updateBlow (float deltaTime)
     {
+        this.dieBlows.update(deltaTime);
+
         // is blows finish
         this.summeryBlowUpTimer -= deltaTime;
         if (this.summeryBlowUpTimer <= 0)
@@ -445,37 +438,7 @@ public class Tank extends Vehicle
             if (this.dieEventHandler != null) {
                 this.dieEventHandler.enemyDie(this);
             }
-
-            return;
         }
-
-        for (int i = 0; i < this.blows.length; i++)
-        {
-            // SpriteWithAnimation blow = ;
-            if (!this.blows[i].isStart) continue;
-            this.blows[i].update(deltaTime);
-        }
-
-        this.nextBlowIn -= deltaTime;
-        if (nextBlowIn <= 0)
-        {
-            this.nextBlowIn = 0.1f;
-            for (int i = 0; i < this.blows.length; i++)
-            {
-                // SpriteWithAnimation blow = this.blows[i];
-                if (this.blows[i].isStart) continue;
-                // this.blow.start(this.hitBox.getCenterLeft(), this.hitBox.getCenterTop());
-                // todo: fix magic numbers
-
-                this.blows[i].start(
-                        this.hitBox.getCenterX() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 32,
-                        this.hitBox.getCenterY() + (((Jackal.getRandom().nextFloat() * 2) - 1) * 32) - 32
-                );
-
-            }
-        }
-
-
     }
 
     @Override
@@ -497,31 +460,32 @@ public class Tank extends Vehicle
                 this.sprite.width,
                 this.sprite.height);
 
-        // draw blow
-        if (this.state == Tank.STATE_BLOWUP) {
-            for (int i = 0; i < this.blows.length; i++) {
-                // SpriteWithAnimation blow = this.blows[i];
-                this.blows[i].present(g, camera);
-            }
-        }
-
         //
         int screenCenterX =  camera.screenLeft(this.hitBox.getCenterX());
         int screenCenterY = camera.screenTop(this.hitBox.getCenterY());
 
+        // draw blow
+        if (this.state == Tank.STATE_BLOWUP) {
+            this.dieBlows.present(g,
+                    camera.screenLeft(this.hitBox.rect.left),
+                    camera.screenTop(this.hitBox.rect.top)
+            );
+        }
+
+
         // target
-        this.drawAngle(g, screenCenterX, screenCenterY, this.targetAngle, this.targetLinePaint);
+        // this.drawAngle(g, screenCenterX, screenCenterY, this.targetAngle, this.targetLinePaint);
 
         // turret
-        this.drawAngle(g, screenCenterX, screenCenterY, this.turretAngle, this.turretLinePaint);
+        // this.drawAngle(g, screenCenterX, screenCenterY, this.turretAngle, this.turretLinePaint);
 
         // velocity
-        g.drawLine(
+        /*g.drawLine(
                 screenCenterX,
                 screenCenterY,
                 (int) (screenCenterX + this.velocity.x),
                 (int) (screenCenterY + this.velocity.y),
-                this.velocityLinePaint);
+                this.velocityLinePaint);*/
 
     }
 
@@ -589,7 +553,7 @@ public class Tank extends Vehicle
 
         if(Settings.soundEnabled)
         {
-            if (this.hp > 0) Assets.tankHit3.play(1);
+            if (this.hp > 0) Assets.tankHit2.play(1);
             else Assets.tankBlow2.play(1);
         }
     }
