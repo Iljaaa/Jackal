@@ -38,8 +38,8 @@ public class TankSpown extends MapCell implements EnemyDieEventHandler
 
         this.texture = new SpownTexture(SpownTexture.SpownType.tank);
 
-        // todo: add spown delay
-        this.spownTimer = Jackal.getRandom().nextFloat() * 10;
+        // start delay 10 secs
+        this.spownTimer = 10 + Jackal.getRandom().nextFloat() * 10;
 
         this.remainTanks = new Paint();
         this.remainTanks.setStyle(Paint.Style.FILL);

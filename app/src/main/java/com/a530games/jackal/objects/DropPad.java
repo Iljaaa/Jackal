@@ -271,10 +271,10 @@ public class DropPad implements Enemy
     @Override
     public void present(Graphics g, Camera2D camera)
     {
-        g.drawCircle(
+        /*g.drawCircle(
                 camera.screenLeft(this.position.x),
                 camera.screenTop(this.position.y),
-                100, Color.RED);
+                100, Color.RED);*/
     }
 
     @Override

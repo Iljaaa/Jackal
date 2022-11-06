@@ -31,7 +31,7 @@ public class ArenaLevel implements Level
 
     @Override
     public Map.Cell getPlayerDropPointCell() {
-        return new Map.Cell(5, 10);
+        return new Map.Cell(10, 10);
     }
 
     @Override
@@ -43,16 +43,18 @@ public class ArenaLevel implements Level
         }
 
         map.addObjectToMap(new TankSpown(1, 1), 1, 1);
-        map.addObjectToMap(new TankSpown(14, 1), 14, 1);
+        map.addObjectToMap(new TankSpown(10, 1), 10, 1);
+        map.addObjectToMap(new TankSpown(18, 1), 18, 1);
 
-        map.addObjectToMap(new TankSpown(14, 13), 13, 13);
-        map.addObjectToMap(new TankSpown(2, 17), 2, 17);
+        map.addObjectToMap(new TankSpown(1, 18), 1, 18);
+        // map.addObjectToMap(new TankSpown(14, 13), 13, 13);
+        map.addObjectToMap(new TankSpown(18, 18), 18, 18);
 
-        // map.addObjectToMap(new TankSpown(15, 13), 15, 13);
+        // map.addObjectToMap(new TankSpown(8, 10), 8, 10);
         // map.addObjectToMap(new CommandowSpown(13, 13), 13, 13);
         // map.addObjectToMap(new Commandos2Spown(17, 13), 17, 13);
 
-        map.addObjectToMap(new AirstrikeSpown(10, 8), 10, 8);
+        // map.addObjectToMap(new AirstrikeSpown(10, 8), 10, 8);
 
     }
 }
