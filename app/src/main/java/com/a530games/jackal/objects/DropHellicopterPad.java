@@ -6,11 +6,11 @@ import android.util.Log;
 import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
+import com.a530games.framework.helpers.Sprite;
 import com.a530games.framework.helpers.cor.Handler;
 import com.a530games.framework.helpers.cor.Step;
 import com.a530games.framework.math.Vector2;
 import com.a530games.framework.math.Vector2F;
-import com.a530games.framework.helpers.Sprite;
 import com.a530games.jackal.World;
 import com.a530games.jackal.map.RectCell;
 import com.a530games.jackal.objects.enemies.Enemy;
@@ -19,7 +19,7 @@ import com.a530games.jackal.objects.enemies.EnemyFireEventHandler;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-public class DropPad implements Enemy
+public class DropHellicopterPad implements Enemy
 {
     private final Vector2F position;
 
@@ -41,7 +41,7 @@ public class DropPad implements Enemy
 
     private static class FlayStep extends Behavior
     {
-        DropPad pad;
+        DropHellicopterPad pad;
 
         private final Vector2 target;
 
@@ -50,7 +50,7 @@ public class DropPad implements Enemy
          */
         private Vector2F velocity;
 
-        public FlayStep(DropPad pad)
+        public FlayStep(DropHellicopterPad pad)
         {
             this.pad = pad;
 
@@ -74,15 +74,12 @@ public class DropPad implements Enemy
             // dist
             float dist = this.pad.position.dist(this.target.x, this.target.y);
 
-            if (10 < dist && dist < 110) {
+            if (5 < dist && dist < 50) {
                 this.velocity.nor();
-                this.velocity.mul(dist);
-            }
-            else if (dist < 2) {
-                this.velocity.nor();
+                this.velocity.mul(20);
             }
 
-            if (dist < 1) {
+            if (dist < 5) {
                 this.pad.position.set(this.target.x, this.target.y);
                 Log.d("DropPad", "On position");
                 return;
@@ -93,7 +90,35 @@ public class DropPad implements Enemy
                     this.velocity.y * deltaTime
             );
 
+            /*if (this.pad.position.x != this.target.x)
+            {
+                float dX = (this.velocity.x * deltaTime);
+                float remX = this.target.x - this.pad.position.x;
+                if (Math.abs(remX) <= Math.abs(dX)) {
+                    this.moveTo(this.movePoint.x, this.pad.position.y);
+                    // this.pad.position.x = this.movePoint.x;
+                }
+                else {
+                    this.moveTo(this.pad.position.x + dX, this.pad.position.y);
+                    // this.pad.position.x += dX;
+                }
+            }
 
+            if (this.pad.position.y != this.movePoint.y)
+            {
+                float dY = (this.velocity.y * deltaTime);
+                float remY = this.movePoint.y - this.pad.position.y;
+                if (Math.abs(remY) <= Math.abs(dY)) {
+                    this.moveTo(this.pad.position.x, this.movePoint.y);
+                    // this.pad.position.y = this.movePoint.y;
+                }
+                else {
+                    this.moveTo(this.pad.position.x, this.pad.position.y + dY);
+                    // this.pad.position.y += dY;
+                }
+            }*/
+
+            // we move to end position
         }
         /**
          * Set flay to position and speed
@@ -114,7 +139,7 @@ public class DropPad implements Enemy
     private static class PullPlayerStep extends FlayStep
     {
 
-        public PullPlayerStep(DropPad pad)
+        public PullPlayerStep(DropHellicopterPad pad)
         {
             super(pad);
         }
@@ -135,11 +160,11 @@ public class DropPad implements Enemy
 
     private static class DropStep extends Behavior
     {
-        private final DropPad pad;
+        private final DropHellicopterPad pad;
 
         boolean isDrop = false;
 
-        public DropStep(DropPad pad)
+        public DropStep(DropHellicopterPad pad)
         {
             this.pad = pad;
         }
@@ -161,13 +186,85 @@ public class DropPad implements Enemy
         }
     }
 
-    LinkedList<DropPad.Behavior> behaviors;
+    /*private static class FlayAwayStep implements Step
+    {
+        DropPad pad;
+        private final Vector2 point;
 
-    ListIterator<DropPad.Behavior> iterator;
+        public FlayAwayStep(DropPad pad) {
+            this.pad = pad;
+            this.point = new Vector2();
+        }
+
+        @Override
+        public void update(float deltaTime)
+        {
+
+            if (this.pad.position.x != this.movePoint.x)
+            {
+                float dX = (this.velocity.x * deltaTime);
+                float remX = this.movePoint.x - this.pad.position.x;
+                if (Math.abs(remX) <= Math.abs(dX)) {
+                    this.moveTo(this.movePoint.x, this.pad.position.y);
+                    // this.pad.position.x = this.movePoint.x;
+                }
+                else {
+                    this.moveTo(this.pad.position.x + dX, this.pad.position.y);
+                    // this.pad.position.x += dX;
+                }
+            }
+
+            if (this.pad.position.y != this.movePoint.y)
+            {
+                float dY = (this.velocity.y * deltaTime);
+                float remY = this.movePoint.y - this.pad.position.y;
+                if (Math.abs(remY) <= Math.abs(dY)) {
+                    this.moveTo(this.pad.position.x, this.movePoint.y);
+                    // this.pad.position.y = this.movePoint.y;
+                }
+                else {
+                    this.moveTo(this.pad.position.x, this.pad.position.y + dY);
+                    // this.pad.position.y += dY;
+                }
+            }
+
+            // we move to end position
+        }
+
+        protected void moveTo(float x, float y)
+        {
+            // move pad
+            this.pad.move(x, y);
+        }
+
+        /**
+         * Set flay to position and speed
+         *
+        public void setMovePoint (int x, int y, int velocityX, int velocityY)
+        {
+            this.movePoint.set(x, y);
+
+            // calculate move point
+            this.velocity.set(
+                    // (pad.position.x == movePoint.x) ? 0 : (pad.position.x < movePoint.x) ? 50 : -50,
+                    // (pad.position.y == movePoint.y) ? 0 : (pad.position.y < movePoint.y) ? 50 : -50
+                    velocityX, velocityY
+            );
+        }
+
+        @Override
+        public boolean isOver() {
+            return (this.pad.position.x == this.movePoint.x && this.pad.position.y == this.movePoint.y);
+        }
+    }*/
+
+    LinkedList<DropHellicopterPad.Behavior> behaviors;
+
+    ListIterator<DropHellicopterPad.Behavior> iterator;
 
     Behavior currentBehaviorStep;
 
-    public DropPad(World world)
+    public DropHellicopterPad(World world)
     {
         this.world = world;
 
@@ -179,10 +276,32 @@ public class DropPad implements Enemy
         this.behaviors = new LinkedList<>();
         this.behaviors.push(new FlayStep(this)); // flay away
         this.behaviors.push(new DropStep(this)); // drop
+        this.behaviors.push(new PullPlayerStep(this)); // flay top drop point
         this.behaviors.push(new PullPlayerStep(this)); // flay top drop mid point
 
         this.iterator = this.behaviors.listIterator();
         this.currentBehaviorStep = this.iterator.next();
+
+        //
+        /*this.flayHandler = new Handler<>();
+
+        // fly to mid point
+        this.flayHandler.add(new PullPlayerStep(this, new Vector2()));
+
+        // this.flayHandler.add(new MoveStep(this, new Vector2(this.dropPosition.x - 100, this.dropPosition.y + 150))); // fly to point
+
+        // fly to drop point
+        this.flayHandler.add(new PullPlayerStep(this, new Vector2()));
+
+        // drop callback
+        this.flayHandler.add(new Drop(this));
+
+        // drop
+        // this.flayHandler.add(new MoveStep(this, new Vector2()));
+
+        // flay away
+        this.flayHandler.add(new FlayStep(this, new Vector2()));*/
+
     }
 
     protected void finalize() {
@@ -204,18 +323,25 @@ public class DropPad implements Enemy
 //        s.movePoint.set(new Vector2(this.dropPosition.x - 100, this.dropPosition.y + 150));
 
         // set flay away Point
-        ((FlayStep) this.behaviors.get(2)).setTarget(
+        ((FlayStep) this.behaviors.get(3)).setTarget(
                 (int) (centerOfDropPadCell.x) + 700,
                 (int) (centerOfDropPadCell.y) + 500
         );
 
-        // pull to drop point
-        ((PullPlayerStep) this.behaviors.get(0)).setTarget(
+        // drop point
+        ((PullPlayerStep) this.behaviors.get(1)).setTarget(
                 (int) (centerOfDropPadCell.x),
                 (int) (centerOfDropPadCell.y)
         );
 
-        // outside position
+        // mid point
+        ((PullPlayerStep) this.behaviors.get(0)).setTarget(
+                // (int) (centerOfDropPadCell.x - 100),
+                (int) (centerOfDropPadCell.x),
+                (int) (centerOfDropPadCell.y + 150)
+        );
+
+        //
         this.position.x = centerOfDropPadCell.x;
         // this.position.x = centerOfDropPadCell.x - 100;
         this.position.y = centerOfDropPadCell.y + 500;
