@@ -1076,13 +1076,12 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         Graphics g = game.getGraphics();
         // int textTopPosition = 150;
 
-        this.drawTitle(g, "Game over");
 
         if (this.world.gameOverSuccess) {
-            this.drawSecondTitle(g, "You win!");
+            this.drawTitle(g, "You win!");
         }
         else {
-            this.drawSecondTitle(g, "You you lose!");
+            this.drawTitle(g, "You loser");
         }
 
         // draw lose menu

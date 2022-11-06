@@ -1,6 +1,9 @@
 package com.a530games.jackal.map.items.spowns;
 
 
+import android.graphics.Color;
+import android.graphics.Paint;
+
 import com.a530games.framework.Camera2D;
 import com.a530games.framework.Graphics;
 import com.a530games.framework.helpers.HitBox;
@@ -22,12 +25,12 @@ public class TankSpown extends MapCell implements EnemyDieEventHandler
 
     private Tank spawnedTank = null;
 
-    int killedTanks = 0;
-
     /**
      * Need tabk kill to win this cell
      */
-    private final int needTanksKill = 5;
+    private int needTanksKill = 5;
+
+    Paint remainTanks;
 
     public TankSpown(int col, int row)
     {
@@ -35,14 +38,18 @@ public class TankSpown extends MapCell implements EnemyDieEventHandler
 
         this.texture = new SpownTexture(SpownTexture.SpownType.tank);
 
-        //
+        // todo: add spown delay
         this.spownTimer = Jackal.getRandom().nextFloat() * 10;
+
+        this.remainTanks = new Paint();
+        this.remainTanks.setStyle(Paint.Style.FILL);
+        this.remainTanks.setColor(Color.GREEN);
     }
 
     @Override
     public void update(float deltaTime, CellEventCallbackHandler callbackHandler)
     {
-        if (this.killedTanks >= this.needTanksKill) {
+        if (this.needTanksKill <= 0) {
             return;
         }
 
@@ -76,11 +83,23 @@ public class TankSpown extends MapCell implements EnemyDieEventHandler
                 this.sprite.width,
                 this.sprite.height
         );*/
+
     }
 
     @Override
-    public void draw(Graphics g, Camera2D camera2D) {
-
+    public void draw(Graphics g, Camera2D camera2D)
+    {
+        // draw rects of need tank kill
+        for (int i = 0; i < this.needTanksKill; i++)
+        {
+            g.drawRect(
+                    camera2D.screenLeft(this.rect.left + 5 + (i * 10)),
+                    camera2D.screenTop(this.rect.top + 5),
+                    5,
+                    5,
+                    this.remainTanks
+            );
+        }
     }
 
     @Override
@@ -107,11 +126,11 @@ public class TankSpown extends MapCell implements EnemyDieEventHandler
     public void enemyDie(Enemy enemy) {
         this.spownTimer = Jackal.getRandom().nextFloat() * 10;
         this.spawnedTank = null;
-        this.killedTanks++;
+        this.needTanksKill--;
     }
 
     @Override
     public boolean isWin() {
-        return (this.killedTanks >= this.needTanksKill);
+        return (this.needTanksKill <= 0);
     }
 }

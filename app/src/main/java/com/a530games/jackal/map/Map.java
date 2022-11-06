@@ -316,7 +316,7 @@ public class Map implements CellEventCallbackHandler
         this.drawBackgroundObjects();
 
         // drwa background net
-        this.drawBackgroundNet(this.backgroundGraphic);
+        // this.drawBackgroundNet(this.backgroundGraphic);
     }
 
     /**
