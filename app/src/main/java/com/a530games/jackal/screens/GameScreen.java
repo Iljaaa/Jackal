@@ -273,7 +273,9 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         this.updatePlayer(controller, deltaTime);
 
         // update camera position
-        if (this.world.player.isOnline()) {
+        if (this.world.player.isOnline())
+        {
+            // update camera
             this.camera.followByPoint(this.world.player.hitBox.rect.left, this.world.player.hitBox.rect.top);
         }
 
@@ -1155,7 +1157,8 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
             case PauseMenu.PAUSE_MENU_RESTART:
             case GameOverLoseMenu.GLM_RESTART:
                 // restart wight use continue
-                this.restartLevel(Jackal.pickContinue());
+                this.restartLevel(Jackal.getUerStartHp());
+                // this.restartLevel(Jackal.pickContinue());
                 break;
         }
     }

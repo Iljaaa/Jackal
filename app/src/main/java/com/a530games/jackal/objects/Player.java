@@ -18,7 +18,6 @@ public class Player
      */
     public static final int BULLET_SPEED = 200;
 
-
     /**
      * Vehicle hitbox frame
      */
@@ -94,6 +93,11 @@ public class Player
     private final PlayerEventHandler playerEventHandler;
 
     /**
+     * Blow up before death timer
+     */
+    private float blowUpTimer = 5f;
+
+    /**
      * Die blows animation
      */
     private final SmallBlowsSwarm dieBlows;
@@ -125,6 +129,24 @@ public class Player
 
     public void update(float deltaTime)
     {
+        if (this.state == PlayerState.Dead){
+            return;
+        }
+
+        if (this.state == PlayerState.BlowUpBeforeDeath)
+        {
+            // update diw blows
+            this.dieBlows.update(deltaTime);
+
+            this.blowUpTimer -= deltaTime;
+            if (this.blowUpTimer < 0) {
+                // player dead
+                this.die();
+            }
+
+            return;
+        }
+
         // уменьшаем задержку выстрела
         if (this.fireDelay > 0) this.fireDelay -= deltaTime;
 
@@ -132,9 +154,6 @@ public class Player
         if (this.hitDelay > 0){
             this.updateHitTimer(deltaTime);
         }
-
-        // update diw blows
-        this.dieBlows.update(deltaTime);
     }
 
     private void updateHitTimer(float deltaTim)
@@ -185,8 +204,11 @@ public class Player
                     this.gun.height); // 64);
         }
 
-        // update die blows
-        this.dieBlows.present(g, playerScreenX, playerScreenY);
+        // dead blows
+        if (this.state == PlayerState.BlowUpBeforeDeath || this.state == PlayerState.Dead) {
+            // update die blows
+            this.dieBlows.present(g, playerScreenX, playerScreenY);
+        }
     }
 
     public void offsetCenterTo(float newLeft, float newTop) {
@@ -334,15 +356,25 @@ public class Player
         }
 
         // you die
-        Log.d("Player", "Yoy diy");
+        Log.d("Player", "Yoy blowup");
+        this.startBlowUp();
 
+
+        // is diy is not hit?
+        return false;
+    }
+
+    private void startBlowUp ()
+    {
+        this.state = PlayerState.BlowUpBeforeDeath;
+    }
+
+    private void die()
+    {
         this.state = PlayerState.Dead;
 
         //
         this.playerEventHandler.onPlayerDie();
-
-        // is diy is not hit?
-        return false;
     }
 
     public boolean isDead() {
