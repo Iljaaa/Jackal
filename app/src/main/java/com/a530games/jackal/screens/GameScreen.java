@@ -495,7 +495,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         Rect viewRect = this.camera.getViewRectInBlocks(this.world.map.getCellByPosition(this.camera.position.x, this.camera.position.y));
 
         // рисуем имр
-        this.drawWorld(g, viewRect);
+        this.presentWorld(g, viewRect);
 
         // рисуем сайдбар
         this.presentSidebar(this.sidebar);
@@ -506,13 +506,13 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         if (state == GameState.GameOver) this.drawGameOverUI();
 
         // temp item
-        this.drawTouchPoints(g);
+        // this.presentTouchPoints(g);
 
         // draw controller onscreen controller
         this.controllerPresenter.draw(g);
 
         // draw camera position
-        this.presentCamera(g);
+        // this.presentCamera(g);
 
         // draw score
         // this.drawText(g, score, g.getWidth() / 2 - score.length()*20 / 2, g.getHeight() - 42);
@@ -521,7 +521,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     /**
      * Draw touch points on screen
      */
-    private void drawTouchPoints (Graphics g)
+    private void presentTouchPoints(Graphics g)
     {
         TouchEventsCollection touchEvents = this.game.getInput().getTouchEvents();
         int len = touchEvents.size();
@@ -562,7 +562,7 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     /**
      * Draw player, map, enemies and bullets
      */
-    private void drawWorld(Graphics g, Rect drawREct)
+    private void presentWorld(Graphics g, Rect drawREct)
     {
         // draw backend
         this.drawMap(g, drawREct);
@@ -673,12 +673,12 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         // this.world.map.highlightCellByPoint(g, this.world.player.hitBox.getCenterX(), this.world.player.hitBox.getCenterY());
 
         // draw player active cell
-        Map.Cell playerCell = this.world.map.getCellByPosition(
+        /*Map.Cell playerCell = this.world.map.getCellByPosition(
                 this.world.player.hitBox.getCenterX(),
                 this.world.player.hitBox.getCenterY()
         );
 
-        this.drawActiveCell(g, playerCell);
+        this.drawActiveCell(g, playerCell);*/
     }
 
     /**
@@ -814,13 +814,13 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
         );
 
         // line of player angle
-        this.drawPlayerAngle(g);
+        // this.drawPlayerAngle(g);
 
         // line of player turret angle
-        this.drawPlayerTurretAngle(g);
+        // this.drawPlayerTurretAngle(g);
 
         // player hitbox
-        this.drawHitBox(g, this.world.player.hitBox);
+        // this.drawHitBox(g, this.world.player.hitBox);
     }
 
     /**
