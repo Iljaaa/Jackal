@@ -75,7 +75,6 @@ public class GameScreen extends Screen implements ControllerEventHandler, MenuEv
     // int oldScore = 0;
     // String score = "0";
 
-
     /**
      * Menu on lose level
      */

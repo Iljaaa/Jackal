@@ -23,7 +23,7 @@ public class PauseMenu extends BasicMenu
                 PauseMenu.PAUSE_MENU_RESTART
         ));
 
-        this.addItem(new MenuItem(
+        /*this.addItem(new MenuItem(
                 "OPTIONS",
                 PauseMenu.PAUSE_MENU_OPTIONS
         ));
@@ -36,7 +36,7 @@ public class PauseMenu extends BasicMenu
         this.addItem(new MenuItem(
                 "BACK TO MAIN MENU",
                 PauseMenu.PAUSE_MENU_BACK_TO_MAIN_MENU
-        ));
+        ));*/
     }
 
 
